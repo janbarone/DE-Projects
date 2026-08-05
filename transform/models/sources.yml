@@ -1,0 +1,52 @@
+version: 2
+
+sources:
+  - name: bronze
+    database: dota
+    schema: bronze
+    loader: python_load_bronze
+    description: >
+      Raw layer storing untouched OpenDota API payloads as jsonb.
+      Each row: natural key, `payload` jsonb, `loaded_at` timestamp.
+    tables:
+      - name: matches
+        description: One row per match, payload is the full /matches/{id} response.
+        columns:
+          - name: match_id
+            description: Primary key. Unique match identifier.
+          - name: payload
+            description: Full raw match JSON (players, picks_bans, teamfights, chat, ...).
+          - name: loaded_at
+            description: When the row was loaded into bronze.
+
+      - name: leagues
+        description: One row per league from /leagues.
+        columns:
+          - name: leagueid
+            description: Primary key. Unique league identifier.
+
+      - name: players
+        description: One row per pro player from /proPlayers.
+        columns:
+          - name: account_id
+            description: Primary key. Steam account identifier.
+
+      - name: teams
+        description: One row per team from /teams.
+        columns:
+          - name: team_id
+            description: Primary key. Unique team identifier.
+
+      - name: hero_stats
+        description: One row per hero aggregate from /heroStats.
+        columns:
+          - name: id
+            description: Primary key. Hero identifier.
+
+      - name: constants
+        description: One row per static resource (heroes, items, abilities, ...).
+        columns:
+          - name: resource
+            description: Primary key. Resource name, e.g. 'heroes'.
+          - name: payload
+            description: Full resource JSON (object or array).

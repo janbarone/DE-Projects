@@ -1,0 +1,81 @@
+table 'gold fact_picks_bans'
+	lineageTag: 9e418964-6a2f-4f10-a9e6-ea81739dcf4d
+
+	column match_id
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: 7789e7bc-84be-49e7-9b0f-902b1423614d
+		summarizeBy: none
+		sourceColumn: match_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column order_no
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: c2e69189-5a30-481e-8217-743c1168baa4
+		summarizeBy: none
+		sourceColumn: order_no
+
+		annotation SummarizationSetBy = Automatic
+
+	column hero_id
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: ebb6b722-2c0e-4ed5-8dc6-98c960085eb9
+		summarizeBy: none
+		sourceColumn: hero_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column is_pick
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		sourceProviderType: bit
+		lineageTag: 1114875a-f8aa-4ed5-9585-080685072d2f
+		summarizeBy: none
+		sourceColumn: is_pick
+
+		annotation SummarizationSetBy = Automatic
+
+	column active_team
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: 8383ff65-3d36-4531-89db-a314fcccfa3e
+		summarizeBy: none
+		sourceColumn: active_team
+
+		annotation SummarizationSetBy = Automatic
+
+	column player_slot
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: b6b2aee9-8358-4c54-a7ec-c7e6158777b3
+		summarizeBy: none
+		sourceColumn: player_slot
+
+		annotation SummarizationSetBy = Automatic
+
+	column loaded_at
+		dataType: dateTime
+		formatString: General Date
+		sourceProviderType: datetime2
+		lineageTag: 13991d94-60cc-4e5c-be2f-bf05973bfea7
+		summarizeBy: none
+		sourceColumn: loaded_at
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'gold fact_picks_bans' = m
+		mode: directQuery
+		source =
+				let
+				    Source = PostgreSQL.Database("localhost", "dota"),
+				    gold_fact_picks_bans = Source{[Schema="gold",Item="fact_picks_bans"]}[Data]
+				in
+				    gold_fact_picks_bans
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

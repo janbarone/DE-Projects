@@ -1,0 +1,80 @@
+table 'gold fact_teamfight_ability_uses'
+	lineageTag: 2ee7e13e-1abb-44a1-826c-27b6531674eb
+
+	column match_id
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: 950fe9cf-3b0e-4f8c-8b91-02ab17e4116a
+		summarizeBy: none
+		sourceColumn: match_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column teamfight_id
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: 8a4213f3-aef7-43a1-a939-bea7d68eadd8
+		summarizeBy: none
+		sourceColumn: teamfight_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column player_slot
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: 66f4dc60-fbec-4df7-b6bd-459febe894a0
+		summarizeBy: none
+		sourceColumn: player_slot
+
+		annotation SummarizationSetBy = Automatic
+
+	column hero_id
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: 2f924515-6dc9-41f0-9693-870464481053
+		summarizeBy: none
+		sourceColumn: hero_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column account_id
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: e9cb8b05-5be8-4ea4-81d4-456398552320
+		summarizeBy: none
+		sourceColumn: account_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column ability_name
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: adc1962f-61b3-4066-a431-5e43fc42b32b
+		summarizeBy: none
+		sourceColumn: ability_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column uses
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 75a33acf-4de1-4dac-a641-2b66cbc55e4c
+		summarizeBy: sum
+		sourceColumn: uses
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'gold fact_teamfight_ability_uses' = m
+		mode: directQuery
+		source =
+				let
+				    Source = PostgreSQL.Database("localhost", "dota"),
+				    gold_fact_teamfight_ability_uses = Source{[Schema="gold",Item="fact_teamfight_ability_uses"]}[Data]
+				in
+				    gold_fact_teamfight_ability_uses
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,23 @@
+name: 'transform'
+version: '1.0.0'
+config-version: 2
+
+profile: 'transform'
+
+model-paths: ["models"]
+macro-paths: ["macros"]
+test-paths: ["tests"]
+seed-paths: ["seeds"]
+docs-paths: ["docs"]
+target-path: "target"
+clean-targets:
+  - "target"
+  - "dbt_packages"
+
+models:
+  transform:
+    silver:
+      +materialized: view
+    gold:
+      +materialized: table
+      +schema: gold

@@ -1,0 +1,35 @@
+model Model
+	culture: en-US
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: en-US
+	maxParallelismPerRefresh: 1
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation __PBI_TimeIntelligenceEnabled = 0
+
+annotation PBI_QueryOrder = ["gold dim_date","gold dim_game_mode","gold dim_hero","gold dim_hero_role","gold dim_league","gold dim_lobby_type","gold dim_player","gold dim_region","gold dim_team","gold fact_match_players","gold fact_matches","gold fact_picks_bans","gold fact_teamfight_ability_uses","gold fact_teamfight_item_uses","gold fact_teamfight_kills","gold fact_teamfight_players","gold fact_teamfights"]
+
+annotation PBI_ProTooling = ["DevMode"]
+
+ref table 'gold dim_date'
+ref table 'gold dim_game_mode'
+ref table 'gold dim_hero'
+ref table 'gold dim_hero_role'
+ref table 'gold dim_league'
+ref table 'gold dim_lobby_type'
+ref table 'gold dim_player'
+ref table 'gold dim_region'
+ref table 'gold dim_team'
+ref table 'gold fact_match_players'
+ref table 'gold fact_matches'
+ref table 'gold fact_picks_bans'
+ref table 'gold fact_teamfight_ability_uses'
+ref table 'gold fact_teamfight_item_uses'
+ref table 'gold fact_teamfight_kills'
+ref table 'gold fact_teamfight_players'
+ref table 'gold fact_teamfights'
+
+ref cultureInfo en-US
+

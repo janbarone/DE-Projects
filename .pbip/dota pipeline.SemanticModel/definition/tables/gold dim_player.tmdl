@@ -1,0 +1,61 @@
+table 'gold dim_player'
+	lineageTag: 6be15467-1257-4802-9ee3-1fec233842da
+
+	column account_id
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: ce1ed552-1783-478d-9e2b-144d707f2cc7
+		summarizeBy: none
+		sourceColumn: account_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column player_name
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: 42bbd69e-2622-43b8-93cb-322bc76848c1
+		summarizeBy: none
+		sourceColumn: player_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column rank_tier
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: ffb0c174-e6c1-4e9f-8c5c-64f60bf15c16
+		summarizeBy: none
+		sourceColumn: rank_tier
+
+		annotation SummarizationSetBy = Automatic
+
+	column team_id
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: 0f6c28f1-f83a-47d8-abda-43be608d230a
+		summarizeBy: none
+		sourceColumn: team_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column player_type
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: 2f24b013-09f5-4c20-ab8a-ddf67353aa53
+		summarizeBy: none
+		sourceColumn: player_type
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'gold dim_player' = m
+		mode: directQuery
+		source =
+				let
+				    Source = PostgreSQL.Database("localhost", "dota"),
+				    gold_dim_player = Source{[Schema="gold",Item="dim_player"]}[Data]
+				in
+				    gold_dim_player
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

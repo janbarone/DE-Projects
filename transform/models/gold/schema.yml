@@ -1,0 +1,300 @@
+version: 2
+
+models:
+  - name: dim_hero
+    description: Conformed hero dimension (identity + hero_stats aggregates) plus an 'Unknown' hero (hero_id 0) so all fact hero_ids resolve.
+    columns:
+      - name: hero_id
+        tests: [not_null, unique]
+
+  - name: dim_player
+    description: Conformed player dimension - pro players with metadata plus match-only participants so every account_id resolves.
+    columns:
+      - name: account_id
+        tests: [not_null, unique]
+
+  - name: dim_team
+    description: Conformed team dimension - /teams plus 'Unknown' teams that appear only in matches.
+    columns:
+      - name: team_id
+        tests: [not_null, unique]
+
+  - name: dim_league
+    description: League dimension.
+    columns:
+      - name: leagueid
+        tests: [not_null, unique]
+
+  - name: dim_game_mode
+    description: Decode lookup for game_mode ids, flattened from stg_constants.
+    columns:
+      - name: game_mode_id
+        tests: [not_null, unique]
+
+  - name: dim_lobby_type
+    description: Decode lookup for lobby_type ids, flattened from stg_constants.
+    columns:
+      - name: lobby_type_id
+        tests: [not_null, unique]
+
+  - name: dim_region
+    description: Decode lookup for region ids, flattened from stg_constants.
+    columns:
+      - name: region_id
+        tests: [not_null, unique]
+
+  - name: dim_hero_role
+    description: Bridge table, one row per (hero, role). dim_hero 1 -> many dim_hero_role for role filtering.
+    columns:
+      - name: hero_id
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_hero')
+                field: hero_id
+      - name: role
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['Carry', 'Support', 'Nuker', 'Disabler', 'Durable', 'Escape', 'Initiator', 'Pusher']
+
+  - name: dim_date
+    description: Calendar dimension, one row per day from 2012-01-01 to 2027-12-31.
+    columns:
+      - name: date
+        tests: [not_null, unique]
+      - name: day_of_month
+        tests: [not_null]
+      - name: month
+        tests: [not_null]
+      - name: year
+        tests: [not_null]
+      - name: quarter
+        tests: [not_null]
+
+  - name: fact_matches
+    description: One row per match (hub fact).
+    columns:
+      - name: match_id
+        tests: [not_null, unique]
+      - name: start_date
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_date')
+                field: date
+      - name: leagueid
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_league')
+                field: leagueid
+      - name: game_mode_id
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_game_mode')
+                field: game_mode_id
+      - name: lobby_type_id
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_lobby_type')
+                field: lobby_type_id
+      - name: region_id
+        tests:
+          - relationships:
+              arguments:
+                to: ref('dim_region')
+                field: region_id
+      - name: radiant_team_id
+        tests:
+          - relationships:
+              arguments:
+                to: ref('dim_team')
+                field: team_id
+      - name: dire_team_id
+        tests:
+          - relationships:
+              arguments:
+                to: ref('dim_team')
+                field: team_id
+
+  - name: fact_match_players
+    description: One row per (match, player) performance fact.
+    columns:
+      - name: match_id
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('fact_matches')
+                field: match_id
+      - name: account_id
+        tests:
+          - relationships:
+              arguments:
+                to: ref('dim_player')
+                field: account_id
+      - name: hero_id
+        tests:
+          - relationships:
+              arguments:
+                to: ref('dim_hero')
+                field: hero_id
+
+  - name: fact_picks_bans
+    description: One row per (match, draft order).
+    columns:
+      - name: match_id
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('fact_matches')
+                field: match_id
+      - name: hero_id
+        tests:
+          - relationships:
+              arguments:
+                to: ref('dim_hero')
+                field: hero_id
+
+  - name: fact_teamfights
+    description: One row per (match, teamfight).
+    columns:
+      - name: match_id
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('fact_matches')
+                field: match_id
+      - name: teamfight_id
+        tests: [not_null]
+
+  - name: fact_teamfight_players
+    description: One row per (match, teamfight, player) at hero level, derived from the positional players array.
+    columns:
+      - name: match_id
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('fact_matches')
+                field: match_id
+      - name: teamfight_id
+        tests: [not_null]
+      - name: player_slot
+        tests: [not_null]
+      - name: hero_id
+        tests:
+          - relationships:
+              arguments:
+                to: ref('dim_hero')
+                field: hero_id
+      - name: account_id
+        tests:
+          - relationships:
+              arguments:
+                to: ref('dim_player')
+                field: account_id
+  - name: fact_teamfight_ability_uses
+    description: One row per (match, teamfight, player, ability) usage. Flattens fact_teamfight_players.ability_uses.
+    columns:
+      - name: match_id
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('fact_matches')
+                field: match_id
+      - name: teamfight_id
+        tests: [not_null]
+      - name: player_slot
+        tests: [not_null]
+      - name: hero_id
+        tests:
+          - relationships:
+              arguments:
+                to: ref('dim_hero')
+                field: hero_id
+      - name: account_id
+        tests:
+          - relationships:
+              arguments:
+                to: ref('dim_player')
+                field: account_id
+      - name: ability_name
+        tests: [not_null]
+      - name: uses
+        tests: [not_null]
+  - name: fact_teamfight_item_uses
+    description: One row per (match, teamfight, player, item) usage. Flattens fact_teamfight_players.item_uses.
+    columns:
+      - name: match_id
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('fact_matches')
+                field: match_id
+      - name: teamfight_id
+        tests: [not_null]
+      - name: player_slot
+        tests: [not_null]
+      - name: hero_id
+        tests:
+          - relationships:
+              arguments:
+                to: ref('dim_hero')
+                field: hero_id
+      - name: account_id
+        tests:
+          - relationships:
+              arguments:
+                to: ref('dim_player')
+                field: account_id
+      - name: item_name
+        tests: [not_null]
+      - name: uses
+        tests: [not_null]
+  - name: fact_teamfight_kills
+    description: One row per (match, teamfight, killer player, victim hero) kill event. Flattens fact_teamfight_players.killed.
+    columns:
+      - name: match_id
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('fact_matches')
+                field: match_id
+      - name: teamfight_id
+        tests: [not_null]
+      - name: player_slot
+        tests: [not_null]
+      - name: hero_id
+        tests:
+          - relationships:
+              arguments:
+                to: ref('dim_hero')
+                field: hero_id
+      - name: account_id
+        tests:
+          - relationships:
+              arguments:
+                to: ref('dim_player')
+                field: account_id
+      - name: victim_hero_id
+        tests:
+          - relationships:
+              arguments:
+                to: ref('dim_hero')
+                field: hero_id
+      - name: kills
+        tests: [not_null]

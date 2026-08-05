@@ -1,0 +1,36 @@
+table 'gold dim_hero_role'
+	lineageTag: 84fd5e7d-1073-4167-bc3b-02fa8221acba
+
+	column hero_id
+		dataType: string
+		sourceProviderType: int
+		lineageTag: 7d50794d-7caa-483f-ac70-bf2181a8e2c5
+		summarizeBy: none
+		sourceColumn: hero_id
+
+		changedProperty = DataType
+
+		annotation SummarizationSetBy = Automatic
+
+	column role
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: 454e7104-f777-4dc3-b53f-dd030b48c0c5
+		summarizeBy: none
+		sourceColumn: role
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'gold dim_hero_role' = m
+		mode: directQuery
+		source =
+				let
+				    Source = PostgreSQL.Database("localhost", "dota"),
+				    gold_dim_hero_role = Source{[Schema="gold",Item="dim_hero_role"]}[Data]
+				in
+				    gold_dim_hero_role
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

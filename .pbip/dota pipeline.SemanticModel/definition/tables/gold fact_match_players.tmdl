@@ -1,0 +1,420 @@
+table 'gold fact_match_players'
+	lineageTag: 14bb29ea-0eb6-48a4-88ed-ddb7d0e8709c
+
+	column match_id
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: 965db470-de70-4393-b466-8161d957280e
+		summarizeBy: none
+		sourceColumn: match_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column player_slot
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: c1138319-0a87-4e9f-88ca-de1c8a4a7523
+		summarizeBy: none
+		sourceColumn: player_slot
+
+		annotation SummarizationSetBy = Automatic
+
+	column account_id
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: 8e83700f-afd4-417c-a75a-f583ac45f073
+		summarizeBy: none
+		sourceColumn: account_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column hero_id
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: ddbdea4c-c9e2-4ce5-9d31-1b14ed1d89b3
+		summarizeBy: none
+		sourceColumn: hero_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column team_number
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: b964d3eb-19c5-4704-9bcd-c75728d825bc
+		summarizeBy: none
+		sourceColumn: team_number
+
+		annotation SummarizationSetBy = Automatic
+
+	column kills
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 1eaed10e-4529-4501-bffa-56b63f01949d
+		summarizeBy: sum
+		sourceColumn: kills
+
+		annotation SummarizationSetBy = Automatic
+
+	column deaths
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 85deeec2-3929-467d-97f4-0b4da417c8c2
+		summarizeBy: sum
+		sourceColumn: deaths
+
+		annotation SummarizationSetBy = Automatic
+
+	column assists
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: a6645094-ef2f-440b-9d50-3089e1484942
+		summarizeBy: sum
+		sourceColumn: assists
+
+		annotation SummarizationSetBy = Automatic
+
+	column kda
+		dataType: double
+		sourceProviderType: decimal
+		lineageTag: 7c6142fc-6b48-463a-ac47-d29e775543f4
+		summarizeBy: sum
+		sourceColumn: kda
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column gold
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: fdc30d74-d5ed-416d-a5ef-bf3eafda21f3
+		summarizeBy: sum
+		sourceColumn: gold
+
+		annotation SummarizationSetBy = Automatic
+
+	column gold_spent
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 20aa22f9-a6af-4680-9183-be97308e46ca
+		summarizeBy: sum
+		sourceColumn: gold_spent
+
+		annotation SummarizationSetBy = Automatic
+
+	column net_worth
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: c87ff8d8-de10-4ada-9850-32896af03cbc
+		summarizeBy: sum
+		sourceColumn: net_worth
+
+		annotation SummarizationSetBy = Automatic
+
+	column gold_per_min
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 01ad299e-63bd-4476-93b9-d67c9b26e2df
+		summarizeBy: sum
+		sourceColumn: gold_per_min
+
+		annotation SummarizationSetBy = Automatic
+
+	column xp_per_min
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: d10d940c-01e8-4809-a7bc-a08e01e2d648
+		summarizeBy: sum
+		sourceColumn: xp_per_min
+
+		annotation SummarizationSetBy = Automatic
+
+	column hero_damage
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 36555a3a-8700-43bb-b1d3-be68bab06539
+		summarizeBy: sum
+		sourceColumn: hero_damage
+
+		annotation SummarizationSetBy = Automatic
+
+	column hero_healing
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 95e07f8c-db65-4d83-a69d-adbb683b71c9
+		summarizeBy: sum
+		sourceColumn: hero_healing
+
+		annotation SummarizationSetBy = Automatic
+
+	column tower_damage
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 0540bf2a-d7ce-43c5-a7ba-cfc4db387c7e
+		summarizeBy: sum
+		sourceColumn: tower_damage
+
+		annotation SummarizationSetBy = Automatic
+
+	column tower_kills
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 1ec8f7b6-46c4-4f3e-b4e7-eacbc047d7af
+		summarizeBy: sum
+		sourceColumn: tower_kills
+
+		annotation SummarizationSetBy = Automatic
+
+	column stuns
+		dataType: double
+		sourceProviderType: decimal
+		lineageTag: d5c798ab-53bc-48f0-85f4-82c35a5ad6be
+		summarizeBy: sum
+		sourceColumn: stuns
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column last_hits
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 92586c46-6e2e-4856-8c36-3a0e7dfadbb0
+		summarizeBy: sum
+		sourceColumn: last_hits
+
+		annotation SummarizationSetBy = Automatic
+
+	column denies
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: f962629b-a105-4f71-a1a8-8f637ad6aab7
+		summarizeBy: sum
+		sourceColumn: denies
+
+		annotation SummarizationSetBy = Automatic
+
+	column camps_stacked
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 5e6663e7-1507-4e79-8589-9d931c35df44
+		summarizeBy: sum
+		sourceColumn: camps_stacked
+
+		annotation SummarizationSetBy = Automatic
+
+	column creeps_stacked
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: a314e6a1-990d-4c2c-be8d-68ce0e2cbca5
+		summarizeBy: sum
+		sourceColumn: creeps_stacked
+
+		annotation SummarizationSetBy = Automatic
+
+	column neutral_kills
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 635dc02c-d39c-4f85-b97d-7953c4bf2aab
+		summarizeBy: sum
+		sourceColumn: neutral_kills
+
+		annotation SummarizationSetBy = Automatic
+
+	column rune_pickups
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: cef5abe8-703b-4b23-88bf-c0796151bd66
+		summarizeBy: sum
+		sourceColumn: rune_pickups
+
+		annotation SummarizationSetBy = Automatic
+
+	column level
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: ccb55707-e6ea-4620-912f-31441c331070
+		summarizeBy: none
+		sourceColumn: level
+
+		annotation SummarizationSetBy = Automatic
+
+	column item_0
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: b82ec7e6-0823-4878-b533-7bff93b96154
+		summarizeBy: none
+		sourceColumn: item_0
+
+		annotation SummarizationSetBy = Automatic
+
+	column item_1
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: 6ebd3aa0-c274-4d48-8330-ccdbe98e6371
+		summarizeBy: none
+		sourceColumn: item_1
+
+		annotation SummarizationSetBy = Automatic
+
+	column item_2
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: c38f4d4e-7da9-4cfe-8248-9a37c4ae0425
+		summarizeBy: none
+		sourceColumn: item_2
+
+		annotation SummarizationSetBy = Automatic
+
+	column item_3
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: 68409f2a-ddcc-42c3-b623-5a2bfc61a3f1
+		summarizeBy: none
+		sourceColumn: item_3
+
+		annotation SummarizationSetBy = Automatic
+
+	column item_4
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: 3c041bd3-46c8-44f5-863d-02a8abbdbf77
+		summarizeBy: none
+		sourceColumn: item_4
+
+		annotation SummarizationSetBy = Automatic
+
+	column item_5
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: 52640906-1dea-4e11-9881-20654962e3fe
+		summarizeBy: none
+		sourceColumn: item_5
+
+		annotation SummarizationSetBy = Automatic
+
+	column item_neutral
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: b30e0e7f-d829-409d-b5a3-81b3395da5c8
+		summarizeBy: none
+		sourceColumn: item_neutral
+
+		annotation SummarizationSetBy = Automatic
+
+	column backpack_0
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: 6d7c8063-8c87-44dc-9759-85fc93dc8647
+		summarizeBy: none
+		sourceColumn: backpack_0
+
+		annotation SummarizationSetBy = Automatic
+
+	column backpack_1
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: 1c2fede7-48ea-4604-890d-8eb0db081734
+		summarizeBy: none
+		sourceColumn: backpack_1
+
+		annotation SummarizationSetBy = Automatic
+
+	column backpack_2
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: 81dcd2c4-727b-4b49-ac74-2fd1cbcfb3e6
+		summarizeBy: none
+		sourceColumn: backpack_2
+
+		annotation SummarizationSetBy = Automatic
+
+	column backpack_3
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: bc6efb74-7562-4a80-aa11-a69794c62869
+		summarizeBy: none
+		sourceColumn: backpack_3
+
+		annotation SummarizationSetBy = Automatic
+
+	column leaver_status
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: 495ee37e-ddc8-430f-8486-b53ac4d98c57
+		summarizeBy: none
+		sourceColumn: leaver_status
+
+		annotation SummarizationSetBy = Automatic
+
+	column randomed
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		sourceProviderType: bit
+		lineageTag: b9fca158-d124-45f2-bea4-72911475ac11
+		summarizeBy: none
+		sourceColumn: randomed
+
+		annotation SummarizationSetBy = Automatic
+
+	column firstblood_claimed
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 3a2b3021-1f45-4775-9bfb-35700c74cf6b
+		summarizeBy: sum
+		sourceColumn: firstblood_claimed
+
+		annotation SummarizationSetBy = Automatic
+
+	column buyback_count
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: e4d2f7ab-59df-4b7a-9fc8-b91bc68da92b
+		summarizeBy: sum
+		sourceColumn: buyback_count
+
+		annotation SummarizationSetBy = Automatic
+
+	column loaded_at
+		dataType: dateTime
+		formatString: General Date
+		sourceProviderType: datetime2
+		lineageTag: 504079cc-e3c6-4899-998f-adc3cfcefffb
+		summarizeBy: none
+		sourceColumn: loaded_at
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'gold fact_match_players' = m
+		mode: directQuery
+		source =
+				let
+				    Source = PostgreSQL.Database("localhost", "dota"),
+				    gold_fact_match_players = Source{[Schema="gold",Item="fact_match_players"]}[Data]
+				in
+				    gold_fact_match_players
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

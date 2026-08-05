@@ -1,0 +1,29 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: dota_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      POSTGRES_DB: ${POSTGRES_DB:-dota}
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      # Runs schema SQL on first container boot (empty volume)
+      - ./db/init:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres} -d ${POSTGRES_DB:-dota}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks:
+      - de_net
+
+networks:
+  de_net:
+    driver: bridge
+
+volumes:
+  pgdata:

@@ -1,0 +1,61 @@
+table 'gold dim_league'
+	lineageTag: c5f9388b-df19-4026-91ab-985fcd4d37fe
+
+	column leagueid
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: a94c4f33-dac1-42d8-b327-c3b8ded2d4f3
+		summarizeBy: none
+		sourceColumn: leagueid
+
+		annotation SummarizationSetBy = Automatic
+
+	column league_name
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: bb509406-6505-43e3-9b0a-9b12c7489e83
+		summarizeBy: none
+		sourceColumn: league_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column tier
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: f60cb6c4-488b-4f49-92b4-bc3ec24017d7
+		summarizeBy: none
+		sourceColumn: tier
+
+		annotation SummarizationSetBy = Automatic
+
+	column ticket
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: ee5b8b13-25c6-4878-bf16-b537aa035bb4
+		summarizeBy: none
+		sourceColumn: ticket
+
+		annotation SummarizationSetBy = Automatic
+
+	column banner
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: c14b0e57-b30d-4039-90bb-31bd4303ce05
+		summarizeBy: none
+		sourceColumn: banner
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'gold dim_league' = m
+		mode: directQuery
+		source =
+				let
+				    Source = PostgreSQL.Database("localhost", "dota"),
+				    gold_dim_league = Source{[Schema="gold",Item="dim_league"]}[Data]
+				in
+				    gold_dim_league
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

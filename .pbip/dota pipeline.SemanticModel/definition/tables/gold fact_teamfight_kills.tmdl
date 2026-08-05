@@ -1,0 +1,89 @@
+table 'gold fact_teamfight_kills'
+	lineageTag: 13459da2-e416-4d2a-a257-ca66d690714e
+
+	column match_id
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: 2ca5b301-b32c-4c22-b8e5-28fdd240a289
+		summarizeBy: none
+		sourceColumn: match_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column teamfight_id
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: 42e8651c-b4ec-44f1-a329-bc06d75afcb3
+		summarizeBy: none
+		sourceColumn: teamfight_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column player_slot
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: 0e6ad25f-6559-4c8a-b8fd-4fe77647d8e8
+		summarizeBy: none
+		sourceColumn: player_slot
+
+		annotation SummarizationSetBy = Automatic
+
+	column hero_id
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: 998652d1-c349-4741-95df-cd88dc24d4bb
+		summarizeBy: none
+		sourceColumn: hero_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column account_id
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: 77d09320-7339-45a5-9039-7337ec006910
+		summarizeBy: none
+		sourceColumn: account_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column victim_hero_name
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: bde9578f-d9be-4f7c-a82a-016c708343df
+		summarizeBy: none
+		sourceColumn: victim_hero_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column kills
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 8ec4c288-dce6-4cfb-91b0-c4b31d972cf6
+		summarizeBy: sum
+		sourceColumn: kills
+
+		annotation SummarizationSetBy = Automatic
+
+	column victim_hero_id
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: 787631a6-4b6b-4330-b3ee-06900ced3d01
+		summarizeBy: none
+		sourceColumn: victim_hero_id
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'gold fact_teamfight_kills' = m
+		mode: directQuery
+		source =
+				let
+				    Source = PostgreSQL.Database("localhost", "dota"),
+				    gold_fact_teamfight_kills = Source{[Schema="gold",Item="fact_teamfight_kills"]}[Data]
+				in
+				    gold_fact_teamfight_kills
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

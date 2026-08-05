@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Report",
+    "displayName": "dota pipeline"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "d98b1530-7b18-4cc1-ba27-cac9c66e9ef8"
+  }
+}

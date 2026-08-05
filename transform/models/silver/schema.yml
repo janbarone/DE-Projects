@@ -1,0 +1,80 @@
+version: 2
+
+models:
+  - name: stg_leagues
+    description: One row per league.
+    columns:
+      - name: leagueid
+        tests: [not_null, unique]
+
+  - name: stg_teams
+    description: One row per team.
+    columns:
+      - name: team_id
+        tests: [not_null, unique]
+
+  - name: stg_players
+    description: One row per pro player.
+    columns:
+      - name: account_id
+        tests: [not_null, unique]
+
+  - name: stg_heroes
+    description: One row per hero, from constants heroes resource.
+    columns:
+      - name: hero_id
+        tests: [not_null, unique]
+      - name: primary_attr
+        tests:
+          - accepted_values:
+              values: ['str', 'agi', 'int', 'all']
+
+  - name: stg_constants
+    description: One row per constants resource, full payload preserved as jsonb.
+    columns:
+      - name: resource
+        tests: [not_null, unique]
+
+  - name: stg_hero_stats
+    description: One row per hero aggregate from /heroStats.
+    columns:
+      - name: hero_id
+        tests: [not_null, unique]
+
+  - name: stg_matches
+    description: One row per match.
+    columns:
+      - name: match_id
+        tests: [not_null, unique]
+      - name: winner
+        tests:
+          - accepted_values:
+              values: ['radiant', 'dire', 'draw']
+
+  - name: stg_match_players
+    description: One row per (match, player).
+    columns:
+      - name: match_id
+        tests: [not_null]
+      - name: player_slot
+        tests: [not_null]
+      - name: team_number
+        tests:
+          - accepted_values:
+              values: ['0', '1']
+
+  - name: stg_picks_bans
+    description: One row per (match, draft order).
+    columns:
+      - name: match_id
+        tests: [not_null]
+      - name: order_no
+        tests: [not_null]
+
+  - name: stg_teamfights
+    description: One row per (match, teamfight).
+    columns:
+      - name: match_id
+        tests: [not_null]
+      - name: teamfight_id
+        tests: [not_null]

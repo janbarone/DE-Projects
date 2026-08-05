@@ -1,0 +1,169 @@
+table 'gold dim_hero'
+	lineageTag: 3d08ddbb-534b-459e-b530-6f18f4dfa9e8
+
+	column hero_id
+		dataType: string
+		sourceProviderType: int
+		lineageTag: fb328a46-6761-450f-8a08-757a70d8a4be
+		summarizeBy: none
+		sourceColumn: hero_id
+
+		changedProperty = DataType
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column hero_name
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: b65e4b09-8d31-4bdc-8d29-400b77e6d1e6
+		summarizeBy: none
+		sourceColumn: hero_name
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column hero_localized_name
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: 1eb16010-4d09-4ed3-8184-d6ff95a8d6f6
+		summarizeBy: none
+		sourceColumn: hero_localized_name
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column primary_attr
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: 3737d61c-d546-4ddc-b80c-a72ba6573104
+		summarizeBy: none
+		sourceColumn: primary_attr
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column attack_type
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: 811bd2fe-8105-4c20-8ac9-cabaac2b8d54
+		summarizeBy: none
+		sourceColumn: attack_type
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column roles
+		dataType: string
+		lineageTag: b1cf141f-d24e-424e-a199-f72f1d6250ec
+		summarizeBy: none
+		sourceColumn: roles
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column img
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: 1b59cea7-fd6b-4d21-972b-31b0a92c960d
+		summarizeBy: none
+		sourceColumn: img
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column pro_pick
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 1e0c8c95-0cbc-4d52-86bd-e197a69bac54
+		summarizeBy: sum
+		sourceColumn: pro_pick
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column pro_win
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 6fc6798d-4543-41f9-af94-0324c3e92912
+		summarizeBy: sum
+		sourceColumn: pro_win
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column pro_ban
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 7d558d1e-e9e8-4d9f-a819-803ae81524cf
+		summarizeBy: sum
+		sourceColumn: pro_ban
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column pub_pick
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 870ae93b-2914-4b1e-953b-1f7fe57fa805
+		summarizeBy: sum
+		sourceColumn: pub_pick
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column pub_win
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 614c1568-406e-46c9-b2e5-19ed01d4c5fa
+		summarizeBy: sum
+		sourceColumn: pub_win
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column pub_win_rate
+		dataType: double
+		sourceProviderType: decimal
+		lineageTag: 467c1730-b2a9-4988-bb28-49c69dbfa034
+		summarizeBy: sum
+		sourceColumn: pub_win_rate
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition 'gold dim_hero' = m
+		mode: directQuery
+		source =
+				let
+				    Source = PostgreSQL.Database("localhost", "dota"),
+				    gold_dim_hero = Source{[Schema="gold",Item="dim_hero"]}[Data]
+				in
+				    gold_dim_hero
+
+	changedProperty = IsHidden
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

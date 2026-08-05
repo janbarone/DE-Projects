@@ -1,0 +1,83 @@
+table 'gold dim_team'
+	lineageTag: b6940812-1ccf-464b-86a9-90ad5eba39ef
+
+	column team_id
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: 6ac877c6-c4b5-4622-8972-fcfde05d38fb
+		summarizeBy: none
+		sourceColumn: team_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column team_name
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: 8e3cfe5c-ecac-4b75-94e9-22c926ed1981
+		summarizeBy: none
+		sourceColumn: team_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column team_tag
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: c0431c1b-8bbc-4e89-980a-301140961e91
+		summarizeBy: none
+		sourceColumn: team_tag
+
+		annotation SummarizationSetBy = Automatic
+
+	column rating
+		dataType: double
+		sourceProviderType: decimal
+		lineageTag: 0034126c-3555-40cf-90f8-b182212b02e1
+		summarizeBy: sum
+		sourceColumn: rating
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column wins
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 09e33065-2adf-48eb-aeb0-f7490e2438c2
+		summarizeBy: sum
+		sourceColumn: wins
+
+		annotation SummarizationSetBy = Automatic
+
+	column losses
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 20227ffd-7163-49f3-bfa4-75c7fe172b66
+		summarizeBy: sum
+		sourceColumn: losses
+
+		annotation SummarizationSetBy = Automatic
+
+	column logo_url
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: 2ff3c457-5605-4320-aff4-5bf8c785abfb
+		summarizeBy: none
+		sourceColumn: logo_url
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'gold dim_team' = m
+		mode: directQuery
+		source =
+				let
+				    Source = PostgreSQL.Database("localhost", "dota"),
+				    gold_dim_team = Source{[Schema="gold",Item="dim_team"]}[Data]
+				in
+				    gold_dim_team
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

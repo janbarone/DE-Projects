@@ -1,0 +1,34 @@
+table 'gold dim_region'
+	lineageTag: f6dbcf86-5eb3-4233-ba4d-9fb9e1b9378b
+
+	column region_id
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: 993a82d1-effd-4450-895e-17a19ee50db0
+		summarizeBy: none
+		sourceColumn: region_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column region_name
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: 4b525d8e-ec8a-488a-ac22-4f8447a976e9
+		summarizeBy: none
+		sourceColumn: region_name
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'gold dim_region' = m
+		mode: directQuery
+		source =
+				let
+				    Source = PostgreSQL.Database("localhost", "dota"),
+				    gold_dim_region = Source{[Schema="gold",Item="dim_region"]}[Data]
+				in
+				    gold_dim_region
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

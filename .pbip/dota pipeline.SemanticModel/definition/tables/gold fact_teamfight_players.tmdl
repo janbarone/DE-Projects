@@ -1,0 +1,211 @@
+table 'gold fact_teamfight_players'
+	lineageTag: a4eaff26-cdd4-4bfe-91f6-df2c1215b8fc
+
+	column match_id
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: 7e4cbfdf-0c2f-4852-a83b-fcd26de87b65
+		summarizeBy: none
+		sourceColumn: match_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column teamfight_id
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: 9541ec2b-dd01-4646-a1e0-b491e78abbb2
+		summarizeBy: none
+		sourceColumn: teamfight_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column teamfight_start
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: a111ca82-59c8-4973-8a72-93f6738d93d1
+		summarizeBy: sum
+		sourceColumn: teamfight_start
+
+		annotation SummarizationSetBy = Automatic
+
+	column teamfight_end
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 6142b65e-7b04-441b-847a-3b56b408f234
+		summarizeBy: sum
+		sourceColumn: teamfight_end
+
+		annotation SummarizationSetBy = Automatic
+
+	column player_slot
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: d8b6e5e4-7ec2-48a8-afc2-4f9abd1ff94e
+		summarizeBy: none
+		sourceColumn: player_slot
+
+		annotation SummarizationSetBy = Automatic
+
+	column hero_id
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: f2fd9920-6a0c-4bfe-b455-849ed7ac402a
+		summarizeBy: none
+		sourceColumn: hero_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column account_id
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: 9ee7bbf4-21e0-496f-a5d5-a0bbb52bb6e4
+		summarizeBy: none
+		sourceColumn: account_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column damage
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 4d3fb236-f4c2-4362-9d62-dbd6d92b1f06
+		summarizeBy: sum
+		sourceColumn: damage
+
+		annotation SummarizationSetBy = Automatic
+
+	column healing
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 7061c632-217d-44d5-a667-3c601a2a29b5
+		summarizeBy: sum
+		sourceColumn: healing
+
+		annotation SummarizationSetBy = Automatic
+
+	column deaths
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 9f24d404-d85b-439c-9bbd-2556d595c2cc
+		summarizeBy: sum
+		sourceColumn: deaths
+
+		annotation SummarizationSetBy = Automatic
+
+	column buybacks
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: bce0b99f-bd6e-4f4b-89d0-03505244976f
+		summarizeBy: sum
+		sourceColumn: buybacks
+
+		annotation SummarizationSetBy = Automatic
+
+	column xp_start
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 08908b36-8563-4828-95bb-6c343cfc1597
+		summarizeBy: sum
+		sourceColumn: xp_start
+
+		annotation SummarizationSetBy = Automatic
+
+	column xp_end
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: ee58147f-17a2-429b-9c5c-6703bd634c28
+		summarizeBy: sum
+		sourceColumn: xp_end
+
+		annotation SummarizationSetBy = Automatic
+
+	column xp_delta
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 403b3b3a-b7f3-4e09-a8c1-ae7efb7cb970
+		summarizeBy: sum
+		sourceColumn: xp_delta
+
+		annotation SummarizationSetBy = Automatic
+
+	column gold_delta
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 4f48c33e-ac6e-4f6b-b9aa-dc586693b138
+		summarizeBy: sum
+		sourceColumn: gold_delta
+
+		annotation SummarizationSetBy = Automatic
+
+	column ability_uses
+		dataType: string
+		lineageTag: 213ed8dc-8ec1-418d-80c3-1596e2a8eba9
+		summarizeBy: none
+		sourceColumn: ability_uses
+
+		annotation SummarizationSetBy = Automatic
+
+	column item_uses
+		dataType: string
+		lineageTag: 4f47624a-7f5a-42ea-bfca-938eb3912c18
+		summarizeBy: none
+		sourceColumn: item_uses
+
+		annotation SummarizationSetBy = Automatic
+
+	column ability_targets
+		dataType: string
+		lineageTag: 49153986-ab24-4118-8bcb-e3f96392f9b7
+		summarizeBy: none
+		sourceColumn: ability_targets
+
+		annotation SummarizationSetBy = Automatic
+
+	column killed
+		dataType: string
+		lineageTag: d4a38681-45d0-48e0-b68a-b098e6238db3
+		summarizeBy: none
+		sourceColumn: killed
+
+		annotation SummarizationSetBy = Automatic
+
+	column deaths_pos
+		dataType: string
+		lineageTag: 79598d16-ede8-49d1-8d79-2fac2750c8dc
+		summarizeBy: none
+		sourceColumn: deaths_pos
+
+		annotation SummarizationSetBy = Automatic
+
+	column loaded_at
+		dataType: dateTime
+		formatString: General Date
+		sourceProviderType: datetime2
+		lineageTag: 51b8c7cd-952d-43b6-b53b-16542d88c520
+		summarizeBy: none
+		sourceColumn: loaded_at
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'gold fact_teamfight_players' = m
+		mode: directQuery
+		source =
+				let
+				    Source = PostgreSQL.Database("localhost", "dota"),
+				    gold_fact_teamfight_players = Source{[Schema="gold",Item="fact_teamfight_players"]}[Data]
+				in
+				    gold_fact_teamfight_players
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,241 @@
+table 'gold fact_matches'
+	lineageTag: 7038d468-a903-4421-886e-4610c8c5cec4
+
+	column match_id
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: ae96ab26-8c91-49e9-b1b7-f3ec5b9bccb3
+		summarizeBy: none
+		sourceColumn: match_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column radiant_win
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		sourceProviderType: bit
+		lineageTag: 82731f2c-6685-451e-a0e2-a20164354a3e
+		summarizeBy: none
+		sourceColumn: radiant_win
+
+		annotation SummarizationSetBy = Automatic
+
+	column winner
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: 63132322-c8f6-4f0d-87dd-42f5b0c0ffc9
+		summarizeBy: none
+		sourceColumn: winner
+
+		annotation SummarizationSetBy = Automatic
+
+	column duration_sec
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 71951968-50e6-4ff3-be00-b4a926ee6192
+		summarizeBy: sum
+		sourceColumn: duration_sec
+
+		annotation SummarizationSetBy = Automatic
+
+	column duration_min
+		dataType: double
+		sourceProviderType: decimal
+		lineageTag: 52f7f422-1446-478c-81b8-6ac6aef8244e
+		summarizeBy: sum
+		sourceColumn: duration_min
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column duration_hour
+		dataType: double
+		sourceProviderType: decimal
+		lineageTag: 15bcef35-fa3b-4567-82a4-d79ad13736e1
+		summarizeBy: sum
+		sourceColumn: duration_hour
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column game_mode_id
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: 290672f7-9ff2-44c5-b838-2a2c60c05df4
+		summarizeBy: none
+		sourceColumn: game_mode_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column lobby_type_id
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: 7f4863b3-1aa8-4c74-810c-a999efa3fb61
+		summarizeBy: none
+		sourceColumn: lobby_type_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column region_id
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: e6588c6e-987d-4953-b329-441de5c37093
+		summarizeBy: none
+		sourceColumn: region_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column patch
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: 33db6d15-aa74-4464-9929-37bb0e781353
+		summarizeBy: none
+		sourceColumn: patch
+
+		annotation SummarizationSetBy = Automatic
+
+	column start_time
+		dataType: dateTime
+		formatString: General Date
+		sourceProviderType: datetime2
+		lineageTag: 20d07613-a928-4485-b63f-cf77c5bc33e1
+		summarizeBy: none
+		sourceColumn: start_time
+
+		annotation SummarizationSetBy = Automatic
+
+	column start_date
+		dataType: dateTime
+		formatString: Long Date
+		sourceProviderType: date
+		lineageTag: 8490930d-8fbc-401b-a2e3-d9fcbfa08e27
+		summarizeBy: none
+		sourceColumn: start_date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column radiant_score
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: f54719c3-0de6-451c-973f-380fe7ccbdc8
+		summarizeBy: sum
+		sourceColumn: radiant_score
+
+		annotation SummarizationSetBy = Automatic
+
+	column dire_score
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 431c385a-e6fc-4804-8627-6314645efd3d
+		summarizeBy: sum
+		sourceColumn: dire_score
+
+		annotation SummarizationSetBy = Automatic
+
+	column radiant_team_id
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: 6488d4bc-2e3f-4307-a4d5-16fdfe02c36a
+		summarizeBy: none
+		sourceColumn: radiant_team_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column dire_team_id
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: bc613f84-f391-42cd-b4c0-d0fa08dbac65
+		summarizeBy: none
+		sourceColumn: dire_team_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column has_radiant_team
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		sourceProviderType: bit
+		lineageTag: 081db7a1-3f8c-4442-a696-0e87e9a2cec9
+		summarizeBy: none
+		sourceColumn: has_radiant_team
+
+		annotation SummarizationSetBy = Automatic
+
+	column has_dire_team
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		sourceProviderType: bit
+		lineageTag: 62c65ff4-2e62-4585-933c-ed496a9a0e40
+		summarizeBy: none
+		sourceColumn: has_dire_team
+
+		annotation SummarizationSetBy = Automatic
+
+	column leagueid
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: 6995a1de-4d45-41c9-af9e-dee0ec385d99
+		summarizeBy: none
+		sourceColumn: leagueid
+
+		annotation SummarizationSetBy = Automatic
+
+	column first_blood_time
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 9fc39f86-d943-44be-9e9d-347e79af4d84
+		summarizeBy: sum
+		sourceColumn: first_blood_time
+
+		annotation SummarizationSetBy = Automatic
+
+	column human_players
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 1c7f5db3-2b03-4f0d-8c09-b9336ecd5f1c
+		summarizeBy: sum
+		sourceColumn: human_players
+
+		annotation SummarizationSetBy = Automatic
+
+	column pre_game_duration
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 4d942e34-2387-4a64-8fcb-fc5b861a801c
+		summarizeBy: sum
+		sourceColumn: pre_game_duration
+
+		annotation SummarizationSetBy = Automatic
+
+	column loaded_at
+		dataType: dateTime
+		formatString: General Date
+		sourceProviderType: datetime2
+		lineageTag: cbb67302-ae26-48b1-a540-cf003b7dea90
+		summarizeBy: none
+		sourceColumn: loaded_at
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'gold fact_matches' = m
+		mode: directQuery
+		source =
+				let
+				    Source = PostgreSQL.Database("localhost", "dota"),
+				    gold_fact_matches = Source{[Schema="gold",Item="fact_matches"]}[Data]
+				in
+				    gold_fact_matches
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

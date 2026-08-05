@@ -1,0 +1,31 @@
+# Secrets
+.env
+
+# Raw data (large, not committed)
+data/
+
+# Logs
+*.log
+
+# Database backups (restore copies, not committed)
+backups/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.egg-info/
+.pytest_cache/
+
+# dbt
+transform/logs/
+transform/target/
+transform/.user.yml
+
+# Power BI project - machine-specific settings/cache (not shared)
+.pbip/**/.pbi/
+
+# OS
+.DS_Store
+Thumbs.db
