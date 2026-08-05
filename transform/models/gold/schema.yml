@@ -125,6 +125,30 @@ models:
                 to: ref('dim_team')
                 field: team_id
 
+  - name: fact_team_matches
+    description: Bridge fact, one row per (match, side). Connects dim_team through a single path so radiant and dire teams are queryable together.
+    columns:
+      - name: match_id
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('fact_matches')
+                field: match_id
+      - name: side
+        tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['Radiant', 'Dire']
+      - name: team_id
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_team')
+                field: team_id
+
   - name: fact_match_players
     description: One row per (match, player) performance fact.
     columns:

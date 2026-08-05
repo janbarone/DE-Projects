@@ -13,7 +13,7 @@ Power BI Desktop → **Get data → PostgreSQL database**
 - Port: `5432`
 - Database: `dota`
 - User / password: `postgres` / `postgres` (from `.env`)
-- Advanced: load all 17 `gold.*` tables (9 dims + 8 facts).
+- Advanced: load all 18 `gold.*` tables (9 dims + 9 facts).
 
 If a relationship fails to validate, first check Power BI **auto-created**
 relationships on import (tables share key column names) and **delete the
@@ -32,8 +32,6 @@ Power BI → **Model view → Manage relationships → New**. For each relations
 | From column | To table | To column | Active |
 |-------------|----------|-----------|--------|
 | `leagueid` | `dim_league` | `leagueid` | yes |
-| `radiant_team_id` | `dim_team` | `team_id` | yes |
-| `dire_team_id` | `dim_team` | `team_id` | **no (inactive)** |
 | `game_mode_id` | `dim_game_mode` | `game_mode_id` | yes |
 | `lobby_type_id` | `dim_lobby_type` | `lobby_type_id` | yes |
 | `region_id` | `dim_region` | `region_id` | yes |
@@ -46,6 +44,17 @@ Power BI → **Model view → Manage relationships → New**. For each relations
 | `match_id` | `fact_match_players` | `match_id` | yes |
 | `match_id` | `fact_picks_bans` | `match_id` | yes |
 | `match_id` | `fact_teamfights` | `match_id` | yes |
+| `match_id` | `fact_team_matches` | `match_id` | yes |
+
+### `fact_team_matches` → `dim_team` (bridge, many-to-one, *:1)
+
+One row per (match, side) - this is the **single path** to `dim_team`, so both
+the radiant and the dire team of a match are queryable at the same time (no
+inactive relationship needed).
+
+| From column | To table | To column | Active |
+|-------------|----------|-----------|--------|
+| `team_id` | `dim_team` | `team_id` | yes |
 
 ### `fact_match_players` → dimensions (many-to-one, *:1)
 
@@ -99,9 +108,10 @@ Power BI → **Model view → Manage relationships → New**. For each relations
 | `account_id` | `dim_player` | `account_id` | yes |
 | `victim_hero_id` | `dim_hero` | `hero_id` (victim) | yes |
 
-**Exceptions to the default *:1 many-to-one:** the three `fact_matches` → child-fact
-links and `dim_hero` → `dim_hero_role` are **one-to-many (1:*)**. All others are
-many-to-one.
+**Exceptions to the default *:1 many-to-one:** the four `fact_matches` → child-fact
+links (`fact_match_players`, `fact_picks_bans`, `fact_teamfights`,
+`fact_team_matches`) and `dim_hero` → `dim_hero_role` are **one-to-many (1:*)**.
+All others are many-to-one.
 
 ## 3. Cross-filter direction guidance
 
@@ -109,32 +119,56 @@ many-to-one.
   the one-to-many links): selecting a league / team / player / hero / game mode /
   lobby / region filters the fact tables, but facts never filter the dimensions.
   In the model the arrow points from the dimension toward the fact table.
-- The `dire_team_id` relationship is **inactive** — it carries no cross-filter;
-  it only evaluates when called explicitly in DAX (see below).
+- Team filtering flows `dim_team` → `fact_team_matches` → `fact_matches`: a team
+  selected in a slicer matches rows on **both** the radiant and dire side of its
+  matches (that is the point of the bridge - see below).
 
-## 4. Critical rule - the two team relationships
+## 4. How team filtering works now - the `fact_team_matches` bridge
 
-`fact_matches` connects to `dim_team` **twice** (radiant + dire side). Power BI
-allows only **one active** relationship between two tables:
+Previously `fact_matches` held two foreign keys to `dim_team` (`radiant_team_id`
+and `dire_team_id`). Power BI allows only one active relationship between two
+tables, so one side had to be inactive and evaluated with `USERELATIONSHIP`.
 
-1. **`radiant_team_id` → active** — drives team filters/slicers
-   (e.g. "team = Team Liquid" returns their radiant matches).
-2. **`dire_team_id` → inactive** — evaluated only via `USERELATIONSHIP`:
+That is gone. `gold.fact_team_matches` is a **bridge fact** with one row per
+(match, side) - 2 rows per match (4,232 matches → 8,358 rows; matches missing a
+team on one side produce one row, matches with neither team produce none):
 
-```dax
-DireMatches =
-CALCULATE(
-    COUNTROWS(fact_matches),
-    USERELATIONSHIP(fact_matches[dire_team_id], dim_team[team_id])
-)
+| Column | Type | Meaning |
+|--------|------|---------|
+| `match_id` | text | FK to fact_matches |
+| `side` | text | `'Radiant'` or `'Dire'` |
+| `team_id` | text | FK to dim_team (single path) |
+| `radiant_win` | boolean | copy of the match's radiant_win |
+| `team_win` | boolean | this team won (radiant side = radiant_win; dire side = NOT radiant_win); null for draw matches |
+| `team_score` | integer | kills by this team |
+| `opponent_score` | integer | kills by the opposing team |
+
+The star now has **one** path to `dim_team`:
+
+```
+fact_team_matches (match_id, side) --many->1-- dim_team (team_id)
+        |
+        1
+        |
+        |  match_id
+        v
+  fact_matches (hub)
 ```
 
-To count all matches a team appeared in (either side):
+Selecting a team filters `fact_team_matches.team_id`, which flows up to
+`fact_matches` on `match_id` - covering matches where the team was **either**
+radiant or dire. Slice `side` to split the two.
+
+Useful DAX against the bridge (all active relationships, no USERELATIONSHIP):
 
 ```dax
-TotalTeamMatches =
-[radiant team measure] + [dire team measure]  // one active, one USERELATIONSHIP
+TeamMatches = COUNTROWS(fact_team_matches)                  // appearances
+TeamWins    = CALCULATE(COUNTROWS(fact_team_matches), fact_team_matches[team_win])
+TeamWinRate = DIVIDE([TeamWins], [TeamMatches])
 ```
+
+Cross-filtering `dim_team` with these measures gives both sides at once; adding
+`side` to a visual splits appearances into radiant/dire rows.
 
 ## 5. If Power BI refuses a relationship (duplicate values / type mismatch)
 
@@ -156,7 +190,7 @@ by gold. This covers `match_id`, `teamfight_id`, `player_slot`, `hero_id`,
 `lobby_type_id`, `region_id`, `radiant_team_id`, `dire_team_id`. Measures stay
 numeric, dates stay dates, booleans stay booleans. The Power Query "set keys to
 Text" workaround from 2026-08-03 is **no longer required** — just re-import the
-17 `gold.*` tables and all 27 relationships connect without error. After a
+ 18 `gold.*` tables and all 27 relationships connect without error. After a
 rebuild, re-import in Power BI (File → Refresh / re-run Get Data) rather than
 relying on cached schemas.
 
@@ -169,7 +203,9 @@ dim_player (dim) --+   |
 dim_hero   (dim) --+--- fact_matches (fact/hub) ---- fact_match_players (fact)
                    |        |                         fact_picks_bans   (fact)
                    |        +------------------------- fact_teamfights  (fact)
-dim_team (dim) ----+  (radiant active, dire inactive)
+                   |        +------------------------- fact_team_matches (fact/bridge)
+                   |                                    |
+dim_team (dim) ----+                                    +-- team_id (single active link)
 dim_game_mode (dim) --+
 dim_lobby_type (dim) -+
 dim_region (dim) -----+
@@ -178,8 +214,9 @@ dim_region (dim) -----+
 - Dimensions (filter tables): `dim_league`, `dim_team`, `dim_player`,
   `dim_hero`, `dim_hero_role`, `dim_game_mode`, `dim_lobby_type`, `dim_region`, `dim_date`
 - Fact tables (measure tables): `fact_matches`, `fact_match_players`,
-  `fact_picks_bans`, `fact_teamfights`, `fact_teamfight_players`,
-  `fact_teamfight_ability_uses`, `fact_teamfight_item_uses`, `fact_teamfight_kills`
+  `fact_picks_bans`, `fact_teamfights`, `fact_team_matches`,
+  `fact_teamfight_players`, `fact_teamfight_ability_uses`,
+  `fact_teamfight_item_uses`, `fact_teamfight_kills`
 
 Notes:
 - `dim_hero_role` is a bridge for role filtering: select a role → filters heroes

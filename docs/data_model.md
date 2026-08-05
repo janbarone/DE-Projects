@@ -299,6 +299,9 @@ fixed:
 - `dim_player` covers **all match participants** (pro players with metadata +
   non-pro participants as `match_participant`) so every `account_id` resolves.
 - `dim_team` adds **Unknown teams** for ids that appear only in matches.
+- `fact_team_matches` is a **team-side bridge** (one row per match + side) that
+  replaces the dual `radiant_team_id` / `dire_team_id` links to `dim_team`, so
+  team filters work with one active relationship and no `USERELATIONSHIP`.
 - `stg_constants` is **flattened** into real decode dims:
   `dim_game_mode`, `dim_lobby_type`, `dim_region`.
 - `stg_hero_stats` is **merged into `dim_hero`** (no separate orphan table).
@@ -313,21 +316,23 @@ fixed:
                       dim_league (leagueid) 1
                             |
                             +--many--> fact_matches (match_id) ---------+
-                     dim_team (team_id) <--many-- radiant_team_id        |
-                     dim_team (team_id) <--many-- dire_team_id           |
-                 dim_game_mode <--many-- game_mode_id                    |
-                 dim_lobby_type <--many-- lobby_type_id                  |
-                    dim_region <--many-- region_id                       |
-                            |                                            |
-            one |           |                                            |
-       fact_matches ------> many  fact_match_players (match_id)          |
-                            |        |   many->1 account_id -> dim_player|
-                            |        |   many->1 hero_id    -> dim_hero  |
-            one |           |                                            |
-       fact_matches ------> many  fact_picks_bans (match_id)             |
-                            |        |   many->1 hero_id -> dim_hero     |
-            one |           |                                            |
-       fact_matches ------> many  fact_teamfights (match_id)             |
+                     dim_team (team_id) <--many-- fact_team_matches.team_id |
+                     dim_game_mode <--many-- game_mode_id                  |
+                     dim_lobby_type <--many-- lobby_type_id                |
+                        dim_region <--many-- region_id                     |
+                            |                                              |
+            one |           |                                              |
+       fact_matches ------> many  fact_match_players (match_id)            |
+                            |        |   many->1 account_id -> dim_player  |
+                            |        |   many->1 hero_id    -> dim_hero    |
+            one |           |                                              |
+       fact_matches ------> many  fact_picks_bans (match_id)               |
+                            |        |   many->1 hero_id -> dim_hero       |
+            one |           |                                              |
+       fact_matches ------> many  fact_teamfights (match_id)               |
+            one |           |                                              |
+       fact_matches ------> many  fact_team_matches (match_id)             |
+                                     |   many->1 team_id -> dim_team       |
 ```
 
 ### Gold relationship table (for Power BI Model view)
@@ -339,8 +344,6 @@ All **many-to-one (\*:1)**, cross-filter **Single (Many→1)** unless marked (1:
 | From column | To table | To column | Active |
 |-------------|----------|-----------|--------|
 | `leagueid` | `dim_league` | `leagueid` | yes |
-| `radiant_team_id` | `dim_team` | `team_id` | yes |
-| `dire_team_id` | `dim_team` | `team_id` | **no (inactive)** |
 | `game_mode_id` | `dim_game_mode` | `game_mode_id` | yes |
 | `lobby_type_id` | `dim_lobby_type` | `lobby_type_id` | yes |
 | `region_id` | `dim_region` | `region_id` | yes |
@@ -353,6 +356,19 @@ All **many-to-one (\*:1)**, cross-filter **Single (Many→1)** unless marked (1:
 | `match_id` | `fact_match_players` | `match_id` | yes |
 | `match_id` | `fact_picks_bans` | `match_id` | yes |
 | `match_id` | `fact_teamfights` | `match_id` | yes |
+| `match_id` | `fact_team_matches` | `match_id` | yes |
+
+#### `fact_team_matches` → `dim_team` (bridge, many-to-one, *:1)
+
+| From column | To table | To column | Active |
+|-------------|----------|-----------|--------|
+| `team_id` | `dim_team` | `team_id` | yes |
+
+Team note: `fact_team_matches` is the **single** link between the fact layer and
+`dim_team` (one row per match + side). It replaces the old dual
+`radiant_team_id` / `dire_team_id` links to `dim_team`, so **no inactive
+relationship or `USERELATIONSHIP` is needed** - both sides of a match are
+queryable at the same time, split by the `side` column.
 
 #### `fact_match_players` → dimensions (many-to-one, *:1)
 
@@ -406,9 +422,6 @@ All **many-to-one (\*:1)**, cross-filter **Single (Many→1)** unless marked (1:
 | `account_id` | `dim_player` | `account_id` | yes |
 | `victim_hero_id` | `dim_hero` | `hero_id` (victim) | yes |
 
-Team note: `radiant_team_id` is active; `dire_team_id` is inactive and evaluated
-only via `USERELATIONSHIP` (see `docs/power_bi_setup.md`).
-
 ### Gold table inventory
 
 | Model | Rows | Grain | PK |
@@ -426,6 +439,7 @@ only via `USERELATIONSHIP` (see `docs/power_bi_setup.md`).
 | `fact_match_players`  | 42,085 | one row per (match, player) | `(match_id, player_slot)` |
 | `fact_picks_bans`     | 87,220 | one row per (match, draft order) | `(match_id, order_no)` |
 | `fact_teamfights`     | 16,543 | one row per (match, teamfight) | `(match_id, teamfight_id)` |
+| `fact_team_matches`   | 8,358  | one row per (match, side) bridge | `(match_id, side)` |
 | `fact_teamfight_players` | 165,430 | one row per (match, teamfight, player) | `(match_id, teamfight_id, player_slot)` |
 | `fact_teamfight_ability_uses` | 470,512 | one row per (match, teamfight, player, ability) | `(match_id, teamfight_id, player_slot, ability_name)` |
 | `fact_teamfight_item_uses` | 392,088 | one row per (match, teamfight, player, item) | `(match_id, teamfight_id, player_slot, item_name)` |
@@ -526,6 +540,32 @@ Same columns as `stg_matches`, with keys renamed to make the star explicit:
 
 Duration helpers added: `duration_min` (`duration_sec / 60`) and `duration_hour`
 (`duration_sec / 3600`). The raw `duration_sec` is kept for precision.
+
+`radiant_team_id` / `dire_team_id` are still present for reference but are **no
+longer connected to `dim_team` in Power BI** - team analytics go through the
+`fact_team_matches` bridge instead.
+
+#### fact_team_matches (team-side bridge fact)
+
+One row per (match, side). The **only** path from the fact layer to `dim_team`,
+so a team's matches on both the radiant and the dire side resolve through one
+active relationship. Built by unpivoting `stg_matches.radiant_team_id` and
+`dire_team_id` into two rows (`Radiant` / `Dire`).
+
+| Column | Type | Notes |
+|--------|------|-------|
+| `match_id` | text | FK to fact_matches (composite grain with `side`) |
+| `side` | text | `'Radiant'` or `'Dire'` |
+| `team_id` | text | FK to dim_team |
+| `radiant_win` | boolean | copy of the match's `radiant_win` |
+| `team_win` | boolean | this team won: radiant side = `radiant_win`, dire side = `NOT radiant_win`; null for draw matches |
+| `team_score` | integer | kills by this team (`radiant_score` / `dire_score`) |
+| `opponent_score` | integer | kills by the opposing team |
+
+Only rows whose side has a team are emitted (`has_radiant_team` / `has_dire_team`),
+so a match appears once, twice, or not at all depending on how many team ids it
+has (2 of 4,232 matches are recorded draws with `radiant_win` null; 29 matches
+have no team on either side).
 
 #### fact_match_players / fact_picks_bans / fact_teamfights
 
@@ -638,6 +678,7 @@ Silver incremental tables:
 Gold fact tables:
 
 - `fact_matches`: leagueid, game_mode_id, lobby_type_id, region_id, radiant_team_id, dire_team_id
+- `fact_team_matches`: match_id, team_id, side
 - `fact_match_players`: match_id, account_id, hero_id
 - `fact_picks_bans`: match_id, hero_id
 - `fact_teamfights`: match_id

@@ -199,6 +199,10 @@ is fixed here:
 - `dim_team` adds **Unknown teams** for ids that appear only in matches.
 - `stg_constants` is **flattened** into real decode dimensions:
   `dim_game_mode`, `dim_lobby_type`, `dim_region`.
+- `dim_team` connects through a **team-side bridge** `fact_team_matches`
+  (one row per match + side) instead of two links to `fact_matches` - so a
+  team's radiant and dire matches are both queryable with one active
+  relationship (no `USERELATIONSHIP`, no inactive relationships).
 - `dim_date` is a full calendar dimension (day / week / month / quarter / year
   attributes) joined via `fact_matches.start_date`.
 - `dim_hero_role` is a bridge table so heroes can be filtered by role.
@@ -221,6 +225,7 @@ is fixed here:
 | `gold.dim_region`      | 22     | one row per region code           | `region_id` |
 | `gold.dim_date`        | 18,628 | one row per day (2000-01-01 -> 2050-12-31) | `date` |
 | `gold.fact_matches`        | 4,232  | one row per match                 | `match_id` |
+| `gold.fact_team_matches`   | 8,358  | one row per (match, side) bridge  | `(match_id, side)` |
 | `gold.fact_match_players`  | 42,085 | one row per (match, player)       | `(match_id, player_slot)` |
 | `gold.fact_picks_bans`     | 87,220 | one row per (match, draft order)  | `(match_id, order_no)` |
 | `gold.fact_teamfights`     | 16,543 | one row per (match, teamfight)    | `(match_id, teamfight_id)` |
@@ -262,8 +267,8 @@ docker compose up -d
 ## Session checkpoint
 
 **Last session ended:** Bronze + silver + **gold** layers complete and verified
-(127/127 dbt tests pass, zero orphaned join keys across all gold facts).
-Gold = 17 tables (9 dims + 8 facts), including three child facts that flatten
+(135/135 dbt tests pass, zero orphaned join keys across all gold facts).
+Gold = 18 tables (9 dims + 9 facts), including three child facts that flatten
 the nested teamfight maps from `fact_teamfight_players`:
 
 - `fact_teamfight_ability_uses` (470,512 rows) - one row per (match, teamfight, player, ability)
@@ -271,7 +276,7 @@ the nested teamfight maps from `fact_teamfight_players`:
 - `fact_teamfight_kills` (66,749 rows) - one row per (match, teamfight, killer, victim hero)
 
 **Where to resume:** Power BI dashboard on `gold` - connect to
-`localhost:5432` (db `dota`, user `postgres`), load the 17 `gold.*` tables and
+`localhost:5432` (db `dota`, user `postgres`), load the 18 `gold.*` tables and
 create the **27 relationships** in Model view per `docs/power_bi_setup.md`.
 Then optionally wire the orchestrator (bronze_load -> dbt build).
 
@@ -307,6 +312,18 @@ details in `docs/power_bi_setup.md` §8. Note: the model-side
 `Table.RemoveColumns` exclusion of `fact_teamfights.players` from earlier is
 no longer strictly needed (the column is text now) but is harmless to keep.
 
+**Status update (2026-08-05):** added `gold.fact_team_matches`, a **team-side
+bridge fact** (8,358 rows = one row per match + side), so `dim_team` now
+connects through a single active path. The old dual `radiant_team_id` /
+`dire_team_id` links to `dim_team` (one inactive + `USERELATIONSHIP`) are gone -
+both sides of a match are queryable at once, split by the `side` column
+('Radiant' / 'Dire'). Power BI relationships are still **27**: the two team
+links on `fact_matches` were replaced by `fact_matches.match_id ->
+fact_team_matches.match_id` (1:Many) + `fact_team_matches.team_id ->
+dim_team.team_id` (Many:1). Gold = **18 tables** (9 dims + 9 facts). 135/135
+dbt tests pass. Full details in `docs/data_model.md` and
+`docs/power_bi_setup.md` §4.
+
 **Known notes for the next session:**
 - Connect Power BI to the **gold** schema (not silver) - it's the presentation
   layer with all relationship fixes. Delete any auto-created relationships on
@@ -324,7 +341,8 @@ no longer strictly needed (the column is text now) but is harmless to keep.
   (measures, visuals, pages). Orchestrator (bronze_load -> dbt build) is the
   remaining pipeline item.
 - Backups live in `backups/` (gitignored); newest is
-  `gold3_20260802_223003.dump` (194.4 MB, includes all 17 gold tables). Restore
-  with `pg_restore -U postgres -d dota backups/<file>.dump`.
+  `gold3_20260802_223003.dump` (194.4 MB, includes all 17 gold tables - i.e.
+  **before** `fact_team_matches`; re-back up after the bridge rebuild if
+  needed). Restore with `pg_restore -U postgres -d dota backups/<file>.dump`.
 - dbt profile is at `~/.dbt/profiles.yml` (not in the repo); project is
   `transform/`.
