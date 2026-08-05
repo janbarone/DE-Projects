@@ -1,17 +1,18 @@
 """MAIN MATCH FETCHER: one scraper that downloads every match, in two phases.
 
-  Phase 1 - League priority. For EVERY league in the /leagues list, discover its
-            match_ids via /leagues/{id}/matchIds and download EVERY missing
-            match. Leagues are processed one at a time, so each league is fully
-            drained before the next starts. Each match is retried
-            (MAX_ATTEMPTS), progress/failures are logged to
-            _league_matches_log.txt, and the run stops if the daily quota drops
-            below the safety margin (DAY_STOP_AT).
-  Phase 2 - Pro scrape. Once every league is exhausted, keep polling /proMatches
-            and download new matches indefinitely, until the daily quota is
-            used up.
+  Phase 1 - League priority. Only the priority tiers are drained: PREMIUM
+            leagues first, then PROFESSIONAL leagues (all other tiers are
+            disregarded). For each, discover its match_ids via
+            /leagues/{id}/matchIds and download EVERY missing match. Leagues are
+            processed one at a time, so each league is fully drained before the
+            next starts. Each match is retried (MAX_ATTEMPTS), progress/failures
+            are logged to _league_matches_log.txt, and the run stops if the
+            daily quota drops below the safety margin (DAY_STOP_AT).
+  Phase 2 - Pro scrape. Once the premium + professional leagues are exhausted,
+            keep polling /proMatches and download new matches indefinitely,
+            until the daily quota is used up.
 
-Phase control (draining ~10k leagues takes days/weeks, so you choose):
+Phase control (draining ~2.7k priority leagues takes days/weeks, so you choose):
   --mode full         (default) phase 1 drains as long as the daily quota
                       allows; phase 2 runs only if phase 1 is fully exhausted.
   --mode leagues      never proceed to phase 2 - grind leagues exclusively.
@@ -24,9 +25,10 @@ One file is written per match:
 Resumable by design: any match already on disk is skipped on the next run.
 
 Usage:
-    python _fetch_matches.py                     # --mode full: ALL leagues drained, then proMatches
-    python _fetch_matches.py --mode leagues      # only drain leagues (never proMatches)
-    python _fetch_matches.py --mode promatches   # only scrape proMatches (no league discovery)
+    python _fetch_matches.py                     # prompts for mode; premium+professional leagues drained, then proMatches
+    python _fetch_matches.py --mode full         # non-interactive: leagues first, then proMatches
+    python _fetch_matches.py --mode leagues      # non-interactive: only drain leagues
+    python _fetch_matches.py --mode promatches   # non-interactive: only scrape proMatches
     python _fetch_matches.py --limit 5           # stop after 5 matches (skips phase 2)
     python _fetch_matches.py --leagues "600,2733"   # only these leagues, then proMatches
 """
@@ -160,23 +162,35 @@ def phase1_league_priority(league_ids, limit_left, ts, saved, limit) -> tuple:
     return saved, already, failures, limit_left
 
 
+# Priority tiers for phase 1, in the order they are drained: premium first,
+# then professional. All other tiers (amateur / unknown / excluded) are
+# disregarded.
+PRIORITY_TIERS = ["premium", "professional"]
+
+
 def all_league_ids() -> list:
-    """Every league id from the /leagues endpoint (fresh), falling back to the
-    local leagues.json copy if the call fails."""
+    """League ids to drain from the /leagues endpoint (fresh), falling back to the
+    local leagues.json copy if the call fails.
+
+    Only the PRIORITY_TIERS are returned, premium first then professional."""
     try:
         recs = json.loads(http_get(f"{BASE}/leagues"))
-        ids = [int(r["leagueid"]) for r in recs
-               if isinstance(r, dict) and "leagueid" in r]
-        if ids:
-            return ids
     except Exception as e:
         print(f"  /leagues ERROR: {e}")
-    path = DATA_DIR / "leagues" / "leagues.json"
-    if path.exists():
-        recs = json.loads(path.read_text(encoding="utf-8"))
-        return [int(r["leagueid"]) for r in recs
-                if isinstance(r, dict) and "leagueid" in r]
-    return []
+        recs = None
+    if not isinstance(recs, list) or not recs:
+        path = DATA_DIR / "leagues" / "leagues.json"
+        if path.exists():
+            recs = json.loads(path.read_text(encoding="utf-8"))
+    if not isinstance(recs, list) or not recs:
+        return []
+
+    ids = []
+    for tier in PRIORITY_TIERS:
+        for r in recs:
+            if isinstance(r, dict) and r.get("tier") == tier and "leagueid" in r:
+                ids.append(int(r["leagueid"]))
+    return ids
 
 
 def phase2_pro_scrape(limit, saved, ts) -> int:
@@ -219,10 +233,46 @@ def phase2_pro_scrape(limit, saved, ts) -> int:
     return saved
 
 
+def prompt_mode(default: str = "full") -> str:
+    """Ask the user to pick a download mode via a numbered menu.
+
+    Falls back to `default` when stdin is closed (e.g. scheduled / non-interactive
+    runs piping to /dev/null) so the script never hangs without a console.
+    """
+    print()
+    print("=" * 60)
+    print("  DOTA Match Fetcher  --  select download mode")
+    print("=" * 60)
+    print("  1. Full       - premium + professional leagues first, then proMatches once they're exhausted")
+    print("  2. Leagues    - drain premium + professional leagues only (phase 1)")
+    print("  3. ProMatches - scrape proMatches only (phase 2)")
+    print("  0. Exit")
+    print("=" * 60)
+    while True:
+        try:
+            choice = input("  Choose [1-3]: ").strip().lower()
+        except EOFError:
+            print(f"  (no input available; using default mode '{default}')")
+            return default
+        except KeyboardInterrupt:
+            print("\n  Cancelled by user.")
+            raise SystemExit(0)
+        if choice in ("1", "full", "f", ""):
+            return "full"
+        if choice in ("2", "leagues", "league", "l"):
+            return "leagues"
+        if choice in ("3", "promatches", "promatch", "pro", "p"):
+            return "promatches"
+        if choice in ("0", "exit", "q", "quit"):
+            print("\n  Goodbye!\n")
+            raise SystemExit(0)
+        print("  [!] Invalid choice - enter 1, 2, or 3")
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(
-        description="Download every league's matches first, then scrape proMatches "
-                    "until the daily quota is used up.")
+        description="Download every premium + professional league's matches first, "
+                    "then scrape proMatches until the daily quota is used up.")
     parser.add_argument("--mode", default=None,
                         choices=["full", "leagues", "promatches"],
                         help="download mode: full = leagues first then proMatches (default), "
@@ -231,19 +281,26 @@ def main() -> None:
                         help="stop after this many fetches; omit to drain leagues then scrape "
                              "until the daily quota is exhausted")
     parser.add_argument("--leagues", default=None,
-                        help="league ids (comma-separated) to download; default = EVERY league from /leagues")
+                        help="league ids (comma-separated) to download; default = priority tiers "
+                             "(premium, then professional)")
     parser.add_argument("--leagues-only", action="store_true",
                         help="(alias) same as --mode leagues")
     parser.add_argument("--promatches-only", action="store_true",
                         help="(alias) same as --mode promatches")
     args = parser.parse_args()
 
-    # Resolve the mode (--mode wins over the boolean aliases; conflict = error).
+    # Resolve the mode: --mode / aliases skip the prompt; otherwise ask the user
+    # interactively (works from a console or the Scripts Manager stdin box).
     if args.leagues_only and args.promatches_only:
         parser.error("--leagues-only and --promatches-only are mutually exclusive")
-    mode = args.mode or ("leagues" if args.leagues_only
-                         else "promatches" if args.promatches_only
-                         else "full")
+    if args.mode:
+        mode = args.mode
+    elif args.leagues_only:
+        mode = "leagues"
+    elif args.promatches_only:
+        mode = "promatches"
+    else:
+        mode = prompt_mode()
     if args.mode and args.leagues_only and args.mode != "leagues":
         parser.error("--leagues-only conflicts with --mode %s" % args.mode)
     if args.mode and args.promatches_only and args.mode != "promatches":

@@ -40,14 +40,17 @@ All scripts live in `data/`. They are append-only, resumable, and skip anything 
 | `_fetch_league_matches.py` | `/leagues/{id}/matchIds` (discovery) then `/matches/{id}` | `proMatches/<match_id>.json` | on demand (league-only helper) |
 
 `_fetch_matches.py` is the single main match scraper - it runs in two phases:
-first it downloads **every** match for **every** league in the `/leagues` list
-(one league at a time, so each is fully drained), then once every league is
-exhausted it keeps polling `/proMatches` and downloads new matches until the
-daily API quota runs out. Draining ~10k leagues takes days/weeks, so `--mode`
-controls the phases: `--mode leagues` grinds leagues exclusively (phase 2 never
-runs), and `--mode promatches` skips league discovery to scrape proMatches
-alone. `--leagues` restricts phase 1 to specific ids; `_fetch_league_matches.py`
-is the league-only helper (still using `DEFAULT_LEAGUES`) kept for focused runs.
+first it downloads **every** match for the **premium** leagues, then the
+**professional** leagues (all other tiers are disregarded), one league at a time
+so each is fully drained; once those two tiers are exhausted it keeps polling
+`/proMatches` and downloads new matches until the daily API quota runs out.
+Running it with no arguments shows an interactive numbered menu (like the reddit
+CLI) to pick the mode: `1 Full`, `2 Leagues`, `3 ProMatches`. For non-interactive
+runs use `--mode` (`full` / `leagues` / `promatches`) - `--mode leagues` grinds
+leagues exclusively, `--mode promatches` skips league discovery to scrape
+proMatches alone. `--leagues` restricts phase 1 to specific ids;
+`_fetch_league_matches.py` is the league-only helper (still using
+`DEFAULT_LEAGUES`) kept for focused runs.
 
 ### Usage
 
@@ -55,9 +58,10 @@ is the league-only helper (still using `DEFAULT_LEAGUES`) kept for focused runs.
 python _pipeline.py                          # daily run
 python _fetch_constants.py                   # update constants
 python _fetch_constants.py --force           # re-fetch everything
-python _fetch_matches.py                     # --mode full: drain EVERY league in /leagues, then scrape proMatches
-python _fetch_matches.py --mode leagues      # only drain leagues (phase 1); never proMatches
-python _fetch_matches.py --mode promatches   # only scrape proMatches (no league discovery)
+python _fetch_matches.py                     # interactive: pick mode, then scrape
+python _fetch_matches.py --mode full         # non-interactive: premium+professional leagues, then proMatches
+python _fetch_matches.py --mode leagues      # non-interactive: only drain premium+professional leagues (phase 1)
+python _fetch_matches.py --mode promatches   # non-interactive: only scrape proMatches (phase 2)
 python _fetch_matches.py --limit 5           # stop after 5 matches
 python _fetch_matches.py --leagues "600,2733"   # only these leagues, then proMatches
 python _fetch_league_matches.py              # league-only run (all default leagues)
