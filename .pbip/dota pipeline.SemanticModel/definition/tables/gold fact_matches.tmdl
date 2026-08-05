@@ -1,10 +1,10 @@
 table 'gold fact_matches'
-	lineageTag: 7038d468-a903-4421-886e-4610c8c5cec4
+	lineageTag: 89c74536-9eff-46e3-a9e6-824bed12ad21
 
 	column match_id
 		dataType: string
 		sourceProviderType: nvarchar(max)
-		lineageTag: ae96ab26-8c91-49e9-b1b7-f3ec5b9bccb3
+		lineageTag: 19ef23f4-cf1c-4edf-8e2c-a9cc4c207f9c
 		summarizeBy: none
 		sourceColumn: match_id
 
@@ -14,7 +14,7 @@ table 'gold fact_matches'
 		dataType: boolean
 		formatString: """TRUE"";""TRUE"";""FALSE"""
 		sourceProviderType: bit
-		lineageTag: 82731f2c-6685-451e-a0e2-a20164354a3e
+		lineageTag: 3bdf93ab-fa11-4161-8596-753d2873561c
 		summarizeBy: none
 		sourceColumn: radiant_win
 
@@ -23,7 +23,7 @@ table 'gold fact_matches'
 	column winner
 		dataType: string
 		sourceProviderType: nvarchar(max)
-		lineageTag: 63132322-c8f6-4f0d-87dd-42f5b0c0ffc9
+		lineageTag: 8157793e-55cb-4789-89f3-b726d1ded467
 		summarizeBy: none
 		sourceColumn: winner
 
@@ -33,7 +33,7 @@ table 'gold fact_matches'
 		dataType: int64
 		formatString: 0
 		sourceProviderType: int
-		lineageTag: 71951968-50e6-4ff3-be00-b4a926ee6192
+		lineageTag: 45235987-54a7-4df1-ab2b-889d26d99884
 		summarizeBy: sum
 		sourceColumn: duration_sec
 
@@ -42,7 +42,7 @@ table 'gold fact_matches'
 	column duration_min
 		dataType: double
 		sourceProviderType: decimal
-		lineageTag: 52f7f422-1446-478c-81b8-6ac6aef8244e
+		lineageTag: c5dbd87d-02c8-4013-8240-1e1030dbe10b
 		summarizeBy: sum
 		sourceColumn: duration_min
 
@@ -53,7 +53,7 @@ table 'gold fact_matches'
 	column duration_hour
 		dataType: double
 		sourceProviderType: decimal
-		lineageTag: 15bcef35-fa3b-4567-82a4-d79ad13736e1
+		lineageTag: b72e5a86-11cb-4fe3-accf-f1734da0d514
 		summarizeBy: sum
 		sourceColumn: duration_hour
 
@@ -64,7 +64,7 @@ table 'gold fact_matches'
 	column game_mode_id
 		dataType: string
 		sourceProviderType: nvarchar(max)
-		lineageTag: 290672f7-9ff2-44c5-b838-2a2c60c05df4
+		lineageTag: 2e1d357b-f136-46ed-8151-339671df8402
 		summarizeBy: none
 		sourceColumn: game_mode_id
 
@@ -73,7 +73,7 @@ table 'gold fact_matches'
 	column lobby_type_id
 		dataType: string
 		sourceProviderType: nvarchar(max)
-		lineageTag: 7f4863b3-1aa8-4c74-810c-a999efa3fb61
+		lineageTag: 1075da85-8d10-4b76-a0ad-a3201da9738e
 		summarizeBy: none
 		sourceColumn: lobby_type_id
 
@@ -82,7 +82,7 @@ table 'gold fact_matches'
 	column region_id
 		dataType: string
 		sourceProviderType: nvarchar(max)
-		lineageTag: e6588c6e-987d-4953-b329-441de5c37093
+		lineageTag: 1d8cecf3-fd06-4f43-bf36-0a413e70a949
 		summarizeBy: none
 		sourceColumn: region_id
 
@@ -91,7 +91,7 @@ table 'gold fact_matches'
 	column patch
 		dataType: string
 		sourceProviderType: nvarchar(max)
-		lineageTag: 33db6d15-aa74-4464-9929-37bb0e781353
+		lineageTag: 451de3d0-a89e-4148-8647-40e10a530e66
 		summarizeBy: none
 		sourceColumn: patch
 
@@ -101,7 +101,7 @@ table 'gold fact_matches'
 		dataType: dateTime
 		formatString: General Date
 		sourceProviderType: datetime2
-		lineageTag: 20d07613-a928-4485-b63f-cf77c5bc33e1
+		lineageTag: d84ec92f-f607-4e0a-ae7b-abcba5e8deef
 		summarizeBy: none
 		sourceColumn: start_time
 
@@ -111,7 +111,7 @@ table 'gold fact_matches'
 		dataType: dateTime
 		formatString: Long Date
 		sourceProviderType: date
-		lineageTag: 8490930d-8fbc-401b-a2e3-d9fcbfa08e27
+		lineageTag: 6a8ea40a-5de8-4896-9e1e-7313700f8023
 		summarizeBy: none
 		sourceColumn: start_date
 
@@ -123,7 +123,7 @@ table 'gold fact_matches'
 		dataType: int64
 		formatString: 0
 		sourceProviderType: int
-		lineageTag: f54719c3-0de6-451c-973f-380fe7ccbdc8
+		lineageTag: cd8c91d5-709d-4689-a77d-071a32564157
 		summarizeBy: sum
 		sourceColumn: radiant_score
 
@@ -133,7 +133,7 @@ table 'gold fact_matches'
 		dataType: int64
 		formatString: 0
 		sourceProviderType: int
-		lineageTag: 431c385a-e6fc-4804-8627-6314645efd3d
+		lineageTag: d797618c-413c-4d91-8152-9382aa243fa5
 		summarizeBy: sum
 		sourceColumn: dire_score
 
@@ -142,7 +142,7 @@ table 'gold fact_matches'
 	column radiant_team_id
 		dataType: string
 		sourceProviderType: nvarchar(max)
-		lineageTag: 6488d4bc-2e3f-4307-a4d5-16fdfe02c36a
+		lineageTag: 3f038479-9192-4528-9041-7f868a8b0cca
 		summarizeBy: none
 		sourceColumn: radiant_team_id
 
@@ -151,7 +151,7 @@ table 'gold fact_matches'
 	column dire_team_id
 		dataType: string
 		sourceProviderType: nvarchar(max)
-		lineageTag: bc613f84-f391-42cd-b4c0-d0fa08dbac65
+		lineageTag: 42f619df-f853-43a4-bb0b-792a0914d74b
 		summarizeBy: none
 		sourceColumn: dire_team_id
 
@@ -161,7 +161,7 @@ table 'gold fact_matches'
 		dataType: boolean
 		formatString: """TRUE"";""TRUE"";""FALSE"""
 		sourceProviderType: bit
-		lineageTag: 081db7a1-3f8c-4442-a696-0e87e9a2cec9
+		lineageTag: 3d89f96d-c62d-4e43-a814-a287a75af5b5
 		summarizeBy: none
 		sourceColumn: has_radiant_team
 
@@ -171,7 +171,7 @@ table 'gold fact_matches'
 		dataType: boolean
 		formatString: """TRUE"";""TRUE"";""FALSE"""
 		sourceProviderType: bit
-		lineageTag: 62c65ff4-2e62-4585-933c-ed496a9a0e40
+		lineageTag: 77b373a4-fd0a-422a-b009-37c43ada8d4c
 		summarizeBy: none
 		sourceColumn: has_dire_team
 
@@ -180,7 +180,7 @@ table 'gold fact_matches'
 	column leagueid
 		dataType: string
 		sourceProviderType: nvarchar(max)
-		lineageTag: 6995a1de-4d45-41c9-af9e-dee0ec385d99
+		lineageTag: 70ee8a97-c0d1-43d8-a5bc-e7a3582076cd
 		summarizeBy: none
 		sourceColumn: leagueid
 
@@ -190,7 +190,7 @@ table 'gold fact_matches'
 		dataType: int64
 		formatString: 0
 		sourceProviderType: int
-		lineageTag: 9fc39f86-d943-44be-9e9d-347e79af4d84
+		lineageTag: 98ffbde1-326b-4660-adbf-39f0913524a1
 		summarizeBy: sum
 		sourceColumn: first_blood_time
 
@@ -200,7 +200,7 @@ table 'gold fact_matches'
 		dataType: int64
 		formatString: 0
 		sourceProviderType: int
-		lineageTag: 1c7f5db3-2b03-4f0d-8c09-b9336ecd5f1c
+		lineageTag: 9b196703-2873-40b1-a685-04926ca6dada
 		summarizeBy: sum
 		sourceColumn: human_players
 
@@ -210,7 +210,7 @@ table 'gold fact_matches'
 		dataType: int64
 		formatString: 0
 		sourceProviderType: int
-		lineageTag: 4d942e34-2387-4a64-8fcb-fc5b861a801c
+		lineageTag: 4dc3202b-6c62-44e3-a229-96e31393602e
 		summarizeBy: sum
 		sourceColumn: pre_game_duration
 
@@ -220,7 +220,7 @@ table 'gold fact_matches'
 		dataType: dateTime
 		formatString: General Date
 		sourceProviderType: datetime2
-		lineageTag: cbb67302-ae26-48b1-a540-cf003b7dea90
+		lineageTag: 70c3e249-3d19-4d5b-a260-b8165fc2e843
 		summarizeBy: none
 		sourceColumn: loaded_at
 
@@ -234,8 +234,4 @@ table 'gold fact_matches'
 				    gold_fact_matches = Source{[Schema="gold",Item="fact_matches"]}[Data]
 				in
 				    gold_fact_matches
-
-	annotation PBI_NavigationStepName = Navigation
-
-	annotation PBI_ResultType = Table
 

@@ -17,6 +17,7 @@ select
     account_id,
     hero_id,
     team_number,
+    team_win,
     kills,
     deaths,
     assists,

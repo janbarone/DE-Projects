@@ -119,6 +119,11 @@ All others are many-to-one.
   the one-to-many links): selecting a league / team / player / hero / game mode /
   lobby / region filters the fact tables, but facts never filter the dimensions.
   In the model the arrow points from the dimension toward the fact table.
+- **Two exceptions - bidirectional (cross filter = Both):**
+  `fact_matches ↔ fact_match_players` and `fact_matches ↔ fact_team_matches`.
+  These let hero / player / team slicers (attached to the leaf facts) flow back
+  up to the hub `fact_matches`, so a single slicer filters the whole report
+  (matches, picks, teamfights, and all other dimensions).
 - Team filtering flows `dim_team` → `fact_team_matches` → `fact_matches`: a team
   selected in a slicer matches rows on **both** the radiant and dire side of its
   matches (that is the point of the bridge - see below).
@@ -130,7 +135,7 @@ and `dire_team_id`). Power BI allows only one active relationship between two
 tables, so one side had to be inactive and evaluated with `USERELATIONSHIP`.
 
 That is gone. `gold.fact_team_matches` is a **bridge fact** with one row per
-(match, side) - 2 rows per match (4,232 matches → 8,358 rows; matches missing a
+(match, side) - 2 rows per match (4,299 matches → 8,492 rows; matches missing a
 team on one side produce one row, matches with neither team produce none):
 
 | Column | Type | Meaning |
@@ -245,6 +250,22 @@ RadiantWinRate = DIVIDE(
                  )
 AvgDuration    = AVERAGE(fact_matches[duration_sec])
 ```
+
+Hero / player win rate is computed from the matches themselves via
+`fact_match_players[team_win]` (added at the dataset level - it derives from the
+match's `radiant_win` and the player's `team_number`). These measures respond to
+every slicer (game mode, league, date, team, ...) because the filter reaches the
+facts:
+
+```dax
+HeroPicks   = COUNTROWS(fact_match_players)
+HeroWins    = CALCULATE(COUNTROWS(fact_match_players), fact_match_players[team_win])
+HeroWinRate = DIVIDE([HeroWins], [HeroPicks])
+```
+
+`dim_hero[pub_win_rate]` is the global OpenDota `/heroStats` snapshot - a static
+per-hero value that cannot change with any filter. Use it only as a labeled
+"global" reference, never as the main win-rate measure.
 
 Full column reference, types, and nuance notes: see `docs/data_model.md`.
 

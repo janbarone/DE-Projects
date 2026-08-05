@@ -1,0 +1,76 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.2.0/schema.json",
+  "name": "49861a130ac5360bda09",
+  "position": {
+    "x": 317.08206686930095,
+    "y": 32.097264437689972,
+    "z": 9,
+    "height": 67.112462006079028,
+    "width": 300.54711246200611
+  },
+  "visual": {
+    "visualType": "slicer",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold dim_game_mode"
+                    }
+                  },
+                  "Property": "game_mode_name"
+                }
+              },
+              "queryRef": "gold dim_game_mode.game_mode_name",
+              "nativeQueryRef": "game_mode_name",
+              "active": true
+            }
+          ]
+        }
+      }
+    },
+    "objects": {
+      "data": [
+        {
+          "properties": {
+            "mode": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Dropdown'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "general": [
+        {
+          "properties": {}
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "714be1356baeecd3da77",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "gold dim_game_mode"
+              }
+            },
+            "Property": "game_mode_name"
+          }
+        },
+        "type": "Categorical"
+      }
+    ]
+  }
+}

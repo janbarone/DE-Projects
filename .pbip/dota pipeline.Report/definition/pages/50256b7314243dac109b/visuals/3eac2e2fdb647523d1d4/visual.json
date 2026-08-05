@@ -1,0 +1,55 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.2.0/schema.json",
+  "name": "3eac2e2fdb647523d1d4",
+  "position": {
+    "x": 1074.7720364741642,
+    "y": 107.96352583586626,
+    "z": 2,
+    "height": 163.40425531914894,
+    "width": 205.22796352583586
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold dim_hero"
+                    }
+                  },
+                  "Property": "primary_attr"
+                }
+              },
+              "queryRef": "gold dim_hero.primary_attr",
+              "nativeQueryRef": "primary_attr"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "ad097590025b6a96006d",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "gold dim_hero"
+              }
+            },
+            "Property": "primary_attr"
+          }
+        },
+        "type": "Categorical"
+      }
+    ]
+  }
+}

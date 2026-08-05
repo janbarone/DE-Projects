@@ -1,10 +1,10 @@
 table 'gold fact_teamfight_item_uses'
-	lineageTag: b441bfc4-7f8d-487f-b01e-16180f9f0f4e
+	lineageTag: 986d4835-b3e0-429d-8468-7cac92c6a08f
 
 	column match_id
 		dataType: string
 		sourceProviderType: nvarchar(max)
-		lineageTag: 29cccda2-7815-4102-b58a-a8744f30d480
+		lineageTag: b3a0854d-52fc-4896-b7be-e0147b1bbf65
 		summarizeBy: none
 		sourceColumn: match_id
 
@@ -13,7 +13,7 @@ table 'gold fact_teamfight_item_uses'
 	column teamfight_id
 		dataType: string
 		sourceProviderType: nvarchar(max)
-		lineageTag: db9d6227-041b-4e12-b79d-8633c0458b26
+		lineageTag: 89043df8-a0a0-49e5-9091-65856bb4d9b2
 		summarizeBy: none
 		sourceColumn: teamfight_id
 
@@ -22,7 +22,7 @@ table 'gold fact_teamfight_item_uses'
 	column player_slot
 		dataType: string
 		sourceProviderType: nvarchar(max)
-		lineageTag: 41d82189-880e-4db6-8ace-dd2986d40d32
+		lineageTag: 09fd7737-8183-4678-b052-d8574d0c6e4b
 		summarizeBy: none
 		sourceColumn: player_slot
 
@@ -31,7 +31,7 @@ table 'gold fact_teamfight_item_uses'
 	column hero_id
 		dataType: string
 		sourceProviderType: nvarchar(max)
-		lineageTag: fe34031b-2806-4302-a33f-b63bba924b40
+		lineageTag: 65d8baac-c7f0-4dee-b252-00447396eb60
 		summarizeBy: none
 		sourceColumn: hero_id
 
@@ -40,7 +40,7 @@ table 'gold fact_teamfight_item_uses'
 	column account_id
 		dataType: string
 		sourceProviderType: nvarchar(max)
-		lineageTag: d77fab4c-2a05-427b-9f17-3c5fe12c1ac9
+		lineageTag: 7ef8886e-d3d0-4457-b16d-488e2cd35838
 		summarizeBy: none
 		sourceColumn: account_id
 
@@ -49,7 +49,7 @@ table 'gold fact_teamfight_item_uses'
 	column item_name
 		dataType: string
 		sourceProviderType: nvarchar(max)
-		lineageTag: 991fbf12-3a81-4b92-81e1-2b8279a32eb8
+		lineageTag: c8f035b8-24a3-40cb-adce-afdf3fba11f5
 		summarizeBy: none
 		sourceColumn: item_name
 
@@ -59,7 +59,7 @@ table 'gold fact_teamfight_item_uses'
 		dataType: int64
 		formatString: 0
 		sourceProviderType: int
-		lineageTag: aafda493-396b-40e4-84d3-37436180250e
+		lineageTag: e93690b8-168c-490c-a45f-9e58db0cdce5
 		summarizeBy: sum
 		sourceColumn: uses
 
@@ -73,8 +73,4 @@ table 'gold fact_teamfight_item_uses'
 				    gold_fact_teamfight_item_uses = Source{[Schema="gold",Item="fact_teamfight_item_uses"]}[Data]
 				in
 				    gold_fact_teamfight_item_uses
-
-	annotation PBI_NavigationStepName = Navigation
-
-	annotation PBI_ResultType = Table
 

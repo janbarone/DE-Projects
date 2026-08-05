@@ -1,0 +1,111 @@
+relationship 2fc7b3b2-5512-f9c1-324c-8016a7669ede
+	fromColumn: 'gold fact_matches'.leagueid
+	toColumn: 'gold dim_league'.leagueid
+
+relationship 76878778-ea67-75bc-95d7-3c61dfa38b12
+	fromColumn: 'gold fact_matches'.game_mode_id
+	toColumn: 'gold dim_game_mode'.game_mode_id
+
+relationship 44e52c0d-77bd-208c-365e-d81ca96b8655
+	fromColumn: 'gold fact_matches'.lobby_type_id
+	toColumn: 'gold dim_lobby_type'.lobby_type_id
+
+relationship 395a6a61-23c9-bb14-afad-f076219afa90
+	fromColumn: 'gold fact_matches'.region_id
+	toColumn: 'gold dim_region'.region_id
+
+relationship ec5bdbc2-8a29-42ef-59c2-ddc0d9e714ba
+	fromColumn: 'gold fact_matches'.start_date
+	toColumn: 'gold dim_date'.date
+
+relationship 5f041bf3-908e-09b5-b2ce-0e7406c7c07d
+	fromColumn: 'gold fact_match_players'.account_id
+	toColumn: 'gold dim_player'.account_id
+
+relationship 1d71ecd5-dcbf-9d34-f70d-836c588b3554
+	fromColumn: 'gold fact_match_players'.hero_id
+	toColumn: 'gold dim_hero'.hero_id
+
+relationship 2450a287-5b17-f468-2140-7cf21278bfb2
+	fromColumn: 'gold fact_picks_bans'.hero_id
+	toColumn: 'gold dim_hero'.hero_id
+
+relationship 29649d78-4b99-630e-36c2-d873d0806b4e
+	fromColumn: 'gold fact_team_matches'.team_id
+	toColumn: 'gold dim_team'.team_id
+
+relationship 1f93f41a-344c-683b-8797-71f78f627a04
+	fromColumn: 'gold fact_teamfight_players'.hero_id
+	toColumn: 'gold dim_hero'.hero_id
+
+relationship 44e66209-7012-0bda-c4b2-a132ce52d9ca
+	fromColumn: 'gold fact_teamfight_players'.account_id
+	toColumn: 'gold dim_player'.account_id
+
+relationship 518079d7-cca6-956d-d1e5-51ffb7d34182
+	fromColumn: 'gold fact_teamfight_ability_uses'.hero_id
+	toColumn: 'gold dim_hero'.hero_id
+
+relationship 53e85393-6eb3-d9de-30cd-30d6ff108670
+	fromColumn: 'gold fact_teamfight_ability_uses'.account_id
+	toColumn: 'gold dim_player'.account_id
+
+relationship 0a086ebf-f9fd-0d27-3554-6a5a03098f10
+	fromColumn: 'gold fact_teamfight_item_uses'.hero_id
+	toColumn: 'gold dim_hero'.hero_id
+
+relationship dfb3795d-e746-b819-37c0-e1454ce42172
+	fromColumn: 'gold fact_teamfight_item_uses'.account_id
+	toColumn: 'gold dim_player'.account_id
+
+relationship 00c23899-1fe1-eed2-c629-34659cc99a51
+	fromColumn: 'gold fact_teamfight_kills'.hero_id
+	toColumn: 'gold dim_hero'.hero_id
+
+relationship e9fe18a7-9fd9-7828-ec54-6332e1cefe1c
+	fromColumn: 'gold fact_teamfight_kills'.account_id
+	toColumn: 'gold dim_player'.account_id
+
+relationship 15fb6622-e06e-9524-2526-11a057939e88
+	isActive: false
+	fromColumn: 'gold fact_teamfight_kills'.victim_hero_id
+	toColumn: 'gold dim_hero'.hero_id
+
+relationship f6515265-6a23-84d7-f739-91677b16f566
+	crossFilteringBehavior: bothDirections
+	fromColumn: 'gold fact_match_players'.match_id
+	toColumn: 'gold fact_matches'.match_id
+
+relationship aee79d19-4c95-7255-0cea-b29c3f1f6b57
+	fromColumn: 'gold fact_picks_bans'.match_id
+	toColumn: 'gold fact_matches'.match_id
+
+relationship 16daabd7-5dea-996f-1023-c2e65d58c299
+	fromColumn: 'gold fact_teamfights'.match_id
+	toColumn: 'gold fact_matches'.match_id
+
+relationship 8e2c7288-ae79-31bd-6cba-bfa8afd71eb1
+	crossFilteringBehavior: bothDirections
+	fromColumn: 'gold fact_team_matches'.match_id
+	toColumn: 'gold fact_matches'.match_id
+
+relationship 5f503fb2-c9c7-660d-04e2-9d87834b1f99
+	fromColumn: 'gold fact_teamfight_players'.match_id
+	toColumn: 'gold fact_matches'.match_id
+
+relationship 692ce8c0-f8cd-9fef-13da-5aee0d78ef35
+	fromColumn: 'gold fact_teamfight_ability_uses'.match_id
+	toColumn: 'gold fact_matches'.match_id
+
+relationship 690df828-dd71-9975-0bad-bd339b0a6828
+	fromColumn: 'gold fact_teamfight_item_uses'.match_id
+	toColumn: 'gold fact_matches'.match_id
+
+relationship d2f24524-8663-501d-f956-adc257fc3c45
+	fromColumn: 'gold fact_teamfight_kills'.match_id
+	toColumn: 'gold fact_matches'.match_id
+
+relationship 87c19c42-382e-a62c-a2d4-ee6c1efd9cdc
+	fromColumn: 'gold dim_hero_role'.hero_id
+	toColumn: 'gold dim_hero'.hero_id
+

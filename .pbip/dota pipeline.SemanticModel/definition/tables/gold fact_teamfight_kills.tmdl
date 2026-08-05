@@ -1,10 +1,10 @@
 table 'gold fact_teamfight_kills'
-	lineageTag: 13459da2-e416-4d2a-a257-ca66d690714e
+	lineageTag: a26f762f-ede8-4364-88c5-105bddfaed78
 
 	column match_id
 		dataType: string
 		sourceProviderType: nvarchar(max)
-		lineageTag: 2ca5b301-b32c-4c22-b8e5-28fdd240a289
+		lineageTag: 31ad8a13-6e2d-491a-b173-b6cd1311da1c
 		summarizeBy: none
 		sourceColumn: match_id
 
@@ -13,7 +13,7 @@ table 'gold fact_teamfight_kills'
 	column teamfight_id
 		dataType: string
 		sourceProviderType: nvarchar(max)
-		lineageTag: 42e8651c-b4ec-44f1-a329-bc06d75afcb3
+		lineageTag: 5461bfd2-7ce3-4633-8370-d8ccc5694cd2
 		summarizeBy: none
 		sourceColumn: teamfight_id
 
@@ -22,7 +22,7 @@ table 'gold fact_teamfight_kills'
 	column player_slot
 		dataType: string
 		sourceProviderType: nvarchar(max)
-		lineageTag: 0e6ad25f-6559-4c8a-b8fd-4fe77647d8e8
+		lineageTag: ab9dbd55-fd61-4580-a4ef-1c0c2acc9318
 		summarizeBy: none
 		sourceColumn: player_slot
 
@@ -31,7 +31,7 @@ table 'gold fact_teamfight_kills'
 	column hero_id
 		dataType: string
 		sourceProviderType: nvarchar(max)
-		lineageTag: 998652d1-c349-4741-95df-cd88dc24d4bb
+		lineageTag: ccc9536b-3706-4075-bd53-af13bf0087a4
 		summarizeBy: none
 		sourceColumn: hero_id
 
@@ -40,7 +40,7 @@ table 'gold fact_teamfight_kills'
 	column account_id
 		dataType: string
 		sourceProviderType: nvarchar(max)
-		lineageTag: 77d09320-7339-45a5-9039-7337ec006910
+		lineageTag: 79f54d3d-8132-4d86-9077-89fd06d7490b
 		summarizeBy: none
 		sourceColumn: account_id
 
@@ -49,7 +49,7 @@ table 'gold fact_teamfight_kills'
 	column victim_hero_name
 		dataType: string
 		sourceProviderType: nvarchar(max)
-		lineageTag: bde9578f-d9be-4f7c-a82a-016c708343df
+		lineageTag: d933e898-4d25-4dd0-9f0f-8029f85935e5
 		summarizeBy: none
 		sourceColumn: victim_hero_name
 
@@ -59,7 +59,7 @@ table 'gold fact_teamfight_kills'
 		dataType: int64
 		formatString: 0
 		sourceProviderType: int
-		lineageTag: 8ec4c288-dce6-4cfb-91b0-c4b31d972cf6
+		lineageTag: da42f816-83ea-46ca-aeb0-40836ec59528
 		summarizeBy: sum
 		sourceColumn: kills
 
@@ -68,7 +68,7 @@ table 'gold fact_teamfight_kills'
 	column victim_hero_id
 		dataType: string
 		sourceProviderType: nvarchar(max)
-		lineageTag: 787631a6-4b6b-4330-b3ee-06900ced3d01
+		lineageTag: 3b68addd-37fb-414c-a664-b818abb0ea4b
 		summarizeBy: none
 		sourceColumn: victim_hero_id
 
@@ -82,8 +82,4 @@ table 'gold fact_teamfight_kills'
 				    gold_fact_teamfight_kills = Source{[Schema="gold",Item="fact_teamfight_kills"]}[Data]
 				in
 				    gold_fact_teamfight_kills
-
-	annotation PBI_NavigationStepName = Navigation
-
-	annotation PBI_ResultType = Table
 

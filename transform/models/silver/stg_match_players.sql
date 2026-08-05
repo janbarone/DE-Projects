@@ -15,6 +15,11 @@ select
     nullif(p.value->>'account_id', '') as account_id,
     nullif(p.value->>'hero_id', '') as hero_id,
     nullif(p.value->>'team_number', '') as team_number,
+    case
+        when p.value->>'team_number' = '0' then (m.payload->>'radiant_win')::boolean
+        when p.value->>'team_number' = '1' then not (m.payload->>'radiant_win')::boolean
+        else null
+    end as team_win,
     nullif(p.value->>'kills', '')::int as kills,
     nullif(p.value->>'deaths', '')::int as deaths,
     nullif(p.value->>'assists', '')::int as assists,

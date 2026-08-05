@@ -36,19 +36,6 @@
         },
         {
           "location": {
-            "x": 1145.5,
-            "y": 1275.5
-          },
-          "nodeIndex": "gold dim_hero",
-          "nodeLineageTag": "3d08ddbb-534b-459e-b530-6f18f4dfa9e8",
-          "size": {
-            "height": 300,
-            "width": 234
-          },
-          "zIndex": 15
-        },
-        {
-          "location": {
             "x": 1432,
             "y": 1233.5
           },
@@ -62,11 +49,24 @@
         },
         {
           "location": {
-            "x": 498,
-            "y": 67.5
+            "x": 1148.7238038595597,
+            "y": 747.41209678327618
           },
-          "nodeIndex": "gold dim_league",
-          "nodeLineageTag": "c5f9388b-df19-4026-91ab-985fcd4d37fe",
+          "nodeIndex": "gold dim_lobby_type",
+          "nodeLineageTag": "758dd62f-0f6b-40b7-b1c8-5882902100e0",
+          "size": {
+            "height": 152,
+            "width": 234
+          },
+          "zIndex": 15
+        },
+        {
+          "location": {
+            "x": 2970.1006810812873,
+            "y": 1130.5452900937121
+          },
+          "nodeIndex": "gold dim_player",
+          "nodeLineageTag": "28db8264-2963-4a01-ad28-359fe1e7563b",
           "size": {
             "height": 200,
             "width": 234
@@ -75,42 +75,16 @@
         },
         {
           "location": {
-            "x": 1373.4285714285713,
-            "y": 626.14285714285722
-          },
-          "nodeIndex": "gold dim_lobby_type",
-          "nodeLineageTag": "863092aa-cd3a-405f-9539-7b4ee4f61199",
-          "size": {
-            "height": 152,
-            "width": 234
-          },
-          "zIndex": 16
-        },
-        {
-          "location": {
-            "x": 2938,
-            "y": 567
-          },
-          "nodeIndex": "gold dim_player",
-          "nodeLineageTag": "6be15467-1257-4802-9ee3-1fec233842da",
-          "size": {
-            "height": 200,
-            "width": 234
-          },
-          "zIndex": 5
-        },
-        {
-          "location": {
-            "x": 1413,
-            "y": 141
+            "x": 1195.4287171157189,
+            "y": 162.40045405419158
           },
           "nodeIndex": "gold dim_region",
-          "nodeLineageTag": "f6dbcf86-5eb3-4233-ba4d-9fb9e1b9378b",
+          "nodeLineageTag": "f10377e5-fd9c-4d5a-800c-fa7c5f954334",
           "size": {
             "height": 128,
             "width": 234
           },
-          "zIndex": 6
+          "zIndex": 5
         },
         {
           "location": {
@@ -123,7 +97,7 @@
             "height": 248,
             "width": 234
           },
-          "zIndex": 7
+          "zIndex": 6
         },
         {
           "location": {
@@ -136,7 +110,7 @@
             "height": 300,
             "width": 234
           },
-          "zIndex": 17
+          "zIndex": 16
         },
         {
           "location": {
@@ -149,7 +123,7 @@
             "height": 300,
             "width": 234
           },
-          "zIndex": 8
+          "zIndex": 7
         },
         {
           "location": {
@@ -162,7 +136,7 @@
             "height": 248,
             "width": 234
           },
-          "zIndex": 9
+          "zIndex": 8
         },
         {
           "location": {
@@ -175,7 +149,7 @@
             "height": 248,
             "width": 234
           },
-          "zIndex": 10
+          "zIndex": 9
         },
         {
           "location": {
@@ -188,7 +162,7 @@
             "height": 248,
             "width": 234
           },
-          "zIndex": 11
+          "zIndex": 10
         },
         {
           "location": {
@@ -201,7 +175,7 @@
             "height": 272,
             "width": 234
           },
-          "zIndex": 12
+          "zIndex": 11
         },
         {
           "location": {
@@ -214,7 +188,7 @@
             "height": 300,
             "width": 281.14285714285688
           },
-          "zIndex": 13
+          "zIndex": 12
         },
         {
           "location": {
@@ -227,7 +201,46 @@
             "height": 300,
             "width": 234
           },
-          "zIndex": 14
+          "zIndex": 13
+        },
+        {
+          "location": {
+            "x": 3657.5,
+            "y": 693.75
+          },
+          "nodeIndex": "gold dim_league",
+          "nodeLineageTag": "569a4002-d7f3-4ddf-bf51-5fbc35fae0e8",
+          "size": {
+            "height": 200,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 3941.5,
+            "y": 669.75
+          },
+          "nodeIndex": "gold fact_team_matches",
+          "nodeLineageTag": "0fb933b3-366e-449d-a08a-fc695e89f14f",
+          "size": {
+            "height": 248,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 3657.5,
+            "y": 629.75
+          },
+          "nodeIndex": "gold dim_hero",
+          "nodeLineageTag": "e4955c72-bca4-4ca9-9835-809fb8ef0050",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
         }
       ],
       "name": "All tables",
@@ -246,219 +259,76 @@
       "nodes": [
         {
           "location": {
-            "x": 0,
+            "x": 2,
+            "y": 173
+          },
+          "nodeIndex": "gold fact_matches",
+          "nodeLineageTag": "89c74536-9eff-46e3-a9e6-824bed12ad21",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 2
+        },
+        {
+          "location": {
+            "x": 947.75,
+            "y": 356.25
+          },
+          "nodeIndex": "gold dim_league",
+          "nodeLineageTag": "569a4002-d7f3-4ddf-bf51-5fbc35fae0e8",
+          "size": {
+            "height": 200,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 650.75,
+            "y": 0
+          },
+          "nodeIndex": "gold dim_game_mode",
+          "nodeLineageTag": "a032179f-c792-4200-97d0-bb11444f8d39",
+          "size": {
+            "height": 152,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 627.5,
+            "y": 748.25
+          },
+          "nodeIndex": "gold dim_lobby_type",
+          "nodeLineageTag": "758dd62f-0f6b-40b7-b1c8-5882902100e0",
+          "size": {
+            "height": 152,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 953.75,
+            "y": 658.75
+          },
+          "nodeIndex": "gold dim_region",
+          "nodeLineageTag": "f10377e5-fd9c-4d5a-800c-fa7c5f954334",
+          "size": {
+            "height": 128,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 947,
             "y": 0
           },
           "nodeIndex": "gold dim_date",
-          "nodeLineageTag": "87981813-704c-4183-9cc7-73ce8afe93c5",
-          "size": {
-            "height": 300,
-            "width": 234
-          },
-          "zIndex": 0
-        },
-        {
-          "location": {
-            "x": 284,
-            "y": 74
-          },
-          "nodeIndex": "gold dim_game_mode",
-          "nodeLineageTag": "6ba5276e-d308-4899-8e1b-65ec94825f97",
-          "size": {
-            "height": 152,
-            "width": 234
-          },
-          "zIndex": 0
-        },
-        {
-          "location": {
-            "x": 568,
-            "y": 0
-          },
-          "nodeIndex": "gold dim_hero",
-          "nodeLineageTag": "3d08ddbb-534b-459e-b530-6f18f4dfa9e8",
-          "size": {
-            "height": 300,
-            "width": 234
-          },
-          "zIndex": 0
-        },
-        {
-          "location": {
-            "x": 852,
-            "y": 86
-          },
-          "nodeIndex": "gold dim_hero_role",
-          "nodeLineageTag": "84fd5e7d-1073-4167-bc3b-02fa8221acba",
-          "size": {
-            "height": 128,
-            "width": 234
-          },
-          "zIndex": 0
-        },
-        {
-          "location": {
-            "x": 1136,
-            "y": 50
-          },
-          "nodeIndex": "gold dim_league",
-          "nodeLineageTag": "c5f9388b-df19-4026-91ab-985fcd4d37fe",
-          "size": {
-            "height": 200,
-            "width": 234
-          },
-          "zIndex": 0
-        },
-        {
-          "location": {
-            "x": 1420,
-            "y": 74
-          },
-          "nodeIndex": "gold dim_lobby_type",
-          "nodeLineageTag": "863092aa-cd3a-405f-9539-7b4ee4f61199",
-          "size": {
-            "height": 152,
-            "width": 234
-          },
-          "zIndex": 0
-        },
-        {
-          "location": {
-            "x": 1704,
-            "y": 50
-          },
-          "nodeIndex": "gold dim_player",
-          "nodeLineageTag": "6be15467-1257-4802-9ee3-1fec233842da",
-          "size": {
-            "height": 200,
-            "width": 234
-          },
-          "zIndex": 0
-        },
-        {
-          "location": {
-            "x": 1988,
-            "y": 86
-          },
-          "nodeIndex": "gold dim_region",
-          "nodeLineageTag": "f6dbcf86-5eb3-4233-ba4d-9fb9e1b9378b",
-          "size": {
-            "height": 128,
-            "width": 234
-          },
-          "zIndex": 0
-        },
-        {
-          "location": {
-            "x": 2272,
-            "y": 26
-          },
-          "nodeIndex": "gold dim_team",
-          "nodeLineageTag": "b6940812-1ccf-464b-86a9-90ad5eba39ef",
-          "size": {
-            "height": 248,
-            "width": 234
-          },
-          "zIndex": 0
-        },
-        {
-          "location": {
-            "x": 2556,
-            "y": 0
-          },
-          "nodeIndex": "gold fact_match_players",
-          "nodeLineageTag": "14bb29ea-0eb6-48a4-88ed-ddb7d0e8709c",
-          "size": {
-            "height": 300,
-            "width": 234
-          },
-          "zIndex": 0
-        },
-        {
-          "location": {
-            "x": 2840,
-            "y": 0
-          },
-          "nodeIndex": "gold fact_matches",
-          "nodeLineageTag": "7038d468-a903-4421-886e-4610c8c5cec4",
-          "size": {
-            "height": 300,
-            "width": 234
-          },
-          "zIndex": 0
-        },
-        {
-          "location": {
-            "x": 3124,
-            "y": 26
-          },
-          "nodeIndex": "gold fact_picks_bans",
-          "nodeLineageTag": "9e418964-6a2f-4f10-a9e6-ea81739dcf4d",
-          "size": {
-            "height": 248,
-            "width": 234
-          },
-          "zIndex": 0
-        },
-        {
-          "location": {
-            "x": 3408,
-            "y": 26
-          },
-          "nodeIndex": "gold fact_teamfight_ability_uses",
-          "nodeLineageTag": "2ee7e13e-1abb-44a1-826c-27b6531674eb",
-          "size": {
-            "height": 248,
-            "width": 234
-          },
-          "zIndex": 0
-        },
-        {
-          "location": {
-            "x": 3692,
-            "y": 26
-          },
-          "nodeIndex": "gold fact_teamfight_item_uses",
-          "nodeLineageTag": "b441bfc4-7f8d-487f-b01e-16180f9f0f4e",
-          "size": {
-            "height": 248,
-            "width": 234
-          },
-          "zIndex": 0
-        },
-        {
-          "location": {
-            "x": 3976,
-            "y": 14
-          },
-          "nodeIndex": "gold fact_teamfight_kills",
-          "nodeLineageTag": "13459da2-e416-4d2a-a257-ca66d690714e",
-          "size": {
-            "height": 272,
-            "width": 234
-          },
-          "zIndex": 0
-        },
-        {
-          "location": {
-            "x": 4260,
-            "y": 0
-          },
-          "nodeIndex": "gold fact_teamfight_players",
-          "nodeLineageTag": "a4eaff26-cdd4-4bfe-91f6-df2c1215b8fc",
-          "size": {
-            "height": 300,
-            "width": 234
-          },
-          "zIndex": 0
-        },
-        {
-          "location": {
-            "x": 4544,
-            "y": 0
-          },
-          "nodeIndex": "gold fact_teamfights",
-          "nodeLineageTag": "cd5c8f16-5dc5-48e8-93f9-3957a20690a1",
+          "nodeLineageTag": "9d9e91c3-424b-4ebe-be4a-1c4dc3619c7e",
           "size": {
             "height": 300,
             "width": 234
@@ -467,13 +337,538 @@
         }
       ],
       "name": "Layout 1",
-      "zoomValue": 26.724837662337663,
+      "zoomValue": 80,
+      "pinKeyFieldsToTop": true,
+      "showExtraHeaderInfo": false,
+      "hideKeyFieldsWhenCollapsed": false,
+      "tablesLocked": false
+    },
+    {
+      "ordinal": 2,
+      "scrollPosition": {
+        "x": 0,
+        "y": 0
+      },
+      "nodes": [
+        {
+          "location": {
+            "x": -28,
+            "y": 228
+          },
+          "nodeIndex": "gold fact_match_players",
+          "nodeLineageTag": "22233bf7-4af2-42a9-ae07-a875ea33ddb1",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 363,
+            "y": 389
+          },
+          "nodeIndex": "gold dim_player",
+          "nodeLineageTag": "28db8264-2963-4a01-ad28-359fe1e7563b",
+          "size": {
+            "height": 200,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 434,
+            "y": 0
+          },
+          "nodeIndex": "gold dim_hero",
+          "nodeLineageTag": "e4955c72-bca4-4ca9-9835-809fb8ef0050",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        }
+      ],
+      "name": "Layout 2",
+      "zoomValue": 100,
+      "pinKeyFieldsToTop": true,
+      "showExtraHeaderInfo": false,
+      "hideKeyFieldsWhenCollapsed": false,
+      "tablesLocked": false
+    },
+    {
+      "ordinal": 3,
+      "scrollPosition": {
+        "x": 0,
+        "y": 0
+      },
+      "nodes": [
+        {
+          "location": {
+            "x": 270,
+            "y": 73
+          },
+          "nodeIndex": "gold fact_picks_bans",
+          "nodeLineageTag": "64b88171-21b4-4214-8ae7-4bb83a3513ff",
+          "size": {
+            "height": 248,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 586,
+            "y": 92
+          },
+          "nodeIndex": "gold dim_hero",
+          "nodeLineageTag": "e4955c72-bca4-4ca9-9835-809fb8ef0050",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        }
+      ],
+      "name": "Layout 3",
+      "zoomValue": 100,
+      "pinKeyFieldsToTop": true,
+      "showExtraHeaderInfo": false,
+      "hideKeyFieldsWhenCollapsed": false,
+      "tablesLocked": false
+    },
+    {
+      "ordinal": 4,
+      "scrollPosition": {
+        "x": 0,
+        "y": 0
+      },
+      "nodes": [
+        {
+          "location": {
+            "x": 69,
+            "y": 80
+          },
+          "nodeIndex": "gold fact_team_matches",
+          "nodeLineageTag": "0fb933b3-366e-449d-a08a-fc695e89f14f",
+          "size": {
+            "height": 248,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 469,
+            "y": 83
+          },
+          "nodeIndex": "gold dim_team",
+          "nodeLineageTag": "0d3c5a62-504c-43ec-900f-b60915f8161a",
+          "size": {
+            "height": 248,
+            "width": 234
+          },
+          "zIndex": 0
+        }
+      ],
+      "name": "Layout 4",
+      "zoomValue": 100,
+      "pinKeyFieldsToTop": true,
+      "showExtraHeaderInfo": false,
+      "hideKeyFieldsWhenCollapsed": false,
+      "tablesLocked": false
+    },
+    {
+      "ordinal": 5,
+      "scrollPosition": {
+        "x": 0,
+        "y": 0
+      },
+      "nodes": [
+        {
+          "location": {
+            "x": 84,
+            "y": 186
+          },
+          "nodeIndex": "gold fact_teamfight_players",
+          "nodeLineageTag": "ca283a62-4383-45da-a2f1-2f7f4e78e62e",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 541,
+            "y": 376
+          },
+          "nodeIndex": "gold dim_hero",
+          "nodeLineageTag": "e4955c72-bca4-4ca9-9835-809fb8ef0050",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 555,
+            "y": 54
+          },
+          "nodeIndex": "gold dim_player",
+          "nodeLineageTag": "28db8264-2963-4a01-ad28-359fe1e7563b",
+          "size": {
+            "height": 200,
+            "width": 234
+          },
+          "zIndex": 0
+        }
+      ],
+      "name": "Layout 5",
+      "zoomValue": 100,
+      "pinKeyFieldsToTop": true,
+      "showExtraHeaderInfo": false,
+      "hideKeyFieldsWhenCollapsed": false,
+      "tablesLocked": false
+    },
+    {
+      "ordinal": 6,
+      "scrollPosition": {
+        "x": 0,
+        "y": 0
+      },
+      "nodes": [
+        {
+          "location": {
+            "x": 170,
+            "y": 20
+          },
+          "nodeIndex": "gold fact_teamfight_ability_uses",
+          "nodeLineageTag": "4a84dfa0-17de-4a4f-8cf9-3bd5fc57daa1",
+          "size": {
+            "height": 248,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 670,
+            "y": 23
+          },
+          "nodeIndex": "gold dim_hero",
+          "nodeLineageTag": "e4955c72-bca4-4ca9-9835-809fb8ef0050",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 659,
+            "y": 367
+          },
+          "nodeIndex": "gold dim_player",
+          "nodeLineageTag": "28db8264-2963-4a01-ad28-359fe1e7563b",
+          "size": {
+            "height": 200,
+            "width": 234
+          },
+          "zIndex": 0
+        }
+      ],
+      "name": "Layout 6",
+      "zoomValue": 100,
+      "pinKeyFieldsToTop": true,
+      "showExtraHeaderInfo": false,
+      "hideKeyFieldsWhenCollapsed": false,
+      "tablesLocked": false
+    },
+    {
+      "ordinal": 7,
+      "scrollPosition": {
+        "x": 0,
+        "y": 0
+      },
+      "nodes": [
+        {
+          "location": {
+            "x": 176,
+            "y": 180
+          },
+          "nodeIndex": "gold fact_teamfight_item_uses",
+          "nodeLineageTag": "986d4835-b3e0-429d-8468-7cac92c6a08f",
+          "size": {
+            "height": 248,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 865,
+            "y": 106
+          },
+          "nodeIndex": "gold dim_hero",
+          "nodeLineageTag": "e4955c72-bca4-4ca9-9835-809fb8ef0050",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 779,
+            "y": 447
+          },
+          "nodeIndex": "gold dim_player",
+          "nodeLineageTag": "28db8264-2963-4a01-ad28-359fe1e7563b",
+          "size": {
+            "height": 200,
+            "width": 234
+          },
+          "zIndex": 0
+        }
+      ],
+      "name": "Layout 7",
+      "zoomValue": 100,
+      "pinKeyFieldsToTop": true,
+      "showExtraHeaderInfo": false,
+      "hideKeyFieldsWhenCollapsed": false,
+      "tablesLocked": false
+    },
+    {
+      "ordinal": 8,
+      "scrollPosition": {
+        "x": 0,
+        "y": 0
+      },
+      "nodes": [
+        {
+          "location": {
+            "x": 226,
+            "y": 49
+          },
+          "nodeIndex": "gold fact_teamfight_kills",
+          "nodeLineageTag": "a26f762f-ede8-4364-88c5-105bddfaed78",
+          "size": {
+            "height": 272,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 919,
+            "y": 40
+          },
+          "nodeIndex": "gold dim_hero",
+          "nodeLineageTag": "e4955c72-bca4-4ca9-9835-809fb8ef0050",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 926,
+            "y": 366
+          },
+          "nodeIndex": "gold dim_player",
+          "nodeLineageTag": "28db8264-2963-4a01-ad28-359fe1e7563b",
+          "size": {
+            "height": 200,
+            "width": 234
+          },
+          "zIndex": 0
+        }
+      ],
+      "name": "Layout 8",
+      "zoomValue": 100,
+      "pinKeyFieldsToTop": true,
+      "showExtraHeaderInfo": false,
+      "hideKeyFieldsWhenCollapsed": false,
+      "tablesLocked": false
+    },
+    {
+      "ordinal": 9,
+      "scrollPosition": {
+        "x": 0,
+        "y": 0
+      },
+      "nodes": [
+        {
+          "location": {
+            "x": 77.05734272432926,
+            "y": 0
+          },
+          "nodeIndex": "gold fact_matches",
+          "nodeLineageTag": "89c74536-9eff-46e3-a9e6-824bed12ad21",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 914,
+            "y": 0
+          },
+          "nodeIndex": "gold fact_match_players",
+          "nodeLineageTag": "22233bf7-4af2-42a9-ae07-a875ea33ddb1",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 918,
+            "y": 339
+          },
+          "nodeIndex": "gold fact_picks_bans",
+          "nodeLineageTag": "64b88171-21b4-4214-8ae7-4bb83a3513ff",
+          "size": {
+            "height": 248,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 916.01517228281523,
+            "y": 633.29173323204373
+          },
+          "nodeIndex": "gold fact_teamfights",
+          "nodeLineageTag": "445b4ef2-304a-49db-98d0-04c7ebe39ca3",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 1290.1348773418713,
+            "y": 633.42662948251882
+          },
+          "nodeIndex": "gold fact_team_matches",
+          "nodeLineageTag": "0fb933b3-366e-449d-a08a-fc695e89f14f",
+          "size": {
+            "height": 248,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 1310.6761922730482,
+            "y": 0
+          },
+          "nodeIndex": "gold fact_teamfight_players",
+          "nodeLineageTag": "ca283a62-4383-45da-a2f1-2f7f4e78e62e",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 1568.2326794870412,
+            "y": 347.42832159458834
+          },
+          "nodeIndex": "gold fact_teamfight_ability_uses",
+          "nodeLineageTag": "4a84dfa0-17de-4a4f-8cf9-3bd5fc57daa1",
+          "size": {
+            "height": 248,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 1767.3254242046057,
+            "y": 740.87350758406171
+          },
+          "nodeIndex": "gold fact_teamfight_item_uses",
+          "nodeLineageTag": "986d4835-b3e0-429d-8468-7cac92c6a08f",
+          "size": {
+            "height": 248,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 610.69138346446766,
+            "y": 578.12308928319521
+          },
+          "nodeIndex": "gold fact_teamfight_kills",
+          "nodeLineageTag": "a26f762f-ede8-4364-88c5-105bddfaed78",
+          "size": {
+            "height": 272,
+            "width": 234
+          },
+          "zIndex": 0
+        }
+      ],
+      "name": "Layout 9",
+      "zoomValue": 63.287087723234222,
+      "pinKeyFieldsToTop": true,
+      "showExtraHeaderInfo": false,
+      "hideKeyFieldsWhenCollapsed": false,
+      "tablesLocked": false
+    },
+    {
+      "ordinal": 10,
+      "scrollPosition": {
+        "x": 0,
+        "y": 0
+      },
+      "nodes": [
+        {
+          "location": {
+            "x": 527,
+            "y": 29
+          },
+          "nodeIndex": "gold dim_hero",
+          "nodeLineageTag": "e4955c72-bca4-4ca9-9835-809fb8ef0050",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 866,
+            "y": 71
+          },
+          "nodeIndex": "gold dim_hero_role",
+          "nodeLineageTag": "d3243033-cdf4-46fd-ac84-d06154250568",
+          "size": {
+            "height": 128,
+            "width": 234
+          },
+          "zIndex": 0
+        }
+      ],
+      "name": "Layout 10",
+      "zoomValue": 100,
       "pinKeyFieldsToTop": true,
       "showExtraHeaderInfo": false,
       "hideKeyFieldsWhenCollapsed": false,
       "tablesLocked": false
     }
   ],
-  "selectedDiagram": "Layout 1",
+  "selectedDiagram": "Layout 9",
   "defaultDiagram": "All tables"
 }

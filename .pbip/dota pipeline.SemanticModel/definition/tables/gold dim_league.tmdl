@@ -1,10 +1,10 @@
 table 'gold dim_league'
-	lineageTag: c5f9388b-df19-4026-91ab-985fcd4d37fe
+	lineageTag: 569a4002-d7f3-4ddf-bf51-5fbc35fae0e8
 
 	column leagueid
 		dataType: string
 		sourceProviderType: nvarchar(max)
-		lineageTag: a94c4f33-dac1-42d8-b327-c3b8ded2d4f3
+		lineageTag: f1f52ee6-d3ad-46a2-81ec-e520f8b62485
 		summarizeBy: none
 		sourceColumn: leagueid
 
@@ -13,7 +13,7 @@ table 'gold dim_league'
 	column league_name
 		dataType: string
 		sourceProviderType: nvarchar(max)
-		lineageTag: bb509406-6505-43e3-9b0a-9b12c7489e83
+		lineageTag: 1b644cfc-4667-44d7-96fc-083e9a4b385b
 		summarizeBy: none
 		sourceColumn: league_name
 
@@ -22,7 +22,7 @@ table 'gold dim_league'
 	column tier
 		dataType: string
 		sourceProviderType: nvarchar(max)
-		lineageTag: f60cb6c4-488b-4f49-92b4-bc3ec24017d7
+		lineageTag: 04d3cb1f-d27f-4152-ac81-392d04956da9
 		summarizeBy: none
 		sourceColumn: tier
 
@@ -31,7 +31,7 @@ table 'gold dim_league'
 	column ticket
 		dataType: string
 		sourceProviderType: nvarchar(max)
-		lineageTag: ee5b8b13-25c6-4878-bf16-b537aa035bb4
+		lineageTag: bba419f5-d738-41f2-867d-1e52b1b779b8
 		summarizeBy: none
 		sourceColumn: ticket
 
@@ -40,7 +40,7 @@ table 'gold dim_league'
 	column banner
 		dataType: string
 		sourceProviderType: nvarchar(max)
-		lineageTag: c14b0e57-b30d-4039-90bb-31bd4303ce05
+		lineageTag: 3706cbad-0ce8-40f5-9594-c90a2f7960d4
 		summarizeBy: none
 		sourceColumn: banner
 
@@ -54,8 +54,4 @@ table 'gold dim_league'
 				    gold_dim_league = Source{[Schema="gold",Item="dim_league"]}[Data]
 				in
 				    gold_dim_league
-
-	annotation PBI_NavigationStepName = Navigation
-
-	annotation PBI_ResultType = Table
 

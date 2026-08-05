@@ -147,10 +147,10 @@ source, storing the untouched API payload as `jsonb` plus a natural key and
 
 | Table            | Natural key / PK  | Rows (current) |
 |------------------|-------------------|----------------|
-| `bronze.matches` | `match_id bigint` | 4,232          |
-| `bronze.leagues` | `leagueid int`    | 10,025         |
-| `bronze.players` | `account_id int`  | 5,084          |
-| `bronze.teams`   | `team_id int`     | 21,869         |
+| `bronze.matches` | `match_id bigint` | 4,299          |
+| `bronze.leagues` | `leagueid int`    | 10,036         |
+| `bronze.players` | `account_id int`  | 5,093          |
+| `bronze.teams`   | `team_id int`     | 21,884         |
 | `bronze.hero_stats` | `id int`       | 127            |
 | `bronze.constants`  | `resource text` | 24            |
 
@@ -168,13 +168,13 @@ Verified row counts:
 
 | Model | Rows |
 |-------|------|
-| `silver.stg_matches` | 4,232 |
-| `silver.stg_match_players` | 42,085 |
-| `silver.stg_picks_bans` | 87,220 |
-| `silver.stg_teamfights` | 16,543 |
-| `silver.stg_leagues` | 10,025 |
-| `silver.stg_teams` | 21,869 |
-| `silver.stg_players` | 5,084 |
+| `silver.stg_matches` | 4,299 |
+| `silver.stg_match_players` | 42,755 |
+| `silver.stg_picks_bans` | 88,804 |
+| `silver.stg_teamfights` | 16,944 |
+| `silver.stg_leagues` | 10,036 |
+| `silver.stg_teams` | 21,884 |
+| `silver.stg_players` | 5,093 |
 | `silver.stg_heroes` | 127 |
 | `silver.stg_hero_stats` | 127 |
 | `silver.stg_constants` | 24 |
@@ -216,23 +216,23 @@ is fixed here:
 | Model | Rows | Grain | PK |
 |-------|------|-------|----|
 | `gold.dim_hero`        | 128    | one row per hero (+ Unknown)      | `hero_id` |
-| `gold.dim_hero_role`   | 460    | one row per (hero, role) bridge   | `(hero_id, role)` |
-| `gold.dim_player`      | 5,930  | one row per player (pro + participants) | `account_id` |
-| `gold.dim_team`        | 21,873 | one row per team (+ Unknown)      | `team_id` |
-| `gold.dim_league`      | 10,025 | one row per league                | `leagueid` |
+| `gold.dim_hero_role`   | 491    | one row per (hero, role) bridge   | `(hero_id, role)` |
+| `gold.dim_player`      | 5,945  | one row per player (pro + participants) | `account_id` |
+| `gold.dim_team`        | 21,888 | one row per team (+ Unknown)      | `team_id` |
+| `gold.dim_league`      | 10,036 | one row per league                | `leagueid` |
 | `gold.dim_game_mode`   | 26     | one row per game mode code        | `game_mode_id` |
 | `gold.dim_lobby_type`  | 16     | one row per lobby type code       | `lobby_type_id` |
 | `gold.dim_region`      | 22     | one row per region code           | `region_id` |
 | `gold.dim_date`        | 18,628 | one row per day (2000-01-01 -> 2050-12-31) | `date` |
-| `gold.fact_matches`        | 4,232  | one row per match                 | `match_id` |
-| `gold.fact_team_matches`   | 8,358  | one row per (match, side) bridge  | `(match_id, side)` |
-| `gold.fact_match_players`  | 42,085 | one row per (match, player)       | `(match_id, player_slot)` |
-| `gold.fact_picks_bans`     | 87,220 | one row per (match, draft order)  | `(match_id, order_no)` |
-| `gold.fact_teamfights`     | 16,543 | one row per (match, teamfight)    | `(match_id, teamfight_id)` |
-| `gold.fact_teamfight_players` | 165,430 | one row per (match, teamfight, player) | `(match_id, teamfight_id, player_slot)` |
-| `gold.fact_teamfight_ability_uses` | 470,512 | one row per (match, teamfight, player, ability) | `(match_id, teamfight_id, player_slot, ability_name)` |
-| `gold.fact_teamfight_item_uses` | 392,088 | one row per (match, teamfight, player, item) | `(match_id, teamfight_id, player_slot, item_name)` |
-| `gold.fact_teamfight_kills` | 66,749 | one row per (match, teamfight, killer, victim hero) | `(match_id, teamfight_id, player_slot, victim_hero_id)` |
+| `gold.fact_matches`        | 4,299  | one row per match                 | `match_id` |
+| `gold.fact_team_matches`   | 8,492  | one row per (match, side) bridge  | `(match_id, side)` |
+| `gold.fact_match_players`  | 42,755 | one row per (match, player)       | `(match_id, player_slot)` |
+| `gold.fact_picks_bans`     | 88,804 | one row per (match, draft order)  | `(match_id, order_no)` |
+| `gold.fact_teamfights`     | 16,944 | one row per (match, teamfight)    | `(match_id, teamfight_id)` |
+| `gold.fact_teamfight_players` | 169,440 | one row per (match, teamfight, player) | `(match_id, teamfight_id, player_slot)` |
+| `gold.fact_teamfight_ability_uses` | 483,509 | one row per (match, teamfight, player, ability) | `(match_id, teamfight_id, player_slot, ability_name)` |
+| `gold.fact_teamfight_item_uses` | 402,934 | one row per (match, teamfight, player, item) | `(match_id, teamfight_id, player_slot, item_name)` |
+| `gold.fact_teamfight_kills` | 68,305 | one row per (match, teamfight, killer, victim hero) | `(match_id, teamfight_id, player_slot, victim_hero_id)` |
 
 Materialization: **tables** for dims and facts (Power BI imports these directly).
 The full relationship mapping for Power BI (cardinality + cross-filter) is in
@@ -271,9 +271,9 @@ docker compose up -d
 Gold = 18 tables (9 dims + 9 facts), including three child facts that flatten
 the nested teamfight maps from `fact_teamfight_players`:
 
-- `fact_teamfight_ability_uses` (470,512 rows) - one row per (match, teamfight, player, ability)
-- `fact_teamfight_item_uses` (392,088 rows) - one row per (match, teamfight, player, item)
-- `fact_teamfight_kills` (66,749 rows) - one row per (match, teamfight, killer, victim hero)
+- `fact_teamfight_ability_uses` (483,509 rows) - one row per (match, teamfight, player, ability)
+- `fact_teamfight_item_uses` (402,934 rows) - one row per (match, teamfight, player, item)
+- `fact_teamfight_kills` (68,305 rows) - one row per (match, teamfight, killer, victim hero)
 
 **Where to resume:** Power BI dashboard on `gold` - connect to
 `localhost:5432` (db `dota`, user `postgres`), load the 18 `gold.*` tables and
@@ -313,7 +313,7 @@ details in `docs/power_bi_setup.md` §8. Note: the model-side
 no longer strictly needed (the column is text now) but is harmless to keep.
 
 **Status update (2026-08-05):** added `gold.fact_team_matches`, a **team-side
-bridge fact** (8,358 rows = one row per match + side), so `dim_team` now
+bridge fact** (8,492 rows = one row per match + side), so `dim_team` now
 connects through a single active path. The old dual `radiant_team_id` /
 `dire_team_id` links to `dim_team` (one inactive + `USERELATIONSHIP`) are gone -
 both sides of a match are queryable at once, split by the `side` column
@@ -323,6 +323,25 @@ fact_team_matches.match_id` (1:Many) + `fact_team_matches.team_id ->
 dim_team.team_id` (Many:1). Gold = **18 tables** (9 dims + 9 facts). 135/135
 dbt tests pass. Full details in `docs/data_model.md` and
 `docs/power_bi_setup.md` §4.
+
+**Status update (2026-08-05, +dataset):** added `team_win` to
+`fact_match_players` (silver + gold) - the player's team won, derived from the
+match's `radiant_win` and the player's `team_number` (null only for the 2 draw
+matches). This makes hero/player **win rate computable from the matches
+themselves** (HeroWins / HeroPicks DAX), instead of the static
+`dim_hero[pub_win_rate]` column that ignored all slicers. Power BI: set cross
+filter = **Both** on `fact_matches ↔ fact_match_players` and
+`fact_matches ↔ fact_team_matches` so hero/player/team slicers reach the hub and
+filter the whole report. Row counts unchanged (42,755).
+
+**Status update (2026-08-05, +completeness):** verified every match in the DB
+against OpenDota's `/leagues/{id}/matchIds` for all 16 configured leagues - the
+13 The Internationals (2012-2025) match the API exactly (TI2024 has 1 match,
+`7928919925`, that the API lists but 404s on fetch). 67 matches scraped via
+`/proMatches` after the last load were backfilled: re-ran `load_bronze.py`
+(idempotent) + `dbt build`. Bronze now holds all 4,299 downloaded files
+(4,128 TI + 171 proMatches-scraped 2026 matches across leagues 19917, 20009,
+20026, 20030, 19944). All row counts in this README updated to reflect it.
 
 **Known notes for the next session:**
 - Connect Power BI to the **gold** schema (not silver) - it's the presentation

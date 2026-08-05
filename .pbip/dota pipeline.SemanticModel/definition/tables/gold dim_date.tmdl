@@ -1,11 +1,11 @@
 table 'gold dim_date'
-	lineageTag: 87981813-704c-4183-9cc7-73ce8afe93c5
+	lineageTag: 9d9e91c3-424b-4ebe-be4a-1c4dc3619c7e
 
 	column date
 		dataType: dateTime
 		formatString: Long Date
 		sourceProviderType: date
-		lineageTag: f1841964-7f31-4344-8fcf-02f76d800199
+		lineageTag: 694820d3-efb7-4e65-8605-306537215a06
 		summarizeBy: none
 		sourceColumn: date
 
@@ -17,8 +17,8 @@ table 'gold dim_date'
 		dataType: int64
 		formatString: 0
 		sourceProviderType: int
-		lineageTag: 9f37bd18-7c51-4cb4-b14f-21029a364780
-		summarizeBy: sum
+		lineageTag: 421a08c1-9a80-4735-a087-ed5ba741c2dd
+		summarizeBy: none
 		sourceColumn: day_of_month
 
 		annotation SummarizationSetBy = Automatic
@@ -27,8 +27,8 @@ table 'gold dim_date'
 		dataType: int64
 		formatString: 0
 		sourceProviderType: int
-		lineageTag: d484c1a8-c8e2-4d7f-a53e-2271fd819707
-		summarizeBy: sum
+		lineageTag: 6d21d2d4-0907-42e7-a687-10a72adcdd53
+		summarizeBy: none
 		sourceColumn: day_of_week
 
 		annotation SummarizationSetBy = Automatic
@@ -36,7 +36,7 @@ table 'gold dim_date'
 	column day_of_week_name
 		dataType: string
 		sourceProviderType: nvarchar(max)
-		lineageTag: fcdf9b93-8cb6-4565-8fce-c661789c2a47
+		lineageTag: 68a59ec4-ebda-4fce-bd56-01c414275fc6
 		summarizeBy: none
 		sourceColumn: day_of_week_name
 
@@ -45,7 +45,7 @@ table 'gold dim_date'
 	column day_of_week_short_name
 		dataType: string
 		sourceProviderType: nvarchar(max)
-		lineageTag: 1e809145-7225-4119-8a9b-6a044689eca2
+		lineageTag: ad2f6d6f-fb52-4d5c-b05c-7ac29bb940d3
 		summarizeBy: none
 		sourceColumn: day_of_week_short_name
 
@@ -55,8 +55,8 @@ table 'gold dim_date'
 		dataType: int64
 		formatString: 0
 		sourceProviderType: int
-		lineageTag: 0922f97c-61d0-4d76-9c06-2065a21cd0b4
-		summarizeBy: sum
+		lineageTag: 320a45a7-ead5-4d35-8712-a54d3ae5198b
+		summarizeBy: none
 		sourceColumn: iso_day_of_week
 
 		annotation SummarizationSetBy = Automatic
@@ -65,7 +65,7 @@ table 'gold dim_date'
 		dataType: boolean
 		formatString: """TRUE"";""TRUE"";""FALSE"""
 		sourceProviderType: bit
-		lineageTag: fe088931-f02b-415e-8f58-8756d93f6c30
+		lineageTag: 09c82026-57f4-43e6-9e15-ac7911c0649a
 		summarizeBy: none
 		sourceColumn: is_weekend
 
@@ -75,8 +75,8 @@ table 'gold dim_date'
 		dataType: int64
 		formatString: 0
 		sourceProviderType: int
-		lineageTag: 0865c0f5-196e-402a-b0f9-e14b12bb7ad5
-		summarizeBy: sum
+		lineageTag: 8dc2323b-234c-4809-a7f7-9ee0e57916d4
+		summarizeBy: none
 		sourceColumn: day_of_year
 
 		annotation SummarizationSetBy = Automatic
@@ -85,8 +85,8 @@ table 'gold dim_date'
 		dataType: int64
 		formatString: 0
 		sourceProviderType: int
-		lineageTag: 9470237d-86ab-4407-a76d-054619f44422
-		summarizeBy: sum
+		lineageTag: a65a50bb-b94b-40ae-a13b-83f71f36e05e
+		summarizeBy: none
 		sourceColumn: week_of_year
 
 		annotation SummarizationSetBy = Automatic
@@ -95,8 +95,8 @@ table 'gold dim_date'
 		dataType: int64
 		formatString: 0
 		sourceProviderType: int
-		lineageTag: fdd4224a-115e-40f3-9b86-aa90f4432b2b
-		summarizeBy: sum
+		lineageTag: 9d1b04d6-7f4e-47e7-9169-084cd1c8e26f
+		summarizeBy: none
 		sourceColumn: iso_week_of_year
 
 		annotation SummarizationSetBy = Automatic
@@ -105,7 +105,7 @@ table 'gold dim_date'
 		dataType: dateTime
 		formatString: Long Date
 		sourceProviderType: date
-		lineageTag: 3fdf1457-600b-43d8-8e74-91c74f72587a
+		lineageTag: be2780fc-2140-47fc-94da-9846dd8bb2b9
 		summarizeBy: none
 		sourceColumn: week_start_date
 
@@ -117,8 +117,8 @@ table 'gold dim_date'
 		dataType: int64
 		formatString: 0
 		sourceProviderType: int
-		lineageTag: 3d21180d-9ec8-4e1c-be7c-eadfde01da43
-		summarizeBy: sum
+		lineageTag: a34ad916-7ca4-4e95-bfef-dbd678dc3a25
+		summarizeBy: none
 		sourceColumn: month
 
 		annotation SummarizationSetBy = Automatic
@@ -126,7 +126,7 @@ table 'gold dim_date'
 	column month_name
 		dataType: string
 		sourceProviderType: nvarchar(max)
-		lineageTag: b0dce243-e194-46cd-9ae1-4b849d06e256
+		lineageTag: 5898cc22-d429-47d0-b5dc-7ea1cc61ad51
 		summarizeBy: none
 		sourceColumn: month_name
 
@@ -135,7 +135,7 @@ table 'gold dim_date'
 	column month_short_name
 		dataType: string
 		sourceProviderType: nvarchar(max)
-		lineageTag: f03787a4-3a23-475d-b88a-9fdff8441667
+		lineageTag: 338dd6a2-edd9-4619-9c11-ccd6dca3d5b4
 		summarizeBy: none
 		sourceColumn: month_short_name
 
@@ -144,7 +144,7 @@ table 'gold dim_date'
 	column year_month
 		dataType: string
 		sourceProviderType: nvarchar(max)
-		lineageTag: 346d6255-9871-477d-8261-8353140cbd52
+		lineageTag: 64fa717a-8bf1-4cab-8e84-be9633aa947e
 		summarizeBy: none
 		sourceColumn: year_month
 
@@ -154,8 +154,8 @@ table 'gold dim_date'
 		dataType: int64
 		formatString: 0
 		sourceProviderType: int
-		lineageTag: 78abd43f-2382-49c0-9ca2-ed036d964aac
-		summarizeBy: sum
+		lineageTag: be6fc5b8-c3db-47f0-a11e-45637031331f
+		summarizeBy: none
 		sourceColumn: quarter
 
 		annotation SummarizationSetBy = Automatic
@@ -163,7 +163,7 @@ table 'gold dim_date'
 	column quarter_name
 		dataType: string
 		sourceProviderType: nvarchar(max)
-		lineageTag: 36bef15f-7dbc-4e75-b38e-583ebf2e99e8
+		lineageTag: c83ba87d-8936-4e21-9164-494f9ebab88d
 		summarizeBy: none
 		sourceColumn: quarter_name
 
@@ -172,7 +172,7 @@ table 'gold dim_date'
 	column year_quarter
 		dataType: string
 		sourceProviderType: nvarchar(max)
-		lineageTag: bac0f6a6-ac2b-49c4-88fb-d1f7848b5b4d
+		lineageTag: da52d0a5-094a-49df-a093-45bf2e51058c
 		summarizeBy: none
 		sourceColumn: year_quarter
 
@@ -182,8 +182,8 @@ table 'gold dim_date'
 		dataType: int64
 		formatString: 0
 		sourceProviderType: int
-		lineageTag: 1fff4602-a16d-4925-be7f-8ce05ecb7c3d
-		summarizeBy: sum
+		lineageTag: f5b74a4c-8b42-466e-90eb-8c070c8a6470
+		summarizeBy: none
 		sourceColumn: year
 
 		annotation SummarizationSetBy = Automatic
@@ -191,7 +191,7 @@ table 'gold dim_date'
 	column year_month_name
 		dataType: string
 		sourceProviderType: nvarchar(max)
-		lineageTag: 6ab533d2-ac0f-4960-9291-4232d170b8a6
+		lineageTag: 6ac4555f-d94a-4057-8a25-e5bff09a5882
 		summarizeBy: none
 		sourceColumn: year_month_name
 
@@ -201,7 +201,7 @@ table 'gold dim_date'
 		dataType: boolean
 		formatString: """TRUE"";""TRUE"";""FALSE"""
 		sourceProviderType: bit
-		lineageTag: 4b94e929-8702-4bf9-900b-64fb8b1be117
+		lineageTag: dcd2f8c9-dacb-4d44-8dca-702d14309257
 		summarizeBy: none
 		sourceColumn: is_leap_year
 

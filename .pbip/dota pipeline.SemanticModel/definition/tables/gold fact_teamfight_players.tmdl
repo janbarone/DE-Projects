@@ -1,10 +1,10 @@
 table 'gold fact_teamfight_players'
-	lineageTag: a4eaff26-cdd4-4bfe-91f6-df2c1215b8fc
+	lineageTag: ca283a62-4383-45da-a2f1-2f7f4e78e62e
 
 	column match_id
 		dataType: string
 		sourceProviderType: nvarchar(max)
-		lineageTag: 7e4cbfdf-0c2f-4852-a83b-fcd26de87b65
+		lineageTag: d12dc188-4569-490c-b8e8-cb5ae2dfe188
 		summarizeBy: none
 		sourceColumn: match_id
 
@@ -13,7 +13,7 @@ table 'gold fact_teamfight_players'
 	column teamfight_id
 		dataType: string
 		sourceProviderType: nvarchar(max)
-		lineageTag: 9541ec2b-dd01-4646-a1e0-b491e78abbb2
+		lineageTag: ef93e6ab-5667-4b0b-b4a4-27fbd1614c09
 		summarizeBy: none
 		sourceColumn: teamfight_id
 
@@ -23,7 +23,7 @@ table 'gold fact_teamfight_players'
 		dataType: int64
 		formatString: 0
 		sourceProviderType: int
-		lineageTag: a111ca82-59c8-4973-8a72-93f6738d93d1
+		lineageTag: 1d12fe24-8bb7-4e39-964b-dbf2dcdf0be6
 		summarizeBy: sum
 		sourceColumn: teamfight_start
 
@@ -33,7 +33,7 @@ table 'gold fact_teamfight_players'
 		dataType: int64
 		formatString: 0
 		sourceProviderType: int
-		lineageTag: 6142b65e-7b04-441b-847a-3b56b408f234
+		lineageTag: c91a7767-7f16-4de6-875d-b22a352cedc5
 		summarizeBy: sum
 		sourceColumn: teamfight_end
 
@@ -42,7 +42,7 @@ table 'gold fact_teamfight_players'
 	column player_slot
 		dataType: string
 		sourceProviderType: nvarchar(max)
-		lineageTag: d8b6e5e4-7ec2-48a8-afc2-4f9abd1ff94e
+		lineageTag: e957d5d1-aaed-4864-9b91-a5488c3045b2
 		summarizeBy: none
 		sourceColumn: player_slot
 
@@ -51,7 +51,7 @@ table 'gold fact_teamfight_players'
 	column hero_id
 		dataType: string
 		sourceProviderType: nvarchar(max)
-		lineageTag: f2fd9920-6a0c-4bfe-b455-849ed7ac402a
+		lineageTag: d26d581a-91c7-4605-a731-8824018c6953
 		summarizeBy: none
 		sourceColumn: hero_id
 
@@ -60,7 +60,7 @@ table 'gold fact_teamfight_players'
 	column account_id
 		dataType: string
 		sourceProviderType: nvarchar(max)
-		lineageTag: 9ee7bbf4-21e0-496f-a5d5-a0bbb52bb6e4
+		lineageTag: bd1b4531-7b19-4d0f-ac1e-53b4b02259c9
 		summarizeBy: none
 		sourceColumn: account_id
 
@@ -70,7 +70,7 @@ table 'gold fact_teamfight_players'
 		dataType: int64
 		formatString: 0
 		sourceProviderType: int
-		lineageTag: 4d3fb236-f4c2-4362-9d62-dbd6d92b1f06
+		lineageTag: 620f917d-659b-48da-99df-c7d20cdcafd7
 		summarizeBy: sum
 		sourceColumn: damage
 
@@ -80,7 +80,7 @@ table 'gold fact_teamfight_players'
 		dataType: int64
 		formatString: 0
 		sourceProviderType: int
-		lineageTag: 7061c632-217d-44d5-a667-3c601a2a29b5
+		lineageTag: 34695339-7adc-4a55-b180-52389d2d356f
 		summarizeBy: sum
 		sourceColumn: healing
 
@@ -90,7 +90,7 @@ table 'gold fact_teamfight_players'
 		dataType: int64
 		formatString: 0
 		sourceProviderType: int
-		lineageTag: 9f24d404-d85b-439c-9bbd-2556d595c2cc
+		lineageTag: 5a572264-1092-4e6a-a2b5-a68633cce9fe
 		summarizeBy: sum
 		sourceColumn: deaths
 
@@ -100,7 +100,7 @@ table 'gold fact_teamfight_players'
 		dataType: int64
 		formatString: 0
 		sourceProviderType: int
-		lineageTag: bce0b99f-bd6e-4f4b-89d0-03505244976f
+		lineageTag: 8c14ac6c-e9b3-4fed-92dc-5bbf672c3f26
 		summarizeBy: sum
 		sourceColumn: buybacks
 
@@ -110,7 +110,7 @@ table 'gold fact_teamfight_players'
 		dataType: int64
 		formatString: 0
 		sourceProviderType: int
-		lineageTag: 08908b36-8563-4828-95bb-6c343cfc1597
+		lineageTag: 0e319f8c-26e5-488b-9c53-33171374fc0f
 		summarizeBy: sum
 		sourceColumn: xp_start
 
@@ -120,7 +120,7 @@ table 'gold fact_teamfight_players'
 		dataType: int64
 		formatString: 0
 		sourceProviderType: int
-		lineageTag: ee58147f-17a2-429b-9c5c-6703bd634c28
+		lineageTag: 263c526a-1650-4fef-ab9c-d40c14ae8e16
 		summarizeBy: sum
 		sourceColumn: xp_end
 
@@ -130,7 +130,7 @@ table 'gold fact_teamfight_players'
 		dataType: int64
 		formatString: 0
 		sourceProviderType: int
-		lineageTag: 403b3b3a-b7f3-4e09-a8c1-ae7efb7cb970
+		lineageTag: 21413d7b-3cdb-486f-ba5b-484f1e258413
 		summarizeBy: sum
 		sourceColumn: xp_delta
 
@@ -140,7 +140,7 @@ table 'gold fact_teamfight_players'
 		dataType: int64
 		formatString: 0
 		sourceProviderType: int
-		lineageTag: 4f48c33e-ac6e-4f6b-b9aa-dc586693b138
+		lineageTag: d32108ff-a558-49d4-9e21-daf1843b92e5
 		summarizeBy: sum
 		sourceColumn: gold_delta
 
@@ -148,7 +148,8 @@ table 'gold fact_teamfight_players'
 
 	column ability_uses
 		dataType: string
-		lineageTag: 213ed8dc-8ec1-418d-80c3-1596e2a8eba9
+		sourceProviderType: nvarchar(max)
+		lineageTag: 3bec6fa3-115a-4a15-a651-62fee84fcd75
 		summarizeBy: none
 		sourceColumn: ability_uses
 
@@ -156,7 +157,8 @@ table 'gold fact_teamfight_players'
 
 	column item_uses
 		dataType: string
-		lineageTag: 4f47624a-7f5a-42ea-bfca-938eb3912c18
+		sourceProviderType: nvarchar(max)
+		lineageTag: aab4be1a-f44d-4875-ba2a-a800c3fbf0b9
 		summarizeBy: none
 		sourceColumn: item_uses
 
@@ -164,7 +166,8 @@ table 'gold fact_teamfight_players'
 
 	column ability_targets
 		dataType: string
-		lineageTag: 49153986-ab24-4118-8bcb-e3f96392f9b7
+		sourceProviderType: nvarchar(max)
+		lineageTag: fae808e8-8dc8-4a4b-8e0b-ac630903b388
 		summarizeBy: none
 		sourceColumn: ability_targets
 
@@ -172,7 +175,8 @@ table 'gold fact_teamfight_players'
 
 	column killed
 		dataType: string
-		lineageTag: d4a38681-45d0-48e0-b68a-b098e6238db3
+		sourceProviderType: nvarchar(max)
+		lineageTag: 3e193554-4687-4e62-a51c-40625bfb9446
 		summarizeBy: none
 		sourceColumn: killed
 
@@ -180,7 +184,8 @@ table 'gold fact_teamfight_players'
 
 	column deaths_pos
 		dataType: string
-		lineageTag: 79598d16-ede8-49d1-8d79-2fac2750c8dc
+		sourceProviderType: nvarchar(max)
+		lineageTag: 24768a65-0857-42fa-8908-bf3cba5be5b2
 		summarizeBy: none
 		sourceColumn: deaths_pos
 
@@ -190,7 +195,7 @@ table 'gold fact_teamfight_players'
 		dataType: dateTime
 		formatString: General Date
 		sourceProviderType: datetime2
-		lineageTag: 51b8c7cd-952d-43b6-b53b-16542d88c520
+		lineageTag: f1a150c8-a9b3-4072-8276-2798d86d38e3
 		summarizeBy: none
 		sourceColumn: loaded_at
 
@@ -204,8 +209,4 @@ table 'gold fact_teamfight_players'
 				    gold_fact_teamfight_players = Source{[Schema="gold",Item="fact_teamfight_players"]}[Data]
 				in
 				    gold_fact_teamfight_players
-
-	annotation PBI_NavigationStepName = Navigation
-
-	annotation PBI_ResultType = Table
 

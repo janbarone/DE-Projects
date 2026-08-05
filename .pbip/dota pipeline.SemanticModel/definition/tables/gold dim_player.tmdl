@@ -1,10 +1,10 @@
 table 'gold dim_player'
-	lineageTag: 6be15467-1257-4802-9ee3-1fec233842da
+	lineageTag: 28db8264-2963-4a01-ad28-359fe1e7563b
 
 	column account_id
 		dataType: string
 		sourceProviderType: nvarchar(max)
-		lineageTag: ce1ed552-1783-478d-9e2b-144d707f2cc7
+		lineageTag: ea0367b3-acfa-443b-8e18-753dda52189e
 		summarizeBy: none
 		sourceColumn: account_id
 
@@ -13,7 +13,7 @@ table 'gold dim_player'
 	column player_name
 		dataType: string
 		sourceProviderType: nvarchar(max)
-		lineageTag: 42bbd69e-2622-43b8-93cb-322bc76848c1
+		lineageTag: a1d47a47-5de3-4e25-bade-04ee15d71e41
 		summarizeBy: none
 		sourceColumn: player_name
 
@@ -22,7 +22,7 @@ table 'gold dim_player'
 	column rank_tier
 		dataType: string
 		sourceProviderType: nvarchar(max)
-		lineageTag: ffb0c174-e6c1-4e9f-8c5c-64f60bf15c16
+		lineageTag: 6611b027-a50d-4799-9b86-56d72da74a38
 		summarizeBy: none
 		sourceColumn: rank_tier
 
@@ -31,7 +31,7 @@ table 'gold dim_player'
 	column team_id
 		dataType: string
 		sourceProviderType: nvarchar(max)
-		lineageTag: 0f6c28f1-f83a-47d8-abda-43be608d230a
+		lineageTag: 1b105c3a-e588-4be5-ba83-6f6cf23ea4ee
 		summarizeBy: none
 		sourceColumn: team_id
 
@@ -40,7 +40,7 @@ table 'gold dim_player'
 	column player_type
 		dataType: string
 		sourceProviderType: nvarchar(max)
-		lineageTag: 2f24b013-09f5-4c20-ab8a-ddf67353aa53
+		lineageTag: ea029fcf-12df-410e-ab75-ee9b25579137
 		summarizeBy: none
 		sourceColumn: player_type
 
@@ -54,8 +54,4 @@ table 'gold dim_player'
 				    gold_dim_player = Source{[Schema="gold",Item="dim_player"]}[Data]
 				in
 				    gold_dim_player
-
-	annotation PBI_NavigationStepName = Navigation
-
-	annotation PBI_ResultType = Table
 

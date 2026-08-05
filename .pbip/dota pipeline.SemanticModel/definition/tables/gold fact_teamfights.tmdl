@@ -1,10 +1,10 @@
 table 'gold fact_teamfights'
-	lineageTag: cd5c8f16-5dc5-48e8-93f9-3957a20690a1
+	lineageTag: 445b4ef2-304a-49db-98d0-04c7ebe39ca3
 
 	column match_id
 		dataType: string
 		sourceProviderType: nvarchar(max)
-		lineageTag: f48d854f-d237-48be-9485-7a140e9d39d5
+		lineageTag: ce5a57b8-4bad-4179-a743-4e36ef36335b
 		summarizeBy: none
 		sourceColumn: match_id
 
@@ -13,7 +13,7 @@ table 'gold fact_teamfights'
 	column teamfight_id
 		dataType: string
 		sourceProviderType: nvarchar(max)
-		lineageTag: 8dd19828-6bf7-4d98-9d70-2ef76559ccc3
+		lineageTag: a5195e7d-0e79-4e2e-94f2-3948ef2547ec
 		summarizeBy: none
 		sourceColumn: teamfight_id
 
@@ -23,7 +23,7 @@ table 'gold fact_teamfights'
 		dataType: int64
 		formatString: 0
 		sourceProviderType: int
-		lineageTag: df9ac8fe-ebc3-4dca-ac89-c3659fc67906
+		lineageTag: 376f508f-4d50-470f-8832-4f7199df551d
 		summarizeBy: sum
 		sourceColumn: start_time
 
@@ -33,7 +33,7 @@ table 'gold fact_teamfights'
 		dataType: int64
 		formatString: 0
 		sourceProviderType: int
-		lineageTag: 8c808c1d-5fb6-45a4-8781-46f8e5014afa
+		lineageTag: fd5ae35c-b6a5-4468-819b-76f4a23fb8d2
 		summarizeBy: sum
 		sourceColumn: end_time
 
@@ -43,7 +43,7 @@ table 'gold fact_teamfights'
 		dataType: int64
 		formatString: 0
 		sourceProviderType: int
-		lineageTag: ee98faed-b0de-49d0-be2b-93d7e81675a2
+		lineageTag: eda93435-9cdd-4f4d-a862-1f7fced5ed15
 		summarizeBy: sum
 		sourceColumn: last_death
 
@@ -52,7 +52,7 @@ table 'gold fact_teamfights'
 	column start_min
 		dataType: double
 		sourceProviderType: decimal
-		lineageTag: a462c3cd-b0b0-4143-9fde-478c5113a90a
+		lineageTag: a48e6b97-bd1a-4532-9f7c-06741b643260
 		summarizeBy: sum
 		sourceColumn: start_min
 
@@ -63,7 +63,7 @@ table 'gold fact_teamfights'
 	column end_min
 		dataType: double
 		sourceProviderType: decimal
-		lineageTag: 55831d10-4b45-4f6a-8803-00226e2e8302
+		lineageTag: 56d0185c-6a73-49da-b83f-069fd9e698a2
 		summarizeBy: sum
 		sourceColumn: end_min
 
@@ -74,7 +74,7 @@ table 'gold fact_teamfights'
 	column last_death_min
 		dataType: double
 		sourceProviderType: decimal
-		lineageTag: 00a378ee-d1d2-44a5-b173-5d7585bd0afc
+		lineageTag: 725fa375-6bd7-4325-b06b-167061fc90d6
 		summarizeBy: sum
 		sourceColumn: last_death_min
 
@@ -86,7 +86,7 @@ table 'gold fact_teamfights'
 		dataType: int64
 		formatString: 0
 		sourceProviderType: int
-		lineageTag: 4cb68c50-33cc-42a6-82cf-71edcae9107d
+		lineageTag: e934884a-9f12-41a6-bd2e-d7e6af95dbd7
 		summarizeBy: sum
 		sourceColumn: deaths
 
@@ -96,7 +96,7 @@ table 'gold fact_teamfights'
 		dataType: int64
 		formatString: 0
 		sourceProviderType: int
-		lineageTag: 0f533bdd-cc1f-4f8c-91e5-c9741de4f275
+		lineageTag: 6de12ad8-c607-41d8-a2c8-ed8e4e526ea6
 		summarizeBy: sum
 		sourceColumn: duration_sec
 
@@ -105,7 +105,7 @@ table 'gold fact_teamfights'
 	column duration_min
 		dataType: double
 		sourceProviderType: decimal
-		lineageTag: 6e974f9d-13eb-41e3-9aab-996016b02213
+		lineageTag: 06217fa2-e62f-4125-87ea-55ae88f3e667
 		summarizeBy: sum
 		sourceColumn: duration_min
 
@@ -113,11 +113,20 @@ table 'gold fact_teamfights'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
+	column players
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: 03fd18a2-7e52-4eef-963f-220e28b58269
+		summarizeBy: none
+		sourceColumn: players
+
+		annotation SummarizationSetBy = Automatic
+
 	column loaded_at
 		dataType: dateTime
 		formatString: General Date
 		sourceProviderType: datetime2
-		lineageTag: 11e9f7b4-46a1-472d-bafe-3fcde8f1db6f
+		lineageTag: 7a8ec233-6d8f-4716-a53b-c60b9d518229
 		summarizeBy: none
 		sourceColumn: loaded_at
 
@@ -128,10 +137,9 @@ table 'gold fact_teamfights'
 		source =
 				let
 				    Source = PostgreSQL.Database("localhost", "dota"),
-				    gold_fact_teamfights = Source{[Schema="gold",Item="fact_teamfights"]}[Data],
-				    #"Removed Columns" = Table.RemoveColumns(gold_fact_teamfights,{"players"})
+				    gold_fact_teamfights = Source{[Schema="gold",Item="fact_teamfights"]}[Data]
 				in
-				    #"Removed Columns"
+				    gold_fact_teamfights
 
 	annotation PBI_NavigationStepName = Navigation
 

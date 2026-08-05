@@ -1,10 +1,10 @@
 table 'gold fact_picks_bans'
-	lineageTag: 9e418964-6a2f-4f10-a9e6-ea81739dcf4d
+	lineageTag: 64b88171-21b4-4214-8ae7-4bb83a3513ff
 
 	column match_id
 		dataType: string
 		sourceProviderType: nvarchar(max)
-		lineageTag: 7789e7bc-84be-49e7-9b0f-902b1423614d
+		lineageTag: 65cbed7d-9f4d-45e8-a513-89fdc844e231
 		summarizeBy: none
 		sourceColumn: match_id
 
@@ -13,7 +13,7 @@ table 'gold fact_picks_bans'
 	column order_no
 		dataType: string
 		sourceProviderType: nvarchar(max)
-		lineageTag: c2e69189-5a30-481e-8217-743c1168baa4
+		lineageTag: 95b9392b-a136-4ca8-aaa8-017ec591bbbc
 		summarizeBy: none
 		sourceColumn: order_no
 
@@ -22,7 +22,7 @@ table 'gold fact_picks_bans'
 	column hero_id
 		dataType: string
 		sourceProviderType: nvarchar(max)
-		lineageTag: ebb6b722-2c0e-4ed5-8dc6-98c960085eb9
+		lineageTag: af16fac7-93c1-4938-9f5a-8b4df1e210ab
 		summarizeBy: none
 		sourceColumn: hero_id
 
@@ -32,7 +32,7 @@ table 'gold fact_picks_bans'
 		dataType: boolean
 		formatString: """TRUE"";""TRUE"";""FALSE"""
 		sourceProviderType: bit
-		lineageTag: 1114875a-f8aa-4ed5-9585-080685072d2f
+		lineageTag: f614ea57-8e76-4fdc-9ff7-7681ee1d370a
 		summarizeBy: none
 		sourceColumn: is_pick
 
@@ -41,7 +41,7 @@ table 'gold fact_picks_bans'
 	column active_team
 		dataType: string
 		sourceProviderType: nvarchar(max)
-		lineageTag: 8383ff65-3d36-4531-89db-a314fcccfa3e
+		lineageTag: 3bb79c08-99b9-4f5a-8f75-4cbed7b95f66
 		summarizeBy: none
 		sourceColumn: active_team
 
@@ -50,7 +50,7 @@ table 'gold fact_picks_bans'
 	column player_slot
 		dataType: string
 		sourceProviderType: nvarchar(max)
-		lineageTag: b6b2aee9-8358-4c54-a7ec-c7e6158777b3
+		lineageTag: d6f54632-3273-47ae-986a-ae4d92a6db3f
 		summarizeBy: none
 		sourceColumn: player_slot
 
@@ -60,7 +60,7 @@ table 'gold fact_picks_bans'
 		dataType: dateTime
 		formatString: General Date
 		sourceProviderType: datetime2
-		lineageTag: 13991d94-60cc-4e5c-be2f-bf05973bfea7
+		lineageTag: d95ee08e-9253-463c-829b-69044a7b2d83
 		summarizeBy: none
 		sourceColumn: loaded_at
 
@@ -74,8 +74,4 @@ table 'gold fact_picks_bans'
 				    gold_fact_picks_bans = Source{[Schema="gold",Item="fact_picks_bans"]}[Data]
 				in
 				    gold_fact_picks_bans
-
-	annotation PBI_NavigationStepName = Navigation
-
-	annotation PBI_ResultType = Table
 

@@ -1,10 +1,10 @@
 table 'gold dim_game_mode'
-	lineageTag: 6ba5276e-d308-4899-8e1b-65ec94825f97
+	lineageTag: a032179f-c792-4200-97d0-bb11444f8d39
 
 	column game_mode_id
 		dataType: string
 		sourceProviderType: nvarchar(max)
-		lineageTag: 6d2ca2d4-2b0e-418d-9235-2547b6243414
+		lineageTag: 0d34e3f0-b81c-401a-a737-a8deb96b7373
 		summarizeBy: none
 		sourceColumn: game_mode_id
 
@@ -13,7 +13,7 @@ table 'gold dim_game_mode'
 	column game_mode_name
 		dataType: string
 		sourceProviderType: nvarchar(max)
-		lineageTag: ceedf97b-bb00-40ee-a2c6-b07f069b7eda
+		lineageTag: c42350fb-86c3-445b-8505-52b44e39e0a4
 		summarizeBy: none
 		sourceColumn: game_mode_name
 
@@ -23,7 +23,7 @@ table 'gold dim_game_mode'
 		dataType: boolean
 		formatString: """TRUE"";""TRUE"";""FALSE"""
 		sourceProviderType: bit
-		lineageTag: 1394b05f-f973-4237-b745-52cc6e670440
+		lineageTag: 857d79c8-f1a6-4e95-957d-c88753691de9
 		summarizeBy: none
 		sourceColumn: is_balanced
 
@@ -37,8 +37,4 @@ table 'gold dim_game_mode'
 				    gold_dim_game_mode = Source{[Schema="gold",Item="dim_game_mode"]}[Data]
 				in
 				    gold_dim_game_mode
-
-	annotation PBI_NavigationStepName = Navigation
-
-	annotation PBI_ResultType = Table
 

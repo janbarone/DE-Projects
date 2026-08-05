@@ -1,81 +1,66 @@
 table 'gold dim_hero'
-	lineageTag: 3d08ddbb-534b-459e-b530-6f18f4dfa9e8
+	lineageTag: e4955c72-bca4-4ca9-9835-809fb8ef0050
 
 	column hero_id
 		dataType: string
-		sourceProviderType: int
-		lineageTag: fb328a46-6761-450f-8a08-757a70d8a4be
+		sourceProviderType: nvarchar(max)
+		lineageTag: 3f07625a-2b00-4253-88c5-590a5f62c4de
 		summarizeBy: none
 		sourceColumn: hero_id
-
-		changedProperty = DataType
-
-		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
 	column hero_name
 		dataType: string
 		sourceProviderType: nvarchar(max)
-		lineageTag: b65e4b09-8d31-4bdc-8d29-400b77e6d1e6
+		lineageTag: b34a205e-fac2-45df-96d1-2e71393b735a
 		summarizeBy: none
 		sourceColumn: hero_name
-
-		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
 	column hero_localized_name
 		dataType: string
 		sourceProviderType: nvarchar(max)
-		lineageTag: 1eb16010-4d09-4ed3-8184-d6ff95a8d6f6
+		lineageTag: c4032bcf-cd77-4562-8c90-720aca8d6cf1
 		summarizeBy: none
 		sourceColumn: hero_localized_name
-
-		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
 	column primary_attr
 		dataType: string
 		sourceProviderType: nvarchar(max)
-		lineageTag: 3737d61c-d546-4ddc-b80c-a72ba6573104
+		lineageTag: 5e1380ad-7c85-4a45-a053-276004153396
 		summarizeBy: none
 		sourceColumn: primary_attr
-
-		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
 	column attack_type
 		dataType: string
 		sourceProviderType: nvarchar(max)
-		lineageTag: 811bd2fe-8105-4c20-8ac9-cabaac2b8d54
+		lineageTag: 988c405a-3183-4fb7-b6af-bfe81d5af8fd
 		summarizeBy: none
 		sourceColumn: attack_type
-
-		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
 	column roles
 		dataType: string
-		lineageTag: b1cf141f-d24e-424e-a199-f72f1d6250ec
+		sourceProviderType: nvarchar(max)
+		lineageTag: 9df1b8af-bc7a-4dc3-9e0d-e467aa82118c
 		summarizeBy: none
 		sourceColumn: roles
-
-		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
 	column img
 		dataType: string
 		sourceProviderType: nvarchar(max)
-		lineageTag: 1b59cea7-fd6b-4d21-972b-31b0a92c960d
+		lineageTag: de4dc687-194f-4b11-bb2e-02bda7353c98
 		summarizeBy: none
 		sourceColumn: img
-
-		changedProperty = IsHidden
 
 		annotation SummarizationSetBy = Automatic
 
@@ -83,72 +68,60 @@ table 'gold dim_hero'
 		dataType: int64
 		formatString: 0
 		sourceProviderType: int
-		lineageTag: 1e0c8c95-0cbc-4d52-86bd-e197a69bac54
-		summarizeBy: sum
+		lineageTag: a0cedefc-e6cb-4de4-b483-1dae3f7f17bf
+		summarizeBy: none
 		sourceColumn: pro_pick
 
-		changedProperty = IsHidden
-
-		annotation SummarizationSetBy = Automatic
+		annotation SummarizationSetBy = User
 
 	column pro_win
 		dataType: int64
 		formatString: 0
 		sourceProviderType: int
-		lineageTag: 6fc6798d-4543-41f9-af94-0324c3e92912
-		summarizeBy: sum
+		lineageTag: 5637f92e-2579-42bf-b13b-bba54e315cec
+		summarizeBy: none
 		sourceColumn: pro_win
 
-		changedProperty = IsHidden
-
-		annotation SummarizationSetBy = Automatic
+		annotation SummarizationSetBy = User
 
 	column pro_ban
 		dataType: int64
 		formatString: 0
 		sourceProviderType: int
-		lineageTag: 7d558d1e-e9e8-4d9f-a819-803ae81524cf
-		summarizeBy: sum
+		lineageTag: 141fbc62-01ec-4c3a-96fc-e4d6917aabbb
+		summarizeBy: none
 		sourceColumn: pro_ban
 
-		changedProperty = IsHidden
-
-		annotation SummarizationSetBy = Automatic
+		annotation SummarizationSetBy = User
 
 	column pub_pick
 		dataType: int64
 		formatString: 0
 		sourceProviderType: int
-		lineageTag: 870ae93b-2914-4b1e-953b-1f7fe57fa805
-		summarizeBy: sum
+		lineageTag: 611540c7-3595-404f-8fbd-45794447f9f9
+		summarizeBy: none
 		sourceColumn: pub_pick
 
-		changedProperty = IsHidden
-
-		annotation SummarizationSetBy = Automatic
+		annotation SummarizationSetBy = User
 
 	column pub_win
 		dataType: int64
 		formatString: 0
 		sourceProviderType: int
-		lineageTag: 614c1568-406e-46c9-b2e5-19ed01d4c5fa
-		summarizeBy: sum
+		lineageTag: 0dd2f6c0-9939-441d-a621-06233a199c12
+		summarizeBy: none
 		sourceColumn: pub_win
 
-		changedProperty = IsHidden
-
-		annotation SummarizationSetBy = Automatic
+		annotation SummarizationSetBy = User
 
 	column pub_win_rate
 		dataType: double
 		sourceProviderType: decimal
-		lineageTag: 467c1730-b2a9-4988-bb28-49c69dbfa034
-		summarizeBy: sum
+		lineageTag: 53ea62dc-466c-427f-bdde-0c3d458c127d
+		summarizeBy: none
 		sourceColumn: pub_win_rate
 
-		changedProperty = IsHidden
-
-		annotation SummarizationSetBy = Automatic
+		annotation SummarizationSetBy = User
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
@@ -160,10 +133,4 @@ table 'gold dim_hero'
 				    gold_dim_hero = Source{[Schema="gold",Item="dim_hero"]}[Data]
 				in
 				    gold_dim_hero
-
-	changedProperty = IsHidden
-
-	annotation PBI_NavigationStepName = Navigation
-
-	annotation PBI_ResultType = Table
 

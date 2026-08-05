@@ -1,0 +1,79 @@
+table 'gold fact_team_matches'
+	lineageTag: 0fb933b3-366e-449d-a08a-fc695e89f14f
+
+	column match_id
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: cbae89a8-683c-4ada-b23d-8677d69f96de
+		summarizeBy: none
+		sourceColumn: match_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column side
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: 0ba169e9-6a95-4824-b186-9f755a191c8b
+		summarizeBy: none
+		sourceColumn: side
+
+		annotation SummarizationSetBy = Automatic
+
+	column team_id
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: dfdf7ea2-6256-4a8f-b368-6885e51a39fa
+		summarizeBy: none
+		sourceColumn: team_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column radiant_win
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		sourceProviderType: bit
+		lineageTag: f167613a-5f2c-47e8-9486-c5f716da9b04
+		summarizeBy: none
+		sourceColumn: radiant_win
+
+		annotation SummarizationSetBy = Automatic
+
+	column team_win
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		sourceProviderType: bit
+		lineageTag: 4a4ae1e7-cc31-48e9-90f9-a14a45bc7877
+		summarizeBy: none
+		sourceColumn: team_win
+
+		annotation SummarizationSetBy = Automatic
+
+	column team_score
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 8281e935-beef-4541-8e84-38a738f4c0b4
+		summarizeBy: sum
+		sourceColumn: team_score
+
+		annotation SummarizationSetBy = Automatic
+
+	column opponent_score
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 2c35b7fb-f953-49c4-b94b-048953a13a45
+		summarizeBy: sum
+		sourceColumn: opponent_score
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'gold fact_team_matches' = m
+		mode: directQuery
+		source =
+				let
+				    Source = PostgreSQL.Database("localhost", "dota"),
+				    gold_fact_team_matches = Source{[Schema="gold",Item="fact_team_matches"]}[Data]
+				in
+				    gold_fact_team_matches
+

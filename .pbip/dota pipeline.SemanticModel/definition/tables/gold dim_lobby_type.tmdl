@@ -1,10 +1,10 @@
 table 'gold dim_lobby_type'
-	lineageTag: 863092aa-cd3a-405f-9539-7b4ee4f61199
+	lineageTag: 758dd62f-0f6b-40b7-b1c8-5882902100e0
 
 	column lobby_type_id
 		dataType: string
 		sourceProviderType: nvarchar(max)
-		lineageTag: d4299d3e-db47-46f2-a104-0f8169d5ac31
+		lineageTag: 3b79b2d1-0a32-4598-ae62-ef7d75b87b89
 		summarizeBy: none
 		sourceColumn: lobby_type_id
 
@@ -13,7 +13,7 @@ table 'gold dim_lobby_type'
 	column lobby_type_name
 		dataType: string
 		sourceProviderType: nvarchar(max)
-		lineageTag: 4d5d4491-bdb4-466e-94fb-57cc104cbc90
+		lineageTag: 4b41d72d-482d-48bc-bb36-8bacc90df849
 		summarizeBy: none
 		sourceColumn: lobby_type_name
 
@@ -23,7 +23,7 @@ table 'gold dim_lobby_type'
 		dataType: boolean
 		formatString: """TRUE"";""TRUE"";""FALSE"""
 		sourceProviderType: bit
-		lineageTag: 60486343-2554-45ab-a723-8a03ca8b8d4a
+		lineageTag: 3d7dbdde-ee30-4eb3-be90-6646db7e3743
 		summarizeBy: none
 		sourceColumn: is_balanced
 
@@ -37,8 +37,4 @@ table 'gold dim_lobby_type'
 				    gold_dim_lobby_type = Source{[Schema="gold",Item="dim_lobby_type"]}[Data]
 				in
 				    gold_dim_lobby_type
-
-	annotation PBI_NavigationStepName = Navigation
-
-	annotation PBI_ResultType = Table
 

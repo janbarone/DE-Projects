@@ -8,13 +8,13 @@ This document is verified against the live database schema (`\d silver.*`).
 
 | Model | Materialized | Grain | PK / unique key | Rows |
 |-------|--------------|-------|-----------------|------|
-| `stg_matches`       | table (incremental) | one row per match          | `match_id`                | 4,232  |
-| `stg_match_players` | table (incremental) | one row per (match, player)| `(match_id, player_slot)` | 42,085 |
-| `stg_picks_bans`    | table (incremental) | one row per (match, order) | `(match_id, order_no)`    | 87,220 |
-| `stg_teamfights`    | table (incremental) | one row per (match, fight) | `(match_id, teamfight_id)`| 16,543 |
-| `stg_leagues`       | view                | one row per league         | `leagueid`                | 10,025 |
-| `stg_teams`         | view                | one row per team           | `team_id`                 | 21,869 |
-| `stg_players`       | view                | one row per pro player     | `account_id`              | 5,084  |
+| `stg_matches`       | table (incremental) | one row per match          | `match_id`                | 4,299  |
+| `stg_match_players` | table (incremental) | one row per (match, player)| `(match_id, player_slot)` | 42,755 |
+| `stg_picks_bans`    | table (incremental) | one row per (match, order) | `(match_id, order_no)`    | 88,804 |
+| `stg_teamfights`    | table (incremental) | one row per (match, fight) | `(match_id, teamfight_id)`| 16,944 |
+| `stg_leagues`       | view                | one row per league         | `leagueid`                | 10,036 |
+| `stg_teams`         | view                | one row per team           | `team_id`                 | 21,884 |
+| `stg_players`       | view                | one row per pro player     | `account_id`              | 5,093  |
 | `stg_heroes`        | view                | one row per hero           | `hero_id`                 | 127    |
 | `stg_hero_stats`    | view                | one row per hero           | `hero_id`                 | 127    |
 | `stg_constants`     | view                | one row per resource       | `resource`                | 24     |
@@ -69,23 +69,23 @@ Layer-by-layer flow from source files to silver (arrow = relationship "one -> ma
 ```
 BRONZE (raw jsonb)              SILVER (dbt)                          DIMENSIONS (lookups)
 -------------------             -------------------------             -----------------------
-bronze.matches     -----------> stg_matches       (4,232)   ---------> stg_leagues  (10,025)
-    4,232                        |       |         |
-     |                           |       +--------> stg_teams  (21,869)  via radiant/dire_team_id
+bronze.matches     -----------> stg_matches       (4,299)   ---------> stg_leagues  (10,036)
+    4,299                        |       |         |
+     |                           |       +--------> stg_teams  (21,884)  via radiant/dire_team_id
      | (players[])               |
-     |                           +--many--> stg_match_players (42,085) --> stg_players (5,084)
+     |                           +--many--> stg_match_players (42,755) --> stg_players (5,093)
      |                           |                      |
      |                           |                      +--> stg_heroes (127)
      | (picks_bans[])            |
-     +--many--> stg_picks_bans (87,220) ---------------> stg_heroes (127)
+     +--many--> stg_picks_bans (88,804) ---------------> stg_heroes (127)
      | (teamfights[])            |
-     +--many--> stg_teamfights (16,543)  (players kept as text, no hero link)
+     +--many--> stg_teamfights (16,944)  (players kept as text, no hero link)
 
 bronze.hero_stats  -----------> stg_hero_stats (127)   --------------> stg_heroes (127)
 bronze.constants   -----------> stg_heroes (127)   /  stg_constants (24)
-bronze.leagues     -----------> stg_leagues (10,025)
-bronze.teams       -----------> stg_teams   (21,869)
-bronze.players     -----------> stg_players (5,084)
+bronze.leagues     -----------> stg_leagues (10,036)
+bronze.teams       -----------> stg_teams   (21,884)
+bronze.players     -----------> stg_players (5,093)
 ```
 
 Reading the flow:
@@ -157,6 +157,7 @@ One row per (match, player). Player performance detail.
 | `account_id`  | text    | FK to stg_players |
 | `hero_id`     | text    | FK to stg_heroes |
 | `team_number` | text    | 0 = radiant, 1 = dire |
+| `team_win`    | boolean | player's team won: team_number 0 = radiant_win, 1 = NOT radiant_win; null for draw matches (2 matches, 20 rows) |
 | `kills`       | integer | |
 | `deaths`      | integer | |
 | `assists`     | integer | |
@@ -427,23 +428,23 @@ queryable at the same time, split by the `side` column.
 | Model | Rows | Grain | PK |
 |-------|------|-------|----|
 | `dim_hero`        | 128 | one row per hero (+ Unknown)  | `hero_id` |
-| `dim_hero_role`   | 460 | one row per (hero, role) bridge | `(hero_id, role)` |
-| `dim_player`      | 5,930 | one row per player (pro + participants) | `account_id` |
-| `dim_team`        | 21,873 | one row per team (+ Unknown) | `team_id` |
-| `dim_league`      | 10,025 | one row per league | `leagueid` |
+| `dim_hero_role`   | 491 | one row per (hero, role) bridge | `(hero_id, role)` |
+| `dim_player`      | 5,945 | one row per player (pro + participants) | `account_id` |
+| `dim_team`        | 21,888 | one row per team (+ Unknown) | `team_id` |
+| `dim_league`      | 10,036 | one row per league | `leagueid` |
 | `dim_game_mode`   | 26 | one row per game mode code | `game_mode_id` |
 | `dim_lobby_type`  | 16 | one row per lobby type code | `lobby_type_id` |
 | `dim_region`      | 22 | one row per region code | `region_id` |
 | `dim_date`        | 18,628 | one row per day (2000-01-01 -> 2050-12-31) | `date` |
-| `fact_matches`        | 4,232 | one row per match | `match_id` |
-| `fact_match_players`  | 42,085 | one row per (match, player) | `(match_id, player_slot)` |
-| `fact_picks_bans`     | 87,220 | one row per (match, draft order) | `(match_id, order_no)` |
-| `fact_teamfights`     | 16,543 | one row per (match, teamfight) | `(match_id, teamfight_id)` |
-| `fact_team_matches`   | 8,358  | one row per (match, side) bridge | `(match_id, side)` |
-| `fact_teamfight_players` | 165,430 | one row per (match, teamfight, player) | `(match_id, teamfight_id, player_slot)` |
-| `fact_teamfight_ability_uses` | 470,512 | one row per (match, teamfight, player, ability) | `(match_id, teamfight_id, player_slot, ability_name)` |
-| `fact_teamfight_item_uses` | 392,088 | one row per (match, teamfight, player, item) | `(match_id, teamfight_id, player_slot, item_name)` |
-| `fact_teamfight_kills` | 66,749 | one row per (match, teamfight, killer, victim hero) | `(match_id, teamfight_id, player_slot, victim_hero_id)` |
+| `fact_matches`        | 4,299 | one row per match | `match_id` |
+| `fact_match_players`  | 42,755 | one row per (match, player) | `(match_id, player_slot)` |
+| `fact_picks_bans`     | 88,804 | one row per (match, draft order) | `(match_id, order_no)` |
+| `fact_teamfights`     | 16,944 | one row per (match, teamfight) | `(match_id, teamfight_id)` |
+| `fact_team_matches`   | 8,492  | one row per (match, side) bridge | `(match_id, side)` |
+| `fact_teamfight_players` | 169,440 | one row per (match, teamfight, player) | `(match_id, teamfight_id, player_slot)` |
+| `fact_teamfight_ability_uses` | 483,509 | one row per (match, teamfight, player, ability) | `(match_id, teamfight_id, player_slot, ability_name)` |
+| `fact_teamfight_item_uses` | 402,934 | one row per (match, teamfight, player, item) | `(match_id, teamfight_id, player_slot, item_name)` |
+| `fact_teamfight_kills` | 68,305 | one row per (match, teamfight, killer, victim hero) | `(match_id, teamfight_id, player_slot, victim_hero_id)` |
 
 ### Gold column reference
 
@@ -564,7 +565,7 @@ active relationship. Built by unpivoting `stg_matches.radiant_team_id` and
 
 Only rows whose side has a team are emitted (`has_radiant_team` / `has_dire_team`),
 so a match appears once, twice, or not at all depending on how many team ids it
-has (2 of 4,232 matches are recorded draws with `radiant_win` null; 29 matches
+has (2 of 4,299 matches are recorded draws with `radiant_win` null; 29 matches
 have no team on either side).
 
 #### fact_match_players / fact_picks_bans / fact_teamfights
@@ -572,6 +573,15 @@ have no team on either side).
 Same columns as the matching `stg_*` tables (see silver reference above).
 `hero_id = 0` in `fact_match_players` resolves to the Unknown hero row in
 `dim_hero`.
+
+`fact_match_players` carries `team_win` (inherited from silver) so a hero's or
+player's win rate can be computed from the fact alone (no cross-table DAX):
+
+```dax
+HeroPicks   = COUNTROWS(fact_match_players)
+HeroWins    = CALCULATE(COUNTROWS(fact_match_players), fact_match_players[team_win])
+HeroWinRate = DIVIDE([HeroWins], [HeroPicks])
+```
 
 `fact_teamfights` also exposes minutes variants: `start_min`, `end_min`,
 `last_death_min` (the raw `start_time` / `end_time` / `last_death` are seconds
@@ -624,7 +634,7 @@ Power BI friendly).
 | `fact_teamfight_kills` | `victim_hero_name` (text), `victim_hero_id` (text), `kills` (int) | flattened from `killed`; `victim_hero_name` is an `npc_dota_hero_*` value joining to `dim_hero.hero_name`, so `victim_hero_id` resolves to the victim hero row |
 
 Note: `killed` is a map of **victim hero name -> kill count** for that killer in
-that fight. 51,130 of 165,430 teamfight-player rows have at least one entry;
+that fight. 52,356 of 169,440 teamfight-player rows have at least one entry;
 rows with an empty map simply produce no rows here.
 
 ---
