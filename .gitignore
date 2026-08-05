@@ -1,8 +1,9 @@
 # Secrets
 .env
 
-# Raw data (large, not committed)
-data/
+# Raw data (large, not committed) - but keep the pipeline scripts tracked
+data/*
+!data/*.py
 
 # Logs
 *.log
