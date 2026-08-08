@@ -1,0 +1,192 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
+  "name": "ec2e437a-8cd6-4fa9-95b9-a73210eed1cb",
+  "position": {
+    "x": 20,
+    "y": 745,
+    "z": 8,
+    "height": 245,
+    "width": 300,
+    "tabOrder": 8
+  },
+  "visual": {
+    "visualType": "textbox",
+    "objects": {
+      "general": [
+        {
+          "properties": {
+            "paragraphs": [
+              {
+                "textRuns": [
+                  {
+                    "value": "Teams",
+                    "textStyle": {
+                      "fontFamily": "Segoe UI",
+                      "fontSize": "14pt",
+                      "fontWeight": "600",
+                      "color": "#1B4F72"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Appearances by side — ",
+                    "textStyle": {
+                      "fontFamily": "Segoe UI",
+                      "fontSize": "9.5pt",
+                      "fontWeight": "600"
+                    }
+                  },
+                  {
+                    "value": "how often a team played Radiant vs Dire.",
+                    "textStyle": {
+                      "fontFamily": "Segoe UI",
+                      "fontSize": "9.5pt",
+                      "fontWeight": "normal"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Team win rate over time — ",
+                    "textStyle": {
+                      "fontFamily": "Segoe UI",
+                      "fontSize": "9.5pt",
+                      "fontWeight": "600"
+                    }
+                  },
+                  {
+                    "value": "win-rate trend (measure).",
+                    "textStyle": {
+                      "fontFamily": "Segoe UI",
+                      "fontSize": "9.5pt",
+                      "fontWeight": "normal"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Top teams by appearances / win rate — ",
+                    "textStyle": {
+                      "fontFamily": "Segoe UI",
+                      "fontSize": "9.5pt",
+                      "fontWeight": "600"
+                    }
+                  },
+                  {
+                    "value": "leaderboards.",
+                    "textStyle": {
+                      "fontFamily": "Segoe UI",
+                      "fontSize": "9.5pt",
+                      "fontWeight": "normal"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Team leaderboard table — ",
+                    "textStyle": {
+                      "fontFamily": "Segoe UI",
+                      "fontSize": "9.5pt",
+                      "fontWeight": "600"
+                    }
+                  },
+                  {
+                    "value": "appearances, win rate, avg score differential.",
+                    "textStyle": {
+                      "fontFamily": "Segoe UI",
+                      "fontSize": "9.5pt",
+                      "fontWeight": "normal"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Slicers — ",
+                    "textStyle": {
+                      "fontFamily": "Segoe UI",
+                      "fontSize": "9.5pt",
+                      "fontWeight": "600"
+                    }
+                  },
+                  {
+                    "value": "year, team (single active path via fact_team_matches bridge).",
+                    "textStyle": {
+                      "fontFamily": "Segoe UI",
+                      "fontSize": "9.5pt",
+                      "fontWeight": "normal"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "background": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "border": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "dropShadow": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

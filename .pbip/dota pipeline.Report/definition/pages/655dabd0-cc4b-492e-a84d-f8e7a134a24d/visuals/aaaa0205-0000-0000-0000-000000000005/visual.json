@@ -1,0 +1,59 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.2.0/schema.json",
+  "name": "aaaa0205-0000-0000-0000-000000000005",
+  "position": {
+    "x": 860,
+    "y": 15,
+    "z": 24,
+    "height": 70,
+    "width": 200,
+    "tabOrder": 24
+  },
+  "visual": {
+    "visualType": "slicer",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold dim_lobby_type"
+                    }
+                  },
+                  "Property": "lobby_type_name"
+                }
+              },
+              "queryRef": "gold dim_lobby_type.lobby_type_name",
+              "nativeQueryRef": "lobby_type_name",
+              "active": true
+            }
+          ]
+        }
+      }
+    },
+    "objects": {
+      "data": [
+        {
+          "properties": {
+            "mode": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Dropdown'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "general": [
+        {
+          "properties": {}
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

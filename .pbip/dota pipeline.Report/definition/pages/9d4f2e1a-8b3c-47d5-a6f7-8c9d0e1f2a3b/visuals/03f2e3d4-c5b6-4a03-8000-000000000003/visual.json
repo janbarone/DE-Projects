@@ -1,0 +1,190 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
+  "name": "03f2e3d4-c5b6-4a03-8000-000000000003",
+  "position": {
+    "x": 20,
+    "y": 645,
+    "z": 12,
+    "height": 190,
+    "width": 610,
+    "tabOrder": 12
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold fact_match_player_skills"
+                    }
+                  },
+                  "Property": "minute"
+                }
+              },
+              "queryRef": "gold fact_match_player_skills.minute",
+              "nativeQueryRef": "minute"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold fact_match_player_skills"
+                    }
+                  },
+                  "Property": "player_name"
+                }
+              },
+              "queryRef": "gold fact_match_player_skills.player_name",
+              "nativeQueryRef": "player_name"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold fact_match_player_skills"
+                    }
+                  },
+                  "Property": "hero_localized_name"
+                }
+              },
+              "queryRef": "gold fact_match_player_skills.hero_localized_name",
+              "nativeQueryRef": "hero_localized_name"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold fact_match_player_skills"
+                    }
+                  },
+                  "Property": "ability_name"
+                }
+              },
+              "queryRef": "gold fact_match_player_skills.ability_name",
+              "nativeQueryRef": "ability_name"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold fact_match_player_skills"
+                    }
+                  },
+                  "Property": "learn_level"
+                }
+              },
+              "queryRef": "gold fact_match_player_skills.learn_level",
+              "nativeQueryRef": "learn_level"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "gold fact_match_player_skills"
+                  }
+                },
+                "Property": "learn_level"
+              }
+            },
+            "direction": "Ascending"
+          }
+        ]
+      }
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Radiant - skill levelling over time'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "03f2e3d4-c5b6-4a03-8000-000000000003-f",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "gold fact_match_player_skills"
+              }
+            },
+            "Property": "side"
+          }
+        },
+        "type": "Advanced",
+        "filter": {
+          "Version": 2,
+          "From": [
+            {
+              "Name": "f",
+              "Entity": "gold fact_match_player_skills",
+              "Type": 0
+            }
+          ],
+          "Where": [
+            {
+              "Condition": {
+                "Not": {
+                  "Expression": {
+                    "Comparison": {
+                      "ComparisonKind": 0,
+                      "Left": {
+                        "Column": {
+                          "Expression": {
+                            "SourceRef": {
+                              "Source": "f"
+                            }
+                          },
+                          "Property": "side"
+                        }
+                      },
+                      "Right": {
+                        "Literal": {
+                          "Value": "'Dire'"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "howCreated": "User"
+      }
+    ]
+  }
+}

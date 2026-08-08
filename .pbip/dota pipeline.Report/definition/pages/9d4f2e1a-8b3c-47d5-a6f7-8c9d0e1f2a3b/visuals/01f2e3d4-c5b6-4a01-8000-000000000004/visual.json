@@ -1,0 +1,60 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.2.0/schema.json",
+  "name": "01f2e3d4-c5b6-4a01-8000-000000000004",
+  "position": {
+    "x": 810,
+    "y": 0,
+    "z": 3,
+    "height": 70,
+    "width": 220,
+    "tabOrder": 3
+  },
+  "visual": {
+    "visualType": "card",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold fact_matches"
+                    }
+                  },
+                  "Property": "Total Match Kills"
+                }
+              },
+              "queryRef": "gold fact_matches.Total Match Kills",
+              "nativeQueryRef": "Total Match Kills"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true,
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Total Kills'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

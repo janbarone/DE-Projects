@@ -1,6 +1,10 @@
 table 'gold fact_teamfight_item_uses'
 	lineageTag: 986d4835-b3e0-429d-8468-7cac92c6a08f
 
+	measure 'Total Item Uses' = SUM('gold fact_teamfight_item_uses'[uses])
+		formatString: #,##0
+		lineageTag: 3f25e5aa-10c2-43e7-bbe4-1211441202e1
+
 	column match_id
 		dataType: string
 		sourceProviderType: nvarchar(max)

@@ -1,6 +1,34 @@
 table 'gold fact_teamfight_players'
 	lineageTag: ca283a62-4383-45da-a2f1-2f7f4e78e62e
 
+	measure 'Total Fight Damage' = SUM('gold fact_teamfight_players'[damage])
+		formatString: #,##0
+		lineageTag: 980d36d0-d212-46f3-b71e-877b4e363513
+
+	measure 'Total Fight Healing' = SUM('gold fact_teamfight_players'[healing])
+		formatString: #,##0
+		lineageTag: c0749e37-b37a-44bd-a4ce-84ad4c6a4ea5
+
+	measure 'Avg Fight Damage' = AVERAGE('gold fact_teamfight_players'[damage])
+		formatString: #,##0
+		lineageTag: aaaa0004-0000-0000-0000-000000000001
+
+	measure 'Avg Fight Healing' = AVERAGE('gold fact_teamfight_players'[healing])
+		formatString: #,##0
+		lineageTag: aaaa0004-0000-0000-0000-000000000002
+
+	measure 'Total Fight Buybacks' = SUM('gold fact_teamfight_players'[buybacks])
+		formatString: #,##0
+		lineageTag: aaaa0004-0000-0000-0000-000000000003
+
+	measure 'Avg Gold Swing' = AVERAGE('gold fact_teamfight_players'[gold_delta])
+		formatString: #,##0
+		lineageTag: aaaa0004-0000-0000-0000-000000000004
+
+	measure 'Avg XP Swing' = AVERAGE('gold fact_teamfight_players'[xp_delta])
+		formatString: #,##0
+		lineageTag: aaaa0004-0000-0000-0000-000000000005
+
 	column match_id
 		dataType: string
 		sourceProviderType: nvarchar(max)

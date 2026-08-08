@@ -1,0 +1,38 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.2.0/schema.json",
+  "name": "fccb36b9-300d-4f5e-8ded-e4a541aa4ee9",
+  "position": {
+    "x": 764,
+    "y": 15,
+    "z": 4,
+    "height": 115,
+    "width": 240,
+    "tabOrder": 4
+  },
+  "visual": {
+    "visualType": "card",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold fact_matches"
+                    }
+                  },
+                  "Property": "Avg Match Duration (min)"
+                }
+              },
+              "queryRef": "gold fact_matches.Avg Match Duration (min)",
+              "nativeQueryRef": "Avg Match Duration (min)"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

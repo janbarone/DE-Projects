@@ -29,6 +29,19 @@ def print_quota() -> None:
         print(f"API quota remaining: {q['minute']}/minute, {q['day']}/day")
 
 
+def wait_exit(message: str | None = None) -> None:
+    """Hold the console open so a quota stop is noticed before the window closes.
+
+    No-op (does not block) when stdin is closed, e.g. scheduled runs piping to
+    /dev/null, so the script never hangs without a console."""
+    if message:
+        print(message)
+    try:
+        input("\nPress Enter to exit...")
+    except (EOFError, KeyboardInterrupt):
+        pass
+
+
 def timestamp_fetched() -> str:
     """Current UTC time as ISO 8601 with Z suffix."""
     return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%S.%f")[:-3] + "Z"

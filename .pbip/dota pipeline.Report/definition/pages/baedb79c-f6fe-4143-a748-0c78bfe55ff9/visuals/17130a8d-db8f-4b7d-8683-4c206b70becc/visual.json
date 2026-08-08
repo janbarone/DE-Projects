@@ -1,0 +1,98 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.2.0/schema.json",
+  "name": "17130a8d-db8f-4b7d-8683-4c206b70becc",
+  "position": {
+    "x": 680,
+    "y": 415,
+    "z": 7,
+    "height": 290,
+    "width": 580,
+    "tabOrder": 7
+  },
+  "visual": {
+    "visualType": "barChart",
+    "query": {
+      "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold dim_team"
+                    }
+                  },
+                  "Property": "team_name"
+                }
+              },
+              "queryRef": "gold dim_team.team_name",
+              "nativeQueryRef": "team_name",
+              "active": true
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold fact_team_matches"
+                    }
+                  },
+                  "Property": "Team Appearances"
+                }
+              },
+              "queryRef": "gold fact_team_matches.Team Appearances",
+              "nativeQueryRef": "Team Appearances"
+            }
+          ]
+        },
+        "Series": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold fact_team_matches"
+                    }
+                  },
+                  "Property": "side"
+                }
+              },
+              "queryRef": "gold fact_team_matches.side",
+              "nativeQueryRef": "side",
+              "active": true
+            }
+          ]
+        }
+      }
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Appearances by side'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

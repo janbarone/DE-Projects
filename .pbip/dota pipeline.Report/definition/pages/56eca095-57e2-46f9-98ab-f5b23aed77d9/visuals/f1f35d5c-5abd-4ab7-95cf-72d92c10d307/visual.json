@@ -1,0 +1,79 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.2.0/schema.json",
+  "name": "f1f35d5c-5abd-4ab7-95cf-72d92c10d307",
+  "position": {
+    "x": 290,
+    "y": 520,
+    "z": 11,
+    "height": 190,
+    "width": 250,
+    "tabOrder": 11
+  },
+  "visual": {
+    "visualType": "clusteredBarChart",
+    "query": {
+      "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold fact_teamfights"
+                    }
+                  },
+                  "Property": "fight_phase"
+                }
+              },
+              "queryRef": "gold fact_teamfights.fight_phase",
+              "nativeQueryRef": "fight_phase",
+              "active": true
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold fact_teamfights"
+                    }
+                  },
+                  "Property": "Total Teamfights"
+                }
+              },
+              "queryRef": "gold fact_teamfights.Total Teamfights",
+              "nativeQueryRef": "Total Teamfights"
+            }
+          ]
+        }
+      }
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Teamfights by game phase'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

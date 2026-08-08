@@ -46,6 +46,220 @@ table 'gold dim_player'
 
 		annotation SummarizationSetBy = Automatic
 
+	column match_picks
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 6fe37d5d-0371-4593-ba5b-e1b47bd2ed27
+		summarizeBy: sum
+		sourceColumn: match_picks
+
+		annotation SummarizationSetBy = Automatic
+
+	column match_wins
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 2eb7ae61-e3c0-4786-8468-ac69ef0a1514
+		summarizeBy: sum
+		sourceColumn: match_wins
+
+		annotation SummarizationSetBy = Automatic
+
+	column match_win_rate
+		dataType: double
+		sourceProviderType: decimal
+		lineageTag: 5af0a8c4-3b10-4d6e-a0bd-52c7af716f7f
+		summarizeBy: sum
+		sourceColumn: match_win_rate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column match_avg_kda
+		dataType: double
+		sourceProviderType: decimal
+		lineageTag: 5e4b5063-3039-48b1-8f9e-84650efa5218
+		summarizeBy: sum
+		sourceColumn: match_avg_kda
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column match_avg_gpm
+		dataType: double
+		sourceProviderType: decimal
+		lineageTag: dc65f922-e16b-4e47-8163-2b95efb24da9
+		summarizeBy: sum
+		sourceColumn: match_avg_gpm
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column match_avg_xpm
+		dataType: double
+		sourceProviderType: decimal
+		lineageTag: 97dcf439-e600-417d-9e49-052abfed0ca6
+		summarizeBy: sum
+		sourceColumn: match_avg_xpm
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column match_avg_hero_damage
+		dataType: double
+		sourceProviderType: decimal
+		lineageTag: e27b5f5d-c1f2-4fb7-a4e3-a149900cd16d
+		summarizeBy: sum
+		sourceColumn: match_avg_hero_damage
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column match_avg_tower_damage
+		dataType: double
+		sourceProviderType: decimal
+		lineageTag: b1515851-8d7f-4be7-86f1-bc5a542c3177
+		summarizeBy: sum
+		sourceColumn: match_avg_tower_damage
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column match_avg_hero_healing
+		dataType: double
+		sourceProviderType: decimal
+		lineageTag: c6c8bffb-1578-4331-a475-d0b40a956d49
+		summarizeBy: sum
+		sourceColumn: match_avg_hero_healing
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column match_avg_last_hits
+		dataType: double
+		sourceProviderType: decimal
+		lineageTag: ac3e8b95-5fe1-4b8a-bb30-613dc806b06e
+		summarizeBy: sum
+		sourceColumn: match_avg_last_hits
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column match_avg_denies
+		dataType: double
+		sourceProviderType: decimal
+		lineageTag: 7b17a911-43b7-4f0f-9349-d9a32b6a9486
+		summarizeBy: sum
+		sourceColumn: match_avg_denies
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column match_avg_net_worth
+		dataType: double
+		sourceProviderType: decimal
+		lineageTag: ba396992-9bcf-462c-8381-3ac814f47ee0
+		summarizeBy: sum
+		sourceColumn: match_avg_net_worth
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column match_avg_stuns
+		dataType: double
+		sourceProviderType: decimal
+		lineageTag: 08efcafc-ad46-4f66-a570-251b86f7bf80
+		summarizeBy: sum
+		sourceColumn: match_avg_stuns
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column match_avg_level
+		dataType: double
+		sourceProviderType: decimal
+		lineageTag: f18fc034-4033-42c7-8f63-d800dabd0a25
+		summarizeBy: sum
+		sourceColumn: match_avg_level
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column match_total_kills
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: ea6e2eaf-b0a1-4988-9e1b-41a9e830b6ff
+		summarizeBy: sum
+		sourceColumn: match_total_kills
+
+		annotation SummarizationSetBy = Automatic
+
+	column match_total_deaths
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 0aa121ea-7dc1-419b-9746-587936bed8f6
+		summarizeBy: sum
+		sourceColumn: match_total_deaths
+
+		annotation SummarizationSetBy = Automatic
+
+	column match_total_assists
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: bdeb6315-8321-4bc4-8fb8-45ef09c3579e
+		summarizeBy: sum
+		sourceColumn: match_total_assists
+
+		annotation SummarizationSetBy = Automatic
+
+	column match_firstbloods
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 9b189336-6612-4d38-afaa-b8b439212126
+		summarizeBy: sum
+		sourceColumn: match_firstbloods
+
+		annotation SummarizationSetBy = Automatic
+
+	column match_avg_rune_pickups
+		dataType: double
+		sourceProviderType: decimal
+		lineageTag: d6445f22-8c80-4120-a6da-a9def3abb52a
+		summarizeBy: sum
+		sourceColumn: match_avg_rune_pickups
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column match_avg_buybacks
+		dataType: double
+		sourceProviderType: decimal
+		lineageTag: 521da6e8-1a1e-4df6-be4a-b0e05a16a637
+		summarizeBy: sum
+		sourceColumn: match_avg_buybacks
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
 	partition 'gold dim_player' = m
 		mode: directQuery
 		source =

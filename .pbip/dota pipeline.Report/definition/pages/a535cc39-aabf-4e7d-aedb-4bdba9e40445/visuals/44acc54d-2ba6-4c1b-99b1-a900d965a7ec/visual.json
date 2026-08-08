@@ -1,0 +1,38 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.2.0/schema.json",
+  "name": "44acc54d-2ba6-4c1b-99b1-a900d965a7ec",
+  "position": {
+    "x": 380,
+    "y": 15,
+    "z": 3,
+    "height": 95,
+    "width": 180,
+    "tabOrder": 3
+  },
+  "visual": {
+    "visualType": "card",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold fact_match_players"
+                    }
+                  },
+                  "Property": "Avg Net Worth"
+                }
+              },
+              "queryRef": "gold fact_match_players.Avg Net Worth",
+              "nativeQueryRef": "Avg Net Worth"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

@@ -1,0 +1,81 @@
+table 'gold fact_team_h2h'
+	lineageTag: 548c7a28-6038-4e79-a8b9-a87ea099e55c
+
+	measure 'H2H Games' = COUNTROWS('gold fact_team_h2h')
+		formatString: #,##0
+		lineageTag: ac94f6ea-3e4e-4817-b1f6-40dcb17722b1
+
+	measure 'Team A Wins' = CALCULATE(COUNTROWS('gold fact_team_h2h'), 'gold fact_team_h2h'[team_a_win])
+		formatString: #,##0
+		lineageTag: 9b5b5e12-962b-4582-aeb9-3d54ab97ba18
+
+	measure 'Team A Win Rate' = DIVIDE([Team A Wins], [H2H Games])
+		formatString: 0.0%
+		lineageTag: 6e48be43-3c37-4846-9611-1da715ec9142
+
+	column match_id
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: 2482d81d-96d7-4aaa-bb0b-f3873c1df3a9
+		summarizeBy: none
+		sourceColumn: match_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column team_a_id
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: 8cb51079-c79c-4ca4-b637-d9d3511c3929
+		summarizeBy: none
+		sourceColumn: team_a_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column team_b_id
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: d1bf70dc-eacb-4aa8-bbd6-1d1de7d8dc56
+		summarizeBy: none
+		sourceColumn: team_b_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column team_a_win
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		sourceProviderType: bit
+		lineageTag: df02707d-f857-4435-8d18-5ee89376d09e
+		summarizeBy: none
+		sourceColumn: team_a_win
+
+		annotation SummarizationSetBy = Automatic
+
+	column team_a_score
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: f4c4b46d-a9ab-45a6-a2ba-7b403dba927f
+		summarizeBy: sum
+		sourceColumn: team_a_score
+
+		annotation SummarizationSetBy = Automatic
+
+	column team_b_score
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 5350bbe8-0118-4980-a05f-37a71fe56c73
+		summarizeBy: sum
+		sourceColumn: team_b_score
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'gold fact_team_h2h' = m
+		mode: directQuery
+		source =
+				let
+				    Source = PostgreSQL.Database("localhost", "dota"),
+				    gold_fact_team_h2h = Source{[Schema="gold",Item="fact_team_h2h"]}[Data]
+				in
+				    gold_fact_team_h2h
+

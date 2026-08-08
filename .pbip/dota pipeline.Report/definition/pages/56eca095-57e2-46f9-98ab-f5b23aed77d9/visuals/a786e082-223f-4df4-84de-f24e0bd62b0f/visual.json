@@ -1,0 +1,38 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.2.0/schema.json",
+  "name": "a786e082-223f-4df4-84de-f24e0bd62b0f",
+  "position": {
+    "x": 550,
+    "y": 100,
+    "z": 5,
+    "height": 115,
+    "width": 250,
+    "tabOrder": 5
+  },
+  "visual": {
+    "visualType": "card",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold fact_teamfight_players"
+                    }
+                  },
+                  "Property": "Total Fight Damage"
+                }
+              },
+              "queryRef": "gold fact_teamfight_players.Total Fight Damage",
+              "nativeQueryRef": "Total Fight Damage"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

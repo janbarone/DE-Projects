@@ -33,6 +33,7 @@ from dota_common import (  # noqa: E402
     print_quota,
     quota_remaining,
     timestamp_fetched,
+    wait_exit,
     write_json,
 )
 
@@ -92,6 +93,7 @@ def main() -> None:
     already = 0
     failures = []
     limit_left = args.limit  # None = unlimited
+    quota_stopped = False
 
     try:
         for lid in league_ids:
@@ -145,6 +147,7 @@ def main() -> None:
     except QuotaStop as e:
         print(f"\nstopping: daily quota almost used up ({e} remaining)")
         log(f"INFO daily quota low ({e}) - run stopped early")
+        quota_stopped = True
     except KeyboardInterrupt:
         print("\nstopped by user. Already-downloaded matches are skipped on the next run "
               "(re-run the same command to continue).")
@@ -156,6 +159,9 @@ def main() -> None:
         f"quota_minute={q['minute']} quota_day={q['day']}")
     if failures:
         print(f"failed/skipped: {failures}")
+    if quota_stopped:
+        wait_exit("Daily API quota reached - you can re-run the same command after the "
+                  "daily quota resets to continue.")
 
 
 if __name__ == "__main__":

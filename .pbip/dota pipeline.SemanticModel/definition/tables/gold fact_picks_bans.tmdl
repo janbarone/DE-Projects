@@ -1,6 +1,38 @@
 table 'gold fact_picks_bans'
 	lineageTag: 64b88171-21b4-4214-8ae7-4bb83a3513ff
 
+	measure 'Draft Picks' = CALCULATE(COUNTROWS('gold fact_picks_bans'), 'gold fact_picks_bans'[is_pick])
+		formatString: #,##0
+		lineageTag: f180fba5-c2e2-41aa-8f1e-1c18ca54bab2
+
+	measure 'Draft Bans' = CALCULATE(COUNTROWS('gold fact_picks_bans'), 'gold fact_picks_bans'[is_pick] = FALSE())
+		formatString: #,##0
+		lineageTag: ca8f1284-66d6-4a7d-93e2-05d984a99e2f
+
+	measure 'Matches Drafted' = DISTINCTCOUNT('gold fact_picks_bans'[match_id])
+		formatString: #,##0
+		lineageTag: 9575b6d1-7e69-4158-8d36-6d24256d2fe5
+
+	measure 'Pick Rate' = DIVIDE([Draft Picks], [Matches Drafted])
+		formatString: 0.0%
+		lineageTag: a3fa0a5b-a368-4cbd-97b2-0ff38dfaf334
+
+	measure 'Ban Rate' = DIVIDE([Draft Bans], [Matches Drafted])
+		formatString: 0.0%
+		lineageTag: d5f76444-e530-40bf-9411-78a676fa810d
+
+	measure 'First Picks' = CALCULATE([Draft Picks], 'gold fact_picks_bans'[order_no] IN {"0", "1", "2", "3", "4", "5", "6", "7"})
+		formatString: #,##0
+		lineageTag: aaaa0005-0000-0000-0000-000000000001
+
+	measure 'Mid Picks' = CALCULATE([Draft Picks], 'gold fact_picks_bans'[order_no] IN {"8", "9", "10", "11", "12", "13", "14", "15"})
+		formatString: #,##0
+		lineageTag: aaaa0005-0000-0000-0000-000000000002
+
+	measure 'Late Picks' = CALCULATE([Draft Picks], 'gold fact_picks_bans'[order_no] IN {"16", "17", "18", "19", "20", "21", "22", "23"})
+		formatString: #,##0
+		lineageTag: aaaa0005-0000-0000-0000-000000000003
+
 	column match_id
 		dataType: string
 		sourceProviderType: nvarchar(max)

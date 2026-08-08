@@ -1,0 +1,105 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
+  "name": "c23c3aa8-a3ff-4eac-bfbe-01725d594723",
+  "position": {
+    "x": 20,
+    "y": 675,
+    "z": 6,
+    "height": 300,
+    "width": 620,
+    "tabOrder": 6
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold fact_hero_matchups"
+                    }
+                  },
+                  "Property": "matchup_label"
+                }
+              },
+              "queryRef": "gold fact_hero_matchups.matchup_label",
+              "nativeQueryRef": "matchup_label"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold fact_hero_matchups"
+                    }
+                  },
+                  "Property": "Matchup Count"
+                }
+              },
+              "queryRef": "gold fact_hero_matchups.Matchup Count",
+              "nativeQueryRef": "Matchup Count"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold fact_hero_matchups"
+                    }
+                  },
+                  "Property": "Radiant Hero Win Rate"
+                }
+              },
+              "queryRef": "gold fact_hero_matchups.Radiant Hero Win Rate",
+              "nativeQueryRef": "Radiant Hero Win Rate"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Measure": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "gold fact_hero_matchups"
+                  }
+                },
+                "Property": "Matchup Count"
+              }
+            },
+            "direction": "Descending"
+          }
+        ]
+      }
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Most common hero matchups'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

@@ -1,0 +1,125 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.2.0/schema.json",
+  "name": "6f2ced1b-ca53-40f4-a2db-56050734ef7c",
+  "position": {
+    "x": 20,
+    "y": 390,
+    "z": 4,
+    "height": 270,
+    "width": 620,
+    "tabOrder": 4
+  },
+  "visual": {
+    "visualType": "clusteredBarChart",
+    "query": {
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Measure": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "gold fact_picks_bans"
+                  }
+                },
+                "Property": "Draft Picks"
+              }
+            },
+            "direction": "Descending"
+          }
+        ],
+        "isDefaultSort": true
+      },
+      "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold dim_hero"
+                    }
+                  },
+                  "Property": "hero_localized_name"
+                }
+              },
+              "queryRef": "gold dim_hero.hero_localized_name",
+              "nativeQueryRef": "hero_localized_name",
+              "active": true
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold fact_picks_bans"
+                    }
+                  },
+                  "Property": "First Picks"
+                }
+              },
+              "queryRef": "gold fact_picks_bans.First Picks",
+              "nativeQueryRef": "First Picks"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold fact_picks_bans"
+                    }
+                  },
+                  "Property": "Mid Picks"
+                }
+              },
+              "queryRef": "gold fact_picks_bans.Mid Picks",
+              "nativeQueryRef": "Mid Picks"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold fact_picks_bans"
+                    }
+                  },
+                  "Property": "Late Picks"
+                }
+              },
+              "queryRef": "gold fact_picks_bans.Late Picks",
+              "nativeQueryRef": "Late Picks"
+            }
+          ]
+        }
+      }
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Picks by draft phase'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

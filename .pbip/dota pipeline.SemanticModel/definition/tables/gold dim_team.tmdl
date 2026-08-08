@@ -68,6 +68,90 @@ table 'gold dim_team'
 
 		annotation SummarizationSetBy = Automatic
 
+	column match_appearances
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: ae014ccc-d5c9-489b-9775-aeefe98d93d9
+		summarizeBy: sum
+		sourceColumn: match_appearances
+
+		annotation SummarizationSetBy = Automatic
+
+	column match_wins
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 97d59ca2-f849-47e1-9059-a36538905502
+		summarizeBy: sum
+		sourceColumn: match_wins
+
+		annotation SummarizationSetBy = Automatic
+
+	column match_losses
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 4a50695c-b73b-4ab1-9d3e-d7829635cdf5
+		summarizeBy: sum
+		sourceColumn: match_losses
+
+		annotation SummarizationSetBy = Automatic
+
+	column match_win_rate
+		dataType: double
+		sourceProviderType: decimal
+		lineageTag: 162bc871-4e13-4dfd-a319-0494e4507dfb
+		summarizeBy: sum
+		sourceColumn: match_win_rate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column match_avg_score
+		dataType: double
+		sourceProviderType: decimal
+		lineageTag: 94191727-897d-4e6f-a611-6446375e6a65
+		summarizeBy: sum
+		sourceColumn: match_avg_score
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column match_avg_opponent_score
+		dataType: double
+		sourceProviderType: decimal
+		lineageTag: 5e2d9f7b-3366-4e50-858d-57eb0ad9c7a6
+		summarizeBy: sum
+		sourceColumn: match_avg_opponent_score
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column match_avg_score_differential
+		dataType: double
+		sourceProviderType: decimal
+		lineageTag: 4fbabc4b-0f0a-4b97-ad51-3e8fce3b4f0c
+		summarizeBy: sum
+		sourceColumn: match_avg_score_differential
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column match_total_score
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: 4296f701-6f56-41ec-bf5b-51b0bc81bf3d
+		summarizeBy: sum
+		sourceColumn: match_total_score
+
+		annotation SummarizationSetBy = Automatic
+
 	partition 'gold dim_team' = m
 		mode: directQuery
 		source =

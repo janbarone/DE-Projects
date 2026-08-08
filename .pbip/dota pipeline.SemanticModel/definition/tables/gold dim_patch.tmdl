@@ -1,0 +1,52 @@
+table 'gold dim_patch'
+	lineageTag: 041002f8-e963-4c78-bbbd-4803e7f1003f
+
+	column patch_id
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: ce7c7e79-07a8-4ae1-aec9-9cc739d90990
+		summarizeBy: none
+		sourceColumn: patch_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column patch_name
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: 37c0a512-cf5c-469f-93d7-f858a2be4838
+		summarizeBy: none
+		sourceColumn: patch_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column patch_date
+		dataType: dateTime
+		formatString: Long Date
+		sourceProviderType: date
+		lineageTag: 88fccf28-60e3-464c-b520-88a469bd0839
+		summarizeBy: none
+		sourceColumn: patch_date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column sort_order
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: a88d860b-2414-4709-9a63-43f5275a710f
+		summarizeBy: none
+		sourceColumn: sort_order
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'gold dim_patch' = m
+		mode: directQuery
+		source =
+				let
+				    Source = PostgreSQL.Database("localhost", "dota"),
+				    gold_dim_patch = Source{[Schema="gold",Item="dim_patch"]}[Data]
+				in
+				    gold_dim_patch
+

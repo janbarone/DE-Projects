@@ -1,0 +1,93 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.2.0/schema.json",
+  "name": "fce86b13-47b5-47aa-aaa5-27b80f8ba8cf",
+  "position": {
+    "x": 870,
+    "y": 100,
+    "z": 7,
+    "height": 300,
+    "width": 390,
+    "tabOrder": 7
+  },
+  "visual": {
+    "visualType": "barChart",
+    "query": {
+      "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold dim_hero"
+                    }
+                  },
+                  "Property": "hero_localized_name"
+                }
+              },
+              "queryRef": "gold dim_hero.hero_localized_name",
+              "nativeQueryRef": "hero_localized_name",
+              "active": true
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold fact_picks_bans"
+                    }
+                  },
+                  "Property": "Draft Picks"
+                }
+              },
+              "queryRef": "gold fact_picks_bans.Draft Picks",
+              "nativeQueryRef": "Draft Picks"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold fact_picks_bans"
+                    }
+                  },
+                  "Property": "Draft Bans"
+                }
+              },
+              "queryRef": "gold fact_picks_bans.Draft Bans",
+              "nativeQueryRef": "Draft Bans"
+            }
+          ]
+        }
+      }
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Picks vs Bans by hero'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

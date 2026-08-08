@@ -78,3 +78,49 @@ models:
         tests: [not_null]
       - name: teamfight_id
         tests: [not_null]
+
+  - name: stg_match_player_minute
+    description: One row per (match, player, minute) - per-minute gold/xp/last_hits/denies flattened from the raw payload arrays. Incremental on match_id.
+    columns:
+      - name: match_id
+        tests: [not_null]
+      - name: player_slot
+        tests: [not_null]
+      - name: minute
+        tests: [not_null]
+      - name: gold
+        tests: [not_null]
+      - name: xp
+        tests: [not_null]
+      - name: last_hits
+        tests: [not_null]
+      - name: denies
+        tests: [not_null]
+
+  - name: stg_match_player_skills
+    description: One row per (match, player, ability upgrade) - ability ids in learning order flattened from the raw ability_upgrades_arr. Incremental on match_id.
+    columns:
+      - name: match_id
+        tests: [not_null]
+      - name: player_slot
+        tests: [not_null]
+      - name: upgrade_index
+        tests: [not_null]
+      - name: ability_id
+        tests: [not_null]
+
+  - name: stg_match_player_item_purchases
+    description: One row per (match, player, item purchase) - item purchases (key = item_internal_name, time = seconds, negative = pre-game) flattened from the raw per-player purchase_log array, minute clamped to 0. Incremental on match_id.
+    columns:
+      - name: match_id
+        tests: [not_null]
+      - name: player_slot
+        tests: [not_null]
+      - name: purchase_index
+        tests: [not_null]
+      - name: item_internal_name
+        tests: [not_null]
+      - name: time_sec
+        tests: [not_null]
+      - name: minute
+        tests: [not_null]

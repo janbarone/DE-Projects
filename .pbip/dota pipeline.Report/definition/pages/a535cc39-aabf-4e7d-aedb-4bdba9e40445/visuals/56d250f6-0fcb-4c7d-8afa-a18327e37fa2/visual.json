@@ -1,0 +1,38 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.2.0/schema.json",
+  "name": "56d250f6-0fcb-4c7d-8afa-a18327e37fa2",
+  "position": {
+    "x": 1100,
+    "y": 15,
+    "z": 7,
+    "height": 95,
+    "width": 180,
+    "tabOrder": 7
+  },
+  "visual": {
+    "visualType": "card",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold fact_match_players"
+                    }
+                  },
+                  "Property": "Avg Healing"
+                }
+              },
+              "queryRef": "gold fact_match_players.Avg Healing",
+              "nativeQueryRef": "Avg Healing"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

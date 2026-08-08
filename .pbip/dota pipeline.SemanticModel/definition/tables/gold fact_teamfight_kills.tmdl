@@ -1,6 +1,10 @@
 table 'gold fact_teamfight_kills'
 	lineageTag: a26f762f-ede8-4364-88c5-105bddfaed78
 
+	measure 'Total Teamfight Kills' = SUM('gold fact_teamfight_kills'[kills])
+		formatString: #,##0
+		lineageTag: 9925c758-9fab-4db2-8057-9748a929c4e1
+
 	column match_id
 		dataType: string
 		sourceProviderType: nvarchar(max)

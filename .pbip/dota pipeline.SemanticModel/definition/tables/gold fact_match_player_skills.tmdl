@@ -1,0 +1,132 @@
+table 'gold fact_match_player_skills'
+	lineageTag: ffff0002-0000-0000-0000-000000000001
+
+	column match_id
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: ffff0002-0000-0000-0000-000000000002
+		summarizeBy: none
+		sourceColumn: match_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column player_slot
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: ffff0002-0000-0000-0000-000000000003
+		summarizeBy: none
+		sourceColumn: player_slot
+
+		annotation SummarizationSetBy = Automatic
+
+	column account_id
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: ffff0002-0000-0000-0000-000000000004
+		summarizeBy: none
+		sourceColumn: account_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column hero_id
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: ffff0002-0000-0000-0000-000000000005
+		summarizeBy: none
+		sourceColumn: hero_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column side
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: ffff0002-0000-0000-0000-000000000006
+		summarizeBy: none
+		sourceColumn: side
+
+		annotation SummarizationSetBy = Automatic
+
+	column upgrade_index
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: ffff0002-0000-0000-0000-000000000007
+		summarizeBy: none
+		sourceColumn: upgrade_index
+
+		annotation SummarizationSetBy = Automatic
+
+	column ability_id
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: ffff0002-0000-0000-0000-000000000008
+		summarizeBy: none
+		sourceColumn: ability_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column ability_internal_name
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: ffff0002-0000-0000-0000-000000000009
+		summarizeBy: none
+		sourceColumn: ability_internal_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column ability_name
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: ffff0002-0000-0000-0000-00000000000a
+		summarizeBy: none
+		sourceColumn: ability_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column minute
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: ffff0002-0000-0000-0000-00000000000b
+		summarizeBy: none
+		sourceColumn: minute
+
+		annotation SummarizationSetBy = Automatic
+
+	column learn_level
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: ffff0002-0000-0000-0000-00000000000c
+		summarizeBy: none
+		sourceColumn: learn_level
+
+		annotation SummarizationSetBy = Automatic
+
+	column player_name
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: ffff0002-0000-0000-0000-00000000000d
+		summarizeBy: none
+		sourceColumn: player_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column hero_localized_name
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: ffff0002-0000-0000-0000-00000000000e
+		summarizeBy: none
+		sourceColumn: hero_localized_name
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'gold fact_match_player_skills' = m
+		mode: directQuery
+		source =
+				let
+				    Source = PostgreSQL.Database("localhost", "dota"),
+				    gold_fact_match_player_skills = Source{[Schema="gold",Item="fact_match_player_skills"]}[Data]
+				in
+				    gold_fact_match_player_skills
+

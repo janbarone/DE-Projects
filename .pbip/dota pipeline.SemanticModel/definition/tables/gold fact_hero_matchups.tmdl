@@ -1,0 +1,70 @@
+table 'gold fact_hero_matchups'
+	lineageTag: 5da6f9c0-1e3c-4219-98f4-79e4389841a6
+
+	measure 'Matchup Count' = COUNTROWS('gold fact_hero_matchups')
+		formatString: #,##0
+		lineageTag: 0ea301c9-9934-480b-8d55-5102a59e1dbb
+
+	measure 'Radiant Hero Wins' = CALCULATE(COUNTROWS('gold fact_hero_matchups'), 'gold fact_hero_matchups'[radiant_win])
+		formatString: #,##0
+		lineageTag: 3a5895fe-4943-4211-a62c-7894833e4dd3
+
+	measure 'Radiant Hero Win Rate' = DIVIDE([Radiant Hero Wins], [Matchup Count])
+		formatString: 0.0%
+		lineageTag: 1524b4b7-5dfb-4012-b371-ed3603605ef5
+
+	column match_id
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: 30f38137-fed9-481d-a312-a934342e542b
+		summarizeBy: none
+		sourceColumn: match_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column radiant_hero_id
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: f70440bc-109f-4084-9217-aebbf055537f
+		summarizeBy: none
+		sourceColumn: radiant_hero_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column dire_hero_id
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: 0d00f0d7-59fe-49fb-8449-7c6776f1afab
+		summarizeBy: none
+		sourceColumn: dire_hero_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column radiant_win
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		sourceProviderType: bit
+		lineageTag: 667dded7-1114-495f-9dba-2f9e0d528481
+		summarizeBy: none
+		sourceColumn: radiant_win
+
+		annotation SummarizationSetBy = Automatic
+
+	column matchup_label
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: aaaa0008-0000-0000-0000-000000000001
+		summarizeBy: none
+		sourceColumn: matchup_label
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'gold fact_hero_matchups' = m
+		mode: directQuery
+		source =
+				let
+				    Source = PostgreSQL.Database("localhost", "dota"),
+				    gold_fact_hero_matchups = Source{[Schema="gold",Item="fact_hero_matchups"]}[Data]
+				in
+				    gold_fact_hero_matchups
+

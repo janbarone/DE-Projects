@@ -54,6 +54,7 @@ from dota_common import (  # noqa: E402
     print_quota,
     quota_remaining,
     timestamp_fetched,
+    wait_exit,
     write_json,
 )
 
@@ -325,6 +326,7 @@ def main() -> None:
     if day_left() is not None and day_left() <= 0:
         print("daily quota already exhausted; nothing to do")
         print_quota()
+        wait_exit("Daily API quota reached - run cannot continue today.")
         return
 
     ts = timestamp_fetched()
@@ -332,6 +334,7 @@ def main() -> None:
     already = 0
     failures = []
     limit_left = args.limit  # None = unlimited
+    quota_stopped = False
 
     try:
         # ---- Phase 1: league priority (drain every league) ----------------
@@ -346,12 +349,16 @@ def main() -> None:
             print(f"reached --limit {args.limit}; skipping proMatches scrape")
         elif day_left() is not None and day_left() <= 0:
             print("daily quota exhausted; skipping proMatches scrape")
+            quota_stopped = True
         else:
             saved = phase2_pro_scrape(args.limit, saved, ts)
+            if day_left() is not None and day_left() <= 0:
+                quota_stopped = True
 
     except QuotaStop as e:
         print(f"\nstopping: daily quota almost used up ({e} remaining)")
         log(f"INFO daily quota low ({e}) - run stopped early")
+        quota_stopped = True
     except KeyboardInterrupt:
         print("\nstopped by user. Already-downloaded matches are skipped on the next run "
               "(re-run the same command to continue).")
@@ -363,6 +370,9 @@ def main() -> None:
         f"quota_minute={q['minute']} quota_day={q['day']}")
     if failures:
         print(f"failed/skipped: {failures}")
+    if quota_stopped:
+        wait_exit("Daily API quota reached - you can re-run the same command after the "
+                  "daily quota resets to continue.")
 
 
 if __name__ == "__main__":

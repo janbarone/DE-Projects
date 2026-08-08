@@ -27,6 +27,12 @@ select
     start_time::date as start_date,
     radiant_score,
     dire_score,
+    case
+        when abs(radiant_score - dire_score) < 5 then 'close'
+        when abs(radiant_score - dire_score) < 10 then 'moderate'
+        when abs(radiant_score - dire_score) < 20 then 'blowout'
+        else 'rout'
+    end as score_bucket,
     radiant_team_id,
     dire_team_id,
     has_radiant_team,

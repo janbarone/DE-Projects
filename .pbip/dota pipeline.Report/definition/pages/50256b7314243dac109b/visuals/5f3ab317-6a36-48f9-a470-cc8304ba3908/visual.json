@@ -1,0 +1,38 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.2.0/schema.json",
+  "name": "5f3ab317-6a36-48f9-a470-cc8304ba3908",
+  "position": {
+    "x": 516,
+    "y": 15,
+    "z": 3,
+    "height": 115,
+    "width": 240,
+    "tabOrder": 3
+  },
+  "visual": {
+    "visualType": "card",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold fact_matches"
+                    }
+                  },
+                  "Property": "Dire Win Rate"
+                }
+              },
+              "queryRef": "gold fact_matches.Dire Win Rate",
+              "nativeQueryRef": "Dire Win Rate"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

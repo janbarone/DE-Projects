@@ -112,6 +112,18 @@ models:
               arguments:
                 to: ref('dim_region')
                 field: region_id
+      - name: score_bucket
+        tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['close', 'moderate', 'blowout', 'rout']
+      - name: patch
+        tests:
+          - relationships:
+              arguments:
+                to: ref('dim_patch')
+                field: patch_id
       - name: radiant_team_id
         tests:
           - relationships:
@@ -159,6 +171,12 @@ models:
               arguments:
                 to: ref('fact_matches')
                 field: match_id
+      - name: side
+        tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['Radiant', 'Dire']
       - name: account_id
         tests:
           - relationships:
@@ -171,6 +189,146 @@ models:
               arguments:
                 to: ref('dim_hero')
                 field: hero_id
+      - name: comp_sig
+        tests: [not_null]
+      - name: item_0
+        tests:
+          - relationships:
+              arguments:
+                to: ref('dim_item')
+                field: item_id
+
+  - name: dim_patch
+    description: Patch dimension decoding OpenDota's numeric patch ids to names/dates.
+    columns:
+      - name: patch_id
+        tests: [not_null, unique]
+
+  - name: dim_item
+    description: Decode lookup for item ids (internal name + display name), flattened from item_ids joined to items.
+    columns:
+      - name: item_id
+        tests: [not_null, unique]
+      - name: item_name
+        tests: [not_null]
+
+  - name: fact_hero_matchups
+    description: One row per (match, radiant hero, dire hero). Enables hero-vs-hero matchup analysis.
+    columns:
+      - name: match_id
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('fact_matches')
+                field: match_id
+      - name: radiant_hero_id
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_hero')
+                field: hero_id
+      - name: dire_hero_id
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_hero')
+                field: hero_id
+      - name: matchup_label
+        tests: [not_null]
+      - name: radiant_win
+        tests: [not_null]
+
+  - name: fact_team_h2h
+    description: One row per match with both teams known, canonical team pair, team_a_win.
+    columns:
+      - name: match_id
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('fact_matches')
+                field: match_id
+      - name: team_a_id
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_team')
+                field: team_id
+      - name: team_b_id
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_team')
+                field: team_id
+      - name: team_a_win
+        tests: [not_null]
+
+  - name: fact_hero_matchups_hero
+    description: Hero-centric matchup fact, one row per (match, hero, opponent). A single active dim_hero relationship filters a hero's games on both sides so a hero slicer shows the hero's true win rate vs every opponent.
+    columns:
+      - name: match_id
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('fact_matches')
+                field: match_id
+      - name: hero_id
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_hero')
+                field: hero_id
+      - name: opponent_id
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_hero')
+                field: hero_id
+      - name: matchup_label
+        tests: [not_null]
+      - name: hero_win
+        tests: [not_null]
+
+  - name: fact_team_compositions
+    description: Team role-composition fact, one row per (match, team). Primary role is roles[0]; role_label is the sorted 5-hero role multiset. Full 5-hero teams only.
+    columns:
+      - name: match_id
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('fact_matches')
+                field: match_id
+      - name: team_number
+        tests: [not_null]
+      - name: side
+        tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['Radiant', 'Dire']
+      - name: team_id
+        tests:
+          - relationships:
+              arguments:
+                to: ref('dim_team')
+                field: team_id
+      - name: hero_count
+        tests: [not_null]
+      - name: role_label
+        tests: [not_null]
+      - name: support_count
+        tests: [not_null]
+      - name: carry_count
+        tests: [not_null]
 
   - name: fact_picks_bans
     description: One row per (match, draft order).
@@ -201,6 +359,12 @@ models:
                 field: match_id
       - name: teamfight_id
         tests: [not_null]
+      - name: fight_phase
+        tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['pre-game', 'early (0-20m)', 'mid (20-40m)', 'late (40m+)']
 
   - name: fact_teamfight_players
     description: One row per (match, teamfight, player) at hero level, derived from the positional players array.
@@ -321,4 +485,234 @@ models:
                 to: ref('dim_hero')
                 field: hero_id
       - name: kills
+        tests: [not_null]
+
+  - name: fact_phase_momentum
+    description: One row per (match, team, fight phase) with the team's gold/XP swing inside that phase's teamfights and the final team outcome. Excludes pre-game fights.
+    columns:
+      - name: match_id
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('fact_matches')
+                field: match_id
+      - name: team_number
+        tests: [not_null]
+      - name: side
+        tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['Radiant', 'Dire']
+      - name: fight_phase
+        tests: [not_null]
+      - name: phase_ord
+        tests: [not_null]
+      - name: gold_delta
+        tests: [not_null]
+      - name: fights
+        tests: [not_null]
+
+  - name: fact_match_timeline
+    description: One row per (match, side, teamfight) - a time progression of each team through the match. Shows top items and abilities used per teamfight, gold/XP swing, and deaths. Excludes pre-game fights.
+    columns:
+      - name: match_id
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('fact_matches')
+                field: match_id
+      - name: teamfight_id
+        tests: [not_null]
+      - name: team_number
+        tests: [not_null]
+      - name: side
+        tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['Radiant', 'Dire']
+      - name: start_min
+        tests: [not_null]
+      - name: gold_delta
+        tests: [not_null]
+      - name: deaths
+        tests: [not_null]
+
+  - name: fact_match_timeline_events
+    description: One row per (match, teamfight, player, item/ability use) - chronological breakdown of what every player used in every teamfight. Items are decoded to display names, abilities keep internal names. Excludes pre-game fights.
+    columns:
+      - name: match_id
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('fact_matches')
+                field: match_id
+      - name: teamfight_id
+        tests: [not_null]
+      - name: start_min
+        tests: [not_null]
+      - name: side
+        tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['Radiant', 'Dire']
+      - name: player_slot
+        tests: [not_null]
+      - name: kind
+        tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['Item', 'Ability']
+      - name: name
+        tests: [not_null]
+      - name: uses
+        tests: [not_null]
+      - name: hero_id
+        tests:
+          - relationships:
+              arguments:
+                to: ref('dim_hero')
+                field: hero_id
+      - name: account_id
+        tests:
+          - relationships:
+              arguments:
+                to: ref('dim_player')
+                field: account_id
+
+  - name: fact_match_player_minute
+    description: One row per (match, player, minute) - the player's progression through the match. Gold/XP/last_hits/denies are cumulative values at that minute from the raw per-minute arrays; level is derived from cumulative xp via the xp_level constant.
+    columns:
+      - name: match_id
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('fact_matches')
+                field: match_id
+      - name: player_slot
+        tests: [not_null]
+      - name: account_id
+        tests:
+          - relationships:
+              arguments:
+                to: ref('dim_player')
+                field: account_id
+      - name: hero_id
+        tests:
+          - relationships:
+              arguments:
+                to: ref('dim_hero')
+                field: hero_id
+      - name: side
+        tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['Radiant', 'Dire']
+      - name: minute
+        tests: [not_null]
+      - name: gold
+        tests: [not_null]
+      - name: xp
+        tests: [not_null]
+      - name: level
+        tests: [not_null]
+      - name: last_hits
+        tests: [not_null]
+      - name: denies
+        tests: [not_null]
+
+  - name: fact_match_player_skills
+    description: 'One row per (match, player, ability upgrade) - the hero''s skill progression. ability_upgrades_arr is a flat ordered array of ability ids; ids are decoded to display names via constants. minute is an approximation: the first minute the player''s derived level reached the skill point''s learn level.'
+    columns:
+      - name: match_id
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('fact_matches')
+                field: match_id
+      - name: player_slot
+        tests: [not_null]
+      - name: account_id
+        tests:
+          - relationships:
+              arguments:
+                to: ref('dim_player')
+                field: account_id
+      - name: hero_id
+        tests:
+          - relationships:
+              arguments:
+                to: ref('dim_hero')
+                field: hero_id
+      - name: side
+        tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['Radiant', 'Dire']
+      - name: upgrade_index
+        tests: [not_null]
+      - name: ability_id
+        tests: [not_null]
+      - name: ability_name
+        tests: [not_null]
+      - name: minute
+        tests: [not_null]
+      - name: learn_level
+        tests: [not_null]
+
+  - name: dim_match_minute
+    description: Minute dimension 0..max-minutes across the per-minute/progression facts. Single shared minute column so the Play Axis can scrub the Itemization and Skill levelling tables.
+    columns:
+      - name: minute
+        tests: [not_null, unique]
+
+  - name: fact_match_player_item_purchases
+    description: 'One row per (match, player, item purchase) - the hero''s itemization over time. Items decoded to display names via dim_item, pre-game purchases clamped to minute 0.'
+    columns:
+      - name: match_id
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('fact_matches')
+                field: match_id
+      - name: player_slot
+        tests: [not_null]
+      - name: account_id
+        tests:
+          - relationships:
+              arguments:
+                to: ref('dim_player')
+                field: account_id
+      - name: hero_id
+        tests:
+          - relationships:
+              arguments:
+                to: ref('dim_hero')
+                field: hero_id
+      - name: side
+        tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['Radiant', 'Dire']
+      - name: purchase_index
+        tests: [not_null]
+      - name: item_internal_name
+        tests: [not_null]
+      - name: time_sec
+        tests: [not_null]
+      - name: minute
+        tests: [not_null]
+      - name: item_name
         tests: [not_null]

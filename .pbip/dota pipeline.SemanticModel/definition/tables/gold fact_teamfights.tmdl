@@ -1,6 +1,22 @@
 table 'gold fact_teamfights'
 	lineageTag: 445b4ef2-304a-49db-98d0-04c7ebe39ca3
 
+	measure 'Total Teamfights' = COUNTROWS('gold fact_teamfights')
+		formatString: #,##0
+		lineageTag: 7da9d40f-86e8-470f-8ad4-103d5f6cb954
+
+	measure 'Avg Fights per Match' = DIVIDE(COUNTROWS('gold fact_teamfights'), DISTINCTCOUNT('gold fact_teamfights'[match_id]))
+		formatString: 0.0
+		lineageTag: 1ea672c6-d2d6-4303-ae31-7031077df934
+
+	measure 'Avg Fight Duration (min)' = AVERAGE('gold fact_teamfights'[duration_min])
+		formatString: 0.0
+		lineageTag: b9a36a78-5840-4780-b6c4-f3773359fb84
+
+	measure 'Avg Fights per Match by Phase' = DIVIDE(COUNTROWS('gold fact_teamfights'), DISTINCTCOUNT('gold fact_teamfights'[match_id]))
+		formatString: 0.0
+		lineageTag: aaaa0003-0000-0000-0000-000000000001
+
 	column match_id
 		dataType: string
 		sourceProviderType: nvarchar(max)
@@ -129,6 +145,15 @@ table 'gold fact_teamfights'
 		lineageTag: 7a8ec233-6d8f-4716-a53b-c60b9d518229
 		summarizeBy: none
 		sourceColumn: loaded_at
+
+		annotation SummarizationSetBy = Automatic
+
+	column fight_phase
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: aaaa0003-0000-0000-0000-0000000000a1
+		summarizeBy: none
+		sourceColumn: fight_phase
 
 		annotation SummarizationSetBy = Automatic
 

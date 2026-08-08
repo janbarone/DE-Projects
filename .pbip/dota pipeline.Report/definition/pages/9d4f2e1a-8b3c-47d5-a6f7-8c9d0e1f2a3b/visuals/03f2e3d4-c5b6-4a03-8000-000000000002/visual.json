@@ -1,0 +1,180 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
+  "name": "03f2e3d4-c5b6-4a03-8000-000000000002",
+  "position": {
+    "x": 649.81108312342576,
+    "y": 329.7229219143577,
+    "z": 11,
+    "height": 190,
+    "width": 610,
+    "tabOrder": 11
+  },
+  "visual": {
+    "visualType": "table",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold fact_match_player_item_purchases"
+                    }
+                  },
+                  "Property": "minute"
+                }
+              },
+              "queryRef": "gold fact_match_player_item_purchases.minute",
+              "nativeQueryRef": "minute",
+              "active": true
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold fact_match_player_item_purchases"
+                    }
+                  },
+                  "Property": "player_name"
+                }
+              },
+              "queryRef": "gold fact_match_player_item_purchases.player_name",
+              "nativeQueryRef": "player_name",
+              "active": true
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold fact_match_player_item_purchases"
+                    }
+                  },
+                  "Property": "hero_localized_name"
+                }
+              },
+              "queryRef": "gold fact_match_player_item_purchases.hero_localized_name",
+              "nativeQueryRef": "hero_localized_name",
+              "active": true
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold fact_match_player_item_purchases"
+                    }
+                  },
+                  "Property": "item_name"
+                }
+              },
+              "queryRef": "gold fact_match_player_item_purchases.item_name",
+              "nativeQueryRef": "item_name",
+              "active": true
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "gold fact_match_player_item_purchases"
+                  }
+                },
+                "Property": "minute"
+              }
+            },
+            "direction": "Ascending"
+          }
+        ]
+      }
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Dire - itemization over time'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "03f2e3d4-c5b6-4a03-8000-000000000002-f",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "gold fact_match_player_item_purchases"
+              }
+            },
+            "Property": "side"
+          }
+        },
+        "type": "Advanced",
+        "filter": {
+          "Version": 2,
+          "From": [
+            {
+              "Name": "f",
+              "Entity": "gold fact_match_player_item_purchases",
+              "Type": 0
+            }
+          ],
+          "Where": [
+            {
+              "Condition": {
+                "Not": {
+                  "Expression": {
+                    "Comparison": {
+                      "ComparisonKind": 0,
+                      "Left": {
+                        "Column": {
+                          "Expression": {
+                            "SourceRef": {
+                              "Source": "f"
+                            }
+                          },
+                          "Property": "side"
+                        }
+                      },
+                      "Right": {
+                        "Literal": {
+                          "Value": "'Radiant'"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "howCreated": "User"
+      }
+    ]
+  }
+}

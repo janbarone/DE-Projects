@@ -1,6 +1,10 @@
 table 'gold fact_teamfight_ability_uses'
 	lineageTag: 4a84dfa0-17de-4a4f-8cf9-3bd5fc57daa1
 
+	measure 'Total Ability Uses' = SUM('gold fact_teamfight_ability_uses'[uses])
+		formatString: #,##0
+		lineageTag: 5abf0074-912c-4785-9d4b-16eef6c65c20
+
 	column match_id
 		dataType: string
 		sourceProviderType: nvarchar(max)

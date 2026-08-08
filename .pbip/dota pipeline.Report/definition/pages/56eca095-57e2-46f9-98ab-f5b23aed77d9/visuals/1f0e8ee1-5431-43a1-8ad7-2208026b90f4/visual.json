@@ -1,0 +1,91 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
+  "name": "1f0e8ee1-5431-43a1-8ad7-2208026b90f4",
+  "position": {
+    "x": 815,
+    "y": 415,
+    "z": 9,
+    "height": 290,
+    "width": 445,
+    "tabOrder": 9
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold fact_teamfight_kills"
+                    }
+                  },
+                  "Property": "victim_hero_name"
+                }
+              },
+              "queryRef": "gold fact_teamfight_kills.victim_hero_name",
+              "nativeQueryRef": "victim_hero_name"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold fact_teamfight_kills"
+                    }
+                  },
+                  "Property": "Total Teamfight Kills"
+                }
+              },
+              "queryRef": "gold fact_teamfight_kills.Total Teamfight Kills",
+              "nativeQueryRef": "Total Teamfight Kills"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Measure": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "gold fact_teamfight_kills"
+                  }
+                },
+                "Property": "Total Teamfight Kills"
+              }
+            },
+            "direction": "Descending"
+          }
+        ]
+      }
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Most killed heroes'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

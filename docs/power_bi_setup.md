@@ -19,13 +19,28 @@ If a relationship fails to validate, first check Power BI **auto-created**
 relationships on import (tables share key column names) and **delete the
 auto-created ones** before creating yours.
 
-## 2. Create the relationships (27 total)
+## 2. Create the relationships (35 total, core schema)
 
 Power BI → **Model view → Manage relationships → New**. For each relationship:
 
 - **Cardinality:** many-to-one (\*:1) by default; the ones marked (1:\*) are one-to-many.
 - **Cross filter direction:** all Single. Default flows **Many→1**; the (1:\*) links flow **1→Many**.
 - Tick **"Make this relationship active"** only for the active ones below.
+
+> These relationships already exist in `.pbip/.../relationships.tmdl`. The
+> tables below marked *(2026-08-05)* are new from the feature pass — see
+> `docs/report_status.md` §5b. Their "second" hero/team link is intentionally
+> **inactive** (`dire_hero_id`, `team_b_id`) because DirectQuery allows only one
+> active relationship per column pair; use `USERELATIONSHIP` in measures.
+> `dim_item` *(2026-08-05)* joins to `fact_match_players.item_0` for the
+> "first items" table on the Economy page.
+
+> ⚠️ **This guide covers the round 1–3 star schema only.** The model now has **31
+> tables / 53 relationships**. The round 4–7 additions (timeline +
+> `fact_phase_momentum`, `fact_team_compositions`, and the per-minute
+> progression facts `fact_match_player_minute` / `_skills` /
+> `_item_purchases` + `dim_match_minute`) follow the same many-to-one pattern
+> and are enumerated in `docs/data_model.md` §"Gold relationship table".
 
 ### `fact_matches` → dimensions (many-to-one, *:1)
 
@@ -36,6 +51,7 @@ Power BI → **Model view → Manage relationships → New**. For each relations
 | `lobby_type_id` | `dim_lobby_type` | `lobby_type_id` | yes |
 | `region_id` | `dim_region` | `region_id` | yes |
 | `start_date` | `dim_date` | `date` | yes |
+| `patch` | `dim_patch` *(2026-08-05)* | `patch_id` | yes |
 
 ### `fact_matches` → child facts (one-to-many, 1:*)
 
@@ -45,6 +61,8 @@ Power BI → **Model view → Manage relationships → New**. For each relations
 | `match_id` | `fact_picks_bans` | `match_id` | yes |
 | `match_id` | `fact_teamfights` | `match_id` | yes |
 | `match_id` | `fact_team_matches` | `match_id` | yes |
+| `match_id` | `fact_hero_matchups` *(2026-08-05)* | `match_id` | yes |
+| `match_id` | `fact_team_h2h` *(2026-08-05)* | `match_id` | yes |
 
 ### `fact_team_matches` → `dim_team` (bridge, many-to-one, *:1)
 
@@ -68,6 +86,30 @@ inactive relationship needed).
 | From column | To table | To column | Active |
 |-------------|----------|-----------|--------|
 | `hero_id` | `dim_hero` | `hero_id` | yes |
+
+### `fact_hero_matchups` → (many-to-one, *:1) *(2026-08-05)*
+
+| From column | To table | To column | Active |
+|-------------|----------|-----------|--------|
+| `radiant_hero_id` | `dim_hero` | `hero_id` | yes |
+| `dire_hero_id` | `dim_hero` | `hero_id` | **no** (use `USERELATIONSHIP`) |
+
+### `fact_team_h2h` → (many-to-one, *:1) *(2026-08-05)*
+
+| From column | To table | To column | Active |
+|-------------|----------|-----------|--------|
+| `team_a_id` | `dim_team` | `team_id` | yes |
+| `team_b_id` | `dim_team` | `team_id` | **no** (use `USERELATIONSHIP`) |
+
+### `fact_match_players` → `dim_item` (many-to-one, *:1) *(2026-08-05)*
+
+| From column | To table | To column | Active |
+|-------------|----------|-----------|--------|
+| `item_0` | `dim_item` | `item_id` | yes |
+
+`dim_item` decodes numeric `item_id`s to display names. `item_0` is the item
+held in slot 0 at game end (typically a starting item) and is what the Economy
+page's "most common first items" table uses.
 
 ### `dim_hero` → bridge (one-to-many, 1:*)
 
@@ -119,11 +161,16 @@ All others are many-to-one.
   the one-to-many links): selecting a league / team / player / hero / game mode /
   lobby / region filters the fact tables, but facts never filter the dimensions.
   In the model the arrow points from the dimension toward the fact table.
-- **Two exceptions - bidirectional (cross filter = Both):**
-  `fact_matches ↔ fact_match_players` and `fact_matches ↔ fact_team_matches`.
-  These let hero / player / team slicers (attached to the leaf facts) flow back
-  up to the hub `fact_matches`, so a single slicer filters the whole report
-  (matches, picks, teamfights, and all other dimensions).
+- **Three exceptions - bidirectional (cross filter = Both):**
+  `fact_matches ↔ fact_match_players`, `fact_matches ↔ fact_team_matches`, and
+  `dim_hero ↔ dim_hero_role`.
+  The first two let hero / player / team slicers (attached to the leaf facts)
+  flow back up to the hub `fact_matches`, so a single slicer filters the whole
+  report (matches, picks, teamfights, and all other dimensions). The third
+  (`dim_hero_role`) makes the **Role slicer** filter `dim_hero` and everything
+  downstream — a plain one-direction link (from `dim_hero` down to the bridge)
+  means a role selection has no effect, because the filter can never reach the
+  heroes. Set it to **Both** in Model view if it is ever recreated.
 - Team filtering flows `dim_team` → `fact_team_matches` → `fact_matches`: a team
   selected in a slicer matches rows on **both** the radiant and dire side of its
   matches (that is the point of the bridge - see below).

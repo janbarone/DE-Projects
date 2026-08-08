@@ -106,6 +106,114 @@ relationship d2f24524-8663-501d-f956-adc257fc3c45
 	toColumn: 'gold fact_matches'.match_id
 
 relationship 87c19c42-382e-a62c-a2d4-ee6c1efd9cdc
+	crossFilteringBehavior: bothDirections
 	fromColumn: 'gold dim_hero_role'.hero_id
 	toColumn: 'gold dim_hero'.hero_id
+
+relationship 64255ee2-62a9-4b0c-8719-bfd16db81e56
+	fromColumn: 'gold fact_matches'.patch
+	toColumn: 'gold dim_patch'.patch_id
+
+relationship f4fb9c0c-cfb3-41a2-a2d0-413f89661fa0
+	fromColumn: 'gold fact_hero_matchups'.match_id
+	toColumn: 'gold fact_matches'.match_id
+
+relationship 0c58d835-3d8f-4a94-9240-fe448480c7b5
+	fromColumn: 'gold fact_hero_matchups'.radiant_hero_id
+	toColumn: 'gold dim_hero'.hero_id
+
+relationship 3280da20-1cd6-4f00-a531-59f0dfc062fa
+	isActive: false
+	fromColumn: 'gold fact_hero_matchups'.dire_hero_id
+	toColumn: 'gold dim_hero'.hero_id
+
+relationship 50a009b0-601b-4634-8c85-b05046b7201a
+	fromColumn: 'gold fact_team_h2h'.match_id
+	toColumn: 'gold fact_matches'.match_id
+
+relationship ef969cfb-5c47-45f5-b880-68543ac92a1c
+	fromColumn: 'gold fact_team_h2h'.team_a_id
+	toColumn: 'gold dim_team'.team_id
+
+relationship 3cc81f26-d426-43b6-9850-2a68b827c887
+	isActive: false
+	fromColumn: 'gold fact_team_h2h'.team_b_id
+	toColumn: 'gold dim_team'.team_id
+
+relationship aaaa0007-0000-0000-0000-000000000001
+	fromColumn: 'gold fact_match_players'.item_0
+	toColumn: 'gold dim_item'.item_id
+
+relationship aaaa000b-0000-0000-0000-000000000001
+	fromColumn: 'gold fact_hero_matchups_hero'.hero_id
+	toColumn: 'gold dim_hero'.hero_id
+
+relationship aaaa000b-0000-0000-0000-000000000002
+	isActive: false
+	fromColumn: 'gold fact_hero_matchups_hero'.opponent_id
+	toColumn: 'gold dim_hero'.hero_id
+
+relationship aaaa000b-0000-0000-0000-000000000003
+	fromColumn: 'gold fact_hero_matchups_hero'.match_id
+	toColumn: 'gold fact_matches'.match_id
+
+relationship aaaa000c-0000-0000-0000-000000000001
+	fromColumn: 'gold fact_team_compositions'.match_id
+	toColumn: 'gold fact_matches'.match_id
+
+relationship aaaa000c-0000-0000-0000-000000000002
+	fromColumn: 'gold fact_team_compositions'.team_id
+	toColumn: 'gold dim_team'.team_id
+
+relationship dddd0002-0000-0000-0000-000000000001
+	fromColumn: 'gold fact_match_timeline'.match_id
+	toColumn: 'gold fact_matches'.match_id
+
+relationship eeee0002-0000-0000-0000-000000000001
+	fromColumn: 'gold fact_match_timeline_events'.match_id
+	toColumn: 'gold fact_matches'.match_id
+
+relationship ffff0001-0000-0000-0000-000000000010
+	fromColumn: 'gold fact_match_player_minute'.match_id
+	toColumn: 'gold fact_matches'.match_id
+
+relationship ffff0001-0000-0000-0000-000000000011
+	fromColumn: 'gold fact_match_player_minute'.hero_id
+	toColumn: 'gold dim_hero'.hero_id
+
+relationship ffff0001-0000-0000-0000-000000000012
+	fromColumn: 'gold fact_match_player_minute'.account_id
+	toColumn: 'gold dim_player'.account_id
+
+relationship ffff0002-0000-0000-0000-000000000010
+	fromColumn: 'gold fact_match_player_skills'.match_id
+	toColumn: 'gold fact_matches'.match_id
+
+relationship ffff0002-0000-0000-0000-000000000011
+	fromColumn: 'gold fact_match_player_skills'.hero_id
+	toColumn: 'gold dim_hero'.hero_id
+
+relationship ffff0002-0000-0000-0000-000000000012
+	fromColumn: 'gold fact_match_player_skills'.account_id
+	toColumn: 'gold dim_player'.account_id
+
+relationship ffff0002-0000-0000-0000-000000000013
+	fromColumn: 'gold fact_match_player_skills'.minute
+	toColumn: 'gold dim_match_minute'.minute
+
+relationship ffff0003-0000-0000-0000-000000000010
+	fromColumn: 'gold fact_match_player_item_purchases'.match_id
+	toColumn: 'gold fact_matches'.match_id
+
+relationship ffff0003-0000-0000-0000-000000000011
+	fromColumn: 'gold fact_match_player_item_purchases'.hero_id
+	toColumn: 'gold dim_hero'.hero_id
+
+relationship ffff0003-0000-0000-0000-000000000012
+	fromColumn: 'gold fact_match_player_item_purchases'.account_id
+	toColumn: 'gold dim_player'.account_id
+
+relationship ffff0003-0000-0000-0000-000000000013
+	fromColumn: 'gold fact_match_player_item_purchases'.minute
+	toColumn: 'gold dim_match_minute'.minute
 

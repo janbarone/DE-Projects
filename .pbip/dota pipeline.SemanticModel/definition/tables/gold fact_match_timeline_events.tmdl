@@ -1,0 +1,153 @@
+table 'gold fact_match_timeline_events'
+	lineageTag: eeee0001-0000-0000-0000-000000000001
+
+	column match_id
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: eeee0001-0000-0000-0000-000000000002
+		summarizeBy: none
+		sourceColumn: match_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column teamfight_id
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: eeee0001-0000-0000-0000-000000000003
+		summarizeBy: none
+		sourceColumn: teamfight_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column start_min
+		dataType: double
+		sourceProviderType: decimal
+		lineageTag: eeee0001-0000-0000-0000-000000000004
+		summarizeBy: none
+		sourceColumn: start_min
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column side
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: eeee0001-0000-0000-0000-000000000005
+		summarizeBy: none
+		sourceColumn: side
+
+		annotation SummarizationSetBy = Automatic
+
+	column player_slot
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: eeee0001-0000-0000-0000-000000000006
+		summarizeBy: none
+		sourceColumn: player_slot
+
+		annotation SummarizationSetBy = Automatic
+
+	column account_id
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: eeee0001-0000-0000-0000-000000000007
+		summarizeBy: none
+		sourceColumn: account_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column hero_id
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: eeee0001-0000-0000-0000-000000000008
+		summarizeBy: none
+		sourceColumn: hero_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column player_name
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: eeee0001-0000-0000-0000-000000000009
+		summarizeBy: none
+		sourceColumn: player_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column hero_localized_name
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: eeee0001-0000-0000-0000-00000000000a
+		summarizeBy: none
+		sourceColumn: hero_localized_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column kind
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: eeee0001-0000-0000-0000-00000000000b
+		summarizeBy: none
+		sourceColumn: kind
+
+		annotation SummarizationSetBy = Automatic
+
+	column name
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: eeee0001-0000-0000-0000-00000000000c
+		summarizeBy: none
+		sourceColumn: name
+
+		annotation SummarizationSetBy = Automatic
+
+	column uses
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: eeee0001-0000-0000-0000-00000000000d
+		summarizeBy: sum
+		sourceColumn: uses
+
+		annotation SummarizationSetBy = Automatic
+
+	column gold_delta
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: eeee0001-0000-0000-0000-00000000000e
+		summarizeBy: sum
+		sourceColumn: gold_delta
+
+		annotation SummarizationSetBy = Automatic
+
+	column xp_delta
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: eeee0001-0000-0000-0000-00000000000f
+		summarizeBy: sum
+		sourceColumn: xp_delta
+
+		annotation SummarizationSetBy = Automatic
+
+	column deaths
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: eeee0001-0000-0000-0000-000000000010
+		summarizeBy: sum
+		sourceColumn: deaths
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'gold fact_match_timeline_events' = m
+		mode: directQuery
+		source =
+				let
+				    Source = PostgreSQL.Database("localhost", "dota"),
+				    gold_fact_match_timeline_events = Source{[Schema="gold",Item="fact_match_timeline_events"]}[Data]
+				in
+				    gold_fact_match_timeline_events
+

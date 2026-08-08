@@ -1,0 +1,22 @@
+table 'gold dim_match_minute'
+	lineageTag: ffff0004-0000-0000-0000-000000000001
+
+	column minute
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: ffff0004-0000-0000-0000-000000000002
+		summarizeBy: none
+		sourceColumn: minute
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'gold dim_match_minute' = m
+		mode: directQuery
+		source =
+				let
+				    Source = PostgreSQL.Database("localhost", "dota"),
+				    gold_dim_match_minute = Source{[Schema="gold",Item="dim_match_minute"]}[Data]
+				in
+				    gold_dim_match_minute
+

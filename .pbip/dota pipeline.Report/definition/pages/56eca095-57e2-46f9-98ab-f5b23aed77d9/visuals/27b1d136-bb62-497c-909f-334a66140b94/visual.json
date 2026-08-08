@@ -1,0 +1,38 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.2.0/schema.json",
+  "name": "27b1d136-bb62-497c-909f-334a66140b94",
+  "position": {
+    "x": 285,
+    "y": 100,
+    "z": 4,
+    "height": 115,
+    "width": 250,
+    "tabOrder": 4
+  },
+  "visual": {
+    "visualType": "card",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold fact_teamfights"
+                    }
+                  },
+                  "Property": "Avg Fights per Match"
+                }
+              },
+              "queryRef": "gold fact_teamfights.Avg Fights per Match",
+              "nativeQueryRef": "Avg Fights per Match"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

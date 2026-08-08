@@ -1,0 +1,70 @@
+table 'gold fact_hero_matchups_hero'
+	lineageTag: aaaa0009-0000-0000-0000-000000000001
+
+	measure 'Hero Matchup Games' = COUNTROWS('gold fact_hero_matchups_hero')
+		formatString: #,##0
+		lineageTag: aaaa0009-0000-0000-0000-000000000010
+
+	measure 'Hero Matchup Wins' = CALCULATE(COUNTROWS('gold fact_hero_matchups_hero'), 'gold fact_hero_matchups_hero'[hero_win])
+		formatString: #,##0
+		lineageTag: aaaa0009-0000-0000-0000-000000000011
+
+	measure 'Hero Matchup Win Rate' = DIVIDE([Hero Matchup Wins], [Hero Matchup Games])
+		formatString: 0.0%
+		lineageTag: aaaa0009-0000-0000-0000-000000000012
+
+	column match_id
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: aaaa0009-0000-0000-0000-000000000002
+		summarizeBy: none
+		sourceColumn: match_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column hero_id
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: aaaa0009-0000-0000-0000-000000000003
+		summarizeBy: none
+		sourceColumn: hero_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column opponent_id
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: aaaa0009-0000-0000-0000-000000000004
+		summarizeBy: none
+		sourceColumn: opponent_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column matchup_label
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: aaaa0009-0000-0000-0000-000000000005
+		summarizeBy: none
+		sourceColumn: matchup_label
+
+		annotation SummarizationSetBy = Automatic
+
+	column hero_win
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		sourceProviderType: bit
+		lineageTag: aaaa0009-0000-0000-0000-000000000006
+		summarizeBy: none
+		sourceColumn: hero_win
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'gold fact_hero_matchups_hero' = m
+		mode: directQuery
+		source =
+				let
+				    Source = PostgreSQL.Database("localhost", "dota"),
+				    gold_fact_hero_matchups_hero = Source{[Schema="gold",Item="fact_hero_matchups_hero"]}[Data]
+				in
+				    gold_fact_hero_matchups_hero
+

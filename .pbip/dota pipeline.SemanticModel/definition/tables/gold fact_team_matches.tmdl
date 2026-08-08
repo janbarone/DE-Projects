@@ -1,6 +1,22 @@
 table 'gold fact_team_matches'
 	lineageTag: 0fb933b3-366e-449d-a08a-fc695e89f14f
 
+	measure 'Team Appearances' = COUNTROWS('gold fact_team_matches')
+		formatString: #,##0
+		lineageTag: d32eec87-2acf-4a4d-9627-e7687901574a
+
+	measure 'Team Wins' = CALCULATE(COUNTROWS('gold fact_team_matches'), 'gold fact_team_matches'[team_win])
+		formatString: #,##0
+		lineageTag: bf7d93a9-6f11-40c0-92cb-a8313744e30f
+
+	measure 'Team Win Rate' = DIVIDE([Team Wins], [Team Appearances])
+		formatString: 0.0%
+		lineageTag: 0f4058c5-b5ff-414b-924f-ba6fbf819539
+
+	measure 'Avg Score Differential' = AVERAGE('gold fact_team_matches'[team_score]) - AVERAGE('gold fact_team_matches'[opponent_score])
+		formatString: 0.0
+		lineageTag: 9395fcd4-b503-4018-aa82-77a3727ef1b2
+
 	column match_id
 		dataType: string
 		sourceProviderType: nvarchar(max)

@@ -20,6 +20,12 @@ select
     round(start_time / 60.0, 2)   as start_min,
     round(end_time / 60.0, 2)     as end_min,
     round(last_death / 60.0, 2)   as last_death_min,
+    case
+        when start_time < 0 then 'pre-game'
+        when start_time / 60.0 < 20 then 'early (0-20m)'
+        when start_time / 60.0 < 40 then 'mid (20-40m)'
+        else 'late (40m+)'
+    end as fight_phase,
     deaths,
     duration_sec,
     round(duration_sec / 60.0, 2) as duration_min,

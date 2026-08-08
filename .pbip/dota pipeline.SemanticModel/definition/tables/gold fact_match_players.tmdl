@@ -1,6 +1,118 @@
 table 'gold fact_match_players'
 	lineageTag: 22233bf7-4af2-42a9-ae07-a875ea33ddb1
 
+	measure 'Total Picks' = COUNTROWS('gold fact_match_players')
+		formatString: #,##0
+		lineageTag: 0ada0832-b3d0-42d0-85c5-e9651fdb89a4
+
+	measure 'Total Player Wins' = CALCULATE(COUNTROWS('gold fact_match_players'), 'gold fact_match_players'[team_win])
+		formatString: #,##0
+		lineageTag: 3565ff0d-eb87-4e56-b14e-b5097c537ddd
+
+	measure 'Player Win Rate' = DIVIDE([Total Player Wins], [Total Picks])
+		formatString: 0.0%
+		lineageTag: 1aa625b5-5cc4-4b73-9d61-3adfe6ca9743
+
+	measure 'Avg KDA' = AVERAGE('gold fact_match_players'[kda])
+		formatString: 0.00
+		lineageTag: 12e0a4a3-b68c-43bf-940b-aaacf0ded3de
+
+	measure 'Avg GPM' = AVERAGE('gold fact_match_players'[gold_per_min])
+		formatString: 0
+		lineageTag: b57d0088-11f6-42fb-a762-0015bff31603
+
+	measure 'Avg XPM' = AVERAGE('gold fact_match_players'[xp_per_min])
+		formatString: 0
+		lineageTag: 6375f9b3-85d0-48fc-a478-aa2f4c2b7ba4
+
+	measure 'Avg Hero Damage' = AVERAGE('gold fact_match_players'[hero_damage])
+		formatString: #,##0
+		lineageTag: dd5ac601-8905-4486-8bda-ac3b2a4b9764
+
+	measure 'Avg Tower Damage' = AVERAGE('gold fact_match_players'[tower_damage])
+		formatString: #,##0
+		lineageTag: 72334928-16bd-49c3-bcb9-ac8d4f9a3b75
+
+	measure 'Total Player Kills' = SUM('gold fact_match_players'[kills])
+		formatString: #,##0
+		lineageTag: 1a717c6a-97d6-4f33-972f-044bb3d85192
+
+	measure 'Total Player Deaths' = SUM('gold fact_match_players'[deaths])
+		formatString: #,##0
+		lineageTag: 9148fb8b-d8bd-4466-ab3f-6142aa1d02c8
+
+	measure 'Total Assists' = SUM('gold fact_match_players'[assists])
+		formatString: #,##0
+		lineageTag: c0a54edc-ea20-4465-8488-9cb799e0008a
+
+	measure 'Avg Net Worth' = AVERAGE('gold fact_match_players'[net_worth])
+		formatString: #,##0
+		lineageTag: aaaa0001-0000-0000-0000-000000000001
+
+	measure 'Avg Last Hits' = AVERAGE('gold fact_match_players'[last_hits])
+		formatString: #,##0
+		lineageTag: aaaa0001-0000-0000-0000-000000000002
+
+	measure 'Avg Denies' = AVERAGE('gold fact_match_players'[denies])
+		formatString: 0.00
+		lineageTag: aaaa0001-0000-0000-0000-000000000003
+
+	measure 'Avg Stuns (sec)' = AVERAGE('gold fact_match_players'[stuns])
+		formatString: 0.00
+		lineageTag: aaaa0001-0000-0000-0000-000000000004
+
+	measure 'Avg Healing' = AVERAGE('gold fact_match_players'[hero_healing])
+		formatString: #,##0
+		lineageTag: aaaa0001-0000-0000-0000-000000000005
+
+	measure 'Avg Camps Stacked' = AVERAGE('gold fact_match_players'[camps_stacked])
+		formatString: 0.00
+		lineageTag: aaaa0001-0000-0000-0000-000000000006
+
+	measure 'Avg Rune Pickups' = AVERAGE('gold fact_match_players'[rune_pickups])
+		formatString: 0.00
+		lineageTag: aaaa0001-0000-0000-0000-000000000007
+
+	measure 'Avg Buybacks' = AVERAGE('gold fact_match_players'[buyback_count])
+		formatString: 0.00
+		lineageTag: aaaa0001-0000-0000-0000-000000000008
+
+	measure 'Total First Bloods' = SUM('gold fact_match_players'[firstblood_claimed])
+		formatString: #,##0
+		lineageTag: aaaa0001-0000-0000-0000-000000000009
+
+	measure 'Total Randoms' = CALCULATE(COUNTROWS('gold fact_match_players'), 'gold fact_match_players'[randomed])
+		formatString: #,##0
+		lineageTag: aaaa0001-0000-0000-0000-00000000000a
+
+	measure 'Leaver Picks' = CALCULATE(COUNTROWS('gold fact_match_players'), 'gold fact_match_players'[leaver_status] <> "0")
+		formatString: #,##0
+		lineageTag: aaaa0001-0000-0000-0000-00000000000b
+
+	measure 'Team Gold Early' = MAX('gold fact_match_players'[gold_early])
+		formatString: #,##0
+		lineageTag: bbbb0001-0000-0000-0000-000000000040
+
+	measure 'Team Gold Mid' = MAX('gold fact_match_players'[gold_mid])
+		formatString: #,##0
+		lineageTag: bbbb0001-0000-0000-0000-000000000041
+
+	measure 'Team Gold Late' = MAX('gold fact_match_players'[gold_late])
+		formatString: #,##0
+		lineageTag: bbbb0001-0000-0000-0000-000000000042
+
+	measure 'Team XP Early' = MAX('gold fact_match_players'[xp_early])
+		formatString: #,##0
+		lineageTag: bbbb0001-0000-0000-0000-000000000043
+
+	measure 'Team XP Mid' = MAX('gold fact_match_players'[xp_mid])
+		formatString: #,##0
+		lineageTag: bbbb0001-0000-0000-0000-000000000044
+
+	measure 'Team XP Late' = MAX('gold fact_match_players'[xp_late])
+		formatString: #,##0
+		lineageTag: bbbb0001-0000-0000-0000-000000000045
+
 	column match_id
 		dataType: string
 		sourceProviderType: nvarchar(max)
@@ -402,6 +514,187 @@ table 'gold fact_match_players'
 		lineageTag: 3af31a15-18f8-419f-93c3-6f4ef45fd0a8
 		summarizeBy: none
 		sourceColumn: loaded_at
+
+		annotation SummarizationSetBy = Automatic
+
+	column team_win
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		sourceProviderType: bit
+		lineageTag: c9353faa-73fb-438a-832d-be828aa79fdd
+		summarizeBy: none
+		sourceColumn: team_win
+
+		annotation SummarizationSetBy = Automatic
+
+	column comp_sig
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: bbbb0001-0000-0000-0000-000000000001
+		summarizeBy: none
+		sourceColumn: comp_sig
+
+		annotation SummarizationSetBy = Automatic
+
+	column side
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: bbbb0001-0000-0000-0000-000000000002
+		summarizeBy: none
+		sourceColumn: side
+
+		annotation SummarizationSetBy = Automatic
+
+	column hero_games
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: bbbb0001-0000-0000-0000-000000000003
+		summarizeBy: sum
+		sourceColumn: hero_games
+
+		annotation SummarizationSetBy = Automatic
+
+	column hero_win_rate
+		dataType: double
+		sourceProviderType: decimal
+		lineageTag: bbbb0001-0000-0000-0000-000000000004
+		summarizeBy: none
+		sourceColumn: hero_win_rate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column top_skills
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: bbbb0001-0000-0000-0000-000000000020
+		summarizeBy: none
+		sourceColumn: top_skills
+
+		annotation SummarizationSetBy = Automatic
+
+	column item_0_name
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: bbbb0001-0000-0000-0000-000000000021
+		summarizeBy: none
+		sourceColumn: item_0_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column item_1_name
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: bbbb0001-0000-0000-0000-000000000022
+		summarizeBy: none
+		sourceColumn: item_1_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column item_2_name
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: bbbb0001-0000-0000-0000-000000000023
+		summarizeBy: none
+		sourceColumn: item_2_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column item_3_name
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: bbbb0001-0000-0000-0000-000000000024
+		summarizeBy: none
+		sourceColumn: item_3_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column item_4_name
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: bbbb0001-0000-0000-0000-000000000025
+		summarizeBy: none
+		sourceColumn: item_4_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column item_5_name
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: bbbb0001-0000-0000-0000-000000000026
+		summarizeBy: none
+		sourceColumn: item_5_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column item_neutral_name
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: bbbb0001-0000-0000-0000-000000000027
+		summarizeBy: none
+		sourceColumn: item_neutral_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column gold_early
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: bbbb0001-0000-0000-0000-000000000028
+		summarizeBy: sum
+		sourceColumn: gold_early
+
+		annotation SummarizationSetBy = Automatic
+
+	column gold_mid
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: bbbb0001-0000-0000-0000-000000000029
+		summarizeBy: sum
+		sourceColumn: gold_mid
+
+		annotation SummarizationSetBy = Automatic
+
+	column gold_late
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: bbbb0001-0000-0000-0000-000000000030
+		summarizeBy: sum
+		sourceColumn: gold_late
+
+		annotation SummarizationSetBy = Automatic
+
+	column xp_early
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: bbbb0001-0000-0000-0000-000000000031
+		summarizeBy: sum
+		sourceColumn: xp_early
+
+		annotation SummarizationSetBy = Automatic
+
+	column xp_mid
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: bbbb0001-0000-0000-0000-000000000032
+		summarizeBy: sum
+		sourceColumn: xp_mid
+
+		annotation SummarizationSetBy = Automatic
+
+	column xp_late
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: bbbb0001-0000-0000-0000-000000000033
+		summarizeBy: sum
+		sourceColumn: xp_late
 
 		annotation SummarizationSetBy = Automatic
 

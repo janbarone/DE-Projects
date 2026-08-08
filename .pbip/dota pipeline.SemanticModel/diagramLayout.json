@@ -241,6 +241,126 @@
             "width": 234
           },
           "zIndex": 0
+        },
+        {
+          "location": {},
+          "nodeIndex": "gold dim_item",
+          "nodeLineageTag": "aaaa0006-0000-0000-0000-000000000001",
+          "size": {
+            "height": 152,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {},
+          "nodeIndex": "gold dim_patch",
+          "nodeLineageTag": "041002f8-e963-4c78-bbbd-4803e7f1003f",
+          "size": {
+            "height": 176,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {},
+          "nodeIndex": "gold fact_hero_matchups",
+          "nodeLineageTag": "5da6f9c0-1e3c-4219-98f4-79e4389841a6",
+          "size": {
+            "height": 272,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {},
+          "nodeIndex": "gold fact_hero_matchups_hero",
+          "nodeLineageTag": "aaaa0009-0000-0000-0000-000000000001",
+          "size": {
+            "height": 272,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {},
+          "nodeIndex": "gold fact_match_timeline",
+          "nodeLineageTag": "dddd0001-0000-0000-0000-000000000001",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {},
+          "nodeIndex": "gold fact_team_compositions",
+          "nodeLineageTag": "aaaa000a-0000-0000-0000-000000000001",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {},
+          "nodeIndex": "gold fact_team_h2h",
+          "nodeLineageTag": "548c7a28-6038-4e79-a8b9-a87ea099e55c",
+          "size": {
+            "height": 296,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {},
+          "nodeIndex": "gold dim_match_minute",
+          "nodeLineageTag": "ffff0004-0000-0000-0000-000000000001",
+          "size": {
+            "height": 104,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {},
+          "nodeIndex": "gold fact_match_player_item_purchases",
+          "nodeLineageTag": "ffff0003-0000-0000-0000-000000000001",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {},
+          "nodeIndex": "gold fact_match_player_minute",
+          "nodeLineageTag": "ffff0001-0000-0000-0000-000000000001",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {},
+          "nodeIndex": "gold fact_match_player_skills",
+          "nodeLineageTag": "ffff0002-0000-0000-0000-000000000001",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {},
+          "nodeIndex": "gold fact_match_timeline_events",
+          "nodeLineageTag": "eeee0001-0000-0000-0000-000000000001",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
         }
       ],
       "name": "All tables",

@@ -1,6 +1,61 @@
 table 'gold fact_matches'
 	lineageTag: 89c74536-9eff-46e3-a9e6-824bed12ad21
 
+	measure 'Total Matches' = COUNTROWS('gold fact_matches')
+		formatString: #,##0
+		lineageTag: 9ee60610-70a5-408d-98d5-bc052eca6cdd
+
+	measure 'Total Match Kills' = SUMX('gold fact_matches', IF(('gold fact_matches'[radiant_score] + 'gold fact_matches'[dire_score]) > 0, 'gold fact_matches'[radiant_score] + 'gold fact_matches'[dire_score], CALCULATE(SUM('gold fact_match_players'[kills]))))
+		formatString: #,##0
+		lineageTag: 20c8d06b-4438-471b-96ab-3f97e0f3f356
+
+	measure 'Radiant Win Rate' = DIVIDE(CALCULATE(COUNTROWS('gold fact_matches'), 'gold fact_matches'[radiant_win]), COUNTROWS('gold fact_matches'))
+		formatString: 0.0%
+		lineageTag: e68e2fe2-c982-4121-a0a5-b627255d1993
+
+	measure 'Dire Win Rate' = DIVIDE(CALCULATE(COUNTROWS('gold fact_matches'), 'gold fact_matches'[radiant_win] = FALSE()), COUNTROWS('gold fact_matches'))
+		formatString: 0.0%
+		lineageTag: 5f3ab317-6a36-48f9-a470-cc8304ba3908
+
+	measure 'Avg Match Duration (min)' = AVERAGE('gold fact_matches'[duration_min])
+		formatString: 0.0
+		lineageTag: 76970d38-36a8-4fd8-bb10-49c9adc07f02
+
+	measure 'Draw Matches' = CALCULATE(COUNTROWS('gold fact_matches'), 'gold fact_matches'[winner] = "draw")
+		formatString: 0
+		lineageTag: 120181d8-1c38-42f4-92e3-18294f88b19e
+
+	measure 'Avg First Blood (sec)' = AVERAGE('gold fact_matches'[first_blood_time])
+		formatString: 0
+		lineageTag: 3cc738bd-619a-4fa8-a65d-bf51d313085b
+
+	measure 'Avg Score Differential (match)' = AVERAGEX('gold fact_matches', ABS('gold fact_matches'[radiant_score] - 'gold fact_matches'[dire_score]))
+		formatString: 0.0
+		lineageTag: aaaa0002-0000-0000-0000-000000000001
+
+	measure 'Close Game Rate' = DIVIDE(CALCULATE(COUNTROWS('gold fact_matches'), 'gold fact_matches'[score_bucket] = "close"), COUNTROWS('gold fact_matches'))
+		formatString: 0.0%
+		lineageTag: aaaa0002-0000-0000-0000-000000000002
+
+	measure 'Rout Rate' = DIVIDE(CALCULATE(COUNTROWS('gold fact_matches'), 'gold fact_matches'[score_bucket] = "rout"), COUNTROWS('gold fact_matches'))
+		formatString: 0.0%
+		lineageTag: aaaa0002-0000-0000-0000-000000000003
+
+	measure 'Early First Blood Rate' = DIVIDE(CALCULATE(COUNTROWS('gold fact_matches'), 'gold fact_matches'[first_blood_time] < 600), COUNTROWS('gold fact_matches'))
+		formatString: 0.0%
+		lineageTag: aaaa0002-0000-0000-0000-000000000004
+
+	measure 'Leaver Games' = CALCULATE(DISTINCTCOUNT('gold fact_match_players'[match_id]), 'gold fact_match_players'[leaver_status] <> "0")
+		formatString: #,##0
+		lineageTag: aaaa0002-0000-0000-0000-000000000005
+
+	measure 'Human Player Matches' = CALCULATE(COUNTROWS('gold fact_matches'), 'gold fact_matches'[human_players] >= 10)
+		formatString: #,##0
+		lineageTag: aaaa0002-0000-0000-0000-000000000006
+
+	measure 'Match Winner' = SWITCH(SELECTEDVALUE('gold fact_matches'[winner], "n/a"), "radiant", "Radiant", "dire", "Dire", "draw", "Draw", "n/a")
+		lineageTag: aaaa0002-0000-0000-0000-000000000007
+
 	column match_id
 		dataType: string
 		sourceProviderType: nvarchar(max)
@@ -54,10 +109,10 @@ table 'gold fact_matches'
 		dataType: double
 		sourceProviderType: decimal
 		lineageTag: b72e5a86-11cb-4fe3-accf-f1734da0d514
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: duration_hour
 
-		annotation SummarizationSetBy = Automatic
+		annotation SummarizationSetBy = User
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
@@ -223,6 +278,15 @@ table 'gold fact_matches'
 		lineageTag: 70c3e249-3d19-4d5b-a260-b8165fc2e843
 		summarizeBy: none
 		sourceColumn: loaded_at
+
+		annotation SummarizationSetBy = Automatic
+
+	column score_bucket
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: aaaa0002-0000-0000-0000-0000000000a1
+		summarizeBy: none
+		sourceColumn: score_bucket
 
 		annotation SummarizationSetBy = Automatic
 

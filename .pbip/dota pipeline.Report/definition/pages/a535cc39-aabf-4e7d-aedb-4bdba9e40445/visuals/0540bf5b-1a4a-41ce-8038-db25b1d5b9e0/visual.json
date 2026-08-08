@@ -1,0 +1,38 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.2.0/schema.json",
+  "name": "0540bf5b-1a4a-41ce-8038-db25b1d5b9e0",
+  "position": {
+    "x": 20,
+    "y": 15,
+    "z": 1,
+    "height": 95,
+    "width": 180,
+    "tabOrder": 1
+  },
+  "visual": {
+    "visualType": "card",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold fact_match_players"
+                    }
+                  },
+                  "Property": "Avg GPM"
+                }
+              },
+              "queryRef": "gold fact_match_players.Avg GPM",
+              "nativeQueryRef": "Avg GPM"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

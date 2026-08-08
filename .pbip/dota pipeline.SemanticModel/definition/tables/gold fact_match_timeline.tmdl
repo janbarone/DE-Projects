@@ -1,0 +1,121 @@
+table 'gold fact_match_timeline'
+	lineageTag: dddd0001-0000-0000-0000-000000000001
+
+	measure 'Timeline Fights' = COUNTROWS('gold fact_match_timeline')
+		formatString: #,##0
+		lineageTag: dddd0001-0000-0000-0000-000000000002
+
+	column match_id
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: dddd0001-0000-0000-0000-000000000003
+		summarizeBy: none
+		sourceColumn: match_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column teamfight_id
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: dddd0001-0000-0000-0000-000000000004
+		summarizeBy: none
+		sourceColumn: teamfight_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column team_number
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: dddd0001-0000-0000-0000-000000000005
+		summarizeBy: none
+		sourceColumn: team_number
+
+		annotation SummarizationSetBy = Automatic
+
+	column side
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: dddd0001-0000-0000-0000-000000000006
+		summarizeBy: none
+		sourceColumn: side
+
+		annotation SummarizationSetBy = Automatic
+
+	column start_min
+		dataType: double
+		sourceProviderType: decimal
+		lineageTag: dddd0001-0000-0000-0000-000000000007
+		summarizeBy: none
+		sourceColumn: start_min
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column gold_delta
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: dddd0001-0000-0000-0000-000000000008
+		summarizeBy: sum
+		sourceColumn: gold_delta
+
+		annotation SummarizationSetBy = Automatic
+
+	column xp_delta
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: dddd0001-0000-0000-0000-000000000009
+		summarizeBy: sum
+		sourceColumn: xp_delta
+
+		annotation SummarizationSetBy = Automatic
+
+	column deaths
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: dddd0001-0000-0000-0000-00000000000a
+		summarizeBy: sum
+		sourceColumn: deaths
+
+		annotation SummarizationSetBy = Automatic
+
+	column items_used
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: dddd0001-0000-0000-0000-00000000000b
+		summarizeBy: none
+		sourceColumn: items_used
+
+		annotation SummarizationSetBy = Automatic
+
+	column abilities_used
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: dddd0001-0000-0000-0000-00000000000c
+		summarizeBy: none
+		sourceColumn: abilities_used
+
+		annotation SummarizationSetBy = Automatic
+
+	column radiant_win
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		sourceProviderType: bit
+		lineageTag: dddd0001-0000-0000-0000-00000000000d
+		summarizeBy: none
+		sourceColumn: radiant_win
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'gold fact_match_timeline' = m
+		mode: directQuery
+		source =
+				let
+				    Source = PostgreSQL.Database("localhost", "dota"),
+				    gold_fact_match_timeline = Source{[Schema="gold",Item="fact_match_timeline"]}[Data]
+				in
+				    gold_fact_match_timeline
+

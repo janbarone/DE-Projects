@@ -1,0 +1,39 @@
+table 'gold dim_item'
+	lineageTag: aaaa0006-0000-0000-0000-000000000001
+
+	column item_id
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: aaaa0006-0000-0000-0000-000000000002
+		summarizeBy: none
+		sourceColumn: item_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column item_internal_name
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: aaaa0006-0000-0000-0000-000000000003
+		summarizeBy: none
+		sourceColumn: item_internal_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column item_name
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: aaaa0006-0000-0000-0000-000000000004
+		summarizeBy: none
+		sourceColumn: item_name
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'gold dim_item' = m
+		mode: directQuery
+		source =
+				let
+				    Source = PostgreSQL.Database("localhost", "dota"),
+				    gold_dim_item = Source{[Schema="gold",Item="dim_item"]}[Data]
+				in
+				    gold_dim_item
+

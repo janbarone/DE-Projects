@@ -359,10 +359,73 @@ against OpenDota's `/leagues/{id}/matchIds` for all 16 configured leagues - the
 (4,128 TI + 171 proMatches-scraped 2026 matches across leagues 19917, 20009,
 20026, 20030, 19944). All row counts in this README updated to reflect it.
 
+**Status update (2026-08-05, report done):** the Power BI report is now
+functional on all 6 pages. This session fixed: (1) two broken stacked bars
+switched to `barChart`; (2) a visual-level blank-player-name filter on the
+top-picks bar; (3) the **tableEx table crash** — `Cannot read properties of
+undefined (reading 'queryName')` in the new table visual — caused by stray
+`"active": false` / `"isDefaultSort"` artifacts in the 4 `tableEx` visual files,
+normalized to Power BI's own serialization; (4) the **Role slicer** doing nothing
+on Hero Meta — fixed by setting `crossFilteringBehavior: bothDirections` on
+`dim_hero_role ↔ dim_hero`. The leaderboards deliberately use **measures** (not
+precomputed columns) because columns ignore the Year/League slicers. Gold dims
+were extended with precomputed `match_*` columns but they are **not imported**
+by the model. Full ledger in `docs/report_status.md`.
+
+**Feature pass (2026-08-05, same day):** added the data foundations for the next
+set of report features — `dim_patch` (real patch versions + a Patch slicer on the
+Matches page, patch chart now decoded/sorted), `fact_hero_matchups` (hero-vs-hero,
+106,721 rows), `fact_team_h2h` (team head-to-head, 4,220 rows), plus draft
+measures (`Pick Rate` / `Ban Rate`). Team/Player leaderboards now exclude
+"Unknown" teams / null player names. New tables + 7 relationships are wired into
+the semantic model (TMDL). Full spec: `docs/report_improvements.md`.
+
+**Round 2 (2026-08-05):** shipped **two new pages** — **Economy** (7 stat cards,
+farm/last-hit leaders, support impact, first-items table via new `dim_item`,
+lobby-type donut, GPM/XPM trend) and **Draft** (top picks/bans, picks-vs-bans,
+picks by phase, side tendencies, hero matchups + team H2H tables) — plus 3
+Combat visuals (fight damage/healing, fight phases, buybacks) and 4 Overview
+visuals (match-closeness donut, early-FB rate, leaver games, score differential).
+Data layer: `dim_item` (596 rows, decodes `item_0..6`), `score_bucket`,
+`fight_phase`, `matchup_label` columns, ~20 new measures, +1 relationship (35
+total). 133/133 dbt tests; 90/90 report JSON files parse. Full ledger:
+`docs/report_status.md` §5c.
+
+**Round 3 (2026-08-05, validation + About page):** fixed the load errors the
+new pages surfaced in Desktop — (1) stripped UTF-8 BOMs from the 7 Economy
+visual.json files (Power BI requires BOM-less UTF-8), (2) renamed the new
+`Avg Score Differential` measure to `Avg Score Differential (match)` (name
+collided with an existing `fact_team_matches` measure), (3) rewrote that
+measure with `AVERAGEX(...)` because `AVERAGE(ABS(...))` isn't pushed by
+DirectQuery. Added a **new About & Glossary page** (`736e1272`, 1280×1000):
+11 textboxes covering what the report does, a Dota-term glossary, and a
+per-page description of every visual. **Gotcha:** textbox visuals must live in
+`visuals/<guid>/visual.json` folders — a flat `visuals/<guid>.json` file is
+silently ignored (page appears empty). 102/102 report JSON files parse, 0 BOMs.
+Full ledger: `docs/report_status.md` §5d.
+
+**Round 8/9 (2026-08-08, Match Detail polish + savepoint):** Round 8 trimmed
+the Match Detail player tables and side-scoped the Radiant/Dire hero slicers;
+**Round 9** (see `docs/report_status.md` §5j) made the hero slicers list **only
+the heroes in the currently selected match** via a new `Hero in Current Match`
+measure on `gold dim_hero` plus a visual-level Advanced filter on both slicers —
+**verified working in Power BI Desktop**. No dbt/relationship changes. Full
+`pg_dump` taken as the savepoint: `backups/gold4_20260808_191856.dump`. The
+report is committed; full ledger in `docs/report_status.md`.
+
 **Known notes for the next session:**
 - Connect Power BI to the **gold** schema (not silver) - it's the presentation
   layer with all relationship fixes. Delete any auto-created relationships on
   import before adding yours.
+- **Immediate next step:** re-open the PBIP in Power BI Desktop and
+  render-verify — Economy, Draft, the fixed Overview score-differential card,
+  and the new About & Glossary page (11 textboxes). All JSON is validated and
+  bounds-checked; only a Desktop render pass remains.
+- **PBIP gotchas (all hit + fixed this round):** (1) files must be **UTF-8
+  without BOM**; (2) measure names are unique model-wide (rename before
+  colliding); (3) avoid non-column aggregates like `AVERAGE(ABS(...))` in
+  DirectQuery — use `AVERAGEX`/`SUMX`; (4) every visual, including textboxes,
+  must live in `visuals/<guid>/visual.json` folders.
 - `fact_teamfight_players` keeps the raw per-player maps (`ability_uses`,
   `item_uses`, `killed`, `ability_targets`, `deaths_pos`) alongside the child
   tables - now stored as **text** (jsonb cast to text) to keep DirectQuery
@@ -372,12 +435,14 @@ against OpenDota's `/leagues/{id}/matchIds` for all 16 configured leagues - the
 - `fact_teamfights` keeps the raw `players` payload as **text** (jsonb cast to
   text) because OpenDota teamfight player entries have no hero/account id (see
   `docs/data_model.md`).
-- **Next step:** build out the Power BI dashboard on top of the gold layer
-  (measures, visuals, pages). Orchestrator (bronze_load -> dbt build) is the
-  remaining pipeline item.
+- **Beyond render check:** orchestrator (bronze_load -> dbt build) is the
+  remaining pipeline item, plus a fresh pg_dump (current one predates the
+  round-1/round-2 gold tables). See roadmap in `docs/report_status.md` §8.
 - Backups live in `backups/` (gitignored); newest is
-  `gold3_20260802_223003.dump` (194.4 MB, includes all 17 gold tables - i.e.
-  **before** `fact_team_matches`; re-back up after the bridge rebuild if
-  needed). Restore with `pg_restore -U postgres -d dota backups/<file>.dump`.
+  `gold4_20260808_191856.dump` (290 MB, taken 2026-08-08 at the Round 9
+  savepoint — includes all gold tables through rounds 4–9). Older dumps:
+  `gold3_20260802_223003.dump` (194.4 MB, predates `fact_team_matches`,
+  `dim_patch`, `fact_hero_matchups`, `fact_team_h2h`, `dim_item` and all
+  per-minute facts). Restore with `pg_restore -U postgres -d dota backups/<file>.dump`.
 - dbt profile is at `~/.dbt/profiles.yml` (not in the repo); project is
   `transform/`.

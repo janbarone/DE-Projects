@@ -4,9 +4,12 @@
 -- OpenDota's teamfight players array always has exactly 10 entries, ordered by
 -- player slot (indices 0-4 = radiant slots 0-4, indices 5-9 = dire slots
 -- 128-132). We use that positional guarantee to recover player_slot and join
--- through fact_match_players to dim_hero. Nested per-ability maps are kept as
--- text (jsonb cast to text) for detail - jsonb columns break DirectQuery
--- folding in Power BI (see docs/power_bi_setup.md section 8).
+-- through stg_match_players to dim_hero. Hero/account come from the silver
+-- layer (not gold fact_match_players) so this model does NOT depend on
+-- fact_match_players - that keeps fact_match_players able to aggregate over
+-- these teamfight child facts without a circular reference. Nested per-ability
+-- maps are kept as text (jsonb cast to text) for detail - jsonb columns break
+-- DirectQuery folding in Power BI (see docs/power_bi_setup.md section 8).
 select
     tf.match_id,
     tf.teamfight_id,
@@ -32,7 +35,8 @@ select
     tf.loaded_at
 from {{ ref('fact_teamfights') }} tf
 cross join lateral jsonb_array_elements(tf.players::jsonb) with ordinality as tfp(p, ord)
-left join {{ ref('fact_match_players') }} mp
+left join {{ ref('stg_match_players') }} mp
     on mp.match_id = tf.match_id
    and mp.player_slot = (case when tfp.ord <= 5 then tfp.ord - 1 else tfp.ord + 122 end)::text
+
 
