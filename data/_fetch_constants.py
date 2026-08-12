@@ -17,7 +17,6 @@ from dota_common import (  # noqa: E402
     BASE,
     DATA_DIR,
     http_get,
-    load_json_array,
     print_quota,
     timestamp_fetched,
     update_array_file,

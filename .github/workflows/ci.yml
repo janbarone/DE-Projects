@@ -1,0 +1,78 @@
+name: CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+
+jobs:
+  lint:
+    name: Lint (ruff + sqlfluff)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install linters
+        run: pip install ruff "sqlfluff>=3.0"
+      - name: Ruff (Python)
+        run: ruff check .
+      - name: SQLFluff (dbt SQL)
+        # sqlfluff's dbt templater needs the dbt adapter to resolve ref()/source()
+        run: |
+          pip install -r requirements.txt
+          sqlfluff lint transform/models --dialect postgres
+
+  unit-test:
+    name: Python unit tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install deps
+        run: pip install -r requirements-dev.txt
+      - name: Run pytest
+        run: pytest -q
+
+  dbt-build:
+    name: Full pipeline (sample data -> dbt build)
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: dota
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres -d dota"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    env:
+      DATABASE_URL: postgresql://postgres:postgres@localhost:5432/dota
+      POSTGRES_HOST: localhost
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install pipeline deps
+        run: pip install -r requirements.txt
+      - name: Init bronze schema
+        run: |
+          sudo apt-get update && sudo apt-get install -y postgresql-client
+          psql -h localhost -U postgres -d dota -f db/init/01_schemas.sql
+          psql -h localhost -U postgres -d dota -f db/init/02_bronze_tables.sql
+      - name: Load sample data into bronze
+        run: python scripts/load_bronze.py --data-dir sample_data
+      - name: dbt build (silver + gold + tests)
+        run: dbt build --profiles-dir . --project-dir transform
+      - name: dbt source freshness
+        run: dbt source freshness --profiles-dir . --project-dir transform

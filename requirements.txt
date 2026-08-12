@@ -1,2 +1,7 @@
-psycopg[binary]>=3.2
-python-dotenv>=1.0
+# Runtime dependencies for the pipeline (ingestion + load + dbt transforms).
+# Exact transitive versions are locked in requirements.lock (pip freeze).
+psycopg[binary]>=3.2,<4
+python-dotenv>=1.0,<2
+requests>=2.32,<3
+dbt-core~=1.12.0
+dbt-postgres~=1.11.0

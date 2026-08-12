@@ -1,0 +1,20 @@
+[sqlfluff]
+dialect = postgres
+templater = dbt
+max_line_length = 120
+# L031 (aliasing) and L016 (line length) are stylistic; keep them off for now.
+exclude_rules = L031, L016
+# dbt target/ is generated output.
+ignore_templated_areas = false
+
+[sqlfluff:templater:dbt]
+project_dir = transform
+profiles_dir = .
+profile = transform
+target = dev
+
+[sqlfluff:rules:capitalisation.keywords]
+capitalisation_policy = upper
+
+[sqlfluff:rules:capitalisation.identifiers]
+extended_capitalisation_policy = lower

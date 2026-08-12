@@ -1,0 +1,21 @@
+# Ruff configuration (Python linting).
+# Run:  ruff check .   |   ruff format .
+
+exclude = [
+    ".venv",
+    "transform/target",
+    "sample_data",
+    "backups",
+    "logs",
+    "db",
+]
+
+line-length = 100
+target-version = "py311"
+
+[lint]
+select = ["E", "F", "I"]
+ignore = [
+    "E402",  # module import not at top of file (scripts do sys.path setup)
+    "E501",  # line length (handled by formatter)
+]

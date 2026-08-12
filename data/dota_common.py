@@ -1,5 +1,6 @@
 """Shared helpers for the OpenDota pipeline scripts."""
 import json
+import logging
 import time
 from datetime import datetime, timezone
 from pathlib import Path
@@ -7,7 +8,9 @@ from pathlib import Path
 import requests
 
 BASE = "https://api.opendota.com/api"
-DATA_DIR = Path(r"C:\Users\Jan\Desktop\PROJECTS\DOTA Pipeline\data")
+# The data/ directory this module lives in. Derived from __file__ so the repo
+# is portable (no hardcoded absolute path).
+DATA_DIR = Path(__file__).resolve().parent
 
 _HEADERS = {"User-Agent": "opencode-dota-pipeline/1.0"}
 MIN_INTERVAL = 1.1  # ~55 req/min, safely under the 60/min unauthenticated limit
@@ -161,3 +164,38 @@ def select_fields(obj: dict, include=None, exclude=None) -> dict:
             continue
         out[name] = value
     return out
+
+
+class JsonLogFormatter(logging.Formatter):
+    """One JSON object per line: machine-readable, structured logs."""
+
+    def format(self, record: logging.LogRecord) -> str:
+        payload = {
+            "ts": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%S.%f")[:-3] + "Z",
+            "level": record.levelname,
+            "logger": record.name,
+            "message": record.getMessage(),
+        }
+        if record.exc_info:
+            payload["exc"] = self.formatException(record.exc_info)
+        return json.dumps(payload, ensure_ascii=False)
+
+
+def configure_logging(name: str = "dota", level: int = logging.INFO) -> logging.Logger:
+    """Configure a structured (JSON) logger. Safe to call more than once."""
+    logger = logging.getLogger(name)
+    if not logger.handlers:
+        handler = logging.StreamHandler()
+        handler.setFormatter(JsonLogFormatter())
+        logger.addHandler(handler)
+        logger.setLevel(level)
+        logger.propagate = False
+    return logger
+
+
+def get_logger(name: str = "dota") -> logging.Logger:
+    """Return a logger, configuring it lazily if not yet configured."""
+    logger = logging.getLogger(name)
+    if not logger.handlers:
+        return configure_logging(name)
+    return logger

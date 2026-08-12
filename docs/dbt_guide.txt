@@ -1,0 +1,579 @@
+================================================================================
+DBT GUIDE - DOTA 2 DATA PIPELINE
+================================================================================
+A practical guide to dbt (data build tool) as used in this project.
+Written: 2026-08-12  |  dbt-core 1.12.0  |  postgres adapter 1.11.0
+================================================================================
+
+TABLE OF CONTENTS
+--------------------------------------------------------------------------------
+  1. What dbt is
+  2. How this project uses dbt
+  3. Project layout (the transform/ folder)
+  4. Core concepts
+       4.1 Sources
+       4.2 Models
+       4.3 The ref() function
+       4.4 Materializations
+       4.5 Tests
+       4.6 Seeds
+       4.7 Macros
+  5. The commands - what to run and when
+  6. Selection syntax (--select, --exclude, +)
+  7. Your real-world workflow
+  8. Troubleshooting & pro tips
+  9. Common pitfalls
+  10. Reference cheatsheet
+
+
+================================================================================
+1. WHAT DBT IS
+================================================================================
+
+dbt (data build tool) is a SQL transformation layer. It takes SQL files,
+figures out their dependency order, runs them against the warehouse
+(PostgreSQL here), and adds testing, documentation, and version control.
+
+Key ideas:
+
+  - You write plain SQL. dbt only adds Jinja template tags ({{ }}) for refs,
+    configs, and control flow (if/for blocks).
+  - dbt BUILDS tables/views. It does NOT load raw data - that is done by the
+    Python loader (scripts/load_bronze.py) in this project.
+  - Every .sql file in the models folder becomes one "model" (a table or view).
+  - dbt knows the dependency graph, so it always runs things in the correct
+    order: silver before gold, facts before the dims that read them.
+
+In this project dbt is installed in the project virtual environment and
+invoked with:
+
+      & .venv\Scripts\dbt.exe <command> --profiles-dir . --project-dir transform
+
+(--project-dir points dbt at the transform/ folder that holds dbt_project.yml;
+ --profiles-dir . points at the committed profiles.yml in the repo root.)
+
+
+================================================================================
+2. HOW THIS PROJECT USES DBT
+================================================================================
+
+The project follows a medallion architecture:
+
+      OpenDota API
+           |
+           v  (Python fetch scripts -> raw JSON files in data/)
+      bronze (PostgreSQL, raw jsonb, loaded by scripts/load_bronze.py)
+           |
+           v  dbt SILVER models (staging, flatten jsonb, normalize)
+      silver (stg_* tables/views)
+           |
+           v  dbt GOLD models (analytical marts: dim_* and fact_*)
+      gold   (presentation layer consumed by Power BI via DirectQuery)
+
+Rules followed across this project (do not break them):
+
+  - Models must NEVER read bronze directly except through silver staging
+    models. Gold reads silver. This keeps the expensive jsonb unnest running
+    once per match, not on every rebuild.
+  - The heavy silver staging facts (stg_matches, stg_match_players,
+    stg_match_player_*, stg_picks_bans, stg_teamfights) are INCREMENTAL on
+    match_id so new data appends without re-parsing everything.
+  - Small/stable lookups (stg_leagues, stg_teams, stg_players, stg_heroes,
+    stg_hero_stats, stg_constants) are VIEWS.
+  - Gold dims/facts are TABLES materialized into the gold schema.
+  - All key/ID columns are text in silver and gold (inherited from silver)
+    so Power BI relationships import without type mismatches.
+  - No jsonb columns in gold - jsonb breaks Power BI DirectQuery query folding
+    (error 10682). Raw json maps are kept as text instead.
+
+
+================================================================================
+3. PROJECT LAYOUT (THE transform/ FOLDER)
+================================================================================
+
+  transform/
+    dbt_project.yml           project name, profile, materialization defaults
+    models/
+      sources.yml             declares the bronze schema as "sources"
+      silver/                 staging models
+        stg_matches.sql       incremental: one row per match, from bronze jsonb
+        stg_match_players.sql per (match, player), flattened players array
+        stg_match_player_minute.sql           per-minute gold/xp/lh/dn arrays
+        stg_match_player_skills.sql           ability_upgrades_arr
+        stg_match_player_item_purchases.sql   purchase_log array
+        stg_match_player_kills.sql            kills_log array
+        stg_match_player_runes.sql            runes map
+        stg_match_player_damage.sql           damage object
+        stg_match_player_damage_taken.sql     damage_taken object
+        stg_match_player_damage_taken_type.sql  damage_inflictor_received
+        stg_picks_bans.sql    draft order (picks + bans)
+        stg_teamfights.sql    teamfights, raw players json kept as text
+        stg_leagues.sql / stg_teams.sql / stg_players.sql / stg_heroes.sql
+        stg_hero_stats.sql / stg_constants.sql   (views)
+        schema.yml            tests for silver models
+      gold/                   analytical marts
+        dim_hero.sql / dim_player.sql / dim_team.sql / dim_league.sql
+        dim_game_mode.sql / dim_lobby_type.sql / dim_region.sql
+        dim_date.sql / dim_patch.sql / dim_item.sql / dim_rune.sql
+        dim_hero_role.sql / dim_match_minute.sql
+        fact_matches.sql / fact_team_matches.sql / fact_match_players.sql
+        fact_picks_bans.sql / fact_teamfights.sql
+        fact_teamfight_players.sql / fact_teamfight_ability_uses.sql
+        fact_teamfight_item_uses.sql / fact_teamfight_kills.sql
+        fact_match_player_minute.sql / fact_match_player_skills.sql
+        fact_match_player_item_purchases.sql / fact_match_team_minute.sql
+        fact_match_player_kills.sql / fact_match_player_runes.sql
+        fact_match_player_damage.sql / fact_match_player_damage_taken.sql
+        fact_match_player_damage_taken_type.sql
+        fact_hero_matchups.sql / fact_hero_matchups_hero.sql
+        fact_team_h2h.sql / fact_match_timeline.sql
+        fact_match_timeline_events.sql / fact_phase_momentum.sql
+        fact_team_compositions.sql
+        fact_hero_side.sql / fact_hero_matchup_stats.sql
+        schema.yml            tests for gold models
+      seeds/
+        rune_lookup.csv       static rune decode table
+        schema.yml
+      macros/
+        generate_schema_name.sql   routes gold -> gold schema, rest -> silver
+      target/                 generated output (compiled SQL, run logs)
+                              DO NOT edit or commit
+      tests/                  custom singular tests (currently empty)
+      snapshots/              slowly-changing dimensions (unused)
+      analyses/               ad-hoc SQL (unused)
+      dbt_project.yml
+      .gitignore              ignores target/ etc.
+
+
+================================================================================
+4. CORE CONCEPTS
+================================================================================
+
+--------------------------------------------------------------------------------
+4.1 SOURCES
+--------------------------------------------------------------------------------
+Sources declare the raw database tables dbt reads but does not own. In
+models/sources.yml:
+
+      sources:
+        - name: bronze
+          database: dota
+          schema: bronze
+          loader: python_load_bronze
+          tables:
+            - name: matches        # payload jsonb, match_id key
+            - name: leagues
+            - name: players
+            - name: teams
+            - name: hero_stats
+            - name: constants
+
+Models read them with:
+
+      {{ source('bronze', 'matches') }}
+
+Example: transform/models/silver/stg_matches.sql line ~39
+      from {{ source('bronze', 'matches') }}
+
+
+--------------------------------------------------------------------------------
+4.2 MODELS
+--------------------------------------------------------------------------------
+Each .sql file in models/ is one model. Three materialization styles are used
+in this project:
+
+  a) VIEW (silver lookups)
+     - stg_leagues, stg_teams, stg_players, stg_heroes, stg_hero_stats,
+       stg_constants
+     - Configured project-wide in dbt_project.yml:
+         silver:  +materialized: view
+     - Cheap: the SQL runs every time it is queried. Good for small stable
+       data.
+
+  b) TABLE (gold dims + facts)
+     - Every dim_* and fact_* in gold/
+     - Configured project-wide:
+         gold: +materialized: table
+               +schema: gold
+     - A real table is created in Postgres. Good for data queried repeatedly
+       and for Power BI DirectQuery.
+
+  c) INCREMENTAL (heavy silver facts)
+     - stg_matches, stg_match_players, stg_match_player_minute,
+       stg_match_player_skills, stg_match_player_item_purchases,
+       stg_match_player_kills, stg_match_player_runes,
+       stg_match_player_damage, stg_match_player_damage_taken,
+       stg_match_player_damage_taken_type, stg_picks_bans, stg_teamfights
+     - Pattern (example stg_matches.sql):
+
+         {{ config(
+             materialized='incremental',
+             unique_key='match_id',
+             post_hook=["create index if not exists ... on {{ this }}(...)"]
+         ) }}
+
+         select ... from {{ source('bronze', 'matches') }}
+         {% if is_incremental() %}
+         where match_id not in (select match_id from {{ this }})
+         {% endif %}
+
+     - First run builds the full table. Later runs only process rows whose
+       match_id is NOT already in the table - the expensive jsonb unnest runs
+       only for newly loaded matches. This is the project's established
+       scaling pattern.
+
+     Note: every incremental model sets `unique_key`, so dbt-postgres applies
+     native MERGE (upsert) semantics against that key; the `not in (...)` filter
+     above is only a scan optimization (select just the new rows). The two work
+     together: the filter limits the temp table, MERGE dedupes by key.
+
+  Model file anatomy (example dim_hero.sql):
+
+      {{ config(materialized='table') }}     # optional per-model override
+      select ...
+      from {{ ref('stg_heroes') }} h
+      left join {{ ref('stg_hero_stats') }} s on h.hero_id = s.hero_id
+      ...
+
+  dim_hero.sql also shows the two things gold models routinely do:
+    - union an 'Unknown' fallback row (hero_id = 0) so every fact hero_id
+      resolves in Power BI;
+    - precompute aggregate columns (match_picks, match_win_rate, ...) with
+      coalesce(..., 0) so 'Unknown'/null rows stay safe.
+
+--------------------------------------------------------------------------------
+4.3 THE ref() FUNCTION
+--------------------------------------------------------------------------------
+{{ ref('stg_heroes') }} is the single most important dbt feature. It:
+
+  - Builds the dependency graph: dbt knows dim_hero needs stg_heroes first and
+    runs models in the correct order.
+  - Resolves the correct schema.table automatically in the target database.
+  - Lets dbt run only a subset with --select and still pull dependencies.
+
+RULE: never hardcode "silver.stg_heroes" in a model. Always use ref().
+Likewise never hardcode schema names - the generate_schema_name macro routes
+models: gold models land in the gold schema, everything else in silver.
+
+--------------------------------------------------------------------------------
+4.4 MATERIALIZATIONS
+--------------------------------------------------------------------------------
+Defined in dbt_project.yml:
+
+      models:
+        transform:
+          silver:
+            +materialized: view
+          gold:
+            +materialized: table
+            +schema: gold
+
+Per-model override with a config() block at the top of the .sql file:
+
+      {{ config(materialized='incremental', unique_key='match_id') }}
+
+The macro transform/macros/generate_schema_name.sql controls schema naming:
+  - models configured with +schema: gold -> schema 'gold'
+  - all others -> the target schema from profiles.yml ('silver')
+
+--------------------------------------------------------------------------------
+4.5 TESTS
+--------------------------------------------------------------------------------
+Data quality assertions declared in schema.yml. Two kinds:
+
+  a) Built-in generic tests, attached to a column:
+        - name: hero_id
+          tests: [not_null, unique]
+
+     Relationship (foreign key) test:
+        - name: leagueid
+          tests:
+            - not_null
+            - relationships:
+                arguments:
+                  to: ref('dim_league')
+                  field: leagueid
+
+     accepted_values (enum check), example from dim_hero_role:
+        - name: role
+          tests:
+            - accepted_values:
+                values: ['Carry','Support','Nuker','Disabler','Durable',
+                         'Escape','Initiator','Pusher']
+
+  b) Custom singular tests live in transform/tests/ (plain SQL that must
+     return 0 rows to pass). None exist yet in this project.
+
+Built-in generic test types: not_null, unique, relationships,
+accepted_values, and more (unique_combination_of_columns etc.).
+
+Current state: 317 tests pass (silver + gold + seeds).
+
+--------------------------------------------------------------------------------
+4.6 SEEDS
+--------------------------------------------------------------------------------
+Static CSVs loaded into the warehouse as tables. Example:
+transform/seeds/rune_lookup.csv (loaded as rune_lookup).
+
+  - Load with: dbt seed
+  - Rerun a changed seed with: dbt seed --full-refresh
+  - Tests for seeds go in seeds/schema.yml
+
+--------------------------------------------------------------------------------
+4.7 MACROS
+--------------------------------------------------------------------------------
+Jinja functions, reusable SQL snippets. This project has one:
+transform/macros/generate_schema_name.sql which controls schema routing.
+
+A custom macro could be added under macros/ and called with
+{{ my_macro(args) }} in any model. There are no custom utility macros yet.
+
+
+================================================================================
+5. THE COMMANDS - WHAT TO RUN AND WHEN
+================================================================================
+
+All commands assume you are in the repo root and use the venv:
+
+      & .venv\Scripts\dbt.exe <command> --profiles-dir . --project-dir transform
+
+--------------------------------------------------------------------------------
+dbt debug                 - verify the Postgres connection works
+--------------------------------------------------------------------------------
+Reads ~/.dbt/profiles.yml (host localhost:5432, db dota, schema silver,
+user/pass postgres) and checks connectivity. Run first if anything errors.
+
+--------------------------------------------------------------------------------
+dbt deps                  - install packages (rare in this project)
+--------------------------------------------------------------------------------
+Not needed unless you add packages to dbt_packages. You have none.
+
+--------------------------------------------------------------------------------
+dbt run                   - build models only (no tests)
+--------------------------------------------------------------------------------
+      & .venv\Scripts\dbt.exe run --project-dir transform
+      & .venv\Scripts\dbt.exe run --project-dir transform --select gold
+      & .venv\Scripts\dbt.exe run --project-dir transform --select stg_matches
+
+  --select gold        runs gold models AND their silver dependencies
+                       (the dependency graph pulls them in)
+  --full-refresh       rebuilds incremental tables from scratch. Needed when a
+                       model's LOGIC changed. Plain run only appends for
+                       incremental models.
+
+--------------------------------------------------------------------------------
+dbt test                  - run data tests only
+--------------------------------------------------------------------------------
+      & .venv\Scripts\dbt.exe test --project-dir transform
+      & .venv\Scripts\dbt.exe test --project-dir transform --select gold
+
+Tests run against already-built tables; they do not rebuild anything.
+
+--------------------------------------------------------------------------------
+dbt build                 - the daily command: seed + run + test
+--------------------------------------------------------------------------------
+      & .venv\Scripts\dbt.exe build --project-dir transform
+
+Builds seeds, then all models in dependency order, then runs all tests.
+Use build for the normal end-to-end refresh.
+
+--------------------------------------------------------------------------------
+dbt seed                  - load CSV seeds
+--------------------------------------------------------------------------------
+      & .venv\Scripts\dbt.exe seed --project-dir transform
+      & .venv\Scripts\dbt.exe seed --project-dir transform --full-refresh
+
+--------------------------------------------------------------------------------
+dbt compile               - render Jinja to real SQL, do NOT execute
+--------------------------------------------------------------------------------
+      & .venv\Scripts\dbt.exe compile --project-dir transform --select gold dim_hero
+
+Compiled SQL is written to transform/target/compiled/. Excellent for debugging
+a model: you see exactly what dbt will send to Postgres.
+
+--------------------------------------------------------------------------------
+dbt docs                  - generate and serve the docs site
+--------------------------------------------------------------------------------
+      & .venv\Scripts\dbt.exe docs generate --project-dir transform
+      & .venv\Scripts\dbt.exe docs serve --project-dir transform
+
+Browsable documentation with lineage graph, tests, and column descriptions
+from schema.yml. Great for portfolio review.
+
+--------------------------------------------------------------------------------
+dbt snapshot              - slowly-changing dimensions (unused here)
+--------------------------------------------------------------------------------
+      & .venv\Scripts\dbt.exe snapshot --project-dir transform
+
+--------------------------------------------------------------------------------
+dbt run-operation         - invoke a macro directly
+--------------------------------------------------------------------------------
+      & .venv\Scripts\dbt.exe run-operation <macro_name> --project-dir transform
+
+
+================================================================================
+6. SELECTION SYNTAX
+================================================================================
+
+  --select stg_matches                 one model
+  --select gold                        everything under models/gold/
+  --select stg_match_players+          it AND everything downstream (facts)
+  --select +fact_matches               it AND its upstream dependencies
+  --select gold,+dim_hero              gold plus hero's dependencies
+  --select stg_matches stg_teams       multiple (space-separated)
+  --select "models/silver"             whole path
+  --exclude fact_teamfights            skip one model
+
+Practical examples:
+  - New matches loaded -> rebuild only the pipeline:
+        dbt build --project-dir transform
+  - Changed stg_matches.sql logic -> full-refresh it and everything downstream:
+        dbt run --project-dir transform --full-refresh --select stg_matches+
+  - Gold only (Power BI refresh prep):
+        dbt run --project-dir transform --select gold
+
+
+================================================================================
+7. YOUR REAL-WORLD WORKFLOW
+================================================================================
+
+After scraping new matches (new JSON in data/proMatches/):
+
+  1. Load new JSON into bronze:
+        .\.venv\Scripts\python.exe scripts\load_bronze.py
+     (idempotent - safe to rerun; skips/upserts)
+
+  2. Build + test the whole transform layer:
+        & .venv\Scripts\dbt.exe build --project-dir transform
+     - runs seeds, silver (views cheap + incrementals append only new matches),
+       gold tables in dependency order, then all tests.
+
+  3. If all green -> refresh Power BI (DirectQuery shows the new data).
+
+If a build fails:
+  - Check transform/target/run/<project>/... for the exact SQL that failed.
+  - Fix the model, then rebuild that model + downstream with
+        dbt run --project-dir transform --select <model>+
+  - Long builds look frozen (no mid-query progress). Verify liveness with
+    pg_stat_activity in Postgres rather than killing dbt.
+
+After changing a model's LOGIC (not just adding data):
+  - Incremental models need --full-refresh so the whole table is rebuilt:
+        dbt run --project-dir transform --full-refresh --select <model>+
+  - If a source column list changed, you may also need to full-refresh the
+    silver stage before gold:
+        dbt run --project-dir transform --full-refresh --select silver
+
+After any dbt change that alters gold:
+  - Re-run dbt build, refresh Power BI, and (if DB changed) take a fresh
+    pg_dump into backups/.
+
+
+================================================================================
+8. TROUBLESHOOTING & PRO TIPS
+================================================================================
+
+  - Profiles: dbt connects using the COMMITTED profiles.yml in the repo root
+    (invoke with --profiles-dir .). It defaults to
+    postgres / localhost:5432 / db dota / schema silver / user postgres /
+    pass postgres / threads 4, all overridable via POSTGRES_* / DBT_* env vars.
+    The profile name in dbt_project.yml is 'transform', target 'dev'. If
+    connection errors, check profiles.yml (or the env vars) first.
+
+  - target/ folder: compiled + run SQL and logs. Do not edit, do not commit
+    (already gitignored). Debug here first before touching models.
+
+  - Incremental correctness: when you change the SELECT of an incremental
+    model, old rows are NOT updated - you must --full-refresh. This is the
+    #1 source of "why are my numbers wrong" in dbt.
+
+  - DirectQuery constraint: never reintroduce jsonb columns into gold.
+    jsonb breaks Power BI query folding (error 10682). Keep raw maps as text
+    (the project already does this for stg_teamfights.players,
+    fact_teamfight_players.* etc.).
+
+  - Key types: all gold key/ID columns are text on purpose (match_id,
+    hero_id, account_id, team_id, leagueid, game_mode_id, lobby_type_id,
+    region_id, ...). Keep measures numeric and dates as dates. Do not "fix"
+    the text keys.
+
+  - Long-running models: dbt prints progress only at step completion. To
+    confirm a build is alive, check pg_stat_activity:
+        select pid, state, query from pg_stat_activity where query like '%dbt%';
+    Never kill a build just because it looks frozen.
+
+  - Correlated subqueries against large tables are poison in dbt models (a
+    per-row SELECT against a 1.25M-row CTE hung the skills build for 10+
+    minutes). Prefer hash joins, grouped per-level tables + row_number().
+    The project already rewrote fact_match_player_skills this way.
+
+  - Seeds changing: after editing a CSV, rerun with --full-refresh so the
+    table is rebuilt, otherwise you get duplicate/old data.
+
+  - Docs: run dbt docs generate after every schema.yml / model change to keep
+    the docs site current.
+
+
+================================================================================
+9. COMMON PITFALLS (each one already hit in this project)
+================================================================================
+
+  1. Hardcoding table names instead of ref() -> breaks the dependency graph.
+  2. Editing an incremental model without --full-refresh -> stale data.
+  3. Adding jsonb to gold -> Power BI error 10682, query folding dies.
+  4. Mixing numeric/text key types -> Power BI rejects relationships. Keep
+     keys text everywhere.
+  5. Correlated subqueries over huge CTEs -> 10+ min hangs. Use joins.
+  6. Forgetting load_bronze.py before dbt -> no new data in bronze, dbt has
+     nothing to build.
+  7. Killing dbt mid-build because it looks frozen -> data corruption risk.
+     Check pg_stat_activity first.
+  8. Not re-dumping Postgres after schema changes -> stale backups.
+
+
+================================================================================
+10. REFERENCE CHEATSHEET
+================================================================================
+
+  CONNECTION CHECK
+      & .venv\Scripts\dbt.exe debug --project-dir transform
+
+  FULL PIPELINE (after new matches are in bronze)
+      & .venv\Scripts\dbt.exe build --project-dir transform
+
+  MODELS ONLY
+      & .venv\Scripts\dbt.exe run --project-dir transform
+
+  SUBSET
+      & .venv\Scripts\dbt.exe run --project-dir transform --select gold
+      & .venv\Scripts\dbt.exe run --project-dir transform --select stg_matches+
+
+  FULL-REFRESH AFTER LOGIC CHANGE
+      & .venv\Scripts\dbt.exe run --project-dir transform --full-refresh --select stg_matches+
+
+  TESTS ONLY
+      & .venv\Scripts\dbt.exe test --project-dir transform
+
+  SEEDS
+      & .venv\Scripts\dbt.exe seed --project-dir transform
+      & .venv\Scripts\dbt.exe seed --project-dir transform --full-refresh
+
+  COMPILE (see real SQL without running)
+      & .venv\Scripts\dbt.exe compile --project-dir transform --select dim_hero
+
+  DOCS
+      & .venv\Scripts\dbt.exe docs generate --project-dir transform
+      & .venv\Scripts\dbt.exe docs serve --project-dir transform
+
+  PROFILE LOCATION
+      profiles.yml   (committed, repo root; use --profiles-dir .)
+
+  SOURCE FRESHNESS (warn if bronze.matches is stale)
+      & .venv\Scripts\dbt.exe source freshness --profiles-dir . --project-dir transform
+
+  COMPILED SQL / RUN LOGS
+      transform/target/
+
+================================================================================
+END OF GUIDE
+================================================================================

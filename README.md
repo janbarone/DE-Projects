@@ -4,6 +4,33 @@ A raw-fetch pipeline for the [OpenDota API](https://docs.opendota.com/) that sto
 
 **Goal:** show the full data flow from source to dashboard (ingestion -> PostgreSQL -> dbt/SQL transforms -> Power BI) as a junior data engineer portfolio project.
 
+## Project Status
+
+**Current state: end-to-end pipeline complete and reproducible.** The full flow
+(OpenDota API → raw JSON → PostgreSQL medallion → dbt silver/gold → Power BI)
+works, is wrapped by two orchestrators, and is covered by CI.
+
+**Achieved:**
+- **Ingestion** — throttled, quota-aware, resumable OpenDota scrapers (`data/`).
+- **Bronze** — raw `jsonb` payloads + `loaded_at`, idempotent loader (`scripts/load_bronze.py`).
+- **Silver/Gold** — dbt (`transform/`) with ~38 star-schema tables, 317 passing
+  tests, referential integrity, `dbt source freshness`.
+- **Power BI** — functional 6+ page report on the gold layer (PBIP, DirectQuery).
+- **Orchestration** — Dagster *and* Airflow wrapping one shared `run_pipeline.py`.
+- **Reproducibility** — committed `sample_data/` (200 curated matches + full
+  reference files), pinned deps + lockfile, portable `profiles.yml`.
+- **CI/CD** — GitHub Actions: ruff + sqlfluff lint, pytest, full `dbt build`.
+- **Migrations** — Alembic for the bronze schema (`db/migrations/`).
+
+**Next steps:**
+1. `docker compose up` → run the full pipeline against `sample_data/` and
+   re-verify the live DB is in sync (the scrape has ~15k match files vs 4,299
+   loaded — run `load_bronze` + `dbt build` to backfill).
+2. Wire `dbt source freshness` into the scheduled DAG (config already in
+   `sources.yml`).
+3. Optionally swap the Airflow `BashOperator` for the dbt-cosmos provider.
+4. Publish to GitHub (add `sample_data/`, push, confirm CI passes).
+
 ## Architecture
 
 ```
@@ -21,9 +48,9 @@ OpenDota API (api.opendota.com)
         |  silver (dbt-core)   --DONE--
         |  gold (dbt marts)    --DONE--
         |
-        |  (roadmap) orchestrator
+        |  orchestrator (Dagster / Airflow)  --DONE--
         v
-      Power BI
+      Power BI  --DONE--
 ```
 
 Each fetch script stores **full raw payloads** (no column filtering) plus a `timestamp_fetched` stamp so the bronze layer can be rebuilt or re-loaded later.
@@ -125,8 +152,12 @@ OpenDota anonymous tier: **60 calls/minute, 3,000 calls/day**. The pipeline resp
 - [x] 2. PostgreSQL bronze schema + JSONB loader
 - [x] 3. Silver transformations with dbt
 - [x] 4. Gold marts (fct/dim) for Power BI
-- [ ] 5. Orchestrator (e.g. Apache Airflow) for scheduled runs
-- [ ] 6. Power BI dashboard on top of the gold layer
+- [x] 5. Orchestrators (Dagster **and** Airflow) for scheduled runs
+- [x] 6. Power BI dashboard on top of the gold layer
+- [x] 7. CI/CD (GitHub Actions: lint + unit tests + full `dbt build` on sample data)
+- [x] 8. Reproducible sample dataset (committed `sample_data/`) + pinned dependencies
+- [x] 9. Data quality: dbt tests + `dbt source freshness` + Alembic migrations
+- [ ] 10. dbt source freshness in the scheduled DAG (wired, see `sources.yml`)
 
 ## Medallion Plan (Bronze → Silver → Gold)
 
@@ -257,26 +288,102 @@ The full relationship mapping for Power BI (cardinality + cross-filter) is in
 ### How to run
 
 ```powershell
+# 0. Create a virtualenv and install pinned deps (Python 3.12+ recommended)
+python -m venv .venv
+.\.venv\Scripts\python.exe -m pip install -r requirements.txt        # runtime
+.\.venv\Scripts\python.exe -m pip install -r requirements-dev.txt    # dev/CI (tests, lint, alembic)
+
 # 1. Start the database (Docker Desktop must be running)
 docker compose up -d
 
 # 2. (One-time) load raw JSON into bronze
-.\.venv\Scripts\python.exe scripts\load_bronze.py
+.\.venv\Scripts\python.exe scripts\load_bronze.py --data-dir sample_data   # committed demo set
+# ...or the live scrape:  scripts\load_bronze.py --data-dir data
 
-# 3. Run dbt (silver + gold transforms + tests)
-.\.venv\Scripts\dbt.exe build --project-dir transform
+# 3. Run dbt (silver + gold transforms + tests). --profiles-dir . points at
+#    the committed profiles.yml (repo root).
+.\.venv\Scripts\dbt.exe build --profiles-dir . --project-dir transform
 # Full rebuild of a model if logic/source changed:
-.\.venv\Scripts\dbt.exe run --project-dir transform --full-refresh --select stg_matches
+.\.venv\Scripts\dbt.exe run --profiles-dir . --project-dir transform --full-refresh --select stg_matches
 # Build only the gold layer:
-.\.venv\Scripts\dbt.exe build --project-dir transform --select gold
+.\.venv\Scripts\dbt.exe build --profiles-dir . --project-dir transform --select gold
 
-# 4. View the docs site
-.\.venv\Scripts\dbt.exe docs serve --project-dir transform
+# 4. Source freshness check (warns if bronze.matches is stale)
+.\.venv\Scripts\dbt.exe source freshness --profiles-dir . --project-dir transform
+
+# 5. View the docs site
+.\.venv\Scripts\dbt.exe docs serve --profiles-dir . --project-dir transform
 ```
 
+**One-command pipeline** (used by the orchestrators):
+
+```powershell
+.\.venv\Scripts\python.exe scripts\run_pipeline.py --data-dir sample_data
+```
+
+### Reproducibility (sample dataset)
+
+The full scrape (`data/`) is ~5.5 GB and gitignored. For a reviewer to run the
+whole stack without re-scraping the API, a curated **~200 match** sample plus the
+**complete reference files** (leagues/teams/proPlayers/heroStats/constants) is
+committed under `sample_data/` (~106 MB).
+
+- Curated by `scripts/make_sample.py` to cover every report page: both win
+  sides + draws, per-minute `gold_t`/`xp_t`, ability upgrades (talents),
+  item purchases, wards, runes, damage types, teamfights, picks/bans, missing
+  team ids, and `hero_id = 0` placeholders — spread across ~20 leagues and
+  15 patches.
+- Regenerate with `python scripts/make_sample.py --matches 200` (reads the live
+  `data/` scrape, writes `sample_data/`).
+- The `sample_data/MANIFEST.json` records the selection + coverage report.
+
+### Orchestration (Dagster and Airflow)
+
+Both orchestrators wrap the **same** `scripts/run_pipeline.py` (no duplicated
+logic) and run **one at a time** via docker-compose profiles:
+
+```powershell
+docker compose --profile dagster up -d    # UI at http://localhost:3000
+docker compose --profile airflow up -d    # UI at http://localhost:8080 (admin/admin)
+```
+
+- Dagster: `orchestration/dagster/definitions.py` — two assets
+  (`bronze_loaded` -> `dbt_built`) + a daily schedule.
+- Airflow: `orchestration/airflow/dags/dota_pipeline_dag.py` — two
+  `BashOperator` tasks (`load_bronze` >> `dbt_build`) on a daily schedule.
+- Local (no containers): `python -m dagster dev -m definitions` from
+  `orchestration/dagster/`, or drop the DAG into a running Airflow's `dags/`.
+
+### CI/CD
+
+`.github/workflows/ci.yml` runs on every push/PR:
+
+1. **lint** — `ruff check .` + `sqlfluff lint transform/models`.
+2. **unit-test** — `pytest` (tests/).
+3. **dbt-build** — spins up a Postgres service, loads `sample_data/` into
+   bronze, runs `dbt build` (all silver/gold + tests), then `dbt source freshness`.
+
+### Bronze schema migrations (Alembic)
+
+`db/init/*.sql` still bootstraps the schema on a fresh Docker volume. For
+versioned schema changes on an existing database, use Alembic:
+
+```powershell
+.\.venv\Scripts\alembic -c db\alembic.ini upgrade head    # apply migrations
+.\.venv\Scripts\alembic -c db\alembic.ini downgrade -1     # roll back one
+.\.venv\Scripts\alembic -c db\alembic.ini revision --autogenerate -m "..."  # new migration
+```
+
+### Logging
+
+Pipeline-critical Python (`load_bronze.py`, `run_pipeline.py`) logs structured
+**JSON** to stderr via `data/dota_common.py::configure_logging`. The interactive
+scrapers keep human-readable console output (appropriate for CLI tools).
+
 ### Future steps (separate PRs / sessions)
-- Orchestrator (Airflow/Dagster/Prefect) DAG wiring bronze_load -> dbt build.
-- Power BI dashboard on `gold` (relationship mapping ready in `docs/`).
+- Wire `dbt source freshness` into the scheduled DAG (config already in `sources.yml`).
+- Optionally switch the Airflow DAG to the dbt-cosmos provider for a first-class
+  dbt integration (currently BashOperator calls `run_pipeline.py`).
 - Optional: PySpark if the dataset grows large (time-series: chat, kills_log,
   gold_t, xp_t).
 
@@ -530,5 +637,27 @@ report renders correctly in Power BI Desktop across all pages.
   `gold3_20260802_223003.dump` (194.4 MB, predates `fact_team_matches`,
   `dim_patch`, `fact_hero_matchups`, `fact_team_h2h`, `dim_item` and all
   per-minute facts). Restore with `pg_restore -U postgres -d dota backups/<file>.dump`.
-- dbt profile is at `~/.dbt/profiles.yml` (not in the repo); project is
-  `transform/`.
+- dbt profile is now **committed** at `profiles.yml` (repo root), overridden via
+  env vars; invoke dbt with `--profiles-dir .`. The dbt project is `transform/`.
+
+**Status update (2026-08-13, engineering hardening):** this session focused on
+closing the gaps between a "script collection" and a production pipeline:
+
+- **Reproducibility** — removed the hardcoded absolute path from
+  `data/dota_common.py` (now derived from `__file__`); pinned `requirements.txt`
+  + added `requirements-dev.txt` and `requirements.lock`; committed a portable
+  `profiles.yml`; added `scripts/make_sample.py` and generated a curated
+  **200-match sample dataset** under `sample_data/` (~106 MB, full reference
+  files included) so `git clone` + `docker compose up` runs end-to-end.
+- **Orchestration** — added a shared `scripts/run_pipeline.py` entrypoint and
+  **two** orchestrators: Dagster (`orchestration/dagster/`) and Airflow
+  (`orchestration/airflow/`), selectable via docker-compose profiles.
+- **CI/CD** — `.github/workflows/ci.yml` (ruff + sqlfluff lint, pytest,
+  full `dbt build` against sample data on a Postgres service), plus `ruff.toml`
+  and `.sqlfluff` configs.
+- **Data quality** — added `dbt source freshness` on `bronze.matches`
+  (`transform/models/sources.yml`) and Alembic migrations for the bronze schema
+  (`db/migrations/`).
+- **Logging** — structured JSON logging for `load_bronze.py` / `run_pipeline.py`
+  via `data/dota_common.py::configure_logging`.
+- 13 pytest unit tests added (throttle/retry/backoff + loader upsert logic).

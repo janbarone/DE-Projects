@@ -1,0 +1,8 @@
+# Development / CI dependencies (tests, linting, migrations).
+-r requirements.txt
+
+pytest>=8.0
+sqlfluff>=3.0
+ruff>=0.6
+alembic>=1.13
+sqlalchemy>=2.0
