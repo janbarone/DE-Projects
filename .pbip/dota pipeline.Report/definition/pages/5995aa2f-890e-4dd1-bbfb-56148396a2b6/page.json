@@ -1,8 +1,65 @@
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/page/2.0.0/schema.json",
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/page/2.1.0/schema.json",
   "name": "5995aa2f-890e-4dd1-bbfb-56148396a2b6",
   "displayName": "Hero Meta",
   "displayOption": "FitToPage",
-  "height": 720,
-  "width": 1280
+  "height": 1000,
+  "width": 1280,
+  "visualInteractions": [
+    {
+      "source": "a408a2f7-b9cb-45c6-999b-f7dbd13ca986",
+      "target": "9f493d6e-3310-4998-8347-a92178c9a5d7",
+      "type": "DataFilter"
+    },
+    {
+      "source": "a408a2f7-b9cb-45c6-999b-f7dbd13ca986",
+      "target": "51513270-320a-4ca7-9652-cd764bcef5d8",
+      "type": "DataFilter"
+    },
+    {
+      "source": "a408a2f7-b9cb-45c6-999b-f7dbd13ca986",
+      "target": "fce86b13-47b5-47aa-aaa5-27b80f8ba8cf",
+      "type": "DataFilter"
+    },
+    {
+      "source": "9f493d6e-3310-4998-8347-a92178c9a5d7",
+      "target": "51513270-320a-4ca7-9652-cd764bcef5d8",
+      "type": "DataFilter"
+    },
+    {
+      "source": "9f493d6e-3310-4998-8347-a92178c9a5d7",
+      "target": "fce86b13-47b5-47aa-aaa5-27b80f8ba8cf",
+      "type": "DataFilter"
+    },
+    {
+      "source": "51513270-320a-4ca7-9652-cd764bcef5d8",
+      "target": "9f493d6e-3310-4998-8347-a92178c9a5d7",
+      "type": "DataFilter"
+    },
+    {
+      "source": "51513270-320a-4ca7-9652-cd764bcef5d8",
+      "target": "fce86b13-47b5-47aa-aaa5-27b80f8ba8cf",
+      "type": "DataFilter"
+    },
+    {
+      "source": "51513270-320a-4ca7-9652-cd764bcef5d8",
+      "target": "a408a2f7-b9cb-45c6-999b-f7dbd13ca986",
+      "type": "DataFilter"
+    },
+    {
+      "source": "fce86b13-47b5-47aa-aaa5-27b80f8ba8cf",
+      "target": "51513270-320a-4ca7-9652-cd764bcef5d8",
+      "type": "DataFilter"
+    },
+    {
+      "source": "fce86b13-47b5-47aa-aaa5-27b80f8ba8cf",
+      "target": "9f493d6e-3310-4998-8347-a92178c9a5d7",
+      "type": "DataFilter"
+    },
+    {
+      "source": "fce86b13-47b5-47aa-aaa5-27b80f8ba8cf",
+      "target": "a408a2f7-b9cb-45c6-999b-f7dbd13ca986",
+      "type": "DataFilter"
+    }
+  ]
 }

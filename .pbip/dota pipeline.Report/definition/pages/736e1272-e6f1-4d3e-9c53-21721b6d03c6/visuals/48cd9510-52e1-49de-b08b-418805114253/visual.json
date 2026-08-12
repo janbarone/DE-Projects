@@ -32,7 +32,7 @@
               {
                 "textRuns": [
                   {
-                    "value": "Top picks / top bans — ",
+                    "value": "Top picks / top bans Ã¢â‚¬â€ ",
                     "textStyle": {
                       "fontFamily": "Segoe UI",
                       "fontSize": "9.5pt",
@@ -52,7 +52,7 @@
               {
                 "textRuns": [
                   {
-                    "value": "Picks vs bans by hero — ",
+                    "value": "Picks vs bans by hero Ã¢â‚¬â€ ",
                     "textStyle": {
                       "fontFamily": "Segoe UI",
                       "fontSize": "9.5pt",
@@ -72,7 +72,7 @@
               {
                 "textRuns": [
                   {
-                    "value": "Picks by draft phase — ",
+                    "value": "Picks by draft phase Ã¢â‚¬â€ ",
                     "textStyle": {
                       "fontFamily": "Segoe UI",
                       "fontSize": "9.5pt",
@@ -92,7 +92,7 @@
               {
                 "textRuns": [
                   {
-                    "value": "Draft activity by side — ",
+                    "value": "Draft activity by side Ã¢â‚¬â€ ",
                     "textStyle": {
                       "fontFamily": "Segoe UI",
                       "fontSize": "9.5pt",
@@ -112,7 +112,7 @@
               {
                 "textRuns": [
                   {
-                    "value": "Hero matchups table — ",
+                    "value": "Hero matchups table Ã¢â‚¬â€ ",
                     "textStyle": {
                       "fontFamily": "Segoe UI",
                       "fontSize": "9.5pt",
@@ -132,7 +132,7 @@
               {
                 "textRuns": [
                   {
-                    "value": "Team H2H records table — ",
+                    "value": "Team H2H records table Ã¢â‚¬â€ ",
                     "textStyle": {
                       "fontFamily": "Segoe UI",
                       "fontSize": "9.5pt",
@@ -181,7 +181,7 @@
           }
         }
       ],
-      "border": [
+      "dropShadow": [
         {
           "properties": {
             "show": {
@@ -194,13 +194,13 @@
           }
         }
       ],
-      "dropShadow": [
+      "border": [
         {
           "properties": {
             "show": {
               "expr": {
                 "Literal": {
-                  "Value": "false"
+                  "Value": "true"
                 }
               }
             }

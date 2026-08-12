@@ -47,6 +47,25 @@ select
     nullif(p.value->>'creeps_stacked', '')::int as creeps_stacked,
     nullif(p.value->>'neutral_kills', '')::int as neutral_kills,
     nullif(p.value->>'rune_pickups', '')::int as rune_pickups,
+    -- Ward placements: the obs_placed / sen_placed scalars are null for most
+    -- players even in parsed matches, so derive from the authoritative
+    -- obs_log / sen_log arrays (one entry per ward placed). Fall back to the
+    -- scalar when the array is absent.
+    coalesce(
+        case when jsonb_typeof(p.value->'obs_log') = 'array' then jsonb_array_length(p.value->'obs_log') end,
+        nullif(p.value->>'obs_placed', '')::int,
+        0
+    ) as obs_placed,
+    coalesce(
+        case when jsonb_typeof(p.value->'sen_log') = 'array' then jsonb_array_length(p.value->'sen_log') end,
+        nullif(p.value->>'sen_placed', '')::int,
+        0
+    ) as sen_placed,
+    nullif(p.value->>'observer_kills', '')::int as observer_kills,
+    nullif(p.value->>'sentry_kills', '')::int as sentry_kills,
+    nullif(p.value->>'purchase_ward_observer', '')::int as purchase_ward_observer,
+    nullif(p.value->>'purchase_ward_sentry', '')::int as purchase_ward_sentry,
+    nullif(p.value->>'personaname', '') as personaname,
     nullif(p.value->>'level', '') as level,
     nullif(p.value->>'item_0', '') as item_0,
     nullif(p.value->>'item_1', '') as item_1,

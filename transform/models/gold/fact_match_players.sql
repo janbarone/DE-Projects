@@ -72,6 +72,63 @@ momentum as (
         max(case when phase_ord = 2 then xp_delta end) as xp_late
     from {{ ref('fact_phase_momentum') }}
     group by match_id, team_number
+),
+pick_order as (
+    select
+        match_id,
+        hero_id,
+        max(case when is_pick = '1' then seq end) as pick_sequence,
+        max(case when is_pick = '0' then seq end) as ban_sequence
+    from (
+        select
+            p.match_id,
+            p.hero_id,
+            p.is_pick,
+            row_number() over (
+                partition by p.match_id, p.is_pick
+                order by nullif(p.order_no, '')::int
+            ) as seq
+        from {{ ref('fact_picks_bans') }} p
+    ) d
+    group by match_id, hero_id
+),
+enemy_kills as (
+    select
+        match_id,
+        player_slot,
+        count(*) as enemy_heroes_killed
+    from {{ ref('stg_match_player_kills') }}
+    group by match_id, player_slot
+),
+support_items as (
+    select
+        match_id,
+        player_slot,
+        count(*) filter (where item_internal_name = 'ward_observer') as ward_observer_bought,
+        count(*) filter (where item_internal_name = 'ward_sentry')   as ward_sentry_bought,
+        count(*) filter (where item_internal_name = 'dust')          as dust_bought,
+        count(*) filter (where item_internal_name = 'smoke_of_deceit') as smoke_bought,
+        count(*) filter (where item_internal_name = 'gem')           as gem_bought,
+        -- support gold: sum of (count bought x current item cost) for the
+        -- support items. Observer ward costs 0 in current constants.
+        coalesce(count(*) filter (where item_internal_name = 'ward_observer') * 0, 0)
+        + coalesce(count(*) filter (where item_internal_name = 'ward_sentry') * 50, 0)
+        + coalesce(count(*) filter (where item_internal_name = 'dust') * 80, 0)
+        + coalesce(count(*) filter (where item_internal_name = 'smoke_of_deceit') * 50, 0)
+        + coalesce(count(*) filter (where item_internal_name = 'gem') * 900, 0)
+            as support_gold
+    from {{ ref('stg_match_player_item_purchases') }}
+    group by match_id, player_slot
+),
+damage_taken_type as (
+    select
+        match_id,
+        player_slot,
+        sum(damage_amount) filter (where damage_type = 'Physical') as damage_taken_physical,
+        sum(damage_amount) filter (where damage_type = 'Magical')  as damage_taken_magical,
+        sum(damage_amount) filter (where damage_type = 'Pure')     as damage_taken_pure
+    from {{ ref('stg_match_player_damage_taken_type') }}
+    group by match_id, player_slot
 )
 select
     mp.match_id,
@@ -118,7 +175,25 @@ select
     mp.creeps_stacked,
     mp.neutral_kills,
     mp.rune_pickups,
+    mp.obs_placed,
+    mp.sen_placed,
+    mp.observer_kills,
+    mp.sentry_kills,
+    mp.purchase_ward_observer,
+    mp.purchase_ward_sentry,
     mp.level,
+    po.pick_sequence,
+    po.ban_sequence,
+    ek.enemy_heroes_killed,
+    si.ward_observer_bought,
+    si.ward_sentry_bought,
+    si.dust_bought,
+    si.smoke_bought,
+    si.gem_bought,
+    si.support_gold,
+    dtt.damage_taken_physical,
+    dtt.damage_taken_magical,
+    dtt.damage_taken_pure,
     mp.item_0,
     mp.item_1,
     mp.item_2,
@@ -154,3 +229,15 @@ left join {{ ref('dim_item') }} din on din.item_id = mp.item_neutral
 left join momentum mo
     on mo.match_id = mp.match_id
     and mo.team_number = mp.team_number
+left join pick_order po
+    on po.match_id = mp.match_id
+    and po.hero_id = mp.hero_id
+left join enemy_kills ek
+    on ek.match_id = mp.match_id
+    and ek.player_slot = mp.player_slot
+left join support_items si
+    on si.match_id = mp.match_id
+    and si.player_slot = mp.player_slot
+left join damage_taken_type dtt
+    on dtt.match_id = mp.match_id
+    and dtt.player_slot = mp.player_slot

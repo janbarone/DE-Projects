@@ -32,7 +32,7 @@
               {
                 "textRuns": [
                   {
-                    "value": "Match selector —  — ",
+                    "value": "Match selector Ã¢â‚¬â€  Ã¢â‚¬â€ ",
                     "textStyle": {
                       "fontFamily": "Segoe UI",
                       "fontSize": "9.5pt",
@@ -52,7 +52,7 @@
               {
                 "textRuns": [
                   {
-                    "value": "Player stat cards —  — ",
+                    "value": "Player stat cards Ã¢â‚¬â€  Ã¢â‚¬â€ ",
                     "textStyle": {
                       "fontFamily": "Segoe UI",
                       "fontSize": "9.5pt",
@@ -72,7 +72,7 @@
               {
                 "textRuns": [
                   {
-                    "value": "Player tables —  — ",
+                    "value": "Player tables Ã¢â‚¬â€  Ã¢â‚¬â€ ",
                     "textStyle": {
                       "fontFamily": "Segoe UI",
                       "fontSize": "9.5pt",
@@ -92,7 +92,7 @@
               {
                 "textRuns": [
                   {
-                    "value": "Timeline tables —  — ",
+                    "value": "Timeline tables Ã¢â‚¬â€  Ã¢â‚¬â€ ",
                     "textStyle": {
                       "fontFamily": "Segoe UI",
                       "fontSize": "9.5pt",
@@ -112,7 +112,7 @@
               {
                 "textRuns": [
                   {
-                    "value": "Note —  — ",
+                    "value": "Note Ã¢â‚¬â€  Ã¢â‚¬â€ ",
                     "textStyle": {
                       "fontFamily": "Segoe UI",
                       "fontSize": "9.5pt",
@@ -161,7 +161,7 @@
           }
         }
       ],
-      "border": [
+      "dropShadow": [
         {
           "properties": {
             "show": {
@@ -174,13 +174,13 @@
           }
         }
       ],
-      "dropShadow": [
+      "border": [
         {
           "properties": {
             "show": {
               "expr": {
                 "Literal": {
-                  "Value": "false"
+                  "Value": "true"
                 }
               }
             }

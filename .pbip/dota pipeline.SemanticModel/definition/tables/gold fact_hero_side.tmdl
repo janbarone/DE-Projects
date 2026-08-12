@@ -1,0 +1,68 @@
+table 'gold fact_hero_side'
+	lineageTag: aaaa010a-0000-0000-0000-000000000000
+
+	measure 'Side Picks' = SUM('gold fact_hero_side'[hero_side_picks])
+		formatString: #,##0
+		lineageTag: aaaa010a-0000-0000-0000-0000000000f0
+
+	measure 'Side Win Rate' = DIVIDE(SUM('gold fact_hero_side'[hero_side_wins]), SUM('gold fact_hero_side'[hero_side_picks]))
+		formatString: 0.0%
+		lineageTag: aaaa010a-0000-0000-0000-0000000000f1
+
+	column hero_id
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: aaaa010a-0000-0000-0000-000000000001
+		summarizeBy: none
+		sourceColumn: hero_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column side
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: aaaa010a-0000-0000-0000-000000000002
+		summarizeBy: none
+		sourceColumn: side
+
+		annotation SummarizationSetBy = Automatic
+
+	column hero_side_picks
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: aaaa010a-0000-0000-0000-000000000003
+		summarizeBy: sum
+		sourceColumn: hero_side_picks
+
+		annotation SummarizationSetBy = Automatic
+
+	column hero_side_wins
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: aaaa010a-0000-0000-0000-000000000004
+		summarizeBy: sum
+		sourceColumn: hero_side_wins
+
+		annotation SummarizationSetBy = Automatic
+
+	column hero_side_win_rate
+		dataType: double
+		formatString: 0.0%
+		sourceProviderType: decimal
+		lineageTag: aaaa010a-0000-0000-0000-000000000005
+		summarizeBy: none
+		sourceColumn: hero_side_win_rate
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'gold fact_hero_side' = m
+		mode: directQuery
+		source =
+				let
+				    Source = PostgreSQL.Database("localhost", "dota"),
+				    gold_fact_hero_side = Source{[Schema="gold",Item="fact_hero_side"]}[Data]
+				in
+				    gold_fact_hero_side
+

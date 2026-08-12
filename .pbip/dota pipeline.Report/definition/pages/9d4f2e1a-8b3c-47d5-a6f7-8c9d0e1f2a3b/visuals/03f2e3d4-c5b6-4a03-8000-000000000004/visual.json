@@ -3,7 +3,7 @@
   "name": "03f2e3d4-c5b6-4a03-8000-000000000004",
   "position": {
     "x": 650,
-    "y": 645,
+    "y": 523,
     "z": 13,
     "height": 190,
     "width": 610,
@@ -27,7 +27,9 @@
                 }
               },
               "queryRef": "gold fact_match_player_skills.minute",
-              "nativeQueryRef": "minute"
+              "nativeQueryRef": "Minute",
+              "active": true,
+              "displayName": "Minute"
             },
             {
               "field": {
@@ -41,7 +43,9 @@
                 }
               },
               "queryRef": "gold fact_match_player_skills.player_name",
-              "nativeQueryRef": "player_name"
+              "nativeQueryRef": "Player Name",
+              "active": true,
+              "displayName": "Player Name"
             },
             {
               "field": {
@@ -55,7 +59,9 @@
                 }
               },
               "queryRef": "gold fact_match_player_skills.hero_localized_name",
-              "nativeQueryRef": "hero_localized_name"
+              "nativeQueryRef": "Hero",
+              "active": true,
+              "displayName": "Hero"
             },
             {
               "field": {
@@ -69,7 +75,9 @@
                 }
               },
               "queryRef": "gold fact_match_player_skills.ability_name",
-              "nativeQueryRef": "ability_name"
+              "nativeQueryRef": "Ability",
+              "active": true,
+              "displayName": "Ability"
             },
             {
               "field": {
@@ -83,7 +91,25 @@
                 }
               },
               "queryRef": "gold fact_match_player_skills.learn_level",
-              "nativeQueryRef": "learn_level"
+              "nativeQueryRef": "Level Learned",
+              "active": true,
+              "displayName": "Level Learned"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold fact_match_player_skills"
+                    }
+                  },
+                  "Property": "is_talent"
+                }
+              },
+              "queryRef": "gold fact_match_player_skills.is_talent",
+              "nativeQueryRef": "Is Talent",
+              "active": true,
+              "displayName": "Is Talent"
             }
           ]
         }
@@ -121,6 +147,19 @@
               "expr": {
                 "Literal": {
                   "Value": "'Dire - skill levelling over time'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "border": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
                 }
               }
             }

@@ -1,0 +1,94 @@
+table 'gold fact_match_team_minute'
+	lineageTag: aaaa0108-0000-0000-0000-000000000000
+
+	measure 'Team Gold' = MAX('gold fact_match_team_minute'[team_gold])
+		formatString: #,##0
+		lineageTag: aaaa0108-0000-0000-0000-0000000000f0
+
+	measure 'Team XP' = MAX('gold fact_match_team_minute'[team_xp])
+		formatString: #,##0
+		lineageTag: aaaa0108-0000-0000-0000-0000000000f1
+
+	measure 'Radiant Team Gold' = CALCULATE(MAX('gold fact_match_team_minute'[team_gold]), 'gold fact_match_team_minute'[side] = "Radiant")
+		formatString: #,##0
+		lineageTag: aaaa0108-0000-0000-0000-0000000000f2
+
+	measure 'Dire Team Gold' = CALCULATE(MAX('gold fact_match_team_minute'[team_gold]), 'gold fact_match_team_minute'[side] = "Dire")
+		formatString: #,##0
+		lineageTag: aaaa0108-0000-0000-0000-0000000000f3
+
+	measure 'Radiant Team XP' = CALCULATE(MAX('gold fact_match_team_minute'[team_xp]), 'gold fact_match_team_minute'[side] = "Radiant")
+		formatString: #,##0
+		lineageTag: aaaa0108-0000-0000-0000-0000000000f4
+
+	measure 'Dire Team XP' = CALCULATE(MAX('gold fact_match_team_minute'[team_xp]), 'gold fact_match_team_minute'[side] = "Dire")
+		formatString: #,##0
+		lineageTag: aaaa0108-0000-0000-0000-0000000000f5
+
+	column match_id
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: aaaa0108-0000-0000-0000-000000000001
+		summarizeBy: none
+		sourceColumn: match_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column side
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: aaaa0108-0000-0000-0000-000000000002
+		summarizeBy: none
+		sourceColumn: side
+
+		annotation SummarizationSetBy = Automatic
+
+	column minute
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: aaaa0108-0000-0000-0000-000000000003
+		summarizeBy: none
+		sourceColumn: minute
+
+		annotation SummarizationSetBy = Automatic
+
+	column team_gold
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: aaaa0108-0000-0000-0000-000000000004
+		summarizeBy: sum
+		sourceColumn: team_gold
+
+		annotation SummarizationSetBy = Automatic
+
+	column team_xp
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: aaaa0108-0000-0000-0000-000000000005
+		summarizeBy: sum
+		sourceColumn: team_xp
+
+		annotation SummarizationSetBy = Automatic
+
+	column players_sampled
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: aaaa0108-0000-0000-0000-000000000006
+		summarizeBy: sum
+		sourceColumn: players_sampled
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'gold fact_match_team_minute' = m
+		mode: directQuery
+		source =
+				let
+				    Source = PostgreSQL.Database("localhost", "dota"),
+				    gold_fact_match_team_minute = Source{[Schema="gold",Item="fact_match_team_minute"]}[Data]
+				in
+				    gold_fact_match_team_minute
+

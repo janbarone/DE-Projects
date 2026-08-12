@@ -32,7 +32,7 @@
               {
                 "textRuns": [
                   {
-                    "value": "Items — ",
+                    "value": "Items Ã¢â‚¬â€ ",
                     "textStyle": {
                       "fontFamily": "Segoe UI",
                       "fontSize": "9.5pt",
@@ -52,7 +52,7 @@
               {
                 "textRuns": [
                   {
-                    "value": "Abilities — ",
+                    "value": "Abilities Ã¢â‚¬â€ ",
                     "textStyle": {
                       "fontFamily": "Segoe UI",
                       "fontSize": "9.5pt",
@@ -72,7 +72,7 @@
               {
                 "textRuns": [
                   {
-                    "value": "Gold delta — ",
+                    "value": "Gold delta Ã¢â‚¬â€ ",
                     "textStyle": {
                       "fontFamily": "Segoe UI",
                       "fontSize": "9.5pt",
@@ -92,7 +92,7 @@
               {
                 "textRuns": [
                   {
-                    "value": "XP delta — ",
+                    "value": "XP delta Ã¢â‚¬â€ ",
                     "textStyle": {
                       "fontFamily": "Segoe UI",
                       "fontSize": "9.5pt",
@@ -112,7 +112,7 @@
               {
                 "textRuns": [
                   {
-                    "value": "Deaths — ",
+                    "value": "Deaths Ã¢â‚¬â€ ",
                     "textStyle": {
                       "fontFamily": "Segoe UI",
                       "fontSize": "9.5pt",
@@ -161,7 +161,7 @@
           }
         }
       ],
-      "border": [
+      "dropShadow": [
         {
           "properties": {
             "show": {
@@ -174,13 +174,13 @@
           }
         }
       ],
-      "dropShadow": [
+      "border": [
         {
           "properties": {
             "show": {
               "expr": {
                 "Literal": {
-                  "Value": "false"
+                  "Value": "true"
                 }
               }
             }

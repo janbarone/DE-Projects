@@ -113,6 +113,30 @@ table 'gold fact_match_players'
 		formatString: #,##0
 		lineageTag: bbbb0001-0000-0000-0000-000000000045
 
+	measure 'Total Wards Placed' = SUM('gold fact_match_players'[obs_placed]) + SUM('gold fact_match_players'[sen_placed])
+		formatString: #,##0
+		lineageTag: aaaa0001-0000-0000-0000-0000000000c0
+
+	measure 'Total Observer Wards Placed' = SUM('gold fact_match_players'[obs_placed])
+		formatString: #,##0
+		lineageTag: aaaa0001-0000-0000-0000-0000000000c1
+
+	measure 'Total Sentry Wards Placed' = SUM('gold fact_match_players'[sen_placed])
+		formatString: #,##0
+		lineageTag: aaaa0001-0000-0000-0000-0000000000c2
+
+	measure 'Total Dewards' = SUM('gold fact_match_players'[observer_kills]) + SUM('gold fact_match_players'[sentry_kills])
+		formatString: #,##0
+		lineageTag: aaaa0001-0000-0000-0000-0000000000c3
+
+	measure 'Total Observer Wards Bought' = SUM('gold fact_match_players'[purchase_ward_observer])
+		formatString: #,##0
+		lineageTag: aaaa0001-0000-0000-0000-0000000000c4
+
+	measure 'Total Sentry Wards Bought' = SUM('gold fact_match_players'[purchase_ward_sentry])
+		formatString: #,##0
+		lineageTag: aaaa0001-0000-0000-0000-0000000000c5
+
 	column match_id
 		dataType: string
 		sourceProviderType: nvarchar(max)
@@ -695,6 +719,186 @@ table 'gold fact_match_players'
 		lineageTag: bbbb0001-0000-0000-0000-000000000033
 		summarizeBy: sum
 		sourceColumn: xp_late
+
+		annotation SummarizationSetBy = Automatic
+
+	column obs_placed
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: aaaa0101-0000-0000-0000-000000000001
+		summarizeBy: sum
+		sourceColumn: obs_placed
+
+		annotation SummarizationSetBy = Automatic
+
+	column sen_placed
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: aaaa0101-0000-0000-0000-000000000002
+		summarizeBy: sum
+		sourceColumn: sen_placed
+
+		annotation SummarizationSetBy = Automatic
+
+	column observer_kills
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: aaaa0101-0000-0000-0000-000000000003
+		summarizeBy: sum
+		sourceColumn: observer_kills
+
+		annotation SummarizationSetBy = Automatic
+
+	column sentry_kills
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: aaaa0101-0000-0000-0000-000000000004
+		summarizeBy: sum
+		sourceColumn: sentry_kills
+
+		annotation SummarizationSetBy = Automatic
+
+	column purchase_ward_observer
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: aaaa0101-0000-0000-0000-000000000005
+		summarizeBy: sum
+		sourceColumn: purchase_ward_observer
+
+		annotation SummarizationSetBy = Automatic
+
+	column purchase_ward_sentry
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: aaaa0101-0000-0000-0000-000000000006
+		summarizeBy: sum
+		sourceColumn: purchase_ward_sentry
+
+		annotation SummarizationSetBy = Automatic
+
+	column damage_taken_physical
+		dataType: int64
+		formatString: 0
+		sourceProviderType: integer
+		lineageTag: aaaa0101-0000-0000-0000-0000000000f1
+		summarizeBy: sum
+		sourceColumn: damage_taken_physical
+
+		annotation SummarizationSetBy = Automatic
+
+	column damage_taken_magical
+		dataType: int64
+		formatString: 0
+		sourceProviderType: integer
+		lineageTag: aaaa0101-0000-0000-0000-0000000000f2
+		summarizeBy: sum
+		sourceColumn: damage_taken_magical
+
+		annotation SummarizationSetBy = Automatic
+
+	column damage_taken_pure
+		dataType: int64
+		formatString: 0
+		sourceProviderType: integer
+		lineageTag: aaaa0101-0000-0000-0000-0000000000f3
+		summarizeBy: sum
+		sourceColumn: damage_taken_pure
+
+		annotation SummarizationSetBy = Automatic
+
+	column pick_sequence
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: aaaa0101-0000-0000-0000-000000000007
+		summarizeBy: none
+		sourceColumn: pick_sequence
+
+		annotation SummarizationSetBy = Automatic
+
+	column enemy_heroes_killed
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: aaaa0101-0000-0000-0000-000000000008
+		summarizeBy: sum
+		sourceColumn: enemy_heroes_killed
+
+		annotation SummarizationSetBy = Automatic
+
+	column ward_observer_bought
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: aaaa0101-0000-0000-0000-000000000009
+		summarizeBy: sum
+		sourceColumn: ward_observer_bought
+
+		annotation SummarizationSetBy = Automatic
+
+	column ward_sentry_bought
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: aaaa0101-0000-0000-0000-00000000000a
+		summarizeBy: sum
+		sourceColumn: ward_sentry_bought
+
+		annotation SummarizationSetBy = Automatic
+
+	column dust_bought
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: aaaa0101-0000-0000-0000-00000000000b
+		summarizeBy: sum
+		sourceColumn: dust_bought
+
+		annotation SummarizationSetBy = Automatic
+
+	column smoke_bought
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: aaaa0101-0000-0000-0000-00000000000c
+		summarizeBy: sum
+		sourceColumn: smoke_bought
+
+		annotation SummarizationSetBy = Automatic
+
+	column gem_bought
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: aaaa0101-0000-0000-0000-00000000000d
+		summarizeBy: sum
+		sourceColumn: gem_bought
+
+		annotation SummarizationSetBy = Automatic
+
+	column support_gold
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: aaaa0101-0000-0000-0000-00000000000e
+		summarizeBy: sum
+		sourceColumn: support_gold
+
+		annotation SummarizationSetBy = Automatic
+
+	column ban_sequence
+		dataType: int64
+		formatString: 0
+		sourceProviderType: integer
+		lineageTag: aaaa0101-0000-0000-0000-00000000000f
+		summarizeBy: none
+		sourceColumn: ban_sequence
 
 		annotation SummarizationSetBy = Automatic
 

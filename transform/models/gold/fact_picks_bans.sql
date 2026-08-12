@@ -12,8 +12,10 @@
 select
     match_id,
     order_no,
+    order_no_int,
     hero_id,
     is_pick,
+    team_number,
     active_team,
     player_slot,
     loaded_at

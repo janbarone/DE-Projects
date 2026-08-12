@@ -1,5 +1,5 @@
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.2.0/schema.json",
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
   "name": "df973572-30fc-437a-9884-19eb72b8eb4c",
   "position": {
     "x": 520,
@@ -27,8 +27,9 @@
                 }
               },
               "queryRef": "gold dim_region.region_name",
-              "nativeQueryRef": "region_name",
-              "active": true
+              "nativeQueryRef": "Region",
+              "active": true,
+              "displayName": "Region"
             }
           ]
         }
@@ -54,6 +55,39 @@
         }
       ]
     },
+    "visualContainerObjects": {
+      "border": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
     "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "31f61c9b81e2605be362",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "gold dim_region"
+              }
+            },
+            "Property": "region_name"
+          }
+        },
+        "type": "Categorical"
+      }
+    ]
   }
 }

@@ -124,3 +124,67 @@ models:
         tests: [not_null]
       - name: minute
         tests: [not_null]
+
+  - name: stg_match_player_kills
+    description: One row per (match, player, kill) - the kill timeline (victim npc hero name, time in seconds) flattened from the raw per-player kills_log array. Incremental on match_id.
+    columns:
+      - name: match_id
+        tests: [not_null]
+      - name: player_slot
+        tests: [not_null]
+      - name: kill_index
+        tests: [not_null]
+      - name: victim_hero_name
+        tests: [not_null]
+      - name: time_sec
+        tests: [not_null]
+
+  - name: stg_match_player_runes
+    description: One row per (match, player, rune type) - total runes picked up, flattened from the raw per-player runes object (key = rune type id, value = count). Incremental on match_id.
+    columns:
+      - name: match_id
+        tests: [not_null]
+      - name: player_slot
+        tests: [not_null]
+      - name: rune_key
+        tests: [not_null]
+      - name: rune_count
+        tests: [not_null]
+
+  - name: stg_match_player_damage
+    description: One row per (match, player, target) - total damage dealt to each target unit, flattened from the raw per-player damage object. Incremental on match_id.
+    columns:
+      - name: match_id
+        tests: [not_null]
+      - name: player_slot
+        tests: [not_null]
+      - name: target_key
+        tests: [not_null]
+      - name: damage_amount
+        tests: [not_null]
+
+  - name: stg_match_player_damage_taken
+    description: One row per (match, player, source) - raw damage received from each source unit, flattened from the raw per-player damage_taken object. Incremental on match_id.
+    columns:
+      - name: match_id
+        tests: [not_null]
+      - name: player_slot
+        tests: [not_null]
+      - name: source_key
+        tests: [not_null]
+      - name: damage_amount
+        tests: [not_null]
+
+  - name: stg_match_player_damage_taken_type
+    description: One row per (match, player, inflictor) - raw damage received by ability/item/auto-attack with a classified damage type (Physical/Magical/Pure/Other), flattened from the raw per-player damage_inflictor_received object. Incremental on match_id.
+    columns:
+      - name: match_id
+        tests: [not_null]
+      - name: player_slot
+        tests: [not_null]
+      - name: inflictor_key
+        tests: [not_null]
+      - name: damage_type
+        tests: [not_null]
+      - name: damage_amount
+        tests: [not_null]

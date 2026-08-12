@@ -1,9 +1,9 @@
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.2.0/schema.json",
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
   "name": "13b69189-615f-4823-bc61-07e8b7d3a88e",
   "position": {
-    "x": 540,
-    "y": 545,
+    "x": 782.34666666666635,
+    "y": 549.551111111111,
     "z": 14,
     "height": 160,
     "width": 230,
@@ -33,6 +33,39 @@
         }
       }
     },
+    "visualContainerObjects": {
+      "border": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
     "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "4c24367590d706c78258",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "gold fact_matches"
+              }
+            },
+            "Property": "Leaver Games"
+          }
+        },
+        "type": "Advanced"
+      }
+    ]
   }
 }

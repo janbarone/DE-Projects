@@ -57,37 +57,71 @@ ability_dnames as (
     where c.resource = 'abilities'
       and (kv.value->>'dname') is not null
       and kv.value->>'dname' <> ''
+),
+decoded as (
+    select
+        ug.match_id,
+        ug.player_slot,
+        ug.account_id,
+        ug.hero_id,
+        ug.side,
+        ug.upgrade_index,
+        ug.ability_id,
+        ai.payload->>(ug.ability_id) as ability_internal_name,
+        coalesce(
+            ad.dname,
+            case when ai.payload->>(ug.ability_id) = 'attribute_bonus' then 'Attribute Bonus' end,
+            nullif(ai.payload->>(ug.ability_id), ''),
+            ug.ability_id
+        ) as raw_ability_name,
+        coalesce(lfm.first_minute, mlm.last_minute, 0) as minute,
+        ug.upgrade_index + 1 as learn_level,
+        dp.player_name,
+        dh.hero_localized_name
+    from {{ ref('stg_match_player_skills') }} ug
+    left join {{ source('bronze', 'constants') }} ai on ai.resource = 'ability_ids'
+    left join ability_dnames ad
+        on ad.norm_key = replace(nullif(ai.payload->>(ug.ability_id), ''), '_', '')
+    left join {{ ref('dim_player') }} dp on dp.account_id = ug.account_id
+    left join {{ ref('dim_hero') }} dh on dh.hero_id = ug.hero_id
+    left join level_first_minute lfm
+        on lfm.match_id = ug.match_id
+       and lfm.player_slot = ug.player_slot
+       and lfm.level = ug.upgrade_index + 1
+    left join max_level_minute mlm
+        on mlm.match_id = ug.match_id
+       and mlm.player_slot = ug.player_slot
 )
 select
-    ug.match_id,
-    ug.player_slot,
-    ug.account_id,
-    ug.hero_id,
-    ug.side,
-    ug.upgrade_index,
-    ug.ability_id,
-    ai.payload->>(ug.ability_id) as ability_internal_name,
-    coalesce(
-        ad.dname,
-        case when ai.payload->>(ug.ability_id) = 'attribute_bonus' then 'Attribute Bonus' end,
-        nullif(ai.payload->>(ug.ability_id), ''),
-        ug.ability_id
-    ) as ability_name,
-    coalesce(lfm.first_minute, mlm.last_minute, 0) as minute,
-    ug.upgrade_index + 1 as learn_level,
-    dp.player_name,
-    dh.hero_localized_name
-from {{ ref('stg_match_player_skills') }} ug
-left join {{ source('bronze', 'constants') }} ai on ai.resource = 'ability_ids'
-left join ability_dnames ad
-    on ad.norm_key = replace(nullif(ai.payload->>(ug.ability_id), ''), '_', '')
-left join {{ ref('dim_player') }} dp on dp.account_id = ug.account_id
-left join {{ ref('dim_hero') }} dh on dh.hero_id = ug.hero_id
-left join level_first_minute lfm
-    on lfm.match_id = ug.match_id
-   and lfm.player_slot = ug.player_slot
-   and lfm.level = ug.upgrade_index + 1
-left join max_level_minute mlm
-    on mlm.match_id = ug.match_id
-   and mlm.player_slot = ug.player_slot
-order by ug.match_id, ug.player_slot, ug.upgrade_index
+    match_id,
+    player_slot,
+    account_id,
+    hero_id,
+    side,
+    upgrade_index,
+    ability_id,
+    ability_internal_name,
+    -- Talent detection: a talent is any ability whose internal name starts
+    -- with special_bonus (talent-tree pick) or is the generic attribute bonus.
+    case
+        when ability_internal_name like 'special_bonus%' or ability_internal_name = 'attribute_bonus'
+            then true else false
+    end as is_talent,
+    -- Cleaned ability name: for talents, strip the unresolved +{s:...} /
+    -- -{s:...} value template so rows read as e.g. "Reflection Duration"
+    -- rather than "+{s:bonus_illusion_duration}s Reflection Duration".
+    case
+        when ability_internal_name like 'special_bonus%' or ability_internal_name = 'attribute_bonus' then
+            case
+                when ability_internal_name = 'attribute_bonus' then 'Attribute Bonus'
+                when ability_internal_name = 'special_bonus_attributes' then 'Attribute Bonus'
+                else trim(regexp_replace(raw_ability_name, '^[+-]\s*\{s:[a-zA-Z0-9_]+\}\s*[%a-zA-Z]*\s*', '', 'g'))
+            end
+        else raw_ability_name
+    end as ability_name,
+    minute,
+    learn_level,
+    player_name,
+    hero_localized_name
+from decoded
+order by match_id, player_slot, upgrade_index

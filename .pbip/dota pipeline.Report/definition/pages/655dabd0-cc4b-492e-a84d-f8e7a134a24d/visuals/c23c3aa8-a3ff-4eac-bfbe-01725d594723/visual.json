@@ -20,42 +20,60 @@
                 "Column": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "gold fact_hero_matchups"
+                      "Entity": "gold fact_hero_matchup_stats"
                     }
                   },
                   "Property": "matchup_label"
                 }
               },
-              "queryRef": "gold fact_hero_matchups.matchup_label",
-              "nativeQueryRef": "matchup_label"
+              "nativeQueryRef": "matchup_label",
+              "active": true,
+              "queryRef": "gold fact_hero_matchup_stats.matchup_label"
             },
             {
               "field": {
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "gold fact_hero_matchups"
+                      "Entity": "gold fact_hero_matchup_stats"
                     }
                   },
-                  "Property": "Matchup Count"
+                  "Property": "Matchup Games"
                 }
               },
-              "queryRef": "gold fact_hero_matchups.Matchup Count",
-              "nativeQueryRef": "Matchup Count"
+              "nativeQueryRef": "Matchup Games",
+              "active": true,
+              "queryRef": "gold fact_hero_matchup_stats.Matchup Games"
             },
             {
               "field": {
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "gold fact_hero_matchups"
+                      "Entity": "gold fact_hero_matchup_stats"
                     }
                   },
-                  "Property": "Radiant Hero Win Rate"
+                  "Property": "Matchup Radiant Win Rate"
                 }
               },
-              "queryRef": "gold fact_hero_matchups.Radiant Hero Win Rate",
-              "nativeQueryRef": "Radiant Hero Win Rate"
+              "nativeQueryRef": "Matchup Radiant Win Rate",
+              "active": true,
+              "queryRef": "gold fact_hero_matchup_stats.Matchup Radiant Win Rate"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold fact_hero_matchup_stats"
+                    }
+                  },
+                  "Property": "Matchup Dire Win Rate"
+                }
+              },
+              "nativeQueryRef": "Matchup Dire Win Rate",
+              "active": true,
+              "queryRef": "gold fact_hero_matchup_stats.Matchup Dire Win Rate"
             }
           ]
         }
@@ -67,10 +85,10 @@
               "Measure": {
                 "Expression": {
                   "SourceRef": {
-                    "Entity": "gold fact_hero_matchups"
+                    "Entity": "gold fact_hero_matchup_stats"
                   }
                 },
-                "Property": "Matchup Count"
+                "Property": "Matchup Games"
               }
             },
             "direction": "Descending"
@@ -93,6 +111,19 @@
               "expr": {
                 "Literal": {
                   "Value": "'Most common hero matchups'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "border": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
                 }
               }
             }

@@ -1,0 +1,83 @@
+table 'gold fact_hero_matchup_stats'
+	lineageTag: aaaa010b-0000-0000-0000-000000000000
+
+	measure 'Matchup Games' = SUM('gold fact_hero_matchup_stats'[matchup_games])
+		formatString: #,##0
+		lineageTag: aaaa010b-0000-0000-0000-0000000000f0
+
+	measure 'Matchup Radiant Win Rate' = MAX('gold fact_hero_matchup_stats'[radiant_win_rate])
+		formatString: 0.0%
+		lineageTag: aaaa010b-0000-0000-0000-0000000000f1
+
+	measure 'Matchup Dire Win Rate' = MAX('gold fact_hero_matchup_stats'[dire_win_rate])
+		formatString: 0.0%
+		lineageTag: aaaa010b-0000-0000-0000-0000000000f2
+
+	column matchup_label
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: aaaa010b-0000-0000-0000-000000000001
+		summarizeBy: none
+		sourceColumn: matchup_label
+
+		annotation SummarizationSetBy = Automatic
+
+	column matchup_games
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: aaaa010b-0000-0000-0000-000000000002
+		summarizeBy: sum
+		sourceColumn: matchup_games
+
+		annotation SummarizationSetBy = Automatic
+
+	column radiant_wins
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: aaaa010b-0000-0000-0000-000000000003
+		summarizeBy: sum
+		sourceColumn: radiant_wins
+
+		annotation SummarizationSetBy = Automatic
+
+	column dire_wins
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: aaaa010b-0000-0000-0000-000000000004
+		summarizeBy: sum
+		sourceColumn: dire_wins
+
+		annotation SummarizationSetBy = Automatic
+
+	column radiant_win_rate
+		dataType: double
+		formatString: 0.0%
+		sourceProviderType: decimal
+		lineageTag: aaaa010b-0000-0000-0000-000000000005
+		summarizeBy: none
+		sourceColumn: radiant_win_rate
+
+		annotation SummarizationSetBy = Automatic
+
+	column dire_win_rate
+		dataType: double
+		formatString: 0.0%
+		sourceProviderType: decimal
+		lineageTag: aaaa010b-0000-0000-0000-000000000006
+		summarizeBy: none
+		sourceColumn: dire_win_rate
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'gold fact_hero_matchup_stats' = m
+		mode: directQuery
+		source =
+				let
+				    Source = PostgreSQL.Database("localhost", "dota"),
+				    gold_fact_hero_matchup_stats = Source{[Schema="gold",Item="fact_hero_matchup_stats"]}[Data]
+				in
+				    gold_fact_hero_matchup_stats
+

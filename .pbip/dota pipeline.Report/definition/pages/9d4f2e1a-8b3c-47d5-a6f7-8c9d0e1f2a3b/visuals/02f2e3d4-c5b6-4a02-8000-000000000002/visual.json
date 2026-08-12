@@ -2,11 +2,11 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
   "name": "02f2e3d4-c5b6-4a02-8000-000000000002",
   "position": {
-    "x": 649.81108312342576,
-    "y": 74.937027707808568,
+    "x": 649.67111111111114,
+    "y": 75.093333333333334,
     "z": 21,
-    "height": 98.488664987405542,
-    "width": 450.69269521410581,
+    "height": 83.057777777777773,
+    "width": 450.56,
     "tabOrder": 21
   },
   "visual": {
@@ -52,6 +52,19 @@
         {
           "properties": {}
         }
+      ],
+      "header": [
+        {
+          "properties": {
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Hero - Dire'"
+                }
+              }
+            }
+          }
+        }
       ]
     },
     "visualContainerObjects": {
@@ -61,7 +74,7 @@
             "show": {
               "expr": {
                 "Literal": {
-                  "Value": "true"
+                  "Value": "false"
                 }
               }
             },
@@ -69,6 +82,19 @@
               "expr": {
                 "Literal": {
                   "Value": "'Dire Hero'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "border": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
                 }
               }
             }
@@ -128,6 +154,20 @@
           ]
         },
         "howCreated": "User"
+      },
+      {
+        "name": "9c31b41287306c85994c",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "gold dim_hero"
+              }
+            },
+            "Property": "hero_localized_name"
+          }
+        },
+        "type": "Categorical"
       }
     ]
   }

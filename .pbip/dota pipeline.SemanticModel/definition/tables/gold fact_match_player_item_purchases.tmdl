@@ -1,6 +1,10 @@
 table 'gold fact_match_player_item_purchases'
 	lineageTag: ffff0003-0000-0000-0000-000000000001
 
+	measure 'Total Purchases' = COUNTROWS('gold fact_match_player_item_purchases')
+		formatString: #,##0
+		lineageTag: ffff0003-0000-0000-0000-0000000000f0
+
 	column match_id
 		dataType: string
 		sourceProviderType: nvarchar(max)

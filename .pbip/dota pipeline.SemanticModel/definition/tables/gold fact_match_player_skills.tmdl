@@ -121,6 +121,15 @@ table 'gold fact_match_player_skills'
 
 		annotation SummarizationSetBy = Automatic
 
+	column is_talent
+		dataType: boolean
+		sourceProviderType: bit
+		lineageTag: ffff0002-0000-0000-0000-00000000000f
+		summarizeBy: none
+		sourceColumn: is_talent
+
+		annotation SummarizationSetBy = Automatic
+
 	partition 'gold fact_match_player_skills' = m
 		mode: directQuery
 		source =

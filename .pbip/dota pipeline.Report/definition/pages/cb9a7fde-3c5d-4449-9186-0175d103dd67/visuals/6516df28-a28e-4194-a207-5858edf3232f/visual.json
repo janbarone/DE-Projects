@@ -27,7 +27,8 @@
                 }
               },
               "queryRef": "gold dim_player.player_name",
-              "nativeQueryRef": "player_name"
+              "nativeQueryRef": "Player Name",
+              "displayName": "Player Name"
             },
             {
               "field": {
@@ -120,6 +121,34 @@
         ]
       }
     },
+    "objects": {
+      "columnHeaders": [
+        {
+          "properties": {
+            "columnAdjustment": {
+              "expr": {
+                "Literal": {
+                  "Value": "'growToFit'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "total": [
+        {
+          "properties": {
+            "totals": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
     "visualContainerObjects": {
       "title": [
         {
@@ -135,6 +164,19 @@
               "expr": {
                 "Literal": {
                   "Value": "'Player leaderboard'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "border": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
                 }
               }
             }
@@ -196,8 +238,77 @@
               }
             }
           ]
+        }
+      },
+      {
+        "name": "9dd914cd9251642d069e",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "gold fact_match_players"
+              }
+            },
+            "Property": "Total Picks"
+          }
         },
-        "howCreated": "User"
+        "type": "Advanced"
+      },
+      {
+        "name": "fd07239d95bd86711b09",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "gold fact_match_players"
+              }
+            },
+            "Property": "Player Win Rate"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "2438241c2bb771094d0d",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "gold fact_match_players"
+              }
+            },
+            "Property": "Avg KDA"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "e25055ed80025487d6c8",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "gold fact_match_players"
+              }
+            },
+            "Property": "Avg GPM"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "cda047b3d2c900cd0746",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "gold fact_match_players"
+              }
+            },
+            "Property": "Avg XPM"
+          }
+        },
+        "type": "Advanced"
       }
     ]
   }

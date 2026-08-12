@@ -1,0 +1,124 @@
+table 'gold fact_match_player_damage_taken'
+	lineageTag: aaaa0106-0000-0000-0000-000000000000
+
+	measure 'Total Damage Taken' = SUM('gold fact_match_player_damage_taken'[damage_amount])
+		formatString: #,##0
+		lineageTag: aaaa0106-0000-0000-0000-0000000000f0
+
+	measure 'Total Building Damage Taken' = CALCULATE(SUM('gold fact_match_player_damage_taken'[damage_amount]), 'gold fact_match_player_damage_taken'[source_category] = "Building")
+		formatString: #,##0
+		lineageTag: aaaa0106-0000-0000-0000-0000000000f1
+
+	measure 'Total Hero Damage Taken' = CALCULATE(SUM('gold fact_match_player_damage_taken'[damage_amount]), 'gold fact_match_player_damage_taken'[source_category] = "Hero")
+		formatString: #,##0
+		lineageTag: aaaa0106-0000-0000-0000-0000000000f2
+
+	column match_id
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: aaaa0106-0000-0000-0000-000000000001
+		summarizeBy: none
+		sourceColumn: match_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column player_slot
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: aaaa0106-0000-0000-0000-000000000002
+		summarizeBy: none
+		sourceColumn: player_slot
+
+		annotation SummarizationSetBy = Automatic
+
+	column account_id
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: aaaa0106-0000-0000-0000-000000000003
+		summarizeBy: none
+		sourceColumn: account_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column hero_id
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: aaaa0106-0000-0000-0000-000000000004
+		summarizeBy: none
+		sourceColumn: hero_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column side
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: aaaa0106-0000-0000-0000-000000000005
+		summarizeBy: none
+		sourceColumn: side
+
+		annotation SummarizationSetBy = Automatic
+
+	column source_key
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: aaaa0106-0000-0000-0000-000000000006
+		summarizeBy: none
+		sourceColumn: source_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column source_category
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: aaaa0106-0000-0000-0000-000000000007
+		summarizeBy: none
+		sourceColumn: source_category
+
+		annotation SummarizationSetBy = Automatic
+
+	column source_name
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: aaaa0106-0000-0000-0000-000000000008
+		summarizeBy: none
+		sourceColumn: source_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column damage_amount
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: aaaa0106-0000-0000-0000-000000000009
+		summarizeBy: sum
+		sourceColumn: damage_amount
+
+		annotation SummarizationSetBy = Automatic
+
+	column player_name
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: aaaa0106-0000-0000-0000-00000000000a
+		summarizeBy: none
+		sourceColumn: player_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column hero_name
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: aaaa0106-0000-0000-0000-00000000000b
+		summarizeBy: none
+		sourceColumn: hero_name
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'gold fact_match_player_damage_taken' = m
+		mode: directQuery
+		source =
+				let
+				    Source = PostgreSQL.Database("localhost", "dota"),
+				    gold_fact_match_player_damage_taken = Source{[Schema="gold",Item="fact_match_player_damage_taken"]}[Data]
+				in
+				    gold_fact_match_player_damage_taken
+

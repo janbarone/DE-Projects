@@ -265,6 +265,10 @@ models:
               arguments:
                 to: ref('dim_team')
                 field: team_id
+      - name: team_a_name
+        tests: [not_null]
+      - name: team_b_name
+        tests: [not_null]
       - name: team_a_win
         tests: [not_null]
 
@@ -346,6 +350,11 @@ models:
               arguments:
                 to: ref('dim_hero')
                 field: hero_id
+      - name: team_number
+        tests:
+          - accepted_values:
+              arguments:
+                values: ['0', '1']
 
   - name: fact_teamfights
     description: One row per (match, teamfight).
@@ -665,6 +674,10 @@ models:
         tests: [not_null]
       - name: ability_name
         tests: [not_null]
+      - name: is_talent
+        description: True when the upgrade is a talent-tree pick (internal name starts with special_bonus or is the generic attribute bonus).
+        tests:
+          - not_null
       - name: minute
         tests: [not_null]
       - name: learn_level
@@ -715,4 +728,148 @@ models:
       - name: minute
         tests: [not_null]
       - name: item_name
+        tests: [not_null]
+
+  - name: dim_rune
+    description: Rune decode lookup - OpenDota rune type id (0-9) to display name.
+    columns:
+      - name: rune_key
+        tests: [not_null, unique]
+
+  - name: fact_match_player_kills
+    description: One row per (match, killer player, kill event) - kill timeline with victim hero decoded via dim_hero.hero_name.
+    columns:
+      - name: match_id
+        tests: [not_null]
+      - name: player_slot
+        tests: [not_null]
+      - name: kill_index
+        tests: [not_null]
+      - name: time_sec
+        tests: [not_null]
+      - name: minute
+        tests: [not_null]
+
+  - name: fact_match_player_runes
+    description: One row per (match, player, rune type) - rune counts decoded via dim_rune.
+    columns:
+      - name: match_id
+        tests: [not_null]
+      - name: player_slot
+        tests: [not_null]
+      - name: rune_key
+        tests: [not_null]
+      - name: rune_count
+        tests: [not_null]
+
+  - name: fact_match_player_damage
+    description: One row per (match, player, target) - total damage dealt to each target, categorized as Hero/Building/Creep/Neutral/Ward/Other.
+    columns:
+      - name: match_id
+        tests: [not_null]
+      - name: player_slot
+        tests: [not_null]
+      - name: target_key
+        tests: [not_null]
+      - name: target_category
+        tests:
+          - accepted_values:
+              arguments:
+                values: ['Hero', 'Building', 'Creep', 'Neutral', 'Ward', 'Other']
+      - name: damage_amount
+        tests: [not_null]
+
+  - name: fact_match_player_damage_taken
+    description: One row per (match, player, source) - raw damage received from each source, categorized as Hero/Building/Creep/Neutral/Ward/Other.
+    columns:
+      - name: match_id
+        tests: [not_null]
+      - name: player_slot
+        tests: [not_null]
+      - name: source_key
+        tests: [not_null]
+      - name: source_category
+        tests:
+          - accepted_values:
+              arguments:
+                values: ['Hero', 'Building', 'Creep', 'Neutral', 'Ward', 'Other']
+      - name: damage_amount
+        tests: [not_null]
+
+  - name: fact_match_player_damage_taken_type
+    description: One row per (match, player, damage type) - total raw damage received by type (Physical/Magical/Pure/Other), from damage_inflictor_received classified via ability/item dmg_type.
+    columns:
+      - name: match_id
+        tests: [not_null]
+      - name: player_slot
+        tests: [not_null]
+      - name: damage_type
+        tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['Physical', 'Magical', 'Pure', 'Other']
+      - name: damage_amount
+        tests: [not_null]
+
+  - name: fact_match_team_minute
+    description: One row per (match, side, minute) - team-level per-minute gold (net worth proxy) and XP, summed from fact_match_player_minute.
+    columns:
+      - name: match_id
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('fact_matches')
+                field: match_id
+      - name: side
+        tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['Radiant', 'Dire']
+      - name: minute
+        tests: [not_null]
+      - name: team_gold
+        tests: [not_null]
+      - name: team_xp
+        tests: [not_null]
+
+  - name: fact_hero_side
+    description: One row per (hero, side) - picks, wins and win rate per side, precomputed for DirectQuery.
+    columns:
+      - name: hero_id
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_hero')
+                field: hero_id
+      - name: side
+        tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['Radiant', 'Dire']
+      - name: hero_side_picks
+        tests: [not_null]
+      - name: hero_side_wins
+        tests: [not_null]
+      - name: hero_side_win_rate
+        tests: [not_null]
+
+  - name: fact_hero_matchup_stats
+    description: One row per matchup_label - games, radiant/dire wins and win rates, precomputed for DirectQuery.
+    columns:
+      - name: matchup_label
+        tests: [not_null, unique]
+      - name: matchup_games
+        tests: [not_null]
+      - name: radiant_wins
+        tests: [not_null]
+      - name: dire_wins
+        tests: [not_null]
+      - name: radiant_win_rate
+        tests: [not_null]
+      - name: dire_win_rate
         tests: [not_null]

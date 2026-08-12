@@ -524,6 +524,71 @@ without any relationship change — a `Hero in Current Match` measure on
 filter on both hero slicers. The model keeps **53 relationships, 3
 bidirectional**. See `docs/report_status.md` §5j.
 
+#### `fact_match_player_kills` → (many-to-one, *:1) *(round 10)*
+
+| From column | To table | To column | Active |
+|-------------|----------|-----------|--------|
+| `match_id` | `fact_matches` | `match_id` | yes |
+| `hero_id` | `dim_hero` | `hero_id` | yes |
+| `account_id` | `dim_player` | `account_id` | yes |
+| `victim_hero_id` | `dim_hero` | `hero_id` | **inactive** (two active paths to `dim_hero` would be ambiguous — same pattern as `fact_teamfight_kills`; the kill table uses the denormalized `victim_hero_name_localized` so no relationship is needed for rendering) |
+| `minute` | `dim_match_minute` | `minute` | yes |
+
+#### `fact_match_player_runes` → (many-to-one, *:1) *(round 10)*
+
+| From column | To table | To column | Active |
+|-------------|----------|-----------|--------|
+| `match_id` | `fact_matches` | `match_id` | yes |
+| `hero_id` | `dim_hero` | `hero_id` | yes |
+| `account_id` | `dim_player` | `account_id` | yes |
+| `rune_key` | `dim_rune` | `rune_key` | yes |
+
+#### `fact_match_player_damage` → (many-to-one, *:1) *(round 10)*
+
+| From column | To table | To column | Active |
+|-------------|----------|-----------|--------|
+| `match_id` | `fact_matches` | `match_id` | yes |
+| `hero_id` | `dim_hero` | `hero_id` | yes |
+| `account_id` | `dim_player` | `account_id` | yes |
+
+#### `fact_match_player_damage_taken` → (many-to-one, *:1) *(round 10)*
+
+| From column | To table | To column | Active |
+|-------------|----------|-----------|--------|
+| `match_id` | `fact_matches` | `match_id` | yes |
+| `hero_id` | `dim_hero` | `hero_id` | yes |
+| `account_id` | `dim_player` | `account_id` | yes |
+
+#### `fact_match_player_damage_taken_type` → (many-to-one, *:1) *(round 11)*
+
+| From column | To table | To column | Active |
+|-------------|----------|-----------|--------|
+| `match_id` | `fact_matches` | `match_id` | yes |
+| `hero_id` | `dim_hero` | `hero_id` | yes |
+| `account_id` | `dim_player` | `account_id` | yes |
+
+**Round 10/11 (2026-08-08):** `fact_match_players` also carries denormalized
+per-player columns for the Match Detail tables: `pick_sequence`, `enemy_heroes_killed`,
+`damage_taken_physical/magical/pure`, `ward_observer_bought`, `ward_sentry_bought`,
+`dust_bought`, `smoke_bought`, `gem_bought`, `support_gold`. The standalone
+`fact_match_player_damage_taken_type` gold table exists in the DB (round 11)
+but was **removed from the Power BI model** in Round 11d (§5o) — the visuals use
+the denormalized `fact_match_players.damage_taken_*` columns instead.
+
+**Round 12 (2026-08-08):** new `fact_match_team_minute` (per match, side, minute:
+team gold/xp summed from `fact_match_player_minute`), plus the missing
+`fact_match_player_minute.minute → dim_match_minute` relationship.
+
+**Round 13 (2026-08-09):** dims normalized (league/team uppercase; game-mode/
+lobby prefix-stripped + uppercase; `primary_attr` friendly labels; `player_type`
+→ Pro / Match Participant); `fact_team_h2h` gains denormalized
+`team_a_name`/`team_b_name` (the `team_b_id` link is inactive); new precomputed
+tables `fact_hero_side` (per hero+side picks/wins/win rate) and
+`fact_hero_matchup_stats` (per `matchup_label` games + radiant/dire win rates)
+for Draft-page tables that must fold under DirectQuery; `order_no_int` on
+`fact_picks_bans` so `Avg Ban Position` folds. Model is now **38 tables, 72
+relationships (3 bidirectional)**.
+
 ### Gold table inventory
 
 | Model | Rows | Grain | PK |
@@ -559,6 +624,15 @@ bidirectional**. See `docs/report_status.md` §5j.
 | `fact_match_player_minute` | 1,253,200 | one row per (match, player, minute) — level/gold/xp progression | `(match_id, player_slot, minute)` |
 | `fact_match_player_skills` | 535,432 | one row per (match, player, skill upgrade) | `(match_id, player_slot, upgrade_index)` |
 | `fact_match_player_item_purchases` | 1,526,552 | one row per item purchase event | `(match_id, player_slot, purchase_index)` |
+| `dim_rune` | 10 | one row per rune type id (0-9) — decodes `fact_match_player_runes.rune_key` | `rune_key` |
+| `fact_match_player_kills` | 157,498 | one row per (match, killer, kill) from `kills_log` — victim decoded via `dim_hero.hero_name` | `(match_id, player_slot, kill_index)` |
+| `fact_match_player_runes` | 79,044 | one row per (match, player, rune type) from the aggregate `runes` map — `rune_count` per type | `(match_id, player_slot, rune_key)` |
+| `fact_match_player_damage` | 1,351,389 | one row per (match, player, target) from `damage` object — target categorized Hero/Building/Creep/Neutral/Ward/Other | `(match_id, player_slot, target_key)` |
+| `fact_match_player_damage_taken` | 936,459 | one row per (match, player, source) from `damage_taken` (raw, pre-mitigation) | `(match_id, player_slot, source_key)` |
+| `fact_match_player_damage_taken_type` | 104,057 | one row per (match, player, damage type) — raw damage received by Physical/Magical/Pure/Other, from `damage_inflictor_received` classified via ability/item `dmg_type` (`null` = auto-attack → Physical) | `(match_id, player_slot, damage_type)` |
+| `fact_match_team_minute` | 250,640 | one row per (match, side, minute) — team gold/xp summed from `fact_match_player_minute` | `(match_id, side, minute)` |
+| `fact_hero_side` | 255 | one row per (hero, side) — precomputed picks/wins/win rate for foldable Draft tables | `(hero_id, side)` |
+| `fact_hero_matchup_stats` | 14,462 | one row per matchup label — precomputed games + radiant/dire win rates | `matchup_label` |
 
 ### Gold column reference
 
@@ -846,7 +920,8 @@ is **approximate** — the first minute the player's derived level reached
 | `upgrade_index` | bigint | learning order (0 = first) |
 | `ability_id` | text | raw id |
 | `ability_internal_name` | text | decoded via constants `ability_ids` |
-| `ability_name` | text | display name via `abilities` (talents → `+40 Damage`) |
+| `ability_name` | text | display name via `abilities`; **talents (round 11c)** have the `+{s:…}` value template stripped → e.g. `Reflection Duration`, and `attribute_bonus`/`special_bonus_attributes` → `Attribute Bonus` |
+| `is_talent` | boolean | true when the upgrade is a talent-tree pick (`special_bonus*` or `attribute_bonus`) |
 | `minute` | integer | approximate learn minute → FK to dim_match_minute |
 | `learn_level` | bigint | player level at upgrade (`upgrade_index + 1`) |
 | `player_name` / `hero_localized_name` | text | denormalized |

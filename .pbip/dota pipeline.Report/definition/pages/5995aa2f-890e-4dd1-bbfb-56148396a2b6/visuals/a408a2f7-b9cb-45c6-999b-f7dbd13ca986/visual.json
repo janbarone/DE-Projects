@@ -27,7 +27,8 @@
                 }
               },
               "queryRef": "gold dim_hero.hero_localized_name",
-              "nativeQueryRef": "hero_localized_name"
+              "nativeQueryRef": "Hero",
+              "displayName": "Hero"
             },
             {
               "field": {
@@ -120,19 +121,54 @@
         "sort": [
           {
             "field": {
-              "Measure": {
+              "Column": {
                 "Expression": {
                   "SourceRef": {
-                    "Entity": "gold fact_match_players"
+                    "Entity": "gold dim_hero"
                   }
                 },
-                "Property": "Total Picks"
+                "Property": "hero_localized_name"
               }
             },
-            "direction": "Descending"
+            "direction": "Ascending"
           }
         ]
       }
+    },
+    "objects": {
+      "columnHeaders": [
+        {
+          "properties": {
+            "columnAdjustment": {
+              "expr": {
+                "Literal": {
+                  "Value": "'growToFit'"
+                }
+              }
+            },
+            "defaultColumnWidth": {
+              "expr": {
+                "Literal": {
+                  "Value": "90D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "total": [
+        {
+          "properties": {
+            "totals": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ]
     },
     "visualContainerObjects": {
       "title": [
@@ -154,8 +190,123 @@
             }
           }
         }
+      ],
+      "border": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
       ]
     },
     "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "63dbfbcb12d380050632",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "gold dim_hero"
+              }
+            },
+            "Property": "hero_localized_name"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "6cb44f2dc1d9214112ba",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "gold fact_match_players"
+              }
+            },
+            "Property": "Total Picks"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "a7e552bc64cd173b0330",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "gold fact_match_players"
+              }
+            },
+            "Property": "Player Win Rate"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "d776308365cad4920649",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "gold fact_match_players"
+              }
+            },
+            "Property": "Avg KDA"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "61823aa790b3890a25d0",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "gold fact_match_players"
+              }
+            },
+            "Property": "Avg GPM"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "862f9e932d5256c7dbdb",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "gold fact_match_players"
+              }
+            },
+            "Property": "Avg XPM"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "4df2ed04520ccecc6deb",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "gold fact_match_players"
+              }
+            },
+            "Property": "Avg Hero Damage"
+          }
+        },
+        "type": "Advanced"
+      }
+    ]
   }
 }

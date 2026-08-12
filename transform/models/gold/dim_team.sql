@@ -9,7 +9,7 @@
 with team_dim as (
     select
         team_id,
-        team_name,
+        upper(team_name) as team_name,
         team_tag,
         rating,
         wins,
@@ -23,7 +23,7 @@ with team_dim as (
     -- deduplicates teams that appear on both the radiant and dire side.
     select distinct
         t.team_id,
-        'Unknown' as team_name,
+        'UNKNOWN' as team_name,
         null::text as team_tag,
         null::numeric as rating,
         null::int as wins,

@@ -32,7 +32,7 @@
               {
                 "textRuns": [
                   {
-                    "value": "Most killed heroes table — ",
+                    "value": "Most killed heroes table Ã¢â‚¬â€ ",
                     "textStyle": {
                       "fontFamily": "Segoe UI",
                       "fontSize": "9.5pt",
@@ -52,7 +52,7 @@
               {
                 "textRuns": [
                   {
-                    "value": "Top abilities / items in teamfights — ",
+                    "value": "Top abilities / items in teamfights Ã¢â‚¬â€ ",
                     "textStyle": {
                       "fontFamily": "Segoe UI",
                       "fontSize": "9.5pt",
@@ -72,7 +72,7 @@
               {
                 "textRuns": [
                   {
-                    "value": "Avg damage & healing per fight — ",
+                    "value": "Avg damage & healing per fight Ã¢â‚¬â€ ",
                     "textStyle": {
                       "fontFamily": "Segoe UI",
                       "fontSize": "9.5pt",
@@ -92,7 +92,7 @@
               {
                 "textRuns": [
                   {
-                    "value": "Teamfights by game phase — ",
+                    "value": "Teamfights by game phase Ã¢â‚¬â€ ",
                     "textStyle": {
                       "fontFamily": "Segoe UI",
                       "fontSize": "9.5pt",
@@ -112,7 +112,7 @@
               {
                 "textRuns": [
                   {
-                    "value": "Buybacks in teamfights — ",
+                    "value": "Buybacks in teamfights Ã¢â‚¬â€ ",
                     "textStyle": {
                       "fontFamily": "Segoe UI",
                       "fontSize": "9.5pt",
@@ -132,7 +132,27 @@
               {
                 "textRuns": [
                   {
-                    "value": "Cards — ",
+                    "value": "Slicers \u00e2\u20ac\u201c ",
+                    "textStyle": {
+                      "fontFamily": "Segoe UI",
+                      "fontSize": "9.5pt",
+                      "fontWeight": "600"
+                    }
+                  },
+                  {
+                    "value": "Hero, Player, Match ID (added 2026-08-12).",
+                    "textStyle": {
+                      "fontFamily": "Segoe UI",
+                      "fontSize": "9.5pt",
+                      "fontWeight": "normal"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Cards \u00e2\u20ac\u201c ",
                     "textStyle": {
                       "fontFamily": "Segoe UI",
                       "fontSize": "9.5pt",
@@ -181,7 +201,7 @@
           }
         }
       ],
-      "border": [
+      "dropShadow": [
         {
           "properties": {
             "show": {
@@ -194,13 +214,13 @@
           }
         }
       ],
-      "dropShadow": [
+      "border": [
         {
           "properties": {
             "show": {
               "expr": {
                 "Literal": {
-                  "Value": "false"
+                  "Value": "true"
                 }
               }
             }

@@ -12,7 +12,13 @@ with hero_dim as (
         h.hero_id,
         coalesce(h.hero_name, 'unknown')       as hero_name,
         coalesce(h.localized_name, 'Unknown')  as hero_localized_name,
-        h.primary_attr,
+        case h.primary_attr
+            when 'agi' then 'Agility'
+            when 'all' then 'Universal'
+            when 'int' then 'Intelligence'
+            when 'str' then 'Strength'
+            else h.primary_attr
+        end as primary_attr,
         h.attack_type,
         h.roles,
         h.img,

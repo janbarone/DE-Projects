@@ -1,12 +1,12 @@
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.2.0/schema.json",
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
   "name": "51ee8009-0f51-49d9-8c16-f6572c574c8e",
   "position": {
-    "x": 870,
-    "y": 100,
+    "x": 660.42553191489367,
+    "y": 100.18237082066869,
     "z": 7,
-    "height": 300,
-    "width": 390,
+    "height": 299.57446808510639,
+    "width": 599.14893617021278,
     "tabOrder": 7
   },
   "visual": {
@@ -20,14 +20,14 @@
                 "Column": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "gold dim_date"
+                      "Entity": "gold dim_patch"
                     }
                   },
-                  "Property": "year_month"
+                  "Property": "patch_name"
                 }
               },
-              "queryRef": "gold dim_date.year_month",
-              "nativeQueryRef": "year_month",
+              "queryRef": "gold dim_patch.patch_name",
+              "nativeQueryRef": "patch_name",
               "active": true
             }
           ]
@@ -66,7 +66,20 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Avg match duration by month'"
+                  "Value": "'Avg match duration by patch'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "border": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
                 }
               }
             }
@@ -75,5 +88,37 @@
       ]
     },
     "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "ddb40b57039508a30798",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "gold dim_patch"
+              }
+            },
+            "Property": "patch_name"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "dcda6f57b462453ca82d",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "gold fact_matches"
+              }
+            },
+            "Property": "Avg Match Duration (min)"
+          }
+        },
+        "type": "Advanced"
+      }
+    ]
   }
 }

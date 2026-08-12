@@ -2,8 +2,8 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
   "name": "03f2e3d4-c5b6-4a03-8000-000000000002",
   "position": {
-    "x": 649.81108312342576,
-    "y": 329.7229219143577,
+    "x": 650,
+    "y": 322,
     "z": 11,
     "height": 190,
     "width": 610,
@@ -111,6 +111,19 @@
               "expr": {
                 "Literal": {
                   "Value": "'Dire - itemization over time'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "border": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
                 }
               }
             }

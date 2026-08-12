@@ -1,8 +1,35 @@
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/page/2.0.0/schema.json",
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/page/2.1.0/schema.json",
   "name": "baedb79c-f6fe-4143-a748-0c78bfe55ff9",
   "displayName": "Teams",
   "displayOption": "FitToPage",
-  "height": 900,
-  "width": 1280
+  "height": 1100,
+  "width": 1280,
+  "visualInteractions": [
+    {
+      "source": "66fb60cc-77cb-48b4-a62b-4653a1174851",
+      "target": "17130a8d-db8f-4b7d-8683-4c206b70becc",
+      "type": "DataFilter"
+    },
+    {
+      "source": "66fb60cc-77cb-48b4-a62b-4653a1174851",
+      "target": "b1d4e6f8-0001-4000-8000-0000000000a1",
+      "type": "DataFilter"
+    },
+    {
+      "source": "bb49be96-ae12-43db-8d45-1112f3282f10",
+      "target": "a33fb46e-6e97-4a54-9ee1-90e3802b7740",
+      "type": "DataFilter"
+    },
+    {
+      "source": "bb49be96-ae12-43db-8d45-1112f3282f10",
+      "target": "17130a8d-db8f-4b7d-8683-4c206b70becc",
+      "type": "DataFilter"
+    },
+    {
+      "source": "bb49be96-ae12-43db-8d45-1112f3282f10",
+      "target": "b1d4e6f8-0001-4000-8000-0000000000a1",
+      "type": "DataFilter"
+    }
+  ]
 }

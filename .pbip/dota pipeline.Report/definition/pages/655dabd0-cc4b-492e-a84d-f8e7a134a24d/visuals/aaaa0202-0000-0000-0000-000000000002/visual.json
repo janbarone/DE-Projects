@@ -1,5 +1,5 @@
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.2.0/schema.json",
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
   "name": "aaaa0202-0000-0000-0000-000000000002",
   "position": {
     "x": 230,
@@ -27,8 +27,9 @@
                 }
               },
               "queryRef": "gold dim_league.league_name",
-              "nativeQueryRef": "league_name",
-              "active": true
+              "nativeQueryRef": "League Name",
+              "active": true,
+              "displayName": "League Name"
             }
           ]
         }
@@ -51,6 +52,21 @@
       "general": [
         {
           "properties": {}
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "border": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
         }
       ]
     },

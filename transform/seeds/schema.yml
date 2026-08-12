@@ -1,0 +1,10 @@
+version: 2
+
+seeds:
+  - name: rune_lookup
+    description: Rune type id -> display name lookup (OpenDota rune type ids 0-9).
+    columns:
+      - name: rune_key
+        tests: [not_null, unique]
+      - name: rune_name
+        tests: [not_null]

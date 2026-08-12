@@ -1,35 +1,17 @@
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.2.0/schema.json",
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
   "name": "bca57bf0-7648-4971-bed5-31a036392ca4",
   "position": {
-    "x": 20,
-    "y": 520,
+    "x": 20.425531914893618,
+    "y": 230.51671732522797,
     "z": 10,
-    "height": 190,
-    "width": 255,
+    "height": 289.84802431610944,
+    "width": 780.06079027355622,
     "tabOrder": 10
   },
   "visual": {
     "visualType": "clusteredBarChart",
     "query": {
-      "sortDefinition": {
-        "sort": [
-          {
-            "field": {
-              "Measure": {
-                "Expression": {
-                  "SourceRef": {
-                    "Entity": "gold fact_teamfight_players"
-                  }
-                },
-                "Property": "Avg Fight Damage"
-              }
-            },
-            "direction": "Descending"
-          }
-        ],
-        "isDefaultSort": true
-      },
       "queryState": {
         "Category": {
           "projections": [
@@ -82,6 +64,24 @@
             }
           ]
         }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Measure": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "gold fact_teamfight_players"
+                  }
+                },
+                "Property": "Avg Fight Damage"
+              }
+            },
+            "direction": "Descending"
+          }
+        ],
+        "isDefaultSort": true
       }
     },
     "visualContainerObjects": {
@@ -104,8 +104,67 @@
             }
           }
         }
+      ],
+      "border": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
       ]
     },
     "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "411d253a8bb66b36400c",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "gold dim_hero"
+              }
+            },
+            "Property": "hero_localized_name"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "e42cf190c0064bb7bb09",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "gold fact_teamfight_players"
+              }
+            },
+            "Property": "Avg Fight Damage"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "62b211909723e33d7ad3",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "gold fact_teamfight_players"
+              }
+            },
+            "Property": "Avg Fight Healing"
+          }
+        },
+        "type": "Advanced"
+      }
+    ]
   }
 }

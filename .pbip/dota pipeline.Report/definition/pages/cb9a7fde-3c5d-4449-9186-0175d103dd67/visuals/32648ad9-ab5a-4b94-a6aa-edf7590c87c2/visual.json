@@ -1,5 +1,5 @@
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.2.0/schema.json",
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
   "name": "32648ad9-ab5a-4b94-a6aa-edf7590c87c2",
   "position": {
     "x": 235,
@@ -27,8 +27,9 @@
                 }
               },
               "queryRef": "gold dim_league.league_name",
-              "nativeQueryRef": "league_name",
-              "active": true
+              "nativeQueryRef": "League",
+              "active": true,
+              "displayName": "League"
             }
           ]
         }
@@ -50,10 +51,51 @@
       ],
       "general": [
         {
-          "properties": {}
+          "properties": {
+            "selfFilterEnabled": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "border": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
         }
       ]
     },
     "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "623547aa44717151ec5c",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "gold dim_league"
+              }
+            },
+            "Property": "league_name"
+          }
+        },
+        "type": "Categorical"
+      }
+    ]
   }
 }

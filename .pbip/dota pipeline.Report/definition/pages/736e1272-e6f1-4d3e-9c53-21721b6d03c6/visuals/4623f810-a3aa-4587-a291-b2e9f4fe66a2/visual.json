@@ -32,7 +32,7 @@
               {
                 "textRuns": [
                   {
-                    "value": "Top heroes by win rate / picks — ",
+                    "value": "Top heroes by win rate / picks Ã¢â‚¬â€ ",
                     "textStyle": {
                       "fontFamily": "Segoe UI",
                       "fontSize": "9.5pt",
@@ -52,7 +52,7 @@
               {
                 "textRuns": [
                   {
-                    "value": "Hero stats table — ",
+                    "value": "Hero stats table Ã¢â‚¬â€ ",
                     "textStyle": {
                       "fontFamily": "Segoe UI",
                       "fontSize": "9.5pt",
@@ -72,7 +72,7 @@
               {
                 "textRuns": [
                   {
-                    "value": "Picks vs Bans by hero — ",
+                    "value": "Picks vs Bans by hero Ã¢â‚¬â€ ",
                     "textStyle": {
                       "fontFamily": "Segoe UI",
                       "fontSize": "9.5pt",
@@ -92,7 +92,7 @@
               {
                 "textRuns": [
                   {
-                    "value": "Slicers — ",
+                    "value": "Slicers Ã¢â‚¬â€ ",
                     "textStyle": {
                       "fontFamily": "Segoe UI",
                       "fontSize": "9.5pt",
@@ -141,7 +141,7 @@
           }
         }
       ],
-      "border": [
+      "dropShadow": [
         {
           "properties": {
             "show": {
@@ -154,13 +154,13 @@
           }
         }
       ],
-      "dropShadow": [
+      "border": [
         {
           "properties": {
             "show": {
               "expr": {
                 "Literal": {
-                  "Value": "false"
+                  "Value": "true"
                 }
               }
             }

@@ -3,7 +3,7 @@
   "name": "03f2e3d4-c5b6-4a03-8000-000000000003",
   "position": {
     "x": 20,
-    "y": 645,
+    "y": 523,
     "z": 12,
     "height": 190,
     "width": 610,
@@ -27,7 +27,9 @@
                 }
               },
               "queryRef": "gold fact_match_player_skills.minute",
-              "nativeQueryRef": "minute"
+              "nativeQueryRef": "Minute",
+              "active": true,
+              "displayName": "Minute"
             },
             {
               "field": {
@@ -41,7 +43,9 @@
                 }
               },
               "queryRef": "gold fact_match_player_skills.player_name",
-              "nativeQueryRef": "player_name"
+              "nativeQueryRef": "Player Name",
+              "active": true,
+              "displayName": "Player Name"
             },
             {
               "field": {
@@ -55,7 +59,9 @@
                 }
               },
               "queryRef": "gold fact_match_player_skills.hero_localized_name",
-              "nativeQueryRef": "hero_localized_name"
+              "nativeQueryRef": "Hero",
+              "active": true,
+              "displayName": "Hero"
             },
             {
               "field": {
@@ -69,7 +75,9 @@
                 }
               },
               "queryRef": "gold fact_match_player_skills.ability_name",
-              "nativeQueryRef": "ability_name"
+              "nativeQueryRef": "Ability",
+              "active": true,
+              "displayName": "Ability"
             },
             {
               "field": {
@@ -83,7 +91,25 @@
                 }
               },
               "queryRef": "gold fact_match_player_skills.learn_level",
-              "nativeQueryRef": "learn_level"
+              "nativeQueryRef": "Level learned",
+              "active": true,
+              "displayName": "Level learned"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold fact_match_player_skills"
+                    }
+                  },
+                  "Property": "is_talent"
+                }
+              },
+              "queryRef": "gold fact_match_player_skills.is_talent",
+              "nativeQueryRef": "Is Talent",
+              "active": true,
+              "displayName": "Is Talent"
             }
           ]
         }
@@ -121,6 +147,19 @@
               "expr": {
                 "Literal": {
                   "Value": "'Radiant - skill levelling over time'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "border": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
                 }
               }
             }
@@ -184,6 +223,90 @@
           ]
         },
         "howCreated": "User"
+      },
+      {
+        "name": "c47f069228030077e5de",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "gold fact_match_player_skills"
+              }
+            },
+            "Property": "minute"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "aa6492f223bcce6e0c52",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "gold fact_match_player_skills"
+              }
+            },
+            "Property": "player_name"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "99ca49439809215a754e",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "gold fact_match_player_skills"
+              }
+            },
+            "Property": "hero_localized_name"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "a294c30d04ea47098c40",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "gold fact_match_player_skills"
+              }
+            },
+            "Property": "ability_name"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "40e55742b96a7ceda4ea",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "gold fact_match_player_skills"
+              }
+            },
+            "Property": "learn_level"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "f5992e98e6e84dcc390c",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "gold fact_match_player_skills"
+              }
+            },
+            "Property": "is_talent"
+          }
+        },
+        "type": "Categorical"
       }
     ]
   }

@@ -1,5 +1,5 @@
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.2.0/schema.json",
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
   "name": "f1a4c6bd-8af8-4b22-abb3-6ec47dc88ecc",
   "position": {
     "x": 20,
@@ -27,8 +27,9 @@
                 }
               },
               "queryRef": "gold dim_hero_role.role",
-              "nativeQueryRef": "role",
-              "active": true
+              "nativeQueryRef": "Role",
+              "active": true,
+              "displayName": "Role"
             }
           ]
         }
@@ -54,6 +55,39 @@
         }
       ]
     },
+    "visualContainerObjects": {
+      "border": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
     "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "a3cb3be0b5822cbc0b62",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "gold dim_hero_role"
+              }
+            },
+            "Property": "role"
+          }
+        },
+        "type": "Categorical"
+      }
+    ]
   }
 }

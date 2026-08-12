@@ -217,3 +217,80 @@ relationship ffff0003-0000-0000-0000-000000000013
 	fromColumn: 'gold fact_match_player_item_purchases'.minute
 	toColumn: 'gold dim_match_minute'.minute
 
+relationship ffff0004-0000-0000-0000-000000000010
+	fromColumn: 'gold fact_match_player_kills'.match_id
+	toColumn: 'gold fact_matches'.match_id
+
+relationship ffff0004-0000-0000-0000-000000000011
+	fromColumn: 'gold fact_match_player_kills'.hero_id
+	toColumn: 'gold dim_hero'.hero_id
+
+relationship ffff0004-0000-0000-0000-000000000012
+	fromColumn: 'gold fact_match_player_kills'.account_id
+	toColumn: 'gold dim_player'.account_id
+
+relationship ffff0004-0000-0000-0000-000000000013
+	isActive: false
+	fromColumn: 'gold fact_match_player_kills'.victim_hero_id
+	toColumn: 'gold dim_hero'.hero_id
+
+relationship ffff0004-0000-0000-0000-000000000014
+	fromColumn: 'gold fact_match_player_kills'.minute
+	toColumn: 'gold dim_match_minute'.minute
+
+relationship ffff0005-0000-0000-0000-000000000010
+	fromColumn: 'gold fact_match_player_runes'.match_id
+	toColumn: 'gold fact_matches'.match_id
+
+relationship ffff0005-0000-0000-0000-000000000011
+	fromColumn: 'gold fact_match_player_runes'.hero_id
+	toColumn: 'gold dim_hero'.hero_id
+
+relationship ffff0005-0000-0000-0000-000000000012
+	fromColumn: 'gold fact_match_player_runes'.account_id
+	toColumn: 'gold dim_player'.account_id
+
+relationship ffff0005-0000-0000-0000-000000000013
+	fromColumn: 'gold fact_match_player_runes'.rune_key
+	toColumn: 'gold dim_rune'.rune_key
+
+relationship ffff0006-0000-0000-0000-000000000010
+	fromColumn: 'gold fact_match_player_damage'.match_id
+	toColumn: 'gold fact_matches'.match_id
+
+relationship ffff0006-0000-0000-0000-000000000011
+	fromColumn: 'gold fact_match_player_damage'.hero_id
+	toColumn: 'gold dim_hero'.hero_id
+
+relationship ffff0006-0000-0000-0000-000000000012
+	fromColumn: 'gold fact_match_player_damage'.account_id
+	toColumn: 'gold dim_player'.account_id
+
+relationship ffff0007-0000-0000-0000-000000000010
+	fromColumn: 'gold fact_match_player_damage_taken'.match_id
+	toColumn: 'gold fact_matches'.match_id
+
+relationship ffff0007-0000-0000-0000-000000000011
+	fromColumn: 'gold fact_match_player_damage_taken'.hero_id
+	toColumn: 'gold dim_hero'.hero_id
+
+relationship ffff0007-0000-0000-0000-000000000012
+	fromColumn: 'gold fact_match_player_damage_taken'.account_id
+	toColumn: 'gold dim_player'.account_id
+
+relationship ffff0001-0000-0000-0000-000000000013
+	fromColumn: 'gold fact_match_player_minute'.minute
+	toColumn: 'gold dim_match_minute'.minute
+
+relationship ffff0009-0000-0000-0000-000000000010
+	fromColumn: 'gold fact_match_team_minute'.match_id
+	toColumn: 'gold fact_matches'.match_id
+
+relationship ffff0009-0000-0000-0000-000000000011
+	fromColumn: 'gold fact_match_team_minute'.minute
+	toColumn: 'gold dim_match_minute'.minute
+
+relationship ffff000a-0000-0000-0000-000000000010
+	fromColumn: 'gold fact_hero_side'.hero_id
+	toColumn: 'gold dim_hero'.hero_id
+

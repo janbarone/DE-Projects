@@ -32,7 +32,7 @@
               {
                 "textRuns": [
                   {
-                    "value": "7 stat cards — ",
+                    "value": "7 stat cards Ã¢â‚¬â€ ",
                     "textStyle": {
                       "fontFamily": "Segoe UI",
                       "fontSize": "9.5pt",
@@ -52,7 +52,7 @@
               {
                 "textRuns": [
                   {
-                    "value": "Top farm / last-hit leaders — ",
+                    "value": "Top farm / last-hit leaders Ã¢â‚¬â€ ",
                     "textStyle": {
                       "fontFamily": "Segoe UI",
                       "fontSize": "9.5pt",
@@ -72,7 +72,7 @@
               {
                 "textRuns": [
                   {
-                    "value": "Support impact by hero — ",
+                    "value": "Support impact by hero Ã¢â‚¬â€ ",
                     "textStyle": {
                       "fontFamily": "Segoe UI",
                       "fontSize": "9.5pt",
@@ -92,7 +92,7 @@
               {
                 "textRuns": [
                   {
-                    "value": "Most common first items table — ",
+                    "value": "Most common first items table Ã¢â‚¬â€ ",
                     "textStyle": {
                       "fontFamily": "Segoe UI",
                       "fontSize": "9.5pt",
@@ -112,7 +112,7 @@
               {
                 "textRuns": [
                   {
-                    "value": "Matches by lobby type donut — ",
+                    "value": "Matches by lobby type donut Ã¢â‚¬â€ ",
                     "textStyle": {
                       "fontFamily": "Segoe UI",
                       "fontSize": "9.5pt",
@@ -132,7 +132,7 @@
               {
                 "textRuns": [
                   {
-                    "value": "GPM / XPM trend — ",
+                    "value": "GPM / XPM trend Ã¢â‚¬â€ ",
                     "textStyle": {
                       "fontFamily": "Segoe UI",
                       "fontSize": "9.5pt",
@@ -181,7 +181,7 @@
           }
         }
       ],
-      "border": [
+      "dropShadow": [
         {
           "properties": {
             "show": {
@@ -194,13 +194,13 @@
           }
         }
       ],
-      "dropShadow": [
+      "border": [
         {
           "properties": {
             "show": {
               "expr": {
                 "Literal": {
-                  "Value": "false"
+                  "Value": "true"
                 }
               }
             }

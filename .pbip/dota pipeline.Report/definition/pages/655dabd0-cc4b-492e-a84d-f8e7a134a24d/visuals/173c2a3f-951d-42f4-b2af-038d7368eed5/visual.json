@@ -20,14 +20,30 @@
                 "Column": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "gold dim_team"
+                      "Entity": "gold fact_team_h2h"
                     }
                   },
-                  "Property": "team_name"
+                  "Property": "team_a_name"
                 }
               },
-              "queryRef": "gold dim_team.team_name",
-              "nativeQueryRef": "team_name"
+              "queryRef": "gold fact_team_h2h.team_a_name",
+              "nativeQueryRef": "team_a_name",
+              "active": true
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold fact_team_h2h"
+                    }
+                  },
+                  "Property": "team_b_name"
+                }
+              },
+              "queryRef": "gold fact_team_h2h.team_b_name",
+              "nativeQueryRef": "team_b_name",
+              "active": true
             },
             {
               "field": {
@@ -41,7 +57,8 @@
                 }
               },
               "queryRef": "gold fact_team_h2h.H2H Games",
-              "nativeQueryRef": "H2H Games"
+              "nativeQueryRef": "H2H Games",
+              "active": true
             },
             {
               "field": {
@@ -55,7 +72,83 @@
                 }
               },
               "queryRef": "gold fact_team_h2h.Team A Win Rate",
-              "nativeQueryRef": "Team A Win Rate"
+              "nativeQueryRef": "Team A Win Rate",
+              "active": true
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold fact_team_h2h"
+                    }
+                  },
+                  "Property": "Team B Win Rate"
+                }
+              },
+              "queryRef": "gold fact_team_h2h.Team B Win Rate",
+              "nativeQueryRef": "Team B Win Rate",
+              "active": true
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold fact_team_h2h"
+                    }
+                  },
+                  "Property": "Team A Wins"
+                }
+              },
+              "queryRef": "gold fact_team_h2h.Team A Wins",
+              "nativeQueryRef": "Team A Wins",
+              "active": true
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold fact_team_h2h"
+                    }
+                  },
+                  "Property": "Team A Losses"
+                }
+              },
+              "queryRef": "gold fact_team_h2h.Team A Losses",
+              "nativeQueryRef": "Team A Losses",
+              "active": true
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold fact_team_h2h"
+                    }
+                  },
+                  "Property": "Team B Wins"
+                }
+              },
+              "queryRef": "gold fact_team_h2h.Team B Wins",
+              "nativeQueryRef": "Team B Wins",
+              "active": true
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold fact_team_h2h"
+                    }
+                  },
+                  "Property": "Team B Losses"
+                }
+              },
+              "queryRef": "gold fact_team_h2h.Team B Losses",
+              "nativeQueryRef": "Team B Losses",
+              "active": true
             }
           ]
         }
@@ -92,7 +185,20 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Team head-to-head records'"
+                  "Value": "'Team vs Team head-to-head'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "border": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
                 }
               }
             }

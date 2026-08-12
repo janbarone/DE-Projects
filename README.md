@@ -413,15 +413,103 @@ measure on `gold dim_hero` plus a visual-level Advanced filter on both slicers �
 `pg_dump` taken as the savepoint: `backups/gold4_20260808_191856.dump`. The
 report is committed; full ledger in `docs/report_status.md`.
 
+**Round 10 (2026-08-08, Match Breakdown page, §5k):** new dedicated page with
+per-match hero-kill counts (split Radiant/Dire), rune pickups by hero (incl.
+bounty, via `dim_rune`), support contribution (wards placed / dewards), and
+damage dealt/taken breakdowns (split Radiant/Dire with target/source-category
+slicers + building/hero KPI cards). New gold facts: `fact_match_player_kills`,
+`fact_match_player_runes`, `fact_match_player_damage`,
+`fact_match_player_damage_taken`; `fact_match_players` gains 6 support columns
+(wards derived from `obs_log`/`sen_log`); `dim_player` now resolves participant
+names from `personaname`. Model is now **35 tables, 83 relationships**. dbt
+build + tests pass; 145 JSON files parse clean. Needs its first Desktop render
+pass.
+
+**Round 11 (2026-08-08, Match Detail player-table stat columns, §5l):** both
+Match Detail player tables (Radiant/Dire) extended with 18 columns: GPM, XPM,
+damage to heroes/buildings, damage received by type (physical/magical/pure via
+new `fact_match_player_damage_taken_type`), last hits, denies, heal, pick
+sequence, enemy-heroes-killed, support gold, and ward/sentry/dust/smoke/gem
+purchase counts — all denormalized on `fact_match_players`. Model is now **36
+tables, 71 relationships**. dbt build + 29 tests pass; 146 JSON files parse
+clean.
+
+**Round 11b (2026-08-08, pick sequence + ban data, §5m):** `pick_sequence` fixed
+to rank among picks only (**1-10**, was the raw 1-20 draft order). Added
+`ban_sequence` (rank among bans) to `fact_match_players`. Fixed a data bug in
+`stg_picks_bans` — the draft `team` side was never captured (now exposed as
+`team_number`/`active_team`). Match Detail player tables renamed to **'Radiant -
+Match Details'** / **'Dire - Match Details'**; Draft page gained a **'Ban
+frequency by hero'** table (ban count / ban rate / avg ban position).
+
+**Round 11c (2026-08-08, talents in skill tables, §5n):** `fact_match_player_skills`
+gains an **`is_talent`** flag and **cleaned talent labels** (the unresolved
+`+{s:…}` value templates are stripped, e.g. `+{s:bonus_illusion_duration}s
+Reflection Duration` → `Reflection Duration`; `attribute_bonus` →
+`Attribute Bonus`). Both skill-levelling tables on Match Detail now show the
+**is_talent** column. ~3% of talents still show raw `special_bonus_unique_*`
+keys (no `dname` in the source constants).
+
+**Round 11d (2026-08-08, cyclic-refresh fix, §5o):** data refresh reported a
+"cyclic reference during evaluation" across `dim_hero_role` / `fact_matches` /
+`fact_teamfight_kills` / `dim_hero`. Removed the unused
+`fact_match_player_damage_taken_type` table from the Power BI model (visuals
+use the denormalized `fact_match_players.damage_taken_*` columns instead) and
+removed the unused `Ban Sequence` RANKX measure on `fact_picks_bans`. Model is
+now **35 tables, 68 relationships** (3 bidirectional). The silver
+`stg_match_player_damage_taken_type` stage still feeds `fact_match_players`.
+
+**Round 12 (2026-08-08, Progression page, §5p):** new **Progression** page with
+per-minute line charts (X = minute) driven by a shared minute slicer + match
+dropdown: **Team XP & Net Worth** (new `fact_match_team_minute`), **Player Net
+Worth** and **Player Level** (`fact_match_player_minute`), **Player Item
+Purchases** (`fact_match_player_item_purchases`). Added the missing
+`fact_match_player_minute.minute → dim_match_minute` relationship. Player
+damage was skipped (no per-minute damage in OpenDota). Model is now **36 tables,
+71 relationships**.
+
+**Round 13 (2026-08-09, normalization + page enhancements, §5q):** dimensions
+normalized (league/team uppercase; game-mode/lobby prefix-stripped+uppercase;
+`primary_attr` friendly labels Agility/Universal/Intelligence/Strength;
+`player_type` → Pro / Match Participant; `fact_team_h2h` denormalized team
+names). Hero Meta: + Patch slicer, hero win/ban rate per patch charts (top-20 /
+top-15). Players: + appearances by league. Teams: + League slicer, win-rate-by-
+league table (by side). Matches/Economy: duration & GPM/XPM trends now **by
+patch**. Draft: fixed `Avg Ban Position` (VALUE cast), + Dire Hero Win Rate
+column, + hero win-rate-by-side table, reworked Team-vs-Team head-to-head with
+W–L records.
+
+**Round 13b (2026-08-09, folding fixes, §5q):** fixed DirectQuery
+query-folding errors on the Draft page — `Dire Hero Win Rate` is now a
+self-contained `DIVIDE` (was `1 - [Radiant Hero Win Rate]`, which wouldn't
+fold), and a new **precomputed `fact_hero_side`** table powers the **split
+"Hero win rate – Radiant" / "Hero win rate – Dire"** tables (cross-table
+`COUNTROWS` grouping doesn't fold).
+
+**Round 13c (2026-08-09, §5q):** fixed the remaining Draft folding errors —
+added numeric `order_no_int` to `fact_picks_bans` (so `Avg Ban Position` is a
+foldable `AVERAGE`, not an `AVERAGEX(VALUE())` iterator), and added a
+**precomputed `fact_hero_matchup_stats`** table (per-matchup games + radiant /
+dire win rates) for the "Most common hero matchups" table. Model is now **38
+tables, 72 relationships**.
+
+**Round 14 (2026-08-12, §5r):** **Combat page gained a Match ID slicer**
+(`6e9cce4f`, dropdown on `gold fact_matches.match_id`, x=650 — filters the
+combat facts via the existing `fact_teamfights` / `fact_teamfight_players` →
+`fact_matches` links). No dbt/model changes. Fresh `pg_dump` taken as the
+savepoint: `backups/gold5_20260812_162008.dump` (337 MB, rounds 4–14). The
+report renders correctly in Power BI Desktop across all pages.
+
 **Known notes for the next session:**
 - Connect Power BI to the **gold** schema (not silver) - it's the presentation
   layer with all relationship fixes. Delete any auto-created relationships on
   import before adding yours.
-- **Immediate next step:** re-open the PBIP in Power BI Desktop and
-  render-verify — Economy, Draft, the fixed Overview score-differential card,
-  and the new About & Glossary page (11 textboxes). All JSON is validated and
-  bounds-checked; only a Desktop render pass remains.
-- **PBIP gotchas (all hit + fixed this round):** (1) files must be **UTF-8
+- **Report is render-verified (2026-08-12).** All pages — including Economy,
+  Draft, Match Breakdown, Progression, Match Detail, and the Combat Match ID
+  slicer — render in Power BI Desktop. The remaining work is non-report:
+  the orchestrator (bronze_load -> dbt build), the matchup matrix, and search
+  slicers (see `docs/report_status.md` §8).
+- **PBIP gotchas (all hit + fixed):** (1) files must be **UTF-8
   without BOM**; (2) measure names are unique model-wide (rename before
   colliding); (3) avoid non-column aggregates like `AVERAGE(ABS(...))` in
   DirectQuery — use `AVERAGEX`/`SUMX`; (4) every visual, including textboxes,
@@ -435,12 +523,10 @@ report is committed; full ledger in `docs/report_status.md`.
 - `fact_teamfights` keeps the raw `players` payload as **text** (jsonb cast to
   text) because OpenDota teamfight player entries have no hero/account id (see
   `docs/data_model.md`).
-- **Beyond render check:** orchestrator (bronze_load -> dbt build) is the
-  remaining pipeline item, plus a fresh pg_dump (current one predates the
-  round-1/round-2 gold tables). See roadmap in `docs/report_status.md` §8.
-- Backups live in `backups/` (gitignored); newest is
-  `gold4_20260808_191856.dump` (290 MB, taken 2026-08-08 at the Round 9
-  savepoint — includes all gold tables through rounds 4–9). Older dumps:
+- **Backups live in `backups/` (gitignored); newest is**
+  `gold5_20260812_162008.dump` (337 MB, taken 2026-08-12 at the Round 14
+  savepoint — includes all gold tables through rounds 4–14). Older dumps:
+  `gold4_20260808_191856.dump` (290 MB, rounds 4–9) and
   `gold3_20260802_223003.dump` (194.4 MB, predates `fact_team_matches`,
   `dim_patch`, `fact_hero_matchups`, `fact_team_h2h`, `dim_item` and all
   per-minute facts). Restore with `pg_restore -U postgres -d dota backups/<file>.dump`.

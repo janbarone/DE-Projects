@@ -1,13 +1,13 @@
 # Power BI Report — Status, Change Log & Known Issues
 
-Status as of **2026-08-08**. This file is the running ledger for the report at
+Status as of **2026-08-12**. This file is the running ledger for the report at
 `.pbip/dota pipeline.Report` (PBIR format) and its semantic model at
 `.pbip/dota pipeline.SemanticModel` (TMDL).
 
-> **SAVEPOINT (2026-08-08):** Round 9 (§5j) is complete and **verified in Power
-> BI Desktop**. The hero slicers on Match Detail now scope to the selected
-> match via a measure + visual-level filter (Option 2). Everything below is
-> committed and backed up — `backups/gold4_20260808_191856.dump` (see §5j).
+> **SAVEPOINT (2026-08-12):** Rounds 1–14 are complete and the report renders
+> correctly in Power BI Desktop. Round 14 (§5r) added a **Match ID slicer** to
+> the Combat page. Everything is committed and backed up —
+> `backups/gold5_20260812_162008.dump` (see §5r).
 
 - Model mode: **DirectQuery** → PostgreSQL `localhost:5432` / db `dota`, **gold** schema.
 - PBIR version: `2.0.0`; visualContainer schema: **2.11.0** (report was imported at
@@ -19,12 +19,14 @@ Status as of **2026-08-08**. This file is the running ledger for the report at
 
 ## ▶ RESUME HERE — next session (what's left)
 
-All rounds (1–9) are built and JSON/TMDL-validated (131 JSON files, 0 bad; model
-= 30 tables, 53 relationships; Match Detail page validator 0 issues). Round 8
-(§5h/§5i) and Round 9 (§5j) have both been opened in Power BI Desktop — the
-Round 9 hero-slicer scoping is **verified working**. The Match Detail render
-pass from the earlier RESUME block was completed as part of Round 8/9 user
-testing.
+All rounds (1–14) are built and JSON/TMDL-validated (143 JSON files, 0 bad; model
+= 38 tables, 72 relationships; Match Detail page validator 0 issues). Rounds 8–13
+(§5h–§5q) have been **opened in Power BI Desktop and the report renders
+correctly** — the Round 9 hero-slicer scoping, the Round 10 **Match Breakdown**
+page, the Round 11 player stat columns, the Round 12 **Progression** page and
+the Round 13 normalization all render. Round 14 (§5r) added a **Match ID
+slicer** to the Combat page. The remaining backlog is non-report work
+(orchestrator, matchup matrix, search slicers — see §8).
 
 Safe resume checklist:
 
@@ -39,21 +41,25 @@ Safe resume checklist:
    Match` measure + visual-level filter, §5j); match dropdown bound to
    `fact_matches` (lists **all 4,299 matches** — the previous 3,285-match
    restriction was dropped when the slicer was re-bound, see §5i); player
-   tables showing only player / hero / level / kills / deaths / assists / net
-   worth (no team_win, GPM, XPM); the 4 per-minute progression tables
-   (Itemization y=445, Skill levelling y=645) filtered by the match + side hero
-   slicers; **no Play Axis**.
-3. Confirm the model imported cleanly: 30 tables, 53 relationships (**3
+   tables now showing **25 columns each** (player / hero / level / K / D / A /
+   net worth / GPM / XPM / dmg to heroes / dmg to buildings / dmg received
+   phys·mag·pure / LH / denies / heal / pick seq / enemy heroes killed /
+   support gold / wards·dust·smoke·gem bought, §5l); the 4 per-minute
+   progression tables (Itemization y=445, Skill levelling y=645) filtered by
+   the match + side hero slicers; **no Play Axis**. On the **Combat** page a
+   **Match ID** dropdown slicer (x=650, §5r) filters the combat facts.
+3. Confirm the model imported cleanly: 38 tables, 72 relationships (**3
    bidirectional** — see §5j for why the earlier skills-link change was not
    kept).
 4. If a visual errors, note its GUID from its `visual.json`; do **not** let
    Desktop re-save over the hand-edited files without diffing first (§3.9).
-5. A fresh `pg_dump` was taken at the Round 9 savepoint
-   (`backups/gold4_20260808_191856.dump`, §5j); re-dump after any future
+5. A fresh `pg_dump` was taken at the Round 14 savepoint
+   (`backups/gold5_20260812_162008.dump`, §5r); re-dump after any future
    round that changes the DB.
 
-Full detail: §5g (Round 6), §5h (Round 7), §5i (Round 8), §5j (Round 9), and the
-gold schema in `docs/data_model.md`.
+Full detail: §5g (Round 6), §5h (Round 7), §5i (Round 8), §5j (Round 9),
+§5k (Round 10), §5l (Round 11), §5p (Round 12), §5q (Round 13), §5r (Round 14),
+and the gold schema in `docs/data_model.md`.
 
 ---
 
@@ -66,13 +72,15 @@ gold schema in `docs/data_model.md`.
 | **Hero Meta** (`5995aa2f-890e-4dd1-bbfb-56148396a2b6`) | role slicer, year slicer, top heroes by win rate / picks (bars), **Hero stats table (tableEx `a408a2f7`)**, Picks vs Bans (barChart `fce86b13`) |
 | **Players** (`cb9a7fde-3c5d-4449-9186-0175d103dd67`) | top players by KDA / picks (bars), player appearances by month, **Player leaderboard (tableEx `6516df28`, null names excluded)**, top-picks bar has blank-name exclusion (`a44d5e76`) |
 | **Teams** (`baedb79c-f6fe-4143-a748-0c78bfe55ff9`) | appearances-by-side (barChart `17130a8d`), team win rate over time, top teams by appearances / win rate (bars), **Team leaderboard (tableEx `a33fb46e`, "Unknown" teams excluded)** |
-| **Combat** (`56eca095-57e2-46f9-98ab-f5b23aed77d9`) | **Most killed heroes (tableEx `1f0e8ee1`)**, top abilities / items in teamfights (bars), avg fights per match, cards, slicers; **bottom-left block (2026-08-05):** avg damage & healing per fight, teamfights by game phase, buybacks in teamfights |
+| **Combat** (`56eca095-57e2-46f9-98ab-f5b23aed77d9`) | **Most killed heroes (tableEx `1f0e8ee1`)**, top abilities / items in teamfights (bars), avg fights per match, cards, slicers (Hero, Player, **Match ID** — added Round 14, §5r); **bottom-left block (2026-08-05):** avg damage & healing per fight, teamfights by game phase, buybacks in teamfights |
 | **Economy** (`a535cc39-aabf-4e7d-aedb-4bdba9e40445`) | **NEW (2026-08-05, 1280×900)** — 7 stat cards (GPM/XPM/Net Worth/LH/Denies/Stuns/Healing), top farm leaders, top last-hit leaders, support impact by hero (healing + camps), most common first items (tableEx `58aeb46e`), matches by lobby type donut, GPM/XPM trend line |
 | **Draft** (`655dabd0-cc4b-492e-a84d-f8e7a134a24d`) | **NEW (2026-08-05, 1280×900)** — top picks / top bans / picks-vs-bans bars, picks by draft phase (First/Mid/Late), draft activity by side, most common hero matchups (tableEx `c23c3aa8`), team head-to-head records (tableEx `173c2a3f`) |
 | **About & Glossary** (`736e1272-e6f1-4d3e-9c53-21721b6d03c6`) | **NEW (2026-08-05, 1280×1000)** — 11 textboxes: what the report is / what to expect / how to use it, a Dota term glossary, and one description box per page listing every visual and what it shows |
-| **Match Detail** (`9d4f2e1a-8b3c-47d5-a6f7-8c9d0e1f2a3b`) | **NEW (2026-08-06)** — dropdown slicer on `match_id`, 3 cards (Winner / Duration / Total Kills), Radiant + Dire player tables (player, hero, team result, KDA, GPM/XPM, net worth, top skills, 6 items). See §5e. **Round 6:** independent Radiant/Dire hero + kind slicers + two Play Axis visuals — **report layer complete (2026-08-08)**, see §5g. **Round 7 (2026-08-08):** timeline tables replaced by 4 per-minute progression tables (Radiant/Dire **itemization over time** + Radiant/Dire **skill levelling over time**), `kind` column + kind slicers removed, match slicer restricted to matches with progression data (3,285), hero slicers now reach the progression tables, Play Axis re-wired to a shared `dim_match_minute` so scrubbing drives the progression tables — see §5h. **Round 8 (2026-08-08):** Play Axis removed; hero slicers titled & side-scoped (Radiant → Radiant tables only, Dire → Dire tables only); player tables trimmed to player / hero / level / K / D / A / net worth (team_win, GPM, XPM dropped); progression tables filter via match + side hero slicers — see §5i. **Round 9 (2026-08-08, §5j):** hero slicers now scope to the selected match via the `Hero in Current Match` measure + visual-level filter (**verified in Desktop**). |
+| **Match Detail** (`9d4f2e1a-8b3c-47d5-a6f7-8c9d0e1f2a3b`) | **NEW (2026-08-06)** — dropdown slicer on `match_id`, 3 cards (Winner / Duration / Total Kills), Radiant + Dire player tables (player, hero, team result, KDA, GPM/XPM, net worth, top skills, 6 items). See §5e. **Round 6:** independent Radiant/Dire hero + kind slicers + two Play Axis visuals — **report layer complete (2026-08-08)**, see §5g. **Round 7 (2026-08-08):** timeline tables replaced by 4 per-minute progression tables (Radiant/Dire **itemization over time** + Radiant/Dire **skill levelling over time**), `kind` column + kind slicers removed, match slicer restricted to matches with progression data (3,285), hero slicers now reach the progression tables, Play Axis re-wired to a shared `dim_match_minute` so scrubbing drives the progression tables — see §5h. **Round 8 (2026-08-08):** Play Axis removed; hero slicers titled & side-scoped (Radiant → Radiant tables only, Dire → Dire tables only); player tables trimmed to player / hero / level / K / D / A / net worth (team_win, GPM, XPM dropped); progression tables filter via match + side hero slicers — see §5i. **Round 9 (2026-08-08, §5j):** hero slicers now scope to the selected match via the `Hero in Current Match` measure + visual-level filter (**verified in Desktop**). **Round 11 (2026-08-08, §5l):** both player tables extended to **25 columns** — player / hero / level / K / D / A / net worth / GPM / XPM / damage to heroes / damage to buildings / damage received phys·mag·pure / LH / denies / heal / pick sequence / enemy heroes killed / support gold / wards·dust·smoke·gem bought. |
+| **Match Breakdown** (`8691a6fe-f9a0-40e7-b33f-4f0a4c276465`) | **NEW (2026-08-08, Round 10, 1280×1000)** — per-match deep-dive: match dropdown, **hero kills** split Radiant/Dire (via `fact_match_player_kills`), **rune pickups by hero** (via `fact_match_player_runes` + `dim_rune`), **support contribution** (wards placed / dewards via new `fact_match_players` support columns), **damage dealt/taken** split Radiant/Dire with **target/source-category slicers** (Hero/Building) and **building/hero damage KPI cards** (via `fact_match_player_damage` / `_taken`). See §5k. |
+| **Progression** (`a0d69ef1-5555-4687-a1ee-623c1399b01f`) | **NEW (2026-08-08, Round 12, 1280×900)** — per-minute line charts with a shared minute slicer + match dropdown: **Team XP & Net Worth** (`fact_match_team_minute`), **Player Net Worth**, **Player Level** (`fact_match_player_minute`), **Player Item Purchases** (`fact_match_player_item_purchases`). X = minute, Y = metric, legend = side/hero. See §5p. |
 
-131 report JSON files, all parse cleanly (validated 2026-08-08).
+143 report JSON files, all parse cleanly (validated 2026-08-12).
 
 ---
 
@@ -143,15 +151,13 @@ gold schema in `docs/data_model.md`.
 10. **New "second-dimension" links are inactive by design.** `dire_hero_id`,
     `team_b_id` (and `victim_hero_id`) each need `USERELATIONSHIP` in a measure
     to filter — DirectQuery supports only one active relationship per pair.
-11. **Backups are stale → refreshed at the Round 9 savepoint.** The newest dump
-    is now **`gold4_20260808_191856.dump`** (290 MB, taken 2026-08-08 after all
-    rounds 4–9, §5j). The older `gold3_20260802_223003.dump` predates everything
-    added since rounds 4–7: `dim_patch`, `dim_item`, `fact_hero_matchups`,
-    `fact_team_h2h`, `fact_match_timeline(_events)`, `fact_phase_momentum`,
-    `fact_team_compositions`, and the per-minute facts
-    (`fact_match_player_minute`, `fact_match_player_skills`,
-    `fact_match_player_item_purchases`, `dim_match_minute`). Re-dump after any
-    future round that changes the DB.
+11. **Backups are stale → refreshed at the Round 14 savepoint.** The newest dump
+    is now **`gold5_20260812_162008.dump`** (337 MB, taken 2026-08-12 after all
+    rounds 4–14, §5r). The previous `gold4_20260808_191856.dump` covers rounds
+    4–9 but predates round 10+ gold tables (`dim_rune`, `fact_hero_side`,
+    `fact_hero_matchup_stats`, `fact_match_player_kills`/`_runes`/`_damage`/
+    `_damage_taken`, `fact_match_team_minute`) and the round-13 normalization.
+    Re-dump after any future round that changes the DB.
 12. **No rank data.** `dim_player.rank_tier` is empty for every player (the
     source matches/players never carry rank), so a rank-distribution visual is
     impossible. The Economy page uses a lobby-type donut instead.
@@ -712,6 +718,358 @@ rollback point if anything regresses.
 
 ---
 
+### 5k. Round 10 — Match Breakdown page: kills, runes, support, damage (2026-08-08)
+
+- **Goal:** a dedicated per-match deep-dive page ("Match Breakdown", page
+  `8691a6fe-f9a0-40e7-b33f-4f0a4c276465`) exposing data that was in the
+  bronze parsed payload but never surfaced: hero kill counts, rune pickups
+  (incl. bounty), support contribution, and damage dealt / taken breakdowns.
+- **New gold facts (dbt):**
+  - `fact_match_player_kills` — one row per (match, killer, kill) from
+    `kills_log`; victim decoded to hero via `dim_hero.hero_name`
+    (157,498 rows; 99.85% victims decode to a hero).
+  - `fact_match_player_runes` — one row per (match, player, rune type) from the
+    **aggregate `runes` map** (authoritative; the `runes_log` timeline array is
+    only present for a subset of players), rune type decoded via new
+    **`dim_rune`** seed (79,044 rows).
+  - `fact_match_player_damage` — one row per (match, player, target) from the
+    `damage` object, categorized Hero / Building / Creep / Neutral / Ward /
+    Other (1,351,389 rows).
+  - `fact_match_player_damage_taken` — same shape from `damage_taken` (raw,
+    pre-mitigation) (936,459 rows).
+  - `fact_match_players` **+6 support columns**: `obs_placed`, `sen_placed`,
+    `observer_kills`, `sentry_kills`, `purchase_ward_observer`,
+    `purchase_ward_sentry`. `obs_placed`/`sen_placed` are derived from the
+    authoritative `obs_log`/`sen_log` arrays (the OpenDota scalars are null for
+    most players).
+  - `dim_player` now populates `player_name` for match participants from the
+    bronze `personaname` (latest seen) — fixes blank names across the report.
+- **Model:** +5 tables (4 facts + `dim_rune`), +30 relationships → **35 tables,
+  83 relationships** (3 bidirectional). The `fact_match_player_kills` victim →
+  `dim_hero` relationship is **inactive** (`isActive: false`) to avoid the
+  ambiguous-path error (`PFE_XL_USERELATIONSHIP_AMBIGUOUS_PATH`) that a second
+  active `dim_hero` link would cause — the same pattern `fact_teamfight_kills`
+  already uses. New measures: `Hero Kills`, `Rune Count` (SUM of `rune_count`),
+  `Total Damage`, `Total Building Damage`, `Total Hero Damage`,
+  `Total Damage Taken`, `Total Wards Placed`, `Total Dewards`, etc.
+- **Page visuals (Round 10b fixes):**
+  - **Hero kills** split into two tables — **Radiant** and **Dire** (visual-level
+    `side` filter; the `side` column was removed since it's now implied).
+  - **Rune pickups by hero** table (side / hero / rune / count) — now shows all
+    sides and heroes (aggregate map, not the sparse timeline).
+  - **Support contribution** table (side / player / hero / wards placed /
+    dewards) — now shows player names and ward counts correctly.
+  - **Damage dealt** split into **Radiant** and **Dire** tables, each filtered to
+    `target_category` = Hero/Building, plus a **target_category slicer** and two
+    **KPI cards** (`Total Building Damage`, `Total Hero Damage`).
+  - **Damage taken** split into **Radiant** and **Dire** tables filtered to
+    `source_category` = Hero/Building, plus a **source_category slicer**.
+  - Physical / magical / pure damage breakdown (5.1) is **not available** — the
+    `damage_inflictor(_received)` fields are null for these matches; per the
+    user, a category slicer is used instead.
+- **Not buildable from bronze (documented):** outposts taken, wisdom-shrine
+  captures, neutral-item upgrade timeline, permanent-buff timestamps.
+- **Verified:** dbt build + tests pass; 145 report JSON files parse (0 bad);
+  all visual projections/measures/filters resolve against TMDL; all 68
+  relationship from-columns exist.
+- **Remaining:** Desktop render pass of the Match Breakdown page.
+
+---
+
+### 5l. Round 11 — Match Detail player tables: full stat columns (2026-08-08)
+
+- **Goal:** extend the two Match Detail player tables (**Radiant** /
+  `01f2e3d4-…-000006`, **Dire** / `01f2e3d4-…-000007`) with 18 additional
+  per-player columns.
+- **New columns (all on `fact_match_players`, denormalized):**
+  - `gold_per_min` (GPM), `xp_per_min` (XPM), `hero_damage` (total to heroes),
+    `tower_damage` (total to buildings), `last_hits`, `denies`,
+    `hero_healing` (heal) — already existed as columns, added to the visuals.
+  - `pick_sequence` — hero's draft pick order (from `fact_picks_bans.order_no`
+    joined on match + hero).
+  - `enemy_heroes_killed` — kills of the opposite side by this player (from
+    `stg_match_player_kills` count; Radiant table = Dire heroes killed, Dire
+    table = Radiant heroes killed).
+  - `damage_taken_physical` / `damage_taken_magical` / `damage_taken_pure` —
+    raw damage received by type, from the new **`fact_match_player_damage_taken_type`**
+    fact (`damage_inflictor_received` classified via ability/item `dmg_type`;
+    the `null` auto-attack key maps to Physical). Note: matches with empty
+    `damage_inflictor_received` (e.g. the user-tested 1502168860) show blanks —
+    same source-data limitation as the Match Breakdown damage tables.
+  - `ward_observer_bought`, `ward_sentry_bought`, `dust_bought`, `smoke_bought`,
+    `gem_bought` — support item purchase counts (from `purchase_log`).
+  - `support_gold` — total gold spent on support items (observer×0 + sentry×50 +
+    dust×80 + smoke×50 + gem×900, current item costs). No native support-gold
+    label exists in OpenDota; this is the computed definition.
+- **New gold fact:** `fact_match_player_damage_taken_type` (silver
+  `stg_match_player_damage_taken_type`; 474,310 inflictor rows → 104,057
+  match/player/type rows). +1 table, +3 relationships → **36 tables, 71
+  relationships** (3 bidirectional).
+- **dbt detail:** the `enemy_kills` / `support_items` / `damage_taken_type`
+  CTEs read the **silver** stages (`stg_match_player_kills`,
+  `stg_match_player_item_purchases`, `stg_match_player_damage_taken_type`) to
+  avoid a dbt dependency cycle (`dim_hero` ↔ `fact_match_players`).
+- **Fix (model load failure):** `pick_sequence` initially came out as `text`
+  (from `fact_picks_bans.order_no` which is text) but was declared `int64` in
+  TMDL — this broke the whole model load in Desktop ("failed to load report",
+  empty data pane). Fixed by casting `order_no` to int in the dbt model so the
+  column is `integer`, matching the TMDL. All other new columns are int/bigint
+  and verified consistent.
+- **Fix (report pages missing):** the two player-table `visual.json` files were
+  rebuilt with PowerShell `ConvertTo-Json`, which dropped the `$schema` key.
+  Power BI's PBIR deserializer requires `$schema` on every visual — missing it
+  made the report fail to load its pages. Restored `$schema` on both files
+  (`visualContainer/2.11.0`); a full structural sweep confirmed every
+  `visual.json` has `$schema`, `filterConfig` is at top level, and all
+  projections/measures/filters resolve.
+- **Verified:** dbt build + 29 tests pass; 145 report JSON files parse (0 bad);
+  all visual projections resolve against TMDL; 0 BOM files.
+- **Remaining:** Desktop render pass — both player tables are now ~25 columns
+  wide (may need horizontal scroll / frozen first column).
+
+---
+
+### 5m. Round 11b — pick sequence fix + ban data (2026-08-08)
+
+- **Problem:** `pick_sequence` showed the raw draft `order_no` (1–20), which
+  mixed picks and bans into one global order — not intuitive.
+- **Fix (`fact_match_players.sql`):** `pick_sequence` is now the pick's rank
+  among picks only (**1–10**, via `row_number() over (partition by match_id,
+  is_pick)`). Added **`ban_sequence`** (rank among bans only, 1–N) as a column
+  — it is NULL in the player tables because all players are picks; banned
+  heroes never play.
+- **Ban data bug fixed (`stg_picks_bans.sql`):** the raw `picks_bans[].team`
+  (0=Radiant, 1=Dire) was never captured — `stg_picks_bans` read the empty
+  `active_team` field. Now reads `team` and exposes `team_number` +
+  `active_team` (Radiant/Dire). `fact_picks_bans` + TMDL + schema.yml updated.
+- **Match Detail player tables renamed:** 'Radiant - players, heroes, items &
+  skills' → **'Radiant - Match Details'**, 'Dire - …' → **'Dire - Match
+  Details'** (visuals `01f2e3d4-…-000006` / `…-000007`).
+- **Draft page:** new **'Ban frequency by hero'** tableEx
+  (`d6d3e7e7-e475-4765-830d-e7fc578ca658`) — hero / Draft Bans / Ban Rate /
+  Avg Ban Position. New measures on `fact_picks_bans`: `First Ban`,
+  `Avg Ban Position`, `Ban Sequence`.
+- **Verified:** dbt build + 13 tests pass; 146 report JSON files parse (0 bad);
+  all projections/measures resolve; 0 BOM files.
+- **Remaining:** Desktop render pass.
+
+---
+
+### 5n. Round 11c — talents in skill-levelling tables (2026-08-08)
+
+- **Goal:** make talent-tree picks visible and readable in the Match Detail
+  **skill levelling over time** tables (Radiant/Dire, `03f2e3d4-…-000003` /
+  `…-000004`). Talent data was already present in bronze
+  (`ability_upgrades_arr` contains `special_bonus_*` ability ids) and flowing
+  into `fact_match_player_skills`, but labels were poor: unresolved `+{s:…}`
+  templates (e.g. `+{s:bonus_illusion_duration}s Reflection Duration`) or raw
+  `special_bonus_*` keys.
+- **dbt (`fact_match_player_skills.sql`):** added **`is_talent`** flag (true
+  when the internal name starts with `special_bonus` or is `attribute_bonus`),
+  and **cleaned talent labels** by stripping the `+{s:…}` / `-{s:…}` value
+  template (e.g. → `Reflection Duration`). `special_bonus_attributes` /
+  `attribute_bonus` → `Attribute Bonus`.
+- **Coverage:** 88,060 talent rows; ~3% (2,598) still show raw
+  `special_bonus_unique_*` keys because those talent abilities have no `dname`
+  in the abilities constants (newer heroes / gaps in the source constants).
+- **TMDL:** `fact_match_player_skills` + `is_talent` column.
+- **Report:** both skill-levelling tables now show an **is_talent** column.
+- **Verified:** dbt build + 13 tests pass; 146 JSON files parse (0 bad); all
+  projections resolve; 0 BOM files.
+
+### 5o. Round 11d — fix cyclic-reference refresh error (2026-08-08)
+
+- **Symptom:** after the talent change, data refresh reported **"a cyclic
+  reference was encountered during evaluation"** blocking 32 queries across
+  `gold dim_hero_role`, `gold fact_matches`, `gold fact_teamfight_kills`,
+  `gold dim_hero`.
+- **Causes removed:**
+  - **Unused table `gold fact_match_player_damage_taken_type`** (added Round 11
+    but superseded — the visuals use denormalized
+    `fact_match_players.damage_taken_*` columns). Removed its TMDL file + 3
+    relationships (`match_id→fact_matches`, `hero_id→dim_hero`,
+    `account_id→dim_player`) + model.tmdl refs. This eliminated the newest
+    cycle-contributing relationships.
+  - **Unused `Ban Sequence` measure** on `fact_picks_bans`
+    (`RANKX(ALL(...), ...)` — a known cyclic-reference trigger in DirectQuery).
+    Kept `Avg Ban Position` (used by the Draft page).
+- **Model:** now **35 tables, 68 relationships** (3 bidirectional). The silver
+  `stg_match_player_damage_taken_type` stage is still used by
+  `fact_match_players` for the damage-type columns; only the standalone gold
+  model is no longer exposed to Power BI.
+- **Verified:** 146 JSON files parse (0 bad); all visual measure/column refs
+  resolve; all 68 relationship from-columns exist; no dangling
+  `damage_taken_type` references.
+
+---
+
+### 5p. Round 12 — Progression page: per-minute line charts (2026-08-08)
+
+- **Goal:** a new **Progression** page (`a0d69ef1-5555-4687-a1ee-623c1399b01f`,
+  1280×900) with per-minute line charts. X = game minute; Y = the metric.
+- **New gold fact `fact_match_team_minute`** — one row per (match, side,
+  minute): `team_gold` / `team_xp` summed from `fact_match_player_minute`
+  (the raw `gold_t`/`xp_t` arrays). +1 table, +3 relationships.
+- **Also added** a missing `fact_match_player_minute.minute → dim_match_minute`
+  relationship (was absent — the minute slicer could not filter Player Net
+  Worth / Player Level charts without it).
+- **Slicers (top row):** **match** dropdown (`fact_matches.match_id`), **minute**
+  dropdown (`dim_match_minute.minute` — switched from Between mode which
+  rendered blank), **Radiant Hero** and **Dire Hero** dropdowns
+  (`dim_hero.hero_localized_name`, each side-scoped via a visual-level
+  `side` filter). The match/minute/hero slicers propagate to all charts.
+- **Charts (all lineChart):**
+  1. **Team XP & Net Worth** (`1f5375c7`) — `fact_match_team_minute`: minute ×
+     team_gold + team_xp, **legend = side** (Radiant/Dire lines).
+  2. **Player Net Worth** (`d8b50a76`) — `fact_match_player_minute`: minute ×
+     gold, **legend = player_name** (all 10 players, not split by team).
+  3. **Player Level** (`192b95ac`) — `fact_match_player_minute`: minute ×
+     level, legend = player_name.
+  4. **Player Item Purchases** (`eb48713a`) — `fact_match_player_item_purchases`:
+     minute × `Total Purchases` (COUNTROWS measure), **legend = item_name**
+     (shows which item was bought at each minute).
+- **Skipped per user decision:** **Player damage** — OpenDota has no per-minute
+  damage data (only final totals and per-teamfight damage without player ids).
+- **Note:** `fact_match_player_minute.gold` is total gold earned (`gold_t`),
+  the standard net-worth-over-time proxy.
+- **Round 12b fixes:** the minute slicer was `Between` mode with a Categorical
+  filter (rendered blank / blocked other charts); switched to **Dropdown**.
+  Hero slicers added with side scoping; player charts now legend by
+  `player_name` (not hero); team chart legends by `side`.
+- **Round 12c fix (charts blank):** the three player/team charts used **raw
+  columns** (`gold`, `level`, `team_gold`, `team_xp`) as Y values, which do not
+  render in a PBIR line chart. Added **measures** and bound Y to them:
+  `Avg Net Worth` / `Avg XP` / `Player Level` on `fact_match_player_minute`,
+  `Team Gold` / `Team XP` on `fact_match_team_minute`. The item chart already
+  used a measure (`Total Purchases`) — that is why it was the only one that
+  rendered. All four now use measure-based Y values.
+- **Round 12d revisions (per user):**
+  1. **Team XP & Net Worth by side** — now four side-specific Y measures so
+     both teams show simultaneously: `Radiant Team Gold`, `Dire Team Gold`,
+     `Radiant Team XP`, `Dire Team XP` (no legend; the measures are
+     self-describing).
+  2. **Player Net Worth** — legend changed to `hero_localized_name` (one line
+     per hero, not one aggregate line).
+   3. **Player Level** — legend changed to `hero_localized_name` (reverted to a
+      line chart after testing; the ribbon chart experiment was discarded).
+   4. **Player Item Purchases** — replaced the line chart with a **table**
+      (side / hero / player / item_name / minute) showing the actual items each
+      hero bought, instead of a per-minute purchase count.
+- **Round 12e (2026-08-08):** the **Radiant – Hero** / **Dire – Hero**
+  slicers on the Progression page now show **only the heroes present in the
+  currently selected match, side-scoped**: Radiant slicer lists only the
+  match's Radiant heroes, Dire slicer only its Dire heroes. Achieved with two
+  new side-specific measures on `dim_hero` — **`Hero in Current Radiant Match`**
+  and **`Hero in Current Dire Match`** — each `CALCULATE(COUNTROWS(fact_match_players))`
+  filtered by side, applied as a `> 0` Advanced visual filter on the
+  respective slicer. (The earlier attempt used a `side` column filter on
+  `fact_match_player_minute`, but that relationship to `dim_hero` is
+  single-direction, so it did not reach the slicer's `dim_hero` values; the
+  measure approach filters `dim_hero` directly.)
+- **Round 12f (2026-08-08):** the two side-scoped hero slicers were **merged
+  into one "Hero" slicer** that lists **all heroes present in the current
+  match** (via the original `Hero in Current Match > 0` filter). The Dire
+  slicer was removed.
+- **Round 12g (2026-08-08):** **border enabled on all 138 report visuals**
+  (tables, slicers, charts, cards) — `visualContainerObjects.border.show = true`
+  added/updated across every `visual.json`. Verified: all JSON parse, 0 BOMs,
+  `$schema` intact, model unchanged (36 tables / 71 relationships).
+
+---
+
+### 5q. Round 13 — normalization + page enhancements (2026-08-09)
+
+**Normalization (dbt gold, all text columns — TMDL unchanged):**
+- `dim_league.league_name` → uppercase.
+- `dim_team.team_name` → uppercase (`'Unknown'` → `'UNKNOWN'`).
+- `dim_game_mode.game_mode_name` → strip `game_mode_` prefix + uppercase
+  (e.g. `CAPTAINS MODE`).
+- `dim_lobby_type.lobby_type_name` → strip `lobby_type_` prefix + uppercase
+  (e.g. `BATTLE CUP`).
+- `dim_hero.primary_attr` → friendly labels (`agi→Agility`, `all→Universal`,
+  `int→Intelligence`, `str→Strength`).
+- `dim_player.player_type` → `'Pro'` / `'Match Participant'`.
+- `fact_team_h2h` → **denormalized `team_a_name` / `team_b_name`** (the
+  `team_b_id → dim_team` link is inactive; precomputed names follow the
+  `fact_hero_matchups.matchup_label` pattern).
+
+**Report pages:**
+- **Hero Meta**: + Patch slicer; + **Hero win rate per patch** line chart
+  (top-20 by picks via `Hero Pick Rank <= 20`); + **Hero ban rate per patch**
+  line chart (top-15 by bans via `Hero Ban Rank <= 15`). New rank measures on
+  `dim_hero`. Page height 720 → 1000.
+- **Players**: + **Player appearances by league** bar chart (`dim_league.league_name`
+  × `Total Picks`). Page height 720 → 1000.
+- **Teams**: + League Name slicer; + **Team win rate by league (by side)**
+  table (`team_name`, `league_name`, `side`, `Team Appearances`,
+  `Team Win Rate`). Page height 900 → 1100.
+- **Matches**: "Avg match duration by month" → **by patch**
+  (`dim_patch.patch_name`).
+- **Economy**: "GPM / XPM trend by month" → **by patch**.
+- **Draft**: fixed `Avg Ban Position` (`AVERAGEX(...VALUE(order_no))` — was
+  `AVERAGE` on a text column → the reported MdxScript error); + **Dire Hero
+  Win Rate** column on "Most common hero matchups"; + **Hero win rate by
+  side** table; reworked **Team vs Team head-to-head** table to
+  Team A | Team B | Matches | A Win% | B Win% | A W–L | B W–L (new measures
+  `Team A Losses`, `Team B Wins`, `Team B Losses`, `Team B Win Rate`).
+- **Round 13b fixes (2026-08-09):** the "Most common hero matchups" and "Hero
+  win rate by side" visuals hit DirectQuery **query-folding errors**
+  (`We couldn't fold the expression`) because win-rate measures referenced
+  other measures (`1 - [Radiant Hero Win Rate]`) or used cross-table
+  `COUNTROWS` grouping. Fixed by: (a) making `Dire Hero Win Rate` self-contained
+  (`DIVIDE([Dire Hero Wins], [Matchup Count])` with explicit `= TRUE()` /
+  `= FALSE()` on `radiant_win`); (b) adding a **precomputed `fact_hero_side`**
+  gold table (one row per hero+side: `hero_side_picks`, `hero_side_wins`,
+  `hero_side_win_rate`) — the same DirectQuery pattern as `fact_team_h2h`.
+  The "Hero win rate by side" table was **split into two** — **Hero win rate –
+  Radiant** and **Hero win rate – Dire** (visual-level `side` filter on the new
+  fact).
+- **Round 13c fixes (2026-08-09):** "Most common hero matchups" and "Ban
+  frequency by hero" still wouldn't fold. Root cause: `Avg Ban Position` used
+  `AVERAGEX(FILTER(...), VALUE(order_no))` over a text column (iterator not
+  foldable), and the matchups win-rate measures grouped a text `matchup_label`
+  by `CALCULATE(COUNTROWS(...))`. Fixed by: (a) adding **`order_no_int`**
+  (numeric) to `stg_picks_bans` / `fact_picks_bans` and changing
+  `Avg Ban Position` to `CALCULATE(AVERAGE(order_no_int), is_pick = FALSE())`;
+  (b) adding a **precomputed `fact_hero_matchup_stats`** gold table (one row
+  per `matchup_label` with `matchup_games`, `radiant_wins`, `dire_wins`,
+  `radiant_win_rate`, `dire_win_rate`) and rewiring the matchups table to it
+  (measures `Matchup Games`, `Matchup Radiant Win Rate`, `Matchup Dire Win
+  Rate`). Model: **38 tables, 72 relationships**.
+
+**Verified:** dbt 317 tests pass (2026-08-12); 143 report JSON files parse (0
+bad); 0 BOMs; all visual projections/measures/filters resolve; no duplicate
+measures.
+
+---
+
+### 5r. Round 14 — Combat page Match ID slicer (2026-08-12)
+
+User feedback round. No dbt / model changes — report layer (PBIR) only.
+
+- **Combat page gained a Match ID slicer.** New dropdown slicer
+  (`6e9cce4f-5e23-470e-8975-af2a57645046`, `visualType: slicer`, mode Dropdown)
+  bound to `gold fact_matches.match_id`, placed in the free top-right strip at
+  x=650 / y=15 (w=300, h=70) next to the existing Hero (x=20) and Player (x=335)
+  slicers. Follows the exact Match Detail / Progression match-slicer pattern
+  (2.11.0 schema, `nativeQueryRef: "Match ID"`, `$schema` present, BOM-less,
+  border enabled, `drillFilterOtherVisuals: true`).
+- **Filtering:** `fact_matches.match_id` reaches the combat facts through the
+  existing single-direction `fact_teamfights.match_id → fact_matches` and
+  `fact_teamfight_players.match_id → fact_matches` links (one→many), so the
+  slicer filters the 3 cards, the "Avg damage & healing per fight" bar and the
+  "Most killed heroes" table — the same hub-slicer pattern as Match Detail
+  (§5i).
+- **Verified:** all 8 Combat-page JSON files parse (0 bad); full report = 143
+  JSON files, 0 bad; 0 BOMs; `$schema` intact. Model unchanged (38 tables, 72
+  relationships, 3 bidirectional).
+- **Savepoint (2026-08-12):** fresh `pg_dump` taken —
+  `backups/gold5_20260812_162008.dump` (337 MB, 210 TOC entries) — supersedes
+  the stale `gold4_20260808_191856.dump` (see §3.11). Git commit at this round
+  = the rollback point. All report pages render correctly in Power BI Desktop.
+
+---
+
 ## 6. Working on the report (file map)
 
 - Report visuals: `.pbip/dota pipeline.Report/definition/pages/<page>/visuals/<visual>/visual.json`
@@ -762,14 +1120,15 @@ needed, SQL/DAX/JSON, effort, risk, status). High-level buckets:
 - **Visuals**: switch fragile `tableEx` to classic `table`; add search slicers;
   better "Unknown" handling (leaderboards already filtered).
 - **Ops**: orchestrator (bronze_load → dbt build), ~~backup cadence~~ (**fresh
-  dump taken 2026-08-08 — `gold4_20260808_191856.dump`, §5j**), CI on the
+  dump taken 2026-08-12 — `gold5_20260812_162008.dump`, §5r**), CI on the
   pbip JSON.
-- **Next (this session's handover)**: Rounds 8 (§5h/§5i) and 9 (§5j) have been
-  opened in Power BI Desktop and the Round 9 hero-slicer scoping is
-  **verified working**. The report is at a **savepoint** — see **RESUME HERE**
-  at the top of this file and §5j for the commit + fresh dump
-  (`gold4_20260808_191856.dump`). Remaining backlog ideas are all below this
-  line (orchestrator, matchup matrix, search slicers, etc.).
+- **Next (this session's handover)**: Rounds 1–14 are complete and **render
+  correctly in Power BI Desktop** (Round 9 hero-slicer scoping, Round 10 Match
+  Breakdown, Round 11 player stat columns, Round 12 Progression, Round 13
+  normalization, Round 14 Combat Match ID slicer). The report is at a
+  **savepoint** — see **RESUME HERE** at the top of this file and §5r for the
+  commit + fresh dump (`gold5_20260812_162008.dump`). Remaining backlog ideas
+  are all below this line (orchestrator, matchup matrix, search slicers, etc.).
 - **Round 6 (2026-08-07 → 2026-08-08, see §5g):** Match Detail progression
   visuals. dbt models are written (`stg_match_player_minute`,
   `stg_match_player_skills` incremental silver + `fact_match_player_minute`,

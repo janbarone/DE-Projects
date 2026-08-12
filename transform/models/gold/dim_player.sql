@@ -11,19 +11,29 @@ with player_dim as (
         player_name,
         rank_tier,
         team_id,
-        'pro' as player_type
+        'Pro' as player_type
     from {{ ref('stg_players') }}
 
     union all
 
-    select distinct
-        mp.account_id,
-        null::text as player_name,
+    select
+        account_id,
+        personaname as player_name,
         null::text as rank_tier,
         null::text as team_id,
-        'match_participant' as player_type
-    from {{ ref('stg_match_players') }} mp
-    where mp.account_id not in (select account_id from {{ ref('stg_players') }})
+        'Match Participant' as player_type
+    from (
+        select
+            mp.account_id,
+            nullif(mp.personaname, '') as personaname,
+            row_number() over (
+                partition by mp.account_id
+                order by mp.loaded_at desc nulls last
+            ) as rn
+        from {{ ref('stg_match_players') }} mp
+        where mp.account_id not in (select account_id from {{ ref('stg_players') }})
+    ) t
+    where rn = 1
 ),
 
 player_stats as (

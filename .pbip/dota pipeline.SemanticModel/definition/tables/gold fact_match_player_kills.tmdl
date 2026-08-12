@@ -1,0 +1,153 @@
+table 'gold fact_match_player_kills'
+	lineageTag: aaaa0103-0000-0000-0000-000000000000
+
+	measure 'Hero Kills' = COUNTROWS('gold fact_match_player_kills')
+		formatString: #,##0
+		lineageTag: aaaa0103-0000-0000-0000-0000000000f0
+
+	measure 'Hero Kills Radiant' = CALCULATE(COUNTROWS('gold fact_match_player_kills'), 'gold fact_match_player_kills'[side] = "Radiant")
+		formatString: #,##0
+		lineageTag: aaaa0103-0000-0000-0000-0000000000f1
+
+	measure 'Hero Kills Dire' = CALCULATE(COUNTROWS('gold fact_match_player_kills'), 'gold fact_match_player_kills'[side] = "Dire")
+		formatString: #,##0
+		lineageTag: aaaa0103-0000-0000-0000-0000000000f2
+
+	column match_id
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: aaaa0103-0000-0000-0000-000000000001
+		summarizeBy: none
+		sourceColumn: match_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column player_slot
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: aaaa0103-0000-0000-0000-000000000002
+		summarizeBy: none
+		sourceColumn: player_slot
+
+		annotation SummarizationSetBy = Automatic
+
+	column account_id
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: aaaa0103-0000-0000-0000-000000000003
+		summarizeBy: none
+		sourceColumn: account_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column hero_id
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: aaaa0103-0000-0000-0000-000000000004
+		summarizeBy: none
+		sourceColumn: hero_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column side
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: aaaa0103-0000-0000-0000-000000000005
+		summarizeBy: none
+		sourceColumn: side
+
+		annotation SummarizationSetBy = Automatic
+
+	column kill_index
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: aaaa0103-0000-0000-0000-000000000006
+		summarizeBy: none
+		sourceColumn: kill_index
+
+		annotation SummarizationSetBy = Automatic
+
+	column time_sec
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: aaaa0103-0000-0000-0000-000000000007
+		summarizeBy: none
+		sourceColumn: time_sec
+
+		annotation SummarizationSetBy = Automatic
+
+	column minute
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: aaaa0103-0000-0000-0000-000000000008
+		summarizeBy: none
+		sourceColumn: minute
+
+		annotation SummarizationSetBy = Automatic
+
+	column victim_hero_name
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: aaaa0103-0000-0000-0000-000000000009
+		summarizeBy: none
+		sourceColumn: victim_hero_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column victim_hero_id
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: aaaa0103-0000-0000-0000-00000000000a
+		summarizeBy: none
+		sourceColumn: victim_hero_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column victim_hero_name_localized
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: aaaa0103-0000-0000-0000-00000000000b
+		summarizeBy: none
+		sourceColumn: victim_hero_name_localized
+
+		annotation SummarizationSetBy = Automatic
+
+	column victim_type
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: aaaa0103-0000-0000-0000-00000000000c
+		summarizeBy: none
+		sourceColumn: victim_type
+
+		annotation SummarizationSetBy = Automatic
+
+	column player_name
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: aaaa0103-0000-0000-0000-00000000000d
+		summarizeBy: none
+		sourceColumn: player_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column killer_hero_name
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: aaaa0103-0000-0000-0000-00000000000e
+		summarizeBy: none
+		sourceColumn: killer_hero_name
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'gold fact_match_player_kills' = m
+		mode: directQuery
+		source =
+				let
+				    Source = PostgreSQL.Database("localhost", "dota"),
+				    gold_fact_match_player_kills = Source{[Schema="gold",Item="fact_match_player_kills"]}[Data]
+				in
+				    gold_fact_match_player_kills
+

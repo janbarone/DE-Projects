@@ -5,6 +5,22 @@ table 'gold dim_hero'
 		formatString: #,##0
 		lineageTag: cccc0001-0000-0000-0000-000000000001
 
+	measure 'Hero in Current Radiant Match' = CALCULATE(COUNTROWS('gold fact_match_players'), 'gold fact_match_players'[side] = "Radiant")
+		formatString: #,##0
+		lineageTag: cccc0001-0000-0000-0000-000000000002
+
+	measure 'Hero in Current Dire Match' = CALCULATE(COUNTROWS('gold fact_match_players'), 'gold fact_match_players'[side] = "Dire")
+		formatString: #,##0
+		lineageTag: cccc0001-0000-0000-0000-000000000003
+
+	measure 'Hero Pick Rank' = RANKX(ALL('gold dim_hero'[hero_localized_name]), CALCULATE(COUNTROWS('gold fact_match_players')), , DESC)
+		formatString: 0
+		lineageTag: cccc0001-0000-0000-0000-000000000010
+
+	measure 'Hero Ban Rank' = RANKX(ALL('gold dim_hero'[hero_localized_name]), CALCULATE(COUNTROWS('gold fact_picks_bans'), 'gold fact_picks_bans'[is_pick] = FALSE()), , DESC)
+		formatString: 0
+		lineageTag: cccc0001-0000-0000-0000-000000000011
+
 	column hero_id
 		dataType: string
 		sourceProviderType: nvarchar(max)

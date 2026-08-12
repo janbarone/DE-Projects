@@ -1,12 +1,12 @@
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.2.0/schema.json",
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
   "name": "b0c0af86-59d7-4ce1-9914-f0b9fcf14766",
   "position": {
-    "x": 20,
-    "y": 697,
+    "x": 20.403022670025187,
+    "y": 697.10327455919389,
     "z": 13,
-    "height": 203,
-    "width": 1260,
+    "height": 202.89672544080605,
+    "width": 1249.1183879093198,
     "tabOrder": 13
   },
   "visual": {
@@ -20,14 +20,14 @@
                 "Column": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "gold dim_date"
+                      "Entity": "gold dim_patch"
                     }
                   },
-                  "Property": "year_month"
+                  "Property": "patch_name"
                 }
               },
-              "queryRef": "gold dim_date.year_month",
-              "nativeQueryRef": "year_month",
+              "queryRef": "gold dim_patch.patch_name",
+              "nativeQueryRef": "patch_name",
               "active": true
             }
           ]
@@ -80,7 +80,20 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'GPM / XPM trend by month'"
+                  "Value": "'GPM / XPM trend by patch'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "border": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
                 }
               }
             }

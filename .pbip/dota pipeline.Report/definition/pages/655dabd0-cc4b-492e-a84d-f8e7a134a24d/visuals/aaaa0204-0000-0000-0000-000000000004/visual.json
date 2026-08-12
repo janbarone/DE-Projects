@@ -1,5 +1,5 @@
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.2.0/schema.json",
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
   "name": "aaaa0204-0000-0000-0000-000000000004",
   "position": {
     "x": 650,
@@ -27,8 +27,9 @@
                 }
               },
               "queryRef": "gold dim_game_mode.game_mode_name",
-              "nativeQueryRef": "game_mode_name",
-              "active": true
+              "nativeQueryRef": "Game Mode",
+              "active": true,
+              "displayName": "Game Mode"
             }
           ]
         }
@@ -51,6 +52,21 @@
       "general": [
         {
           "properties": {}
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "border": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
         }
       ]
     },

@@ -1,6 +1,18 @@
 table 'gold fact_match_player_minute'
 	lineageTag: ffff0001-0000-0000-0000-000000000001
 
+	measure 'Player Gold over Time' = MAX('gold fact_match_player_minute'[gold])
+		formatString: #,##0
+		lineageTag: ffff0001-0000-0000-0000-0000000000f0
+
+	measure 'Avg XP over Time' = MAX('gold fact_match_player_minute'[xp])
+		formatString: #,##0
+		lineageTag: ffff0001-0000-0000-0000-0000000000f1
+
+	measure 'Player Level' = MAX('gold fact_match_player_minute'[level])
+		formatString: 0
+		lineageTag: ffff0001-0000-0000-0000-0000000000f2
+
 	column match_id
 		dataType: string
 		sourceProviderType: nvarchar(max)

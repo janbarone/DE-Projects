@@ -1,0 +1,31 @@
+table 'gold dim_rune'
+	lineageTag: aaaa0102-0000-0000-0000-000000000000
+
+	column rune_key
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: aaaa0102-0000-0000-0000-000000000001
+		summarizeBy: none
+		sourceColumn: rune_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column rune_name
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: aaaa0102-0000-0000-0000-000000000002
+		summarizeBy: none
+		sourceColumn: rune_name
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'gold dim_rune' = m
+		mode: directQuery
+		source =
+				let
+				    Source = PostgreSQL.Database("localhost", "dota"),
+				    gold_dim_rune = Source{[Schema="gold",Item="dim_rune"]}[Data]
+				in
+				    gold_dim_rune
+

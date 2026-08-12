@@ -1,0 +1,23 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/page/2.0.0/schema.json",
+  "name": "a0d69ef1-5555-4687-a1ee-623c1399b01f",
+  "displayName": "Progression",
+  "displayOption": "FitToPage",
+  "height": 900,
+  "width": 1280,
+  "objects": {
+    "outspacePane": [
+      {
+        "properties": {
+          "width": {
+            "expr": {
+              "Literal": {
+                "Value": "391L"
+              }
+            }
+          }
+        }
+      }
+    ]
+  }
+}

@@ -1,5 +1,5 @@
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.2.0/schema.json",
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
   "name": "aaaa0205-0000-0000-0000-000000000005",
   "position": {
     "x": 860,
@@ -27,8 +27,9 @@
                 }
               },
               "queryRef": "gold dim_lobby_type.lobby_type_name",
-              "nativeQueryRef": "lobby_type_name",
-              "active": true
+              "nativeQueryRef": "Lobby Type",
+              "active": true,
+              "displayName": "Lobby Type"
             }
           ]
         }
@@ -51,6 +52,21 @@
       "general": [
         {
           "properties": {}
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "border": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
         }
       ]
     },

@@ -13,6 +13,22 @@ table 'gold fact_team_h2h'
 		formatString: 0.0%
 		lineageTag: 6e48be43-3c37-4846-9611-1da715ec9142
 
+	measure 'Team A Losses' = [H2H Games] - [Team A Wins]
+		formatString: #,##0
+		lineageTag: aaaa0109-0000-0000-0000-000000000001
+
+	measure 'Team B Wins' = [Team A Losses]
+		formatString: #,##0
+		lineageTag: aaaa0109-0000-0000-0000-000000000002
+
+	measure 'Team B Losses' = [Team A Wins]
+		formatString: #,##0
+		lineageTag: aaaa0109-0000-0000-0000-000000000003
+
+	measure 'Team B Win Rate' = 1 - [Team A Win Rate]
+		formatString: 0.0%
+		lineageTag: aaaa0109-0000-0000-0000-000000000004
+
 	column match_id
 		dataType: string
 		sourceProviderType: nvarchar(max)
@@ -67,6 +83,24 @@ table 'gold fact_team_h2h'
 		lineageTag: 5350bbe8-0118-4980-a05f-37a71fe56c73
 		summarizeBy: sum
 		sourceColumn: team_b_score
+
+		annotation SummarizationSetBy = Automatic
+
+	column team_a_name
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: aaaa0109-0000-0000-0000-000000000005
+		summarizeBy: none
+		sourceColumn: team_a_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column team_b_name
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: aaaa0109-0000-0000-0000-000000000006
+		summarizeBy: none
+		sourceColumn: team_b_name
 
 		annotation SummarizationSetBy = Automatic
 

@@ -5,13 +5,21 @@ table 'gold fact_hero_matchups'
 		formatString: #,##0
 		lineageTag: 0ea301c9-9934-480b-8d55-5102a59e1dbb
 
-	measure 'Radiant Hero Wins' = CALCULATE(COUNTROWS('gold fact_hero_matchups'), 'gold fact_hero_matchups'[radiant_win])
+	measure 'Radiant Hero Wins' = CALCULATE(COUNTROWS('gold fact_hero_matchups'), 'gold fact_hero_matchups'[radiant_win] = TRUE())
 		formatString: #,##0
 		lineageTag: 3a5895fe-4943-4211-a62c-7894833e4dd3
 
 	measure 'Radiant Hero Win Rate' = DIVIDE([Radiant Hero Wins], [Matchup Count])
 		formatString: 0.0%
 		lineageTag: 1524b4b7-5dfb-4012-b371-ed3603605ef5
+
+	measure 'Dire Hero Win Rate' = DIVIDE([Dire Hero Wins], [Matchup Count])
+		formatString: 0.0%
+		lineageTag: aaaa0006-0000-0000-0000-000000000002
+
+	measure 'Dire Hero Wins' = CALCULATE(COUNTROWS('gold fact_hero_matchups'), 'gold fact_hero_matchups'[radiant_win] = FALSE())
+		formatString: #,##0
+		lineageTag: aaaa0006-0000-0000-0000-000000000003
 
 	column match_id
 		dataType: string

@@ -23,8 +23,7 @@
                     "textStyle": {
                       "fontFamily": "Segoe UI",
                       "fontSize": "14pt",
-                      "fontWeight": "600",
-                      "color": "#1B4F72"
+                      "color": "#1b4f72"
                     }
                   }
                 ]
@@ -35,8 +34,7 @@
                     "value": "Dota terms used in this report:",
                     "textStyle": {
                       "fontFamily": "Segoe UI",
-                      "fontSize": "9.5pt",
-                      "fontWeight": "normal"
+                      "fontSize": "9.5pt"
                     }
                   }
                 ]
@@ -44,19 +42,10 @@
               {
                 "textRuns": [
                   {
-                    "value": "Radiant / Dire — ",
+                    "value": "Radiant / Dire Ã¢â‚¬â€ the two sides of a match; Radiant is the team on the lower-left map area, Dire on the upper-right.",
                     "textStyle": {
                       "fontFamily": "Segoe UI",
-                      "fontSize": "9.5pt",
-                      "fontWeight": "600"
-                    }
-                  },
-                  {
-                    "value": "the two sides of a match; Radiant is the team on the lower-left map area, Dire on the upper-right.",
-                    "textStyle": {
-                      "fontFamily": "Segoe UI",
-                      "fontSize": "9.5pt",
-                      "fontWeight": "normal"
+                      "fontSize": "9.5pt"
                     }
                   }
                 ]
@@ -64,19 +53,10 @@
               {
                 "textRuns": [
                   {
-                    "value": "Win rate — ",
+                    "value": "Win rate Ã¢â‚¬â€ share of matches won by a hero, player or team, computed from match results (not static API stats).",
                     "textStyle": {
                       "fontFamily": "Segoe UI",
-                      "fontSize": "9.5pt",
-                      "fontWeight": "600"
-                    }
-                  },
-                  {
-                    "value": "share of matches won by a hero, player or team, computed from match results (not static API stats).",
-                    "textStyle": {
-                      "fontFamily": "Segoe UI",
-                      "fontSize": "9.5pt",
-                      "fontWeight": "normal"
+                      "fontSize": "9.5pt"
                     }
                   }
                 ]
@@ -84,19 +64,10 @@
               {
                 "textRuns": [
                   {
-                    "value": "KDA — ",
+                    "value": "KDA Ã¢â‚¬â€ kill / death / assist ratio for a player (how many kill-participations per death).",
                     "textStyle": {
                       "fontFamily": "Segoe UI",
-                      "fontSize": "9.5pt",
-                      "fontWeight": "600"
-                    }
-                  },
-                  {
-                    "value": "kill / death / assist ratio for a player (how many kill-participations per death).",
-                    "textStyle": {
-                      "fontFamily": "Segoe UI",
-                      "fontSize": "9.5pt",
-                      "fontWeight": "normal"
+                      "fontSize": "9.5pt"
                     }
                   }
                 ]
@@ -104,19 +75,10 @@
               {
                 "textRuns": [
                   {
-                    "value": "GPM / XPM — ",
+                    "value": "GPM / XPM Ã¢â‚¬â€ gold / experience earned per minute Ã¢â‚¬â€ a measure of farming efficiency.",
                     "textStyle": {
                       "fontFamily": "Segoe UI",
-                      "fontSize": "9.5pt",
-                      "fontWeight": "600"
-                    }
-                  },
-                  {
-                    "value": "gold / experience earned per minute — a measure of farming efficiency.",
-                    "textStyle": {
-                      "fontFamily": "Segoe UI",
-                      "fontSize": "9.5pt",
-                      "fontWeight": "normal"
+                      "fontSize": "9.5pt"
                     }
                   }
                 ]
@@ -124,19 +86,10 @@
               {
                 "textRuns": [
                   {
-                    "value": "Net worth — ",
+                    "value": "Net worth Ã¢â‚¬â€ total value of items plus pocket gold for a player.",
                     "textStyle": {
                       "fontFamily": "Segoe UI",
-                      "fontSize": "9.5pt",
-                      "fontWeight": "600"
-                    }
-                  },
-                  {
-                    "value": "total value of items plus pocket gold for a player.",
-                    "textStyle": {
-                      "fontFamily": "Segoe UI",
-                      "fontSize": "9.5pt",
-                      "fontWeight": "normal"
+                      "fontSize": "9.5pt"
                     }
                   }
                 ]
@@ -144,19 +97,10 @@
               {
                 "textRuns": [
                   {
-                    "value": "Last hits / Denies — ",
+                    "value": "Last hits / Denies Ã¢â‚¬â€ creeps last-hit for gold, and own creeps denied to the enemy.",
                     "textStyle": {
                       "fontFamily": "Segoe UI",
-                      "fontSize": "9.5pt",
-                      "fontWeight": "600"
-                    }
-                  },
-                  {
-                    "value": "creeps last-hit for gold, and own creeps denied to the enemy.",
-                    "textStyle": {
-                      "fontFamily": "Segoe UI",
-                      "fontSize": "9.5pt",
-                      "fontWeight": "normal"
+                      "fontSize": "9.5pt"
                     }
                   }
                 ]
@@ -164,19 +108,10 @@
               {
                 "textRuns": [
                   {
-                    "value": "Stuns (sec) — ",
+                    "value": "Stuns (sec) Ã¢â‚¬â€ total crowd-control duration a player applied (disable time).",
                     "textStyle": {
                       "fontFamily": "Segoe UI",
-                      "fontSize": "9.5pt",
-                      "fontWeight": "600"
-                    }
-                  },
-                  {
-                    "value": "total crowd-control duration a player applied (disable time).",
-                    "textStyle": {
-                      "fontFamily": "Segoe UI",
-                      "fontSize": "9.5pt",
-                      "fontWeight": "normal"
+                      "fontSize": "9.5pt"
                     }
                   }
                 ]
@@ -184,19 +119,10 @@
               {
                 "textRuns": [
                   {
-                    "value": "Healing — ",
+                    "value": "Healing Ã¢â‚¬â€ hero healing a player provided (supports / medallions / salves).",
                     "textStyle": {
                       "fontFamily": "Segoe UI",
-                      "fontSize": "9.5pt",
-                      "fontWeight": "600"
-                    }
-                  },
-                  {
-                    "value": "hero healing a player provided (supports / medallions / salves).",
-                    "textStyle": {
-                      "fontFamily": "Segoe UI",
-                      "fontSize": "9.5pt",
-                      "fontWeight": "normal"
+                      "fontSize": "9.5pt"
                     }
                   }
                 ]
@@ -204,19 +130,10 @@
               {
                 "textRuns": [
                   {
-                    "value": "Camps stacked — ",
+                    "value": "Camps stacked Ã¢â‚¬â€ neutral camps stacked so they spawn double Ã¢â‚¬â€ a support task.",
                     "textStyle": {
                       "fontFamily": "Segoe UI",
-                      "fontSize": "9.5pt",
-                      "fontWeight": "600"
-                    }
-                  },
-                  {
-                    "value": "neutral camps stacked so they spawn double — a support task.",
-                    "textStyle": {
-                      "fontFamily": "Segoe UI",
-                      "fontSize": "9.5pt",
-                      "fontWeight": "normal"
+                      "fontSize": "9.5pt"
                     }
                   }
                 ]
@@ -224,19 +141,10 @@
               {
                 "textRuns": [
                   {
-                    "value": "Rune pickups — ",
+                    "value": "Rune pickups Ã¢â‚¬â€ bounty / power runes collected by a player.",
                     "textStyle": {
                       "fontFamily": "Segoe UI",
-                      "fontSize": "9.5pt",
-                      "fontWeight": "600"
-                    }
-                  },
-                  {
-                    "value": "bounty / power runes collected by a player.",
-                    "textStyle": {
-                      "fontFamily": "Segoe UI",
-                      "fontSize": "9.5pt",
-                      "fontWeight": "normal"
+                      "fontSize": "9.5pt"
                     }
                   }
                 ]
@@ -244,19 +152,10 @@
               {
                 "textRuns": [
                   {
-                    "value": "Buybacks — ",
+                    "value": "Buybacks Ã¢â‚¬â€ paid instant respawns used during a match.",
                     "textStyle": {
                       "fontFamily": "Segoe UI",
-                      "fontSize": "9.5pt",
-                      "fontWeight": "600"
-                    }
-                  },
-                  {
-                    "value": "paid instant respawns used during a match.",
-                    "textStyle": {
-                      "fontFamily": "Segoe UI",
-                      "fontSize": "9.5pt",
-                      "fontWeight": "normal"
+                      "fontSize": "9.5pt"
                     }
                   }
                 ]
@@ -264,19 +163,10 @@
               {
                 "textRuns": [
                   {
-                    "value": "First blood — ",
+                    "value": "First blood Ã¢â‚¬â€ the first kill of a match; Early FB = under 10 minutes.",
                     "textStyle": {
                       "fontFamily": "Segoe UI",
-                      "fontSize": "9.5pt",
-                      "fontWeight": "600"
-                    }
-                  },
-                  {
-                    "value": "the first kill of a match; Early FB = under 10 minutes.",
-                    "textStyle": {
-                      "fontFamily": "Segoe UI",
-                      "fontSize": "9.5pt",
-                      "fontWeight": "normal"
+                      "fontSize": "9.5pt"
                     }
                   }
                 ]
@@ -284,19 +174,10 @@
               {
                 "textRuns": [
                   {
-                    "value": "Teamfight — ",
+                    "value": "Teamfight Ã¢â‚¬â€ a cluster of combat recorded by OpenDota, with a start time and per-hero damage/healing/buybacks.",
                     "textStyle": {
                       "fontFamily": "Segoe UI",
-                      "fontSize": "9.5pt",
-                      "fontWeight": "600"
-                    }
-                  },
-                  {
-                    "value": "a cluster of combat recorded by OpenDota, with a start time and per-hero damage/healing/buybacks.",
-                    "textStyle": {
-                      "fontFamily": "Segoe UI",
-                      "fontSize": "9.5pt",
-                      "fontWeight": "normal"
+                      "fontSize": "9.5pt"
                     }
                   }
                 ]
@@ -304,19 +185,10 @@
               {
                 "textRuns": [
                   {
-                    "value": "Fight phase — ",
+                    "value": "Fight phase Ã¢â‚¬â€ when a teamfight happened: pre-game, early (0-20m), mid (20-40m) or late (40m+).",
                     "textStyle": {
                       "fontFamily": "Segoe UI",
-                      "fontSize": "9.5pt",
-                      "fontWeight": "600"
-                    }
-                  },
-                  {
-                    "value": "when a teamfight happened: pre-game, early (0-20m), mid (20-40m) or late (40m+).",
-                    "textStyle": {
-                      "fontFamily": "Segoe UI",
-                      "fontSize": "9.5pt",
-                      "fontWeight": "normal"
+                      "fontSize": "9.5pt"
                     }
                   }
                 ]
@@ -324,19 +196,10 @@
               {
                 "textRuns": [
                   {
-                    "value": "Draft phase — ",
+                    "value": "Draft phase Ã¢â‚¬â€ pick/ban order: First (0-7), Mid (8-15), Late (16-23).",
                     "textStyle": {
                       "fontFamily": "Segoe UI",
-                      "fontSize": "9.5pt",
-                      "fontWeight": "600"
-                    }
-                  },
-                  {
-                    "value": "pick/ban order: First (0-7), Mid (8-15), Late (16-23).",
-                    "textStyle": {
-                      "fontFamily": "Segoe UI",
-                      "fontSize": "9.5pt",
-                      "fontWeight": "normal"
+                      "fontSize": "9.5pt"
                     }
                   }
                 ]
@@ -344,19 +207,10 @@
               {
                 "textRuns": [
                   {
-                    "value": "Score differential — ",
+                    "value": "Score differential Ã¢â‚¬â€ absolute difference between the two teams' final scores.",
                     "textStyle": {
                       "fontFamily": "Segoe UI",
-                      "fontSize": "9.5pt",
-                      "fontWeight": "600"
-                    }
-                  },
-                  {
-                    "value": "absolute difference between the two teams' final scores.",
-                    "textStyle": {
-                      "fontFamily": "Segoe UI",
-                      "fontSize": "9.5pt",
-                      "fontWeight": "normal"
+                      "fontSize": "9.5pt"
                     }
                   }
                 ]
@@ -364,19 +218,10 @@
               {
                 "textRuns": [
                   {
-                    "value": "Score bucket — ",
+                    "value": "Score bucket Ã¢â‚¬â€ how close a match was: close (<5), moderate (<10), blowout (<20), rout (20+).",
                     "textStyle": {
                       "fontFamily": "Segoe UI",
-                      "fontSize": "9.5pt",
-                      "fontWeight": "600"
-                    }
-                  },
-                  {
-                    "value": "how close a match was: close (<5), moderate (<10), blowout (<20), rout (20+).",
-                    "textStyle": {
-                      "fontFamily": "Segoe UI",
-                      "fontSize": "9.5pt",
-                      "fontWeight": "normal"
+                      "fontSize": "9.5pt"
                     }
                   }
                 ]
@@ -384,19 +229,10 @@
               {
                 "textRuns": [
                   {
-                    "value": "Matchup — ",
+                    "value": "Matchup Ã¢â‚¬â€ a radiant-hero vs dire-hero pairing (from fact_hero_matchups).",
                     "textStyle": {
                       "fontFamily": "Segoe UI",
-                      "fontSize": "9.5pt",
-                      "fontWeight": "600"
-                    }
-                  },
-                  {
-                    "value": "a radiant-hero vs dire-hero pairing (from fact_hero_matchups).",
-                    "textStyle": {
-                      "fontFamily": "Segoe UI",
-                      "fontSize": "9.5pt",
-                      "fontWeight": "normal"
+                      "fontSize": "9.5pt"
                     }
                   }
                 ]
@@ -404,19 +240,10 @@
               {
                 "textRuns": [
                   {
-                    "value": "Lobby type — ",
+                    "value": "Lobby type Ã¢â‚¬â€ tournament / practice / all-pick context a match was played under.",
                     "textStyle": {
                       "fontFamily": "Segoe UI",
-                      "fontSize": "9.5pt",
-                      "fontWeight": "600"
-                    }
-                  },
-                  {
-                    "value": "tournament / practice / all-pick context a match was played under.",
-                    "textStyle": {
-                      "fontFamily": "Segoe UI",
-                      "fontSize": "9.5pt",
-                      "fontWeight": "normal"
+                      "fontSize": "9.5pt"
                     }
                   }
                 ]
@@ -424,19 +251,10 @@
               {
                 "textRuns": [
                   {
-                    "value": "Leaver — ",
+                    "value": "Leaver Ã¢â‚¬â€ a player flagged as having left / abandoned the match.",
                     "textStyle": {
                       "fontFamily": "Segoe UI",
-                      "fontSize": "9.5pt",
-                      "fontWeight": "600"
-                    }
-                  },
-                  {
-                    "value": "a player flagged as having left / abandoned the match.",
-                    "textStyle": {
-                      "fontFamily": "Segoe UI",
-                      "fontSize": "9.5pt",
-                      "fontWeight": "normal"
+                      "fontSize": "9.5pt"
                     }
                   }
                 ]
@@ -473,7 +291,7 @@
           }
         }
       ],
-      "border": [
+      "dropShadow": [
         {
           "properties": {
             "show": {
@@ -486,13 +304,13 @@
           }
         }
       ],
-      "dropShadow": [
+      "border": [
         {
           "properties": {
             "show": {
               "expr": {
                 "Literal": {
-                  "Value": "false"
+                  "Value": "true"
                 }
               }
             }
