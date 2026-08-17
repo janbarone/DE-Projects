@@ -1,0 +1,53 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.2.0/schema.json",
+  "name": "d4f6758f-be46-4d31-a43e-18d39d6c6895",
+  "position": {
+    "x": 28.0,
+    "y": 3868.529826178609,
+    "z": 78,
+    "height": 115,
+    "width": 250,
+    "tabOrder": 78
+  },
+  "visual": {
+    "visualType": "card",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold fact_teamfights"
+                    }
+                  },
+                  "Property": "Total Teamfights"
+                }
+              },
+              "queryRef": "gold fact_teamfights.Total Teamfights",
+              "nativeQueryRef": "Total Teamfights"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true,
+    "visualContainerObjects": {
+      "border": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

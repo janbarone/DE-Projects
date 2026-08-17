@@ -1,10 +1,6 @@
 {{ config(
     materialized='incremental',
-    unique_key=['match_id', 'order_no'],
-    post_hook=[
-        "create index if not exists {{ this.schema }}_stg_picks_bans_hero_idx on {{ this }}(hero_id)",
-        "create index if not exists {{ this.schema }}_stg_picks_bans_match_idx on {{ this }}(match_id)"
-    ]
+    unique_key=['match_id', 'order_no']
 ) }}
 
 -- One row per (match, draft order): the picks_bans[] array flattened.

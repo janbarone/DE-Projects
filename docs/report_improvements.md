@@ -100,7 +100,7 @@ in Tier 2/3.
   bucketed 0-7 / 8-15 / 16-23), draft activity by side, hero matchups table
   (`matchup_label`), team H2H table.
 
-### 2.2 Hero matchup matrix (Hero Meta page)
+### 2.2 Hero matchup matrix (Hero Meta page) **[table shipped 2026-08-14]**
 
 - **What**: matrix of hero A (rows) vs hero B (columns) with A's win rate.
 - **Data**: `fact_hero_matchups` (1.2).
@@ -125,6 +125,11 @@ in Tier 2/3.
   rate. This only needs the active `radiant_hero_id` relationship and one
   measure: `Opponent Win Rate = DIVIDE(COUNTROWS(..., radiant_win),
   COUNTROWS(...))` with the dire hero as row category.
+- **Shipped 2026-08-14** (the table variant): on the Hero Meta page (`5995aa2f`)
+  a searchable **Hero** dropdown slicer drives a **Top opponents** `tableEx`
+  (`opponent_name` + `Hero Matchup Games` + `Hero Matchup Win Rate`, from
+  `fact_hero_matchups_hero`, which got `hero_name`/`opponent_name` display
+  columns). The full matrix still needs `USERELATIONSHIP` (or a Desktop pass).
 - **Effort**: low (table) to medium (matrix).
 
 ### 2.3 Team head-to-head (Teams page)
@@ -268,24 +273,35 @@ in Tier 2/3.
 
 ## Tier 5 — Correctness / schema follow-ups
 
-### 5.1 Wire `victim_hero_id` properly
+### 5.1 Wire `victim_hero_id` properly **[OBSOLETE — Round 16 pruned the kills tables]**
 
-- Currently inactive (known issue §3.7). With `fact_hero_matchups` (1.2)
-  existing, most victim-analysis can be done on that fact instead. If
-  teamfight-kill victim analysis is still wanted, add `USERELATIONSHIP`-based
-  measures over `fact_teamfight_kills` mirroring §2.2.
+- Was: inactive relationship (known issue §3.7); victim-analysis via
+  `fact_teamfight_kills` + `USERELATIONSHIP` measures.
+- Round 16: `fact_teamfight_kills` (and `fact_match_player_kills`) were removed
+  from the model — no visual used them. Victim analysis now relies on
+  `fact_hero_matchups` (1.2) and the denormalized
+  `fact_match_players.enemy_heroes_killed`. §3.7 of `report_status.md` was
+  updated accordingly.
 
-### 5.2 Re-backup the database
+### 5.2 Re-backup the database **[DONE 2026-08-17]**
 
-- Newest dump (`gold3_20260802_223003.dump`) predates `fact_team_matches`.
-  Take a fresh dump after the Tier 1 models land. Command (README §Backups):
+- Newest dump: `backups/gold_20260817_161207.dump` (Round 16, 304.7 MB,
+  via `scripts/run_pipeline.py --only-backup --backup-docker`). Previous:
+  `gold_20260814_025223.dump`. Command (README §Backups):
   `pg_dump -U postgres -d dota -Fc -f backups/<name>.dump` (then re-dump after
-  each dbt build).
+  each dbt build). **Automated since 2026-08-14**: the pipeline snapshots via
+  `scripts/run_pipeline.py --backup` (see §5.3).
 
-### 5.3 Orchestrator
+### 5.3 Orchestrator **[DONE 2026-08-13/14]**
 
 - bronze_load → dbt build → (optional) pg_dump. A simple `run.ps1` that runs
   the two steps and snapshots the dump. Out of report scope but cheap.
+- **Shipped**: `scripts/run_pipeline.py` is the shared runner; Airflow DAG
+  `dota_medallion_pipeline` runs
+  `load_bronze >> dbt_build >> [dbt_source_freshness, pg_dump_backup]`, and the
+  Dagster job mirrors it via `source_freshness` + `db_backed_up` assets. The
+  backup uses `--backup-docker` (pg_dump lives only inside the `dota_postgres`
+  container); freshness uses dbt's `source freshness` on `bronze.matches`.
 
 ### 5.4 Decide the fate of the precomputed `match_*` columns
 
@@ -305,12 +321,12 @@ in Tier 2/3.
 | 1.3 team h2h | — | S | None |
 | 1.4 draft measures | 1.1 n/a | S | None |
 | 2.1 Draft page | 1.4 | M | Med (many visuals) | **DONE** |
-| 2.2 Matchup matrix/table | 1.2 | S–M | Low (table) / Med (matrix) | table done |
+| 2.2 Matchup matrix/table | 1.2 | S–M | Low (table) / Med (matrix) | table **DONE** |
 | 2.3 Team H2H | 1.3 | S | Low | table done |
 | 2.4 Player drill | — | M | High (drillthrough JSON) | |
 | 2.5 Economy page | — | S | Low | **DONE** |
 | 2.6 About & Glossary | — | S | Low (textbox layout gotcha) | **DONE** |
-| 3.1 slicers | — | S | Low | |
+| 3.1 slicers | — | S | Low | **DONE** (search) |
 | 3.2 date range | — | S | Low | |
 | 3.3 top rivals | 1.2/1.3 | S | Low | **DONE** |
 | 3.4 objectives | — | S | Low | **DONE** |
@@ -320,8 +336,8 @@ in Tier 2/3.
 | 4.2–4.5 tooltips/nav | — | M | High (Desktop) |
 | 4.6 summarizeBy | — | S | None |
 | 5.1 victim analysis | 1.2 | S–M | Low |
-| 5.2 re-backup | 1.1–1.3 | S | None |
-| 5.3 orchestrator | — | S | None |
+| 5.2 re-backup | 1.1–1.3 | S | None | **DONE** |
+| 5.3 orchestrator | — | S | None | **DONE** |
 
 Legend: S = small (< 1h), M = medium (1–3h), L = large (> 3h). Risk = risk of
 breaking the pbip JSON / model by hand-editing.

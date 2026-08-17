@@ -29,7 +29,14 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from dota_common import (  # noqa: E402
     BASE,
     DATA_DIR,
+    RateLimitedError,
+    discover_league,
+    have_match,
     http_get,
+    is_drained,
+    is_stale_error,
+    mark_drained,
+    mark_match_skipped,
     print_quota,
     quota_remaining,
     timestamp_fetched,
@@ -79,6 +86,8 @@ def main() -> None:
     parser.add_argument("--league", type=int, default=None, help="single league id")
     parser.add_argument("--leagues", default=None, help="comma-separated league ids")
     parser.add_argument("--limit", type=int, default=None, help="max matches to fetch this run (None = all)")
+    parser.add_argument("--redrain", action="store_true",
+                        help="ignore the drained-league registry and re-discover every league")
     args = parser.parse_args()
 
     if args.league is not None:
@@ -97,30 +106,34 @@ def main() -> None:
 
     try:
         for lid in league_ids:
-            # --- discovery: match_ids for this league ---
-            try:
-                mids = json.loads(http_get(f"{BASE}/leagues/{lid}/matchIds"))
-            except Exception as e:
-                msg = f"league {lid}: discovery ERROR: {e}"
-                print(f"  {msg}")
-                log(f"FAIL {msg}")
-                failures.append(f"league {lid} (discovery)")
+            # --- local skip: league already fully drained on a previous run ---
+            if not args.redrain and is_drained(lid):
+                print(f"league {lid}: already drained, skipping discovery")
                 continue
-            if not isinstance(mids, list) or not mids:
-                print(f"league {lid}: no match ids")
-                log(f"INFO league {lid}: no match ids")
+            # --- quota guard before spending a discovery call ---
+            q0 = quota_remaining()
+            if q0["day"] is not None and int(q0["day"]) <= DAY_STOP_AT:
+                raise QuotaStop(q0["day"])
+            # --- discovery: match_ids for this league ---
+            mids, status, detail = discover_league(lid)
+            if status == "rate_limited":
+                raise QuotaStop("rate limited (daily quota likely spent)")
+            if status in ("empty", "unavailable"):
+                mark_drained(lid)
+                msg = f"league {lid}: {detail}; skipping permanently"
+                print(f"  {msg}")
+                log(f"{'FAIL' if status == 'unavailable' else 'INFO'} {msg}")
                 continue
 
-            missing = [
-                m for m in mids
-                if not (DATA_DIR / "proMatches" / f"{m}.json").exists()
-            ]
+            missing = [m for m in mids if not have_match(m)]
             league_skipped = len(mids) - len(missing)
             already += league_skipped
 
             if args.limit is not None and limit_left is not None:
                 missing = missing[: max(limit_left, 0)]
             print(f"league {lid}: {len(missing)} to fetch, {league_skipped} already present")
+            if not missing:
+                mark_drained(lid)
 
             for mid in missing:
                 q = quota_remaining()
@@ -137,13 +150,21 @@ def main() -> None:
                         if limit_left is not None and limit_left <= 0:
                             break
                     print(f"  match {mid} saved ({saved})")
+                except RateLimitedError as e:
+                    raise QuotaStop("rate limited (daily quota likely spent)") from e
                 except KeyboardInterrupt:
                     raise
                 except Exception as e:
-                    msg = f"match {mid} ERROR after {MAX_ATTEMPTS} tries: {e}"
-                    print(f"  {msg}")
-                    log(f"FAIL {msg}")
-                    failures.append(mid)
+                    if is_stale_error(e):
+                        mark_match_skipped(mid)
+                        msg = f"match {mid} unavailable; skipped permanently"
+                        print(f"  {msg}")
+                        log(f"INFO {msg}")
+                    else:
+                        msg = f"match {mid} ERROR after {MAX_ATTEMPTS} tries: {e}"
+                        print(f"  {msg}")
+                        log(f"FAIL {msg}")
+                        failures.append(mid)
     except QuotaStop as e:
         print(f"\nstopping: daily quota almost used up ({e} remaining)")
         log(f"INFO daily quota low ({e}) - run stopped early")

@@ -1,10 +1,6 @@
 {{ config(
     materialized='incremental',
-    unique_key=['match_id', 'player_slot', 'rune_key'],
-    post_hook=[
-        "create index if not exists {{ this.schema }}_stg_mpr_match_idx on {{ this }}(match_id)",
-        "create index if not exists {{ this.schema }}_stg_mpr_player_idx on {{ this }}(player_slot)"
-    ]
+    unique_key=['match_id', 'player_slot', 'rune_key']
 ) }}
 
 -- One row per (match, player, rune type): total runes picked up, flattened

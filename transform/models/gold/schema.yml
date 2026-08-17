@@ -296,43 +296,15 @@ models:
               arguments:
                 to: ref('dim_hero')
                 field: hero_id
+      - name: hero_name
+        tests: [not_null]
+      - name: opponent_name
+        tests: [not_null]
       - name: matchup_label
         tests: [not_null]
       - name: hero_win
         tests: [not_null]
 
-  - name: fact_team_compositions
-    description: Team role-composition fact, one row per (match, team). Primary role is roles[0]; role_label is the sorted 5-hero role multiset. Full 5-hero teams only.
-    columns:
-      - name: match_id
-        tests:
-          - not_null
-          - relationships:
-              arguments:
-                to: ref('fact_matches')
-                field: match_id
-      - name: team_number
-        tests: [not_null]
-      - name: side
-        tests:
-          - not_null
-          - accepted_values:
-              arguments:
-                values: ['Radiant', 'Dire']
-      - name: team_id
-        tests:
-          - relationships:
-              arguments:
-                to: ref('dim_team')
-                field: team_id
-      - name: hero_count
-        tests: [not_null]
-      - name: role_label
-        tests: [not_null]
-      - name: support_count
-        tests: [not_null]
-      - name: carry_count
-        tests: [not_null]
 
   - name: fact_picks_bans
     description: One row per (match, draft order).
@@ -431,70 +403,6 @@ models:
         tests: [not_null]
       - name: uses
         tests: [not_null]
-  - name: fact_teamfight_item_uses
-    description: One row per (match, teamfight, player, item) usage. Flattens fact_teamfight_players.item_uses.
-    columns:
-      - name: match_id
-        tests:
-          - not_null
-          - relationships:
-              arguments:
-                to: ref('fact_matches')
-                field: match_id
-      - name: teamfight_id
-        tests: [not_null]
-      - name: player_slot
-        tests: [not_null]
-      - name: hero_id
-        tests:
-          - relationships:
-              arguments:
-                to: ref('dim_hero')
-                field: hero_id
-      - name: account_id
-        tests:
-          - relationships:
-              arguments:
-                to: ref('dim_player')
-                field: account_id
-      - name: item_name
-        tests: [not_null]
-      - name: uses
-        tests: [not_null]
-  - name: fact_teamfight_kills
-    description: One row per (match, teamfight, killer player, victim hero) kill event. Flattens fact_teamfight_players.killed.
-    columns:
-      - name: match_id
-        tests:
-          - not_null
-          - relationships:
-              arguments:
-                to: ref('fact_matches')
-                field: match_id
-      - name: teamfight_id
-        tests: [not_null]
-      - name: player_slot
-        tests: [not_null]
-      - name: hero_id
-        tests:
-          - relationships:
-              arguments:
-                to: ref('dim_hero')
-                field: hero_id
-      - name: account_id
-        tests:
-          - relationships:
-              arguments:
-                to: ref('dim_player')
-                field: account_id
-      - name: victim_hero_id
-        tests:
-          - relationships:
-              arguments:
-                to: ref('dim_hero')
-                field: hero_id
-      - name: kills
-        tests: [not_null]
 
   - name: fact_phase_momentum
     description: One row per (match, team, fight phase) with the team's gold/XP swing inside that phase's teamfights and the final team outcome. Excludes pre-game fights.
@@ -523,77 +431,7 @@ models:
       - name: fights
         tests: [not_null]
 
-  - name: fact_match_timeline
-    description: One row per (match, side, teamfight) - a time progression of each team through the match. Shows top items and abilities used per teamfight, gold/XP swing, and deaths. Excludes pre-game fights.
-    columns:
-      - name: match_id
-        tests:
-          - not_null
-          - relationships:
-              arguments:
-                to: ref('fact_matches')
-                field: match_id
-      - name: teamfight_id
-        tests: [not_null]
-      - name: team_number
-        tests: [not_null]
-      - name: side
-        tests:
-          - not_null
-          - accepted_values:
-              arguments:
-                values: ['Radiant', 'Dire']
-      - name: start_min
-        tests: [not_null]
-      - name: gold_delta
-        tests: [not_null]
-      - name: deaths
-        tests: [not_null]
 
-  - name: fact_match_timeline_events
-    description: One row per (match, teamfight, player, item/ability use) - chronological breakdown of what every player used in every teamfight. Items are decoded to display names, abilities keep internal names. Excludes pre-game fights.
-    columns:
-      - name: match_id
-        tests:
-          - not_null
-          - relationships:
-              arguments:
-                to: ref('fact_matches')
-                field: match_id
-      - name: teamfight_id
-        tests: [not_null]
-      - name: start_min
-        tests: [not_null]
-      - name: side
-        tests:
-          - not_null
-          - accepted_values:
-              arguments:
-                values: ['Radiant', 'Dire']
-      - name: player_slot
-        tests: [not_null]
-      - name: kind
-        tests:
-          - not_null
-          - accepted_values:
-              arguments:
-                values: ['Item', 'Ability']
-      - name: name
-        tests: [not_null]
-      - name: uses
-        tests: [not_null]
-      - name: hero_id
-        tests:
-          - relationships:
-              arguments:
-                to: ref('dim_hero')
-                field: hero_id
-      - name: account_id
-        tests:
-          - relationships:
-              arguments:
-                to: ref('dim_player')
-                field: account_id
 
   - name: fact_match_player_minute
     description: One row per (match, player, minute) - the player's progression through the match. Gold/XP/last_hits/denies are cumulative values at that minute from the raw per-minute arrays; level is derived from cumulative xp via the xp_level constant.
@@ -683,11 +521,6 @@ models:
       - name: learn_level
         tests: [not_null]
 
-  - name: dim_match_minute
-    description: Minute dimension 0..max-minutes across the per-minute/progression facts. Single shared minute column so the Play Axis can scrub the Itemization and Skill levelling tables.
-    columns:
-      - name: minute
-        tests: [not_null, unique]
 
   - name: fact_match_player_item_purchases
     description: 'One row per (match, player, item purchase) - the hero''s itemization over time. Items decoded to display names via dim_item, pre-game purchases clamped to minute 0.'
@@ -736,19 +569,6 @@ models:
       - name: rune_key
         tests: [not_null, unique]
 
-  - name: fact_match_player_kills
-    description: One row per (match, killer player, kill event) - kill timeline with victim hero decoded via dim_hero.hero_name.
-    columns:
-      - name: match_id
-        tests: [not_null]
-      - name: player_slot
-        tests: [not_null]
-      - name: kill_index
-        tests: [not_null]
-      - name: time_sec
-        tests: [not_null]
-      - name: minute
-        tests: [not_null]
 
   - name: fact_match_player_runes
     description: One row per (match, player, rune type) - rune counts decoded via dim_rune.
@@ -796,21 +616,6 @@ models:
       - name: damage_amount
         tests: [not_null]
 
-  - name: fact_match_player_damage_taken_type
-    description: One row per (match, player, damage type) - total raw damage received by type (Physical/Magical/Pure/Other), from damage_inflictor_received classified via ability/item dmg_type.
-    columns:
-      - name: match_id
-        tests: [not_null]
-      - name: player_slot
-        tests: [not_null]
-      - name: damage_type
-        tests:
-          - not_null
-          - accepted_values:
-              arguments:
-                values: ['Physical', 'Magical', 'Pure', 'Other']
-      - name: damage_amount
-        tests: [not_null]
 
   - name: fact_match_team_minute
     description: One row per (match, side, minute) - team-level per-minute gold (net worth proxy) and XP, summed from fact_match_player_minute.

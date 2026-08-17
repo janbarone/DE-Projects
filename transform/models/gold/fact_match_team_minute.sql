@@ -1,10 +1,9 @@
 {{ config(
     materialized='table',
     post_hook=[
-        "create index if not exists {{ this.schema }}_fact_mtm_match_idx on {{ this }}(match_id)",
-        "create index if not exists {{ this.schema }}_fact_mtm_minute_idx on {{ this }}(minute)"
-    ]
-) }}
+        "drop index if exists {{ this.schema }}.{{ this.schema }}_fact_mtm_match_idx",
+        "create index {{ this.schema }}_fact_mtm_match_idx on {{ this }}(match_id)"
+    ]) }}
 
 -- One row per (match, side, minute): team-level per-minute gold (net worth) and
 -- XP, aggregated from fact_match_player_minute (itself flattened from the raw

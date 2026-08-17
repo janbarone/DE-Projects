@@ -1,11 +1,6 @@
 {{ config(
     materialized='incremental',
-    unique_key='match_id',
-    post_hook=[
-        "create index if not exists {{ this.schema }}_stg_matches_league_idx on {{ this }}(leagueid)",
-        "create index if not exists {{ this.schema }}_stg_matches_radiant_idx on {{ this }}(radiant_team_id)",
-        "create index if not exists {{ this.schema }}_stg_matches_dire_idx on {{ this }}(dire_team_id)"
-    ]
+    unique_key='match_id'
 ) }}
 
 -- One row per match, flattened from the raw match jsonb.

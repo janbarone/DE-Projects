@@ -1,0 +1,172 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
+  "name": "4623f810-a3aa-4587-a291-b2e9f4fe66a2",
+  "position": {
+    "x": 3228.0,
+    "y": 5824.176339159705,
+    "z": 112,
+    "height": 245,
+    "width": 300,
+    "tabOrder": 112
+  },
+  "visual": {
+    "visualType": "textbox",
+    "objects": {
+      "general": [
+        {
+          "properties": {
+            "paragraphs": [
+              {
+                "textRuns": [
+                  {
+                    "value": "Hero Meta",
+                    "textStyle": {
+                      "fontFamily": "Segoe UI",
+                      "fontSize": "14pt",
+                      "fontWeight": "600",
+                      "color": "#1B4F72"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Top heroes by win rate / picks Ã¢â‚¬â€ ",
+                    "textStyle": {
+                      "fontFamily": "Segoe UI",
+                      "fontSize": "9.5pt",
+                      "fontWeight": "600"
+                    }
+                  },
+                  {
+                    "value": "best performing and most played heroes (measures, slicer-aware).",
+                    "textStyle": {
+                      "fontFamily": "Segoe UI",
+                      "fontSize": "9.5pt",
+                      "fontWeight": "normal"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Hero stats table Ã¢â‚¬â€ ",
+                    "textStyle": {
+                      "fontFamily": "Segoe UI",
+                      "fontSize": "9.5pt",
+                      "fontWeight": "600"
+                    }
+                  },
+                  {
+                    "value": "picks, win rate, KDA, GPM, XPM, hero damage.",
+                    "textStyle": {
+                      "fontFamily": "Segoe UI",
+                      "fontSize": "9.5pt",
+                      "fontWeight": "normal"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Picks vs Bans by hero Ã¢â‚¬â€ ",
+                    "textStyle": {
+                      "fontFamily": "Segoe UI",
+                      "fontSize": "9.5pt",
+                      "fontWeight": "600"
+                    }
+                  },
+                  {
+                    "value": "draft demand per hero.",
+                    "textStyle": {
+                      "fontFamily": "Segoe UI",
+                      "fontSize": "9.5pt",
+                      "fontWeight": "normal"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Slicers Ã¢â‚¬â€ ",
+                    "textStyle": {
+                      "fontFamily": "Segoe UI",
+                      "fontSize": "9.5pt",
+                      "fontWeight": "600"
+                    }
+                  },
+                  {
+                    "value": "year, role (via dim_hero_role, bidirectional), attack type.",
+                    "textStyle": {
+                      "fontFamily": "Segoe UI",
+                      "fontSize": "9.5pt",
+                      "fontWeight": "normal"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "background": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "dropShadow": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "border": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

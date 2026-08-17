@@ -1,10 +1,13 @@
 {{ config(
     materialized='table',
     post_hook=[
-        "create index if not exists {{ this.schema }}_fact_mpd_match_idx on {{ this }}(match_id)",
-        "create index if not exists {{ this.schema }}_fact_mpd_player_idx on {{ this }}(player_slot)"
-    ]
-) }}
+        "drop index if exists {{ this.schema }}.{{ this.schema }}_fact_mpd_match_idx",
+        "create index {{ this.schema }}_fact_mpd_match_idx on {{ this }}(match_id)",
+        "drop index if exists {{ this.schema }}.{{ this.schema }}_fact_mpd_hero_idx",
+        "create index {{ this.schema }}_fact_mpd_hero_idx on {{ this }}(hero_id)",
+        "drop index if exists {{ this.schema }}.{{ this.schema }}_fact_mpd_account_idx",
+        "create index {{ this.schema }}_fact_mpd_account_idx on {{ this }}(account_id)"
+    ]) }}
 
 -- One row per (match, player, damage target): total damage dealt to each unit,
 -- categorized by target type. Reads the incremental silver model

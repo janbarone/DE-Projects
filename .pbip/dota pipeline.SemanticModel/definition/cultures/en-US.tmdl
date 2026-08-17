@@ -131,15 +131,6 @@ cultureInfo en-US
 			        }
 			      ]
 			    },
-			    "gold_dim_match_minute.minute": {
-			      "Definition": {
-			        "Binding": {
-			          "ConceptualEntity": "gold dim_match_minute",
-			          "ConceptualProperty": "minute"
-			        }
-			      },
-			      "State": "Generated"
-			    },
 			    "gold_fact_matches.match_id": {
 			      "Definition": {
 			        "Binding": {

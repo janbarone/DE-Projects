@@ -1,11 +1,6 @@
 {{ config(
     materialized='incremental',
-    unique_key=['match_id', 'player_slot', 'purchase_index'],
-    post_hook=[
-        "create index if not exists {{ this.schema }}_stg_mpip_match_idx on {{ this }}(match_id)",
-        "create index if not exists {{ this.schema }}_stg_mpip_player_idx on {{ this }}(player_slot)",
-        "create index if not exists {{ this.schema }}_stg_mpip_minute_idx on {{ this }}(minute)"
-    ]
+    unique_key=['match_id', 'player_slot', 'purchase_index']
 ) }}
 
 -- One row per (match, player, item purchase): the hero's itemization over

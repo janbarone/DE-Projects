@@ -1,9 +1,6 @@
 {{ config(
     materialized='incremental',
-    unique_key=['match_id', 'teamfight_id'],
-    post_hook=[
-        "create index if not exists {{ this.schema }}_stg_teamfights_match_idx on {{ this }}(match_id)"
-    ]
+    unique_key=['match_id', 'teamfight_id']
 ) }}
 
 -- One row per (match, teamfight). The players array is kept as text (jsonb

@@ -1,0 +1,207 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
+  "name": "8d605c96-5861-4936-b7bc-69f3cd7246f8",
+  "position": {
+    "x": 2758.967254408061,
+    "y": 4348.377850494719,
+    "z": 92,
+    "height": 219.8992443324937,
+    "width": 618.8916876574307,
+    "tabOrder": 92
+  },
+  "visual": {
+    "visualType": "clusteredBarChart",
+    "query": {
+      "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold dim_hero"
+                    }
+                  },
+                  "Property": "hero_localized_name"
+                }
+              },
+              "queryRef": "gold dim_hero.hero_localized_name",
+              "nativeQueryRef": "hero_localized_name",
+              "active": true
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold fact_match_players"
+                    }
+                  },
+                  "Property": "Avg Healing"
+                }
+              },
+              "queryRef": "gold fact_match_players.Avg Healing",
+              "nativeQueryRef": "Avg Healing"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold fact_match_players"
+                    }
+                  },
+                  "Property": "Avg Camps Stacked"
+                }
+              },
+              "queryRef": "gold fact_match_players.Avg Camps Stacked",
+              "nativeQueryRef": "Avg Camps Stacked"
+            }
+          ]
+        }
+      }
+    },
+    "objects": {
+      "legend": [
+        {
+          "properties": {
+            "position": {
+              "expr": {
+                "Literal": {
+                  "Value": "'TopCenter'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "valueAxis": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            },
+            "showAxisTitle": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "categoryAxis": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "showAxisTitle": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Support impact by hero'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "border": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "2d98d257aa2ecb8b8181",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "gold dim_hero"
+              }
+            },
+            "Property": "hero_localized_name"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "ba02b2c03a10345a1acd",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "gold fact_match_players"
+              }
+            },
+            "Property": "Avg Healing"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "ec4264128c20888d130a",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "gold fact_match_players"
+              }
+            },
+            "Property": "Avg Camps Stacked"
+          }
+        },
+        "type": "Advanced"
+      }
+    ]
+  }
+}

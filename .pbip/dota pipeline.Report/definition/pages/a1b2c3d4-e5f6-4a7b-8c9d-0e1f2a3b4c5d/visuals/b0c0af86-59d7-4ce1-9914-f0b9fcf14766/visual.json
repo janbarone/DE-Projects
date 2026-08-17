@@ -1,0 +1,106 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
+  "name": "b0c0af86-59d7-4ce1-9914-f0b9fcf14766",
+  "position": {
+    "x": 665.823677581864,
+    "y": 4596.277094827212,
+    "z": 94,
+    "height": 201.84875983061104,
+    "width": 1242.6666666666667,
+    "tabOrder": 94
+  },
+  "visual": {
+    "visualType": "lineChart",
+    "query": {
+      "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold dim_patch"
+                    }
+                  },
+                  "Property": "patch_name"
+                }
+              },
+              "queryRef": "gold dim_patch.patch_name",
+              "nativeQueryRef": "patch_name",
+              "active": true
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold fact_match_players"
+                    }
+                  },
+                  "Property": "Avg GPM"
+                }
+              },
+              "queryRef": "gold fact_match_players.Avg GPM",
+              "nativeQueryRef": "Avg GPM"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold fact_match_players"
+                    }
+                  },
+                  "Property": "Avg XPM"
+                }
+              },
+              "queryRef": "gold fact_match_players.Avg XPM",
+              "nativeQueryRef": "Avg XPM"
+            }
+          ]
+        }
+      }
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'GPM / XPM trend by patch'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "border": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

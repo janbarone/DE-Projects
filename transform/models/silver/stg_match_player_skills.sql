@@ -1,10 +1,6 @@
 {{ config(
     materialized='incremental',
-    unique_key=['match_id', 'player_slot', 'upgrade_index'],
-    post_hook=[
-        "create index if not exists {{ this.schema }}_stg_mps_match_idx on {{ this }}(match_id)",
-        "create index if not exists {{ this.schema }}_stg_mps_player_idx on {{ this }}(player_slot)"
-    ]
+    unique_key=['match_id', 'player_slot', 'upgrade_index']
 ) }}
 
 -- One row per (match, player, ability upgrade): the hero's skill learning

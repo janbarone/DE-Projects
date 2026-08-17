@@ -1,0 +1,151 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
+  "name": "8847ad3a-aba5-463b-9dd5-2caf76631dc2",
+  "position": {
+    "x": 696.0,
+    "y": 2998.9553580935026,
+    "z": 73,
+    "height": 190,
+    "width": 1240,
+    "tabOrder": 73
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold dim_team"
+                    }
+                  },
+                  "Property": "team_name"
+                }
+              },
+              "queryRef": "gold dim_team.team_name",
+              "nativeQueryRef": "team_name",
+              "active": true
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold dim_league"
+                    }
+                  },
+                  "Property": "league_name"
+                }
+              },
+              "queryRef": "gold dim_league.league_name",
+              "nativeQueryRef": "league_name",
+              "active": true
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold fact_team_matches"
+                    }
+                  },
+                  "Property": "side"
+                }
+              },
+              "queryRef": "gold fact_team_matches.side",
+              "nativeQueryRef": "side",
+              "active": true
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold fact_team_matches"
+                    }
+                  },
+                  "Property": "Team Appearances"
+                }
+              },
+              "queryRef": "gold fact_team_matches.Team Appearances",
+              "nativeQueryRef": "Team Appearances",
+              "active": true
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold fact_team_matches"
+                    }
+                  },
+                  "Property": "Team Win Rate"
+                }
+              },
+              "queryRef": "gold fact_team_matches.Team Win Rate",
+              "nativeQueryRef": "Team Win Rate",
+              "active": true
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Measure": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "gold fact_team_matches"
+                  }
+                },
+                "Property": "Team Appearances"
+              }
+            },
+            "direction": "Descending"
+          }
+        ]
+      }
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Team win rate by league (by side)'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "border": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

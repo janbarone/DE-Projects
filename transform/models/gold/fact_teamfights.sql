@@ -1,9 +1,9 @@
 {{ config(
     materialized='table',
     post_hook=[
-        "create index if not exists {{ this.schema }}_fact_tf_match_idx on {{ this }}(match_id)"
-    ]
-) }}
+        "drop index if exists {{ this.schema }}.{{ this.schema }}_fact_tf_match_idx",
+        "create index {{ this.schema }}_fact_tf_match_idx on {{ this }}(match_id)"
+    ]) }}
 
 -- One row per (match, teamfight): teamfight fact.
 -- Links to fact_matches via match_id. The raw players array is preserved as

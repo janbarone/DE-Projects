@@ -13,8 +13,9 @@ works, is wrapped by two orchestrators, and is covered by CI.
 **Achieved:**
 - **Ingestion** — throttled, quota-aware, resumable OpenDota scrapers (`data/`).
 - **Bronze** — raw `jsonb` payloads + `loaded_at`, idempotent loader (`scripts/load_bronze.py`).
-- **Silver/Gold** — dbt (`transform/`) with ~38 star-schema tables, 317 passing
-  tests, referential integrity, `dbt source freshness`.
+- **Silver/Gold** — dbt (`transform/`) with 32 gold tables (31 in the Power BI
+  model), 227 passing gold build steps (194 data tests), referential integrity,
+  `dbt source freshness`.
 - **Power BI** — functional 6+ page report on the gold layer (PBIP, DirectQuery).
 - **Orchestration** — Dagster *and* Airflow wrapping one shared `run_pipeline.py`.
 - **Reproducibility** — committed `sample_data/` (200 curated matches + full
@@ -26,8 +27,9 @@ works, is wrapped by two orchestrators, and is covered by CI.
 1. `docker compose up` → run the full pipeline against `sample_data/` and
    re-verify the live DB is in sync (the scrape has ~15k match files vs 4,299
    loaded — run `load_bronze` + `dbt build` to backfill).
-2. Wire `dbt source freshness` into the scheduled DAG (config already in
-   `sources.yml`).
+2. ~~Wire `dbt source freshness` into the scheduled DAG~~ (**done 2026-08-14** —
+   the DAG now runs `dbt source freshness` and a `pg_dump` backup after the
+   build; config in `sources.yml`).
 3. Optionally swap the Airflow `BashOperator` for the dbt-cosmos provider.
 4. Publish to GitHub (add `sample_data/`, push, confirm CI passes).
 
@@ -157,7 +159,10 @@ OpenDota anonymous tier: **60 calls/minute, 3,000 calls/day**. The pipeline resp
 - [x] 7. CI/CD (GitHub Actions: lint + unit tests + full `dbt build` on sample data)
 - [x] 8. Reproducible sample dataset (committed `sample_data/`) + pinned dependencies
 - [x] 9. Data quality: dbt tests + `dbt source freshness` + Alembic migrations
-- [ ] 10. dbt source freshness in the scheduled DAG (wired, see `sources.yml`)
+- [x] 10. dbt source freshness + pg_dump backup in the scheduled DAG (**done
+  2026-08-14** — Airflow `dota_medallion_pipeline` runs
+  `load_bronze >> dbt_build >> [dbt_source_freshness, pg_dump_backup]`; the
+  Dagster job mirrors it via `source_freshness` + `db_backed_up` assets)
 
 ## Medallion Plan (Bronze → Silver → Gold)
 
@@ -607,6 +612,30 @@ combat facts via the existing `fact_teamfights` / `fact_teamfight_players` →
 savepoint: `backups/gold5_20260812_162008.dump` (337 MB, rounds 4–14). The
 report renders correctly in Power BI Desktop across all pages.
 
+**Round 15 (2026-08-14, §5s):** **Hero Meta page gained the matchup visual** —
+a searchable Hero dropdown slicer drives a **Top opponents** table
+(`opponent_name` + `Hero Matchup Games` + `Hero Matchup Win Rate` from
+`fact_hero_matchups_hero`, which gained `hero_name`/`opponent_name` display
+columns; page height 1000 → 1280). **Search enabled on all high-cardinality
+slicers** (`selfFilterEnabled = true`). **Orchestrator hardening**: the DAG
+now runs `dbt source freshness` + a `pg_dump` backup after the build. Fresh
+dump: `backups/gold_20260814_025223.dump` (337 MB).
+
+**Round 16 (2026-08-16/17, §5t):** **database optimization + Grand Report
+page.** Pruned **7 unused gold tables** from the model (and dropped them from
+dbt + the DB, plus the stale `gold.fact_team_h2h_new` experiment table):
+`fact_match_player_kills`, `fact_match_timeline`, `fact_match_timeline_events`,
+`fact_team_compositions`, `fact_teamfight_item_uses`, `fact_teamfight_kills`,
+`dim_match_minute` (`fact_match_player_damage_taken_type` was already out of
+the model since Round 11d). Model is now **31 tables, 52 relationships (3
+bidirectional)**; dbt builds 32 gold models. Index hardening (fixed the
+double-schema-prefix bug, added `match_id`/`patch`/`start_date` indexes on
+`fact_matches`, removed leftover silver index hooks) + `on-run-end: analyze`.
+**New Grand Report page** (144 visuals, built by `scripts/build_grand_page.py`)
+is the report landing page; verified green: 227/227 gold build steps, 33/33
+pytest, 474 field references resolve. Fresh dump:
+`backups/gold_20260817_161207.dump` (304.7 MB).
+
 **Known notes for the next session:**
 - Connect Power BI to the **gold** schema (not silver) - it's the presentation
   layer with all relationship fixes. Delete any auto-created relationships on
@@ -631,8 +660,10 @@ report renders correctly in Power BI Desktop across all pages.
   text) because OpenDota teamfight player entries have no hero/account id (see
   `docs/data_model.md`).
 - **Backups live in `backups/` (gitignored); newest is**
-  `gold5_20260812_162008.dump` (337 MB, taken 2026-08-12 at the Round 14
-  savepoint — includes all gold tables through rounds 4–14). Older dumps:
+  `gold_20260817_161207.dump` (304.7 MB, taken 2026-08-17 at the Round 16
+  savepoint via `scripts/run_pipeline.py --only-backup --backup-docker` —
+  includes all gold tables). Older dumps: `gold_20260814_025223.dump`
+  (Round 15), `gold5_20260812_162008.dump` (rounds 4–14),
   `gold4_20260808_191856.dump` (290 MB, rounds 4–9) and
   `gold3_20260802_223003.dump` (194.4 MB, predates `fact_team_matches`,
   `dim_patch`, `fact_hero_matchups`, `fact_team_h2h`, `dim_item` and all

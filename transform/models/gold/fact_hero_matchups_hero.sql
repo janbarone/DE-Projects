@@ -1,11 +1,13 @@
 {{ config(
     materialized='table',
     post_hook=[
-        "create index if not exists {{ this.schema }}_fact_hmh_match_idx on {{ this }}(match_id)",
-        "create index if not exists {{ this.schema }}_fact_hmh_hero_idx on {{ this }}(hero_id)",
-        "create index if not exists {{ this.schema }}_fact_hmh_opp_idx on {{ this }}(opponent_id)"
-    ]
-) }}
+        "drop index if exists {{ this.schema }}.{{ this.schema }}_fact_hmh_match_idx",
+        "create index {{ this.schema }}_fact_hmh_match_idx on {{ this }}(match_id)",
+        "drop index if exists {{ this.schema }}.{{ this.schema }}_fact_hmh_hero_idx",
+        "create index {{ this.schema }}_fact_hmh_hero_idx on {{ this }}(hero_id)",
+        "drop index if exists {{ this.schema }}.{{ this.schema }}_fact_hmh_opp_idx",
+        "create index {{ this.schema }}_fact_hmh_opp_idx on {{ this }}(opponent_id)"
+    ]) }}
 
 -- Hero-centric matchup fact: one row per (match, hero, opponent) = 50 rows per
 -- match (each of the 25 radiant/dire pairings emitted once per perspective).
@@ -21,6 +23,8 @@ with radiant_perspective as (
         m.match_id,
         m.radiant_hero_id as hero_id,
         m.dire_hero_id as opponent_id,
+        hh.hero_localized_name as hero_name,
+        oh.hero_localized_name as opponent_name,
         hh.hero_localized_name || ' vs ' || oh.hero_localized_name as matchup_label,
         m.radiant_win as hero_win
     from {{ ref('fact_hero_matchups') }} m
@@ -33,6 +37,8 @@ dire_perspective as (
         m.match_id,
         m.dire_hero_id as hero_id,
         m.radiant_hero_id as opponent_id,
+        hh.hero_localized_name as hero_name,
+        oh.hero_localized_name as opponent_name,
         hh.hero_localized_name || ' vs ' || oh.hero_localized_name as matchup_label,
         not m.radiant_win as hero_win
     from {{ ref('fact_hero_matchups') }} m

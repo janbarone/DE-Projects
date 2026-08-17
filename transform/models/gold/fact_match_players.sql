@@ -1,11 +1,13 @@
 {{ config(
     materialized='table',
     post_hook=[
-        "create index if not exists {{ this.schema }}_fact_mp_match_idx on {{ this }}(match_id)",
-        "create index if not exists {{ this.schema }}_fact_mp_account_idx on {{ this }}(account_id)",
-        "create index if not exists {{ this.schema }}_fact_mp_hero_idx on {{ this }}(hero_id)"
-    ]
-) }}
+        "drop index if exists {{ this.schema }}.{{ this.schema }}_fact_mp_match_idx",
+        "create index {{ this.schema }}_fact_mp_match_idx on {{ this }}(match_id)",
+        "drop index if exists {{ this.schema }}.{{ this.schema }}_fact_mp_account_idx",
+        "create index {{ this.schema }}_fact_mp_account_idx on {{ this }}(account_id)",
+        "drop index if exists {{ this.schema }}.{{ this.schema }}_fact_mp_hero_idx",
+        "create index {{ this.schema }}_fact_mp_hero_idx on {{ this }}(hero_id)"
+    ]) }}
 
 -- One row per (match, player): player performance fact.
 -- hero_id = 0 (OpenDota placeholder) is preserved and resolves to the

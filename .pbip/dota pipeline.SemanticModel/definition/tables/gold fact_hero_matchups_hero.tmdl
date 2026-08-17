@@ -40,6 +40,24 @@ table 'gold fact_hero_matchups_hero'
 
 		annotation SummarizationSetBy = Automatic
 
+	column hero_name
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: aaaa0009-0000-0000-0000-000000000013
+		summarizeBy: none
+		sourceColumn: hero_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column opponent_name
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: aaaa0009-0000-0000-0000-000000000014
+		summarizeBy: none
+		sourceColumn: opponent_name
+
+		annotation SummarizationSetBy = Automatic
+
 	column matchup_label
 		dataType: string
 		sourceProviderType: nvarchar(max)

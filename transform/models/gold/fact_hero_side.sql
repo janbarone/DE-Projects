@@ -1,10 +1,11 @@
 {{ config(
     materialized='table',
     post_hook=[
-        "create index if not exists {{ this.schema }}_fact_hs_hero_idx on {{ this }}(hero_id)",
-        "create index if not exists {{ this.schema }}_fact_hs_side_idx on {{ this }}(side)"
-    ]
-) }}
+        "drop index if exists {{ this.schema }}.{{ this.schema }}_fact_hs_hero_idx",
+        "create index {{ this.schema }}_fact_hs_hero_idx on {{ this }}(hero_id)",
+        "drop index if exists {{ this.schema }}.{{ this.schema }}_fact_hs_side_idx",
+        "create index {{ this.schema }}_fact_hs_side_idx on {{ this }}(side)"
+    ]) }}
 
 -- Hero win rate by side fact: one row per (hero, side) with picks, wins and
 -- win rate. Precomputed for DirectQuery because grouping a COUNTROWS-based

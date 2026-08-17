@@ -1,0 +1,75 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
+  "name": "aaaa0201-0000-0000-0000-000000000001",
+  "position": {
+    "x": 3104.0,
+    "y": 464.0,
+    "z": 30,
+    "height": 70,
+    "width": 200,
+    "tabOrder": 30
+  },
+  "visual": {
+    "visualType": "slicer",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold dim_date"
+                    }
+                  },
+                  "Property": "year"
+                }
+              },
+              "queryRef": "gold dim_date.year",
+              "nativeQueryRef": "Year",
+              "active": true,
+              "displayName": "Year"
+            }
+          ]
+        }
+      }
+    },
+    "objects": {
+      "data": [
+        {
+          "properties": {
+            "mode": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Dropdown'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "general": [
+        {
+          "properties": {}
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "border": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

@@ -1,0 +1,325 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
+  "name": "17130a8d-db8f-4b7d-8683-4c206b70becc",
+  "position": {
+    "x": 2590.0503778337534,
+    "y": 2670.9553580935026,
+    "z": 71,
+    "height": 184.76070528967253,
+    "width": 580.352644836272,
+    "tabOrder": 71
+  },
+  "visual": {
+    "visualType": "barChart",
+    "query": {
+      "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold dim_team"
+                    }
+                  },
+                  "Property": "team_name"
+                }
+              },
+              "queryRef": "gold dim_team.team_name",
+              "nativeQueryRef": "team_name",
+              "active": true
+            }
+          ]
+        },
+        "Series": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold fact_team_matches"
+                    }
+                  },
+                  "Property": "side"
+                }
+              },
+              "queryRef": "gold fact_team_matches.side",
+              "nativeQueryRef": "side",
+              "active": true
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold fact_team_matches"
+                    }
+                  },
+                  "Property": "Team Appearances"
+                }
+              },
+              "queryRef": "gold fact_team_matches.Team Appearances",
+              "nativeQueryRef": "Team Appearances"
+            }
+          ]
+        }
+      }
+    },
+    "objects": {
+      "labels": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "10D"
+                }
+              }
+            },
+            "bold": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "legend": [
+        {
+          "properties": {
+            "position": {
+              "expr": {
+                "Literal": {
+                  "Value": "'TopCenter'"
+                }
+              }
+            },
+            "showTitle": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "valueAxis": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            },
+            "showAxisTitle": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "categoryAxis": [
+        {
+          "properties": {
+            "showAxisTitle": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "dataPoint": [
+        {
+          "properties": {
+            "fill": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "ThemeDataColor": {
+                      "ColorId": 9,
+                      "Percent": 0
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "selector": {
+            "data": [
+              {
+                "scopeId": {
+                  "Comparison": {
+                    "ComparisonKind": 0,
+                    "Left": {
+                      "Column": {
+                        "Expression": {
+                          "SourceRef": {
+                            "Entity": "gold fact_team_matches"
+                          }
+                        },
+                        "Property": "side"
+                      }
+                    },
+                    "Right": {
+                      "Literal": {
+                        "Value": "'Dire'"
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "properties": {
+            "fill": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "ThemeDataColor": {
+                      "ColorId": 2,
+                      "Percent": 0
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "selector": {
+            "data": [
+              {
+                "scopeId": {
+                  "Comparison": {
+                    "ComparisonKind": 0,
+                    "Left": {
+                      "Column": {
+                        "Expression": {
+                          "SourceRef": {
+                            "Entity": "gold fact_team_matches"
+                          }
+                        },
+                        "Property": "side"
+                      }
+                    },
+                    "Right": {
+                      "Literal": {
+                        "Value": "'Radiant'"
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Appearances by side'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "border": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "9248b69d1b4001b38a86",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "gold dim_team"
+              }
+            },
+            "Property": "team_name"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "8abaf0c5a86aeeaca9aa",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "gold fact_team_matches"
+              }
+            },
+            "Property": "Team Appearances"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "de35a48fc0a74228b7e1",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "gold fact_team_matches"
+              }
+            },
+            "Property": "side"
+          }
+        },
+        "type": "Categorical"
+      }
+    ]
+  }
+}

@@ -1,0 +1,157 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
+  "name": "3f09eacb-fceb-4ff8-81ef-c7165f86d411",
+  "position": {
+    "x": 666.0,
+    "y": 1721.3808900083964,
+    "z": 60,
+    "height": 270,
+    "width": 1240,
+    "tabOrder": 60
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold fact_hero_matchups_hero"
+                    }
+                  },
+                  "Property": "opponent_name"
+                }
+              },
+              "nativeQueryRef": "opponent_name",
+              "displayName": "Opponent",
+              "active": true,
+              "queryRef": "gold fact_hero_matchups_hero.opponent_name"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold fact_hero_matchups_hero"
+                    }
+                  },
+                  "Property": "Hero Matchup Games"
+                }
+              },
+              "nativeQueryRef": "Hero Matchup Games",
+              "active": true,
+              "queryRef": "gold fact_hero_matchups_hero.Hero Matchup Games"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold fact_hero_matchups_hero"
+                    }
+                  },
+                  "Property": "Hero Matchup Win Rate"
+                }
+              },
+              "nativeQueryRef": "Hero Matchup Win Rate",
+              "active": true,
+              "queryRef": "gold fact_hero_matchups_hero.Hero Matchup Win Rate"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Measure": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "gold fact_hero_matchups_hero"
+                  }
+                },
+                "Property": "Hero Matchup Games"
+              }
+            },
+            "direction": "Descending"
+          }
+        ]
+      }
+    },
+    "objects": {
+      "columnHeaders": [
+        {
+          "properties": {
+            "columnAdjustment": {
+              "expr": {
+                "Literal": {
+                  "Value": "'growToFit'"
+                }
+              }
+            },
+            "defaultColumnWidth": {
+              "expr": {
+                "Literal": {
+                  "Value": "90D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "total": [
+        {
+          "properties": {
+            "totals": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Top opponents (filter by hero)'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "border": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

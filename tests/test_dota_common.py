@@ -27,6 +27,12 @@ def _no_throttle(monkeypatch):
     dc._last_quota = {"minute": None, "day": None}
 
 
+@pytest.fixture(autouse=True)
+def _isolate_drained(monkeypatch, tmp_path):
+    monkeypatch.setattr(dc, "DRAINED_FILE", tmp_path / "drained_leagues.json")
+    monkeypatch.setattr(dc, "SKIPPED_FILE", tmp_path / "skipped_matches.json")
+
+
 def test_timestamp_fetched_is_iso8601_utc():
     ts = dc.timestamp_fetched()
     assert ts.endswith("Z")
@@ -78,6 +84,96 @@ def test_http_get_429_retries_with_retry_after(monkeypatch):
     monkeypatch.setattr(dc.requests, "get", fake_get)
     assert dc.http_get("http://x") == '{"ok": 1}'
     assert calls["n"] == 3
+
+
+def test_http_get_429_raises_after_cap(monkeypatch):
+    calls = {"n": 0}
+
+    def fake_get(url, timeout, headers):
+        calls["n"] += 1
+        return FakeResponse(429, {"Retry-After": "0"})
+
+    monkeypatch.setattr(dc.requests, "get", fake_get)
+    with pytest.raises(dc.RateLimitedError, match="rate limited"):
+        dc.http_get("http://x")
+    assert calls["n"] == dc.MAX_429 + 1
+
+
+def test_drained_registry():
+    assert dc.load_drained() == set()
+    dc.mark_drained(12735)
+    dc.mark_drained(12906)
+    assert dc.load_drained() == {12735, 12906}
+    assert dc.is_drained(12735)
+    assert not dc.is_drained(9999)
+    dc.mark_drained(12735)  # idempotent
+    assert dc.load_drained() == {12735, 12906}
+
+
+def test_skipped_matches_registry():
+    assert dc.load_skipped() == set()
+    dc.mark_match_skipped(7928919925)
+    assert dc.is_match_skipped(7928919925)
+    assert not dc.is_match_skipped(123)
+    dc.mark_match_skipped(7928919925)  # idempotent
+    assert dc.load_skipped() == {7928919925}
+
+
+def test_have_match_treats_skipped_as_present(monkeypatch, tmp_path):
+    monkeypatch.setattr(dc, "DATA_DIR", tmp_path)
+    mid = 555
+    assert not dc.have_match(mid)
+    dc.mark_match_skipped(mid)
+    assert dc.have_match(mid)
+
+
+def test_discover_league_ok(monkeypatch):
+    def fake_get(url, timeout, headers):
+        return FakeResponse(200, {}, '[100, 200, 300]')
+
+    monkeypatch.setattr(dc.requests, "get", fake_get)
+    mids, status, detail = dc.discover_league(5)
+    assert status == "ok"
+    assert mids == [100, 200, 300]
+
+
+def test_discover_league_empty(monkeypatch):
+    def fake_get(url, timeout, headers):
+        return FakeResponse(200, {}, '[]')
+
+    monkeypatch.setattr(dc.requests, "get", fake_get)
+    mids, status, detail = dc.discover_league(5)
+    assert status == "empty"
+    assert mids == []
+
+
+def test_discover_league_unavailable_after_retries(monkeypatch):
+    calls = {"n": 0}
+
+    def fake_get(url, timeout, headers):
+        calls["n"] += 1
+        err = requests.HTTPError("404 Client Error: Not Found")
+        err.response = FakeResponse(404)
+        raise err
+
+    monkeypatch.setattr(dc.requests, "get", fake_get)
+    mids, status, detail = dc.discover_league(5)
+    assert status == "unavailable"
+    assert mids is None
+    assert calls["n"] == dc.DISCOVERY_RETRIES
+
+
+def test_discover_league_rate_limited(monkeypatch):
+    calls = {"n": 0}
+
+    def fake_get(url, timeout, headers):
+        calls["n"] += 1
+        return FakeResponse(429, {"Retry-After": "0"})
+
+    monkeypatch.setattr(dc.requests, "get", fake_get)
+    mids, status, detail = dc.discover_league(5)
+    assert status == "rate_limited"
+    assert calls["n"] == dc.MAX_429 + 1
 
 
 def test_http_get_5xx_retries_then_succeeds(monkeypatch):

@@ -1,11 +1,6 @@
 {{ config(
     materialized='incremental',
-    unique_key=['match_id', 'player_slot'],
-    post_hook=[
-        "create index if not exists {{ this.schema }}_stg_match_players_acct_idx on {{ this }}(account_id)",
-        "create index if not exists {{ this.schema }}_stg_match_players_hero_idx on {{ this }}(hero_id)",
-        "create index if not exists {{ this.schema }}_stg_match_players_match_idx on {{ this }}(match_id)"
-    ]
+    unique_key=['match_id', 'player_slot']
 ) }}
 
 -- One row per (match, player): the players[] array flattened.

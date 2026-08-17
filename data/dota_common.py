@@ -16,8 +16,13 @@ _HEADERS = {"User-Agent": "opencode-dota-pipeline/1.0"}
 MIN_INTERVAL = 1.1  # ~55 req/min, safely under the 60/min unauthenticated limit
 RETRY_BASE_DELAY = 5.0  # seconds, doubles on each retry (5, 10, 20, ...)
 MAX_RETRIES = 4  # transient (5xx/network) retries inside http_get
+MAX_429 = 4  # cap on consecutive 429s before raising (each retry costs daily quota)
 _last_request = 0.0
 _last_quota = {"minute": None, "day": None}  # remaining quota from last response
+
+
+class RateLimitedError(RuntimeError):
+    """Raised after MAX_429 consecutive 429s; the daily quota is likely spent."""
 
 
 def quota_remaining() -> dict:
@@ -60,10 +65,12 @@ def _sleep_until(next_time: float) -> None:
 def http_get(url: str, timeout: int = 120) -> str:
     """GET a URL respecting OpenDota's rate limits. Returns response body text.
 
-    Safeguards (anonymous tier: 60/min, 3000/day):
+    Safeguards (anonymous tier: 60/min, 2000/day):
     - throttles to ~55 req/min via MIN_INTERVAL
     - honors the Retry-After header on 429
     - exponential backoff on repeated 429s and transient 5xx/network errors
+    - caps consecutive 429s at MAX_429, then raises (429s still count against
+      the daily quota, so retrying forever would burn quota for nothing)
     - waits if the per-minute quota hits zero
     - records remaining minute/day quota from response headers
     """
@@ -81,6 +88,9 @@ def http_get(url: str, timeout: int = 120) -> str:
 
             if resp.status_code == 429:
                 attempt += 1
+                if attempt > MAX_429:
+                    raise RateLimitedError(
+                        f"rate limited after {attempt - 1} retries ({url})")
                 retry_after = resp.headers.get("Retry-After")
                 wait = retry_after if retry_after is not None else RETRY_BASE_DELAY * (2 ** (attempt - 1))
                 try:
@@ -109,6 +119,13 @@ def http_get(url: str, timeout: int = 120) -> str:
                 time.sleep(wait)
                 continue
             raise
+
+
+def is_stale_error(exc: Exception) -> bool:
+    """True for errors that mean a match no longer exists / is unreachable, so it
+    should be skipped permanently rather than retried."""
+    text = str(exc).lower()
+    return "404" in text or "430" in text or "not found" in text
 
 
 def load_json_array(text: str) -> list:
@@ -153,6 +170,104 @@ def update_array_file(path, new_records, key_field, ts) -> list:
     if added:
         write_json(path, existing)
     return added
+
+
+DRAINED_FILE = DATA_DIR / "leagues" / "drained_leagues.json"
+
+
+def load_drained() -> set:
+    """League ids that no longer need discovery: fully drained (all known
+    match_ids present on disk), empty (no match ids), or unavailable (discovery
+    failed repeatedly). Skips are decided locally so no API call is wasted
+    re-discovering these leagues."""
+    path = Path(DRAINED_FILE)
+    if not path.exists():
+        return set()
+    data = json.loads(path.read_text(encoding="utf-8"))
+    if not isinstance(data, list):
+        return set()
+    return {int(x) for x in data}
+
+
+def mark_drained(lid: int) -> None:
+    """Record a league as permanently skipped (idempotent, persists immediately)."""
+    drained = load_drained()
+    if lid in drained:
+        return
+    drained.add(lid)
+    write_json(DRAINED_FILE, sorted(drained))
+
+
+def is_drained(lid: int) -> bool:
+    """True if the league is permanently skipped (drained / empty / unavailable)."""
+    return lid in load_drained()
+
+
+SKIPPED_FILE = DATA_DIR / "skipped_matches.json"
+
+
+def load_skipped() -> set:
+    """Match ids that permanently 404 / are unavailable, so they are never
+    re-fetched and never block a league from being marked drained."""
+    path = Path(SKIPPED_FILE)
+    if not path.exists():
+        return set()
+    data = json.loads(path.read_text(encoding="utf-8"))
+    if not isinstance(data, list):
+        return set()
+    return {int(x) for x in data}
+
+
+def mark_match_skipped(mid: int) -> None:
+    """Record a match as permanently unavailable (idempotent, persists immediately)."""
+    skipped = load_skipped()
+    if mid in skipped:
+        return
+    skipped.add(mid)
+    write_json(SKIPPED_FILE, sorted(skipped))
+
+
+def is_match_skipped(mid: int) -> bool:
+    """True if the match is permanently skipped (never fetch it again)."""
+    return mid in load_skipped()
+
+
+def have_match(mid: int) -> bool:
+    """True if the match is already saved on disk or permanently skipped, so no
+    API call is needed for it."""
+    return (DATA_DIR / "proMatches" / f"{mid}.json").exists() or is_match_skipped(mid)
+
+
+DISCOVERY_RETRIES = 2  # attempts before an unavailable league is skipped permanently
+
+
+def discover_league(lid: int, retries: int = DISCOVERY_RETRIES) -> tuple:
+    """Discover a league's match_ids via /leagues/{id}/matchIds.
+
+    Returns (mids, status, detail):
+      mids    - list of match ids ([] when the league has none)
+      status  - "ok" | "empty" | "unavailable" | "rate_limited"
+      detail  - human-readable reason (error text / match count)
+
+    Non-rate-limit failures are retried up to `retries` times; a league that
+    still fails, or returns no match ids, is something the caller should skip
+    permanently via mark_drained()."""
+    last_err = None
+    for attempt in range(1, retries + 1):
+        try:
+            data = json.loads(http_get(f"{BASE}/leagues/{lid}/matchIds"))
+            if not isinstance(data, list):
+                raise ValueError("response is not a list")
+            if not data:
+                return [], "empty", "no match ids"
+            return data, "ok", f"{len(data)} match ids"
+        except RateLimitedError:
+            return None, "rate_limited", None
+        except Exception as e:
+            last_err = e
+            if attempt < retries:
+                time.sleep(2)
+    return None, "unavailable", str(last_err)
 
 
 def select_fields(obj: dict, include=None, exclude=None) -> dict:

@@ -1,10 +1,6 @@
 {{ config(
     materialized='incremental',
-    unique_key=['match_id', 'player_slot', 'target_key'],
-    post_hook=[
-        "create index if not exists {{ this.schema }}_stg_mpd_match_idx on {{ this }}(match_id)",
-        "create index if not exists {{ this.schema }}_stg_mpd_player_idx on {{ this }}(player_slot)"
-    ]
+    unique_key=['match_id', 'player_slot', 'target_key']
 ) }}
 
 -- One row per (match, player, damage target): the hero's total damage dealt to

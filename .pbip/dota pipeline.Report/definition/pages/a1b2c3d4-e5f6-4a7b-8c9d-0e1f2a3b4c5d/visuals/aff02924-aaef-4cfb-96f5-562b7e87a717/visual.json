@@ -1,0 +1,192 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
+  "name": "aff02924-aaef-4cfb-96f5-562b7e87a717",
+  "position": {
+    "x": 2572.0,
+    "y": 5824.176339159705,
+    "z": 110,
+    "height": 245,
+    "width": 300,
+    "tabOrder": 110
+  },
+  "visual": {
+    "visualType": "textbox",
+    "objects": {
+      "general": [
+        {
+          "properties": {
+            "paragraphs": [
+              {
+                "textRuns": [
+                  {
+                    "value": "Overview",
+                    "textStyle": {
+                      "fontFamily": "Segoe UI",
+                      "fontSize": "14pt",
+                      "fontWeight": "600",
+                      "color": "#1B4F72"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Cards Ã¢â‚¬â€ ",
+                    "textStyle": {
+                      "fontFamily": "Segoe UI",
+                      "fontSize": "9.5pt",
+                      "fontWeight": "600"
+                    }
+                  },
+                  {
+                    "value": "Total Matches, Total Kills, Radiant/Dire Win Rate, Avg Match Duration, Early First Blood Rate, Leaver Games, Avg Score Differential (match).",
+                    "textStyle": {
+                      "fontFamily": "Segoe UI",
+                      "fontSize": "9.5pt",
+                      "fontWeight": "normal"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Match closeness donut Ã¢â‚¬â€ ",
+                    "textStyle": {
+                      "fontFamily": "Segoe UI",
+                      "fontSize": "9.5pt",
+                      "fontWeight": "600"
+                    }
+                  },
+                  {
+                    "value": "share of matches per score_bucket (close/moderate/blowout/rout).",
+                    "textStyle": {
+                      "fontFamily": "Segoe UI",
+                      "fontSize": "9.5pt",
+                      "fontWeight": "normal"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Win rate by side donut Ã¢â‚¬â€ ",
+                    "textStyle": {
+                      "fontFamily": "Segoe UI",
+                      "fontSize": "9.5pt",
+                      "fontWeight": "600"
+                    }
+                  },
+                  {
+                    "value": "Radiant vs Dire match outcomes.",
+                    "textStyle": {
+                      "fontFamily": "Segoe UI",
+                      "fontSize": "9.5pt",
+                      "fontWeight": "normal"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Matches per month line Ã¢â‚¬â€ ",
+                    "textStyle": {
+                      "fontFamily": "Segoe UI",
+                      "fontSize": "9.5pt",
+                      "fontWeight": "600"
+                    }
+                  },
+                  {
+                    "value": "volume trend over time.",
+                    "textStyle": {
+                      "fontFamily": "Segoe UI",
+                      "fontSize": "9.5pt",
+                      "fontWeight": "normal"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Matches by region, Top leagues Ã¢â‚¬â€ ",
+                    "textStyle": {
+                      "fontFamily": "Segoe UI",
+                      "fontSize": "9.5pt",
+                      "fontWeight": "600"
+                    }
+                  },
+                  {
+                    "value": "distribution of match origins.",
+                    "textStyle": {
+                      "fontFamily": "Segoe UI",
+                      "fontSize": "9.5pt",
+                      "fontWeight": "normal"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "background": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "dropShadow": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "border": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

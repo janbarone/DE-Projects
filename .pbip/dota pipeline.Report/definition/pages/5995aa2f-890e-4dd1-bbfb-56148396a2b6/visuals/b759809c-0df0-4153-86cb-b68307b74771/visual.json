@@ -1,0 +1,101 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
+  "name": "b759809c-0df0-4153-86cb-b68307b74771",
+  "position": {
+    "x": 870,
+    "y": 15,
+    "z": 22,
+    "height": 70,
+    "width": 390,
+    "tabOrder": 22
+  },
+  "visual": {
+    "visualType": "slicer",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold dim_hero"
+                    }
+                  },
+                  "Property": "hero_localized_name"
+                }
+              },
+              "queryRef": "gold dim_hero.hero_localized_name",
+              "nativeQueryRef": "Hero",
+              "active": true,
+              "displayName": "Hero"
+            }
+          ]
+        }
+      }
+    },
+    "objects": {
+      "data": [
+        {
+          "properties": {
+            "mode": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Dropdown'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "general": [
+        {
+          "properties": {
+            "selfFilterEnabled": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "border": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "a9c1e5f4b2d380050632",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "gold dim_hero"
+              }
+            },
+            "Property": "hero_localized_name"
+          }
+        },
+        "type": "Categorical"
+      }
+    ]
+  }
+}

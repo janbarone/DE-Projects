@@ -1,0 +1,67 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
+  "name": "b191d359-4301-4a2c-a74f-bb62695aa20b",
+  "position": {
+    "x": 3224.0,
+    "y": 366.0,
+    "z": 16,
+    "height": 70,
+    "width": 300,
+    "tabOrder": 16
+  },
+  "visual": {
+    "visualType": "slicer",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold dim_league"
+                    }
+                  },
+                  "Property": "league_name"
+                }
+              },
+              "queryRef": "gold dim_league.league_name",
+              "nativeQueryRef": "league_name",
+              "active": true
+            }
+          ]
+        }
+      }
+    },
+    "objects": {
+      "data": [
+        {
+          "properties": {
+            "mode": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Dropdown'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "general": [
+        {
+          "properties": {
+            "selfFilterEnabled": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

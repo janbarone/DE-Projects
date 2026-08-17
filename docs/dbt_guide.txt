@@ -115,20 +115,16 @@ Rules followed across this project (do not break them):
         dim_hero.sql / dim_player.sql / dim_team.sql / dim_league.sql
         dim_game_mode.sql / dim_lobby_type.sql / dim_region.sql
         dim_date.sql / dim_patch.sql / dim_item.sql / dim_rune.sql
-        dim_hero_role.sql / dim_match_minute.sql
+        dim_hero_role.sql
         fact_matches.sql / fact_team_matches.sql / fact_match_players.sql
         fact_picks_bans.sql / fact_teamfights.sql
         fact_teamfight_players.sql / fact_teamfight_ability_uses.sql
-        fact_teamfight_item_uses.sql / fact_teamfight_kills.sql
         fact_match_player_minute.sql / fact_match_player_skills.sql
         fact_match_player_item_purchases.sql / fact_match_team_minute.sql
-        fact_match_player_kills.sql / fact_match_player_runes.sql
+        fact_match_player_runes.sql
         fact_match_player_damage.sql / fact_match_player_damage_taken.sql
-        fact_match_player_damage_taken_type.sql
         fact_hero_matchups.sql / fact_hero_matchups_hero.sql
-        fact_team_h2h.sql / fact_match_timeline.sql
-        fact_match_timeline_events.sql / fact_phase_momentum.sql
-        fact_team_compositions.sql
+        fact_team_h2h.sql / fact_phase_momentum.sql
         fact_hero_side.sql / fact_hero_matchup_stats.sql
         schema.yml            tests for gold models
       seeds/
@@ -208,8 +204,7 @@ in this project:
 
          {{ config(
              materialized='incremental',
-             unique_key='match_id',
-             post_hook=["create index if not exists ... on {{ this }}(...)"]
+             unique_key='match_id'
          ) }}
 
          select ... from {{ source('bronze', 'matches') }}

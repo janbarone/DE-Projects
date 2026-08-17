@@ -1,13 +1,16 @@
 # Power BI Report — Status, Change Log & Known Issues
 
-Status as of **2026-08-12**. This file is the running ledger for the report at
+Status as of **2026-08-17**. This file is the running ledger for the report at
 `.pbip/dota pipeline.Report` (PBIR format) and its semantic model at
 `.pbip/dota pipeline.SemanticModel` (TMDL).
 
-> **SAVEPOINT (2026-08-12):** Rounds 1–14 are complete and the report renders
-> correctly in Power BI Desktop. Round 14 (§5r) added a **Match ID slicer** to
-> the Combat page. Everything is committed and backed up —
-> `backups/gold5_20260812_162008.dump` (see §5r).
+> **SAVEPOINT (2026-08-17):** Rounds 1–16 complete. Round 16 (§5t) pruned 8
+> unused gold tables + their indexes/relationships (model 38 → **31 tables,
+> 52 relationships**), added index hardening + `on-run-end: analyze`, and
+> shipped the **Grand Report** page (all report pages merged on one 3840 px
+> canvas, `scripts/build_grand_page.py`). The gold layer rebuilt green
+> (227/227 PASS). Fresh dump —
+> `backups/gold_20260817_161207.dump` (see §5t).
 
 - Model mode: **DirectQuery** → PostgreSQL `localhost:5432` / db `dota`, **gold** schema.
 - PBIR version: `2.0.0`; visualContainer schema: **2.11.0** (report was imported at
@@ -19,47 +22,44 @@ Status as of **2026-08-12**. This file is the running ledger for the report at
 
 ## ▶ RESUME HERE — next session (what's left)
 
-All rounds (1–14) are built and JSON/TMDL-validated (143 JSON files, 0 bad; model
-= 38 tables, 72 relationships; Match Detail page validator 0 issues). Rounds 8–13
-(§5h–§5q) have been **opened in Power BI Desktop and the report renders
-correctly** — the Round 9 hero-slicer scoping, the Round 10 **Match Breakdown**
-page, the Round 11 player stat columns, the Round 12 **Progression** page and
-the Round 13 normalization all render. Round 14 (§5r) added a **Match ID
-slicer** to the Combat page. The remaining backlog is non-report work
-(orchestrator, matchup matrix, search slicers — see §8).
+All rounds (1–16) are built and JSON/TMDL-validated (290 report JSON files,
+0 bad, 0 BOMs; model = 31 tables, 52 relationships, 3 bidirectional; Grand
+Report page `--verify` = 474 field references all resolve). The gold layer was
+rebuilt green on 2026-08-17 (`dbt build --select gold --threads 1`,
+227/227 PASS) after the Round-16 pruning. The remaining backlog is report-level
+verification in Power BI Desktop plus non-report work (matchup matrix via
+USERELATIONSHIP, player drill-through — see §8).
 
 Safe resume checklist:
 
 1. Start Docker Desktop (PostgreSQL `postgres:16`, `localhost:5432`, db `dota`)
    — DirectQuery source. Keep Power BI Desktop **closed** while editing files.
-2. Open `.pbip/dota pipeline.Report` in Power BI Desktop. On the **Match
-   Detail** page expect: a **Radiant Hero** slicer over the left column and a
-   **Dire Hero** slicer over the right column, each filtering **only its own
-   side** (Radiant → Radiant players / itemization / skills; Dire → Dire
-   players / itemization / skills); each hero slicer lists **only the heroes
-   that appear in the currently selected match** (via the `Hero in Current
-   Match` measure + visual-level filter, §5j); match dropdown bound to
-   `fact_matches` (lists **all 4,299 matches** — the previous 3,285-match
-   restriction was dropped when the slicer was re-bound, see §5i); player
-   tables now showing **25 columns each** (player / hero / level / K / D / A /
-   net worth / GPM / XPM / dmg to heroes / dmg to buildings / dmg received
-   phys·mag·pure / LH / denies / heal / pick seq / enemy heroes killed /
-   support gold / wards·dust·smoke·gem bought, §5l); the 4 per-minute
-   progression tables (Itemization y=445, Skill levelling y=645) filtered by
-   the match + side hero slicers; **no Play Axis**. On the **Combat** page a
-   **Match ID** dropdown slicer (x=650, §5r) filters the combat facts.
-3. Confirm the model imported cleanly: 38 tables, 72 relationships (**3
-   bidirectional** — see §5j for why the earlier skills-link change was not
-   kept).
+   **Heavy dbt builds may OOM-kill Postgres on this machine (§4) — run them
+   with `--threads 1`.**
+2. Open `.pbip/dota pipeline.Report` in Power BI Desktop. The report now opens
+   on the **Grand Report** page (landing page, `a1b2c3d4-…`, 3840×8517 px —
+   every report page merged into chapters with a deduplicated global filter
+   bar; rebuild with `python scripts/build_grand_page.py`). Everything from
+   Rounds 8–15 is as previously verified: Match Detail hero slicers scoped to
+   the selected match, 25-column player tables, per-minute progression tables,
+   Combat Match ID slicer, Hero Meta Top-opponents table, searchable
+   high-cardinality slicers.
+3. Confirm the model imported cleanly: **31 tables, 52 relationships (3
+   bidirectional)** — the Round-16 pruning removed 7 tables from the model
+   (`fact_teamfight_item_uses`, `fact_teamfight_kills`,
+   `fact_team_compositions`, `fact_match_timeline`,
+   `fact_match_timeline_events`, `dim_match_minute`,
+   `fact_match_player_kills`); `fact_match_player_damage_taken_type` was
+   already out since Round 11d.
 4. If a visual errors, note its GUID from its `visual.json`; do **not** let
    Desktop re-save over the hand-edited files without diffing first (§3.9).
-5. A fresh `pg_dump` was taken at the Round 14 savepoint
-   (`backups/gold5_20260812_162008.dump`, §5r); re-dump after any future
-   round that changes the DB.
+5. A fresh `pg_dump` was taken at the Round 16 savepoint
+   (`backups/gold_20260817_161207.dump`, §5t); re-dump after any future
+   round that changes the DB (or run the pipeline's `--backup` step).
 
 Full detail: §5g (Round 6), §5h (Round 7), §5i (Round 8), §5j (Round 9),
 §5k (Round 10), §5l (Round 11), §5p (Round 12), §5q (Round 13), §5r (Round 14),
-and the gold schema in `docs/data_model.md`.
+§5s (Round 15), §5t (Round 16), and the gold schema in `docs/data_model.md`.
 
 ---
 
@@ -72,15 +72,15 @@ and the gold schema in `docs/data_model.md`.
 | **Hero Meta** (`5995aa2f-890e-4dd1-bbfb-56148396a2b6`) | role slicer, year slicer, top heroes by win rate / picks (bars), **Hero stats table (tableEx `a408a2f7`)**, Picks vs Bans (barChart `fce86b13`) |
 | **Players** (`cb9a7fde-3c5d-4449-9186-0175d103dd67`) | top players by KDA / picks (bars), player appearances by month, **Player leaderboard (tableEx `6516df28`, null names excluded)**, top-picks bar has blank-name exclusion (`a44d5e76`) |
 | **Teams** (`baedb79c-f6fe-4143-a748-0c78bfe55ff9`) | appearances-by-side (barChart `17130a8d`), team win rate over time, top teams by appearances / win rate (bars), **Team leaderboard (tableEx `a33fb46e`, "Unknown" teams excluded)** |
-| **Combat** (`56eca095-57e2-46f9-98ab-f5b23aed77d9`) | **Most killed heroes (tableEx `1f0e8ee1`)**, top abilities / items in teamfights (bars), avg fights per match, cards, slicers (Hero, Player, **Match ID** — added Round 14, §5r); **bottom-left block (2026-08-05):** avg damage & healing per fight, teamfights by game phase, buybacks in teamfights |
+| **Combat** (`56eca095-57e2-46f9-98ab-f5b23aed77d9`) | teamfight cards (Total Teamfights `d4f6758f`, Avg Fights per Match `27b1d136`), damage & healing per fight (avg/total charts `bca57bf0` / `a786e082`, hero + player slicers `2b9f3b80` / `dbc0270a`), Total Fight Buybacks, Avg Gold/XP Swing, **Match ID** slicer (`6e9cce4f` — added Round 14, §5r) |
 | **Economy** (`a535cc39-aabf-4e7d-aedb-4bdba9e40445`) | **NEW (2026-08-05, 1280×900)** — 7 stat cards (GPM/XPM/Net Worth/LH/Denies/Stuns/Healing), top farm leaders, top last-hit leaders, support impact by hero (healing + camps), most common first items (tableEx `58aeb46e`), matches by lobby type donut, GPM/XPM trend line |
 | **Draft** (`655dabd0-cc4b-492e-a84d-f8e7a134a24d`) | **NEW (2026-08-05, 1280×900)** — top picks / top bans / picks-vs-bans bars, picks by draft phase (First/Mid/Late), draft activity by side, most common hero matchups (tableEx `c23c3aa8`), team head-to-head records (tableEx `173c2a3f`) |
 | **About & Glossary** (`736e1272-e6f1-4d3e-9c53-21721b6d03c6`) | **NEW (2026-08-05, 1280×1000)** — 11 textboxes: what the report is / what to expect / how to use it, a Dota term glossary, and one description box per page listing every visual and what it shows |
 | **Match Detail** (`9d4f2e1a-8b3c-47d5-a6f7-8c9d0e1f2a3b`) | **NEW (2026-08-06)** — dropdown slicer on `match_id`, 3 cards (Winner / Duration / Total Kills), Radiant + Dire player tables (player, hero, team result, KDA, GPM/XPM, net worth, top skills, 6 items). See §5e. **Round 6:** independent Radiant/Dire hero + kind slicers + two Play Axis visuals — **report layer complete (2026-08-08)**, see §5g. **Round 7 (2026-08-08):** timeline tables replaced by 4 per-minute progression tables (Radiant/Dire **itemization over time** + Radiant/Dire **skill levelling over time**), `kind` column + kind slicers removed, match slicer restricted to matches with progression data (3,285), hero slicers now reach the progression tables, Play Axis re-wired to a shared `dim_match_minute` so scrubbing drives the progression tables — see §5h. **Round 8 (2026-08-08):** Play Axis removed; hero slicers titled & side-scoped (Radiant → Radiant tables only, Dire → Dire tables only); player tables trimmed to player / hero / level / K / D / A / net worth (team_win, GPM, XPM dropped); progression tables filter via match + side hero slicers — see §5i. **Round 9 (2026-08-08, §5j):** hero slicers now scope to the selected match via the `Hero in Current Match` measure + visual-level filter (**verified in Desktop**). **Round 11 (2026-08-08, §5l):** both player tables extended to **25 columns** — player / hero / level / K / D / A / net worth / GPM / XPM / damage to heroes / damage to buildings / damage received phys·mag·pure / LH / denies / heal / pick sequence / enemy heroes killed / support gold / wards·dust·smoke·gem bought. |
-| **Match Breakdown** (`8691a6fe-f9a0-40e7-b33f-4f0a4c276465`) | **NEW (2026-08-08, Round 10, 1280×1000)** — per-match deep-dive: match dropdown, **hero kills** split Radiant/Dire (via `fact_match_player_kills`), **rune pickups by hero** (via `fact_match_player_runes` + `dim_rune`), **support contribution** (wards placed / dewards via new `fact_match_players` support columns), **damage dealt/taken** split Radiant/Dire with **target/source-category slicers** (Hero/Building) and **building/hero damage KPI cards** (via `fact_match_player_damage` / `_taken`). See §5k. |
+| **Match Breakdown** (`8691a6fe-f9a0-40e7-b33f-4f0a4c276465`) | **NEW (2026-08-08, Round 10, 1280×1000)** — per-match deep-dive: match dropdown, **rune pickups by hero** (via `fact_match_player_runes` + `dim_rune`), **support contribution** (wards placed / dewards via new `fact_match_players` support columns), **damage dealt/taken** split Radiant/Dire with **target/source-category slicers** (Hero/Building) and **building/hero damage KPI cards** (via `fact_match_player_damage` / `_taken`). See §5k. |
 | **Progression** (`a0d69ef1-5555-4687-a1ee-623c1399b01f`) | **NEW (2026-08-08, Round 12, 1280×900)** — per-minute line charts with a shared minute slicer + match dropdown: **Team XP & Net Worth** (`fact_match_team_minute`), **Player Net Worth**, **Player Level** (`fact_match_player_minute`), **Player Item Purchases** (`fact_match_player_item_purchases`). X = minute, Y = metric, legend = side/hero. See §5p. |
 
-143 report JSON files, all parse cleanly (validated 2026-08-12).
+290 report JSON files, all parse cleanly, 0 bad, 0 BOMs (validated 2026-08-17).
 
 ---
 
@@ -109,9 +109,15 @@ and the gold schema in `docs/data_model.md`.
 - **Match Detail hero slicers scope to the selected match** — Radiant/Dire
   hero slicers list only the match's heroes via the `Hero in Current Match`
   measure + visual-level filter (Round 9, §5j; **verified in Desktop**).
-- All **53 relationships** validate (types are text at the schema level): 35
-  through §5c, plus the round 4/5 timeline / matchup / composition links and the
-  round 6/7 per-minute fact links (§5g/§5h).
+- All **52 relationships** validate (types are text at the schema level); the
+  Round-16 pruning removed the kills/timeline/composition/minute links, and the
+  remaining ones (round 4–13 timeline-era, matchup, H2H, per-minute, runes,
+  damage, team-minute, hero-side links) were re-verified against the model
+  (2026-08-17, §5t).
+- **Grand Report page** (`a1b2c3d4-…`, 2026-08-16): all pages merged on one
+  3840×8517 px canvas as chapters with a deduplicated global filter bar —
+  144 visuals, 38 unique slicers of 40 total, registered as the landing page;
+  `build_grand_page.py --verify` resolves all 474 field references.
 
 ---
 
@@ -137,27 +143,28 @@ and the gold schema in `docs/data_model.md`.
 6. **`dim_player` contains match-only participants with `player_name = null`**
    (no OpenDota name). Players visuals rely on blank-exclusion filters — the
    leaderboard table now has one (2026-08-05), the top-picks bar already did.
-7. **`victim_hero_id → dim_hero` is an inactive relationship** in the model
-   (only one active link per pair). Slicing a hero on kill events only filters
-   kills where the hero is the *killer*; victim-side analysis would need
-   `USERELATIONSHIP` or a second relationship trick. The new
-   `fact_hero_matchups` covers most matchup use-cases instead (its `dire_hero_id`
-   link is also inactive, same caveat applies).
+7. **`victim_hero_id → dim_hero` was an inactive relationship** (only one
+   active link per pair) on the old `fact_teamfight_kills` / `fact_match_player_kills`
+   tables — **both pruned in Round 16**, so the caveat no longer applies to any
+   live table. `fact_hero_matchups.dire_hero_id` and
+   `fact_hero_matchups_hero.opponent_id` are still inactive second links (same
+   DirectQuery constraint); victim-side analysis uses the denormalized
+   `fact_match_players.enemy_heroes_killed` column.
 8. **Staleness.** The gold layer is a dbt build; new matches appear only after
    `dbt run` and a report refresh. No scheduler yet.
 9. **Report files are hand-edited** (visual.json / TMDL). PBI Desktop re-saves
    can rewrite/upgrade them (it upgraded 2.2.0 → 2.11.0 schemas), so re-check the
    diff after opening/saving in Desktop.
 10. **New "second-dimension" links are inactive by design.** `dire_hero_id`,
-    `team_b_id` (and `victim_hero_id`) each need `USERELATIONSHIP` in a measure
-    to filter — DirectQuery supports only one active relationship per pair.
-11. **Backups are stale → refreshed at the Round 14 savepoint.** The newest dump
-    is now **`gold5_20260812_162008.dump`** (337 MB, taken 2026-08-12 after all
-    rounds 4–14, §5r). The previous `gold4_20260808_191856.dump` covers rounds
-    4–9 but predates round 10+ gold tables (`dim_rune`, `fact_hero_side`,
-    `fact_hero_matchup_stats`, `fact_match_player_kills`/`_runes`/`_damage`/
-    `_damage_taken`, `fact_match_team_minute`) and the round-13 normalization.
-    Re-dump after any future round that changes the DB.
+    `team_b_id` (and the old `victim_hero_id`) each need `USERELATIONSHIP` in a
+    measure to filter — DirectQuery supports only one active relationship per
+    pair.
+11. **Backups are refreshed at each savepoint.** Newest dump:
+    **`backups/gold_20260817_161207.dump`** (304.7 MB, taken 2026-08-17 after
+    the Round 16 pruning + gold rebuild, §5t). Previous:
+    `gold_20260814_025223.dump` (Round 15), `gold5_20260812_162008.dump`
+    (rounds 4–14). Re-dump after any future round that changes the DB (or run
+    the pipeline's `--backup` step).
 12. **No rank data.** `dim_player.rank_tier` is empty for every player (the
     source matches/players never carry rank), so a rank-distribution visual is
     impossible. The Economy page uses a lobby-type donut instead.
@@ -192,6 +199,12 @@ and the gold schema in `docs/data_model.md`.
 - **Team dimension** is reached only through the `fact_team_matches` bridge
   (one row per match + side) — single active path, no `USERELATIONSHIP`.
 - Key/ID columns are **text** everywhere in gold so relationships validate.
+- **Heavy builds can OOM-kill Postgres on this machine (2026-08-16/17).**
+  The Docker Desktop VM (~6.7 GB) SIGKILLs Postgres (`server process was
+  terminated by signal 9`) when dbt runs parallel heavy builds — the host
+  (13.9 GB) is often too memory-pressured (browser, qBittorrent, etc.).
+  Recovery replays WAL and the DB comes back in ~7 s, but dbt aborts.
+  **Run heavy gold rebuilds with `--threads 1`.** See §5t.
 
 ---
 
@@ -1068,6 +1081,122 @@ User feedback round. No dbt / model changes — report layer (PBIR) only.
   the stale `gold4_20260808_191856.dump` (see §3.11). Git commit at this round
   = the rollback point. All report pages render correctly in Power BI Desktop.
 
+### 5s. Round 15 — Hero Meta matchup visual + search slicers + orchestrator hardening (2026-08-14)
+
+- **Data (dbt):** `gold.fact_hero_matchups_hero` gained two display columns —
+  `hero_name` and `opponent_name` (localized names, joined from `dim_hero` in
+  both perspectives) — so a table can list opponents without the second
+  (inactive) hero relationship. Added `not_null` tests for both columns in
+  `transform/models/gold/schema.yml`; mirrored into the TMDL
+  (`gold fact_hero_matchups_hero.tmdl`, lineageTags …013/…014). Rebuilt with
+  `dbt build` — 213,390 rows, all 11 tests PASS.
+- **Hero Meta page (`5995aa2f`, §5e) — Top opponents table:** new **Hero**
+  dropdown slicer (`b759809c-0df0-4153-86cb-b68307b74771`, x=870/y=15, w=390)
+  bound to `gold dim_hero.hero_localized_name` (searchable, §3.10-style) drives
+  a new **Top opponents** `tableEx` (`3f09eacb-fceb-4ff8-81ef-c7165f86d411`,
+  x=20/y=990, w=1240/h=270) projecting `opponent_name` + `Hero Matchup Games` +
+  `Hero Matchup Win Rate` (measures on `gold fact_hero_matchups_hero`), sorted
+  by games desc. Page height 1000 → **1280** to fit it; the existing hero-stats
+  table (`a408a2f7`) cross-filters it. Because `hero_id → dim_hero` is the only
+  active relationship, the slicer shows the focal hero's true record vs every
+  opponent on both sides.
+- **Search slicers (item 4):** added `objects.general.properties.
+  selfFilterEnabled = true` (the PBIR serialization of the slicer search-box
+  toggle) to all high-cardinality slicers — hero (`56eca095`/2b9f3b80,
+  `cb9a7fde`/02340ea0, `9d4f2e1a`/02f2e3d4…01/…02, `5995aa2f`/b759809c),
+  player (`56eca095`/dbc0270a, `cb9a7fde`/e818b205), match ID (`56eca095`
+  /6e9cce4f, `8691a6fe`/48d2ed1e, `9d4f2e1a`/01f2e3d4), league (`655dabd0`
+  /aaaa0202, `a535cc39`/aaaa0102, `baedb79c`/b191d359). League/team/hero
+  slicers on Overview/Teams/Combat pages already had it from earlier rounds.
+- **Orchestrator hardening (items 1–2, data pipeline):** `scripts/run_pipeline.py`
+  now has `--backup`/`--only-backup`/`--backup-prefix`/`--backups-dir`/
+  `--backup-docker` (pg_dump via `docker exec dota_postgres`, since pg_dump is
+  not on Windows PATH nor in the orchestrator images) and
+  `dbt_source_freshness()` + `--freshness`/`--only-freshness`. Airflow DAG
+  `dota_medallion_pipeline` now runs
+  `load_bronze >> dbt_build >> [dbt_source_freshness, pg_dump_backup]`; the
+  Dagster job gained `source_freshness` and `db_backed_up` assets. Verified
+  live: `dbt source freshness` exits 0 on WARN (bronze.matches 7d threshold),
+  and the backup step wrote a valid 337 MB `-Fc` dump.
+- **Verified:** full report = 146 JSON files, 0 bad, 0 BOMs, `$schema` intact;
+  18/40 slicers have `selfFilterEnabled` (all high-cardinality ones). Model
+  unchanged (38 tables, 72 relationships, 3 bidirectional).
+- **Savepoint (2026-08-14):** fresh `pg_dump` taken —
+  `backups/gold_20260814_025223.dump` (337 MB) via the pipeline's
+  `--only-backup --backup-docker` step — supersedes `gold5_20260812_162008.dump`.
+
+### 5t. Round 16 — DB optimization + Grand Report page (2026-08-16 → resumed 2026-08-17)
+
+Status ledger (kept updated as the round progresses):
+
+- [x] **Drop 8 unused gold tables (dbt + model).** All confirmed unused — zero
+      references anywhere in the report:
+      `fact_match_player_kills`, `fact_match_timeline`,
+      `fact_match_timeline_events`, `fact_team_compositions`,
+      `fact_teamfight_item_uses`, `fact_teamfight_kills`, `dim_match_minute`
+      (kept only as `generate_series` range in `fact_match_player_minute`) and
+      the gold `fact_match_player_damage_taken_type` (silver
+      `stg_match_player_damage_taken_type` still feeds `fact_match_players`).
+      schema.yml tests removed with them.
+- [x] **Index hardening (all gold models).** Fixed the double-schema index-name
+      bug (`{{ this.schema }}_{{ this.schema }}_fact_*_idx` → single prefix, with
+      `drop index if exists` before `create index` so rebuilds stay idempotent).
+      `fact_matches` gained `match_id`, `patch` and `start_date` indexes.
+- [x] **`on-run-end: analyze`** in `transform/dbt_project.yml` — Postgres
+      statistics refresh after every build (visible as a ~23s hook at the end of
+      each `dbt build`).
+- [x] **Semantic model pruned 38 → 31 tables** (relationships.tmdl, model.tmdl
+      `PBI_QueryOrder`), TMDL files for the dropped tables deleted.
+- [x] **Grand Report page** (`a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d`): a new
+      script `scripts/build_grand_page.py` merges every page of the report onto
+      one 3840 px canvas — deduplicated global filter bar (~40 slicers → unique
+      set), one chapter per source page with story textboxes, preserved
+      cross-visual interactions, `--verify` flag that checks every field
+      reference against the semantic model. `tests/test_build_grand_page.py`
+      covers slicer dedupe + layout. Generated page registered as the report's
+      landing/active page in `pages.json`.
+- [x] **Interrupted build diagnosed.** The 2026-08-16 `dbt build` ran 30/32
+      models then failed when Docker was stopped mid-run: `server closed the
+      connection unexpectedly` / `FATAL: the database system is shutting down`.
+      Failed: `fact_match_player_skills`, `fact_match_team_minute` (both leaf
+      facts, no downstream dependents).
+- [x] **Resumed 2026-08-17 — targeted repair build:** `dbt build --select
+      fact_match_player_skills fact_match_team_minute` → PASS 23/23
+      (skills 535,432 rows in ~10 min, team_minute 250,640 rows; 20 tests green;
+      `analyze` hook OK).
+- [x] **Gold layer rebuilt & verified green:** `dbt build --select gold
+      --threads 1` → **PASS 227/227** (32 table models + 194 data tests,
+      9.5 min; `on-run-end: analyze` OK). The 3 full-build attempts crashed on
+      the OOM issue below; gold-only was stable and covers the session's
+      changes (silver edits were hook-only, content unchanged).
+- [x] **Orphaned gold tables dropped:** the 8 removed tables were already gone
+      from the DB (dropped during the 2026-08-16 session before the stop); the
+      one leftover was the stale experiment `fact_team_h2h_new` (4,220 rows,
+      not in dbt or the report) — dropped 2026-08-17. DB gold = manifest gold
+      = 32 tables.
+- [x] **Validations:** pytest 33/33 PASS; `build_grand_page.py --verify` =
+      474 field references all resolve against the pruned model (page
+      regenerated, 144 visuals, 38 unique slicers); 290 report JSON files,
+      0 bad, 0 BOMs.
+- [x] **Fresh `pg_dump`:** `backups/gold_20260817_161207.dump` (304.7 MB,
+      193 TOC entries, `-Fc` via `run_pipeline.py --only-backup
+      --backup-docker`) — supersedes `gold_20260814_025223.dump`.
+- [x] **Docs + commit savepoint** — this round closes with a commit (see git
+      log).
+
+**OOM discovery (2026-08-17):** the "interrupted build" had a second cause
+besides the Docker stop. Postgres logs show repeated
+`server process was terminated by signal 9: Killed` (OOM killer) — three times
+on 2026-08-16 (12:26/12:28/12:30 UTC) and three times on 2026-08-17 (07:51,
+07:53, 07:55 UTC) during builds. Root cause: the Docker Desktop VM (6.7 GB) is
+squeezed — the host (13.9 GB) often has only ~5 GB free
+(Firefox/qBittorrent/Steam/etc.), so dbt builds spike Postgres past the VM
+limit and the OS SIGKILLs a backend; WAL recovery replays (~7 s) and dbt
+aborts. Even `--threads 1` full builds crashed while scanning the big
+silver/bronze tables; **gold-only builds (`--select gold`) were stable** — use
+`--threads 1` + `--select gold` for heavy rebuilds. Power BI DirectQuery is
+unaffected (single-user, small queries). Documented in §4 below.
+
 ---
 
 ## 6. Working on the report (file map)
@@ -1111,24 +1240,28 @@ needed, SQL/DAX/JSON, effort, risk, status). High-level buckets:
 
 - **Coverage**: ~~draft / picks-bans page~~ (Draft page shipped 2026-08-05),
   player detail drill, team head-to-head (tables shipped 2026-08-05), hero
-  matchup matrix (`fact_hero_matchups` ready — the table shipped, the matrix
-  still needs `USERELATIONSHIP` or Desktop), ~~report documentation~~ (About &
-  Glossary page shipped 2026-08-05).
+  matchup matrix (**top-opponents table shipped 2026-08-14, §5s** — the full
+  matrix still needs `USERELATIONSHIP` or Desktop), ~~report documentation~~
+  (About & Glossary page shipped 2026-08-05).
 - **Depth**: patch dimension (`dim_patch` ready + slicer added), expose
   teamfight child facts, victim-hero analysis via matchups fact, rank
   distribution (blocked — no rank data).
-- **Visuals**: switch fragile `tableEx` to classic `table`; add search slicers;
-  better "Unknown" handling (leaderboards already filtered).
-- **Ops**: orchestrator (bronze_load → dbt build), ~~backup cadence~~ (**fresh
-  dump taken 2026-08-12 — `gold5_20260812_162008.dump`, §5r**), CI on the
-  pbip JSON.
-- **Next (this session's handover)**: Rounds 1–14 are complete and **render
+- **Visuals**: switch fragile `tableEx` to classic `table`; ~~add search
+  slicers~~ (**done 2026-08-14, §5s** — `selfFilterEnabled` on all
+  high-cardinality slicers); better "Unknown" handling (leaderboards already
+  filtered).
+- **Ops**: ~~orchestrator (bronze_load → dbt build)~~ (**done 2026-08-13/14 —
+  Airflow DAG + Dagster job now also run `source freshness` and `pg_dump` backup**),
+  ~~backup cadence~~ (**fresh dump taken 2026-08-14 —
+  `gold_20260814_025223.dump`, §5s**), CI on the pbip JSON.
+- **Next (this session's handover)**: Rounds 1–15 are complete and **render
   correctly in Power BI Desktop** (Round 9 hero-slicer scoping, Round 10 Match
   Breakdown, Round 11 player stat columns, Round 12 Progression, Round 13
-  normalization, Round 14 Combat Match ID slicer). The report is at a
-  **savepoint** — see **RESUME HERE** at the top of this file and §5r for the
-  commit + fresh dump (`gold5_20260812_162008.dump`). Remaining backlog ideas
-  are all below this line (orchestrator, matchup matrix, search slicers, etc.).
+  normalization, Round 14 Combat Match ID slicer, Round 15 Hero Meta
+  top-opponents + search slicers). The report is at a **savepoint** — see
+  **RESUME HERE** at the top of this file and §5s for the commit + fresh dump
+  (`gold_20260814_025223.dump`). Remaining backlog ideas are all below this
+  line (full matchup matrix via USERELATIONSHIP, player drill-through, images).
 - **Round 6 (2026-08-07 → 2026-08-08, see §5g):** Match Detail progression
   visuals. dbt models are written (`stg_match_player_minute`,
   `stg_match_player_skills` incremental silver + `fact_match_player_minute`,

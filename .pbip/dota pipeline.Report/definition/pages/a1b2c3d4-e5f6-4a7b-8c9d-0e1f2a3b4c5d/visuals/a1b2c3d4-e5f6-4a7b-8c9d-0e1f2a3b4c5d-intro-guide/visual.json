@@ -1,0 +1,104 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
+  "name": "a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d-intro-guide",
+  "position": {
+    "x": 28.0,
+    "y": 168.0,
+    "z": 2,
+    "height": 90.0,
+    "width": 3784.0,
+    "tabOrder": 2
+  },
+  "visual": {
+    "visualType": "textbox",
+    "objects": {
+      "general": [
+        {
+          "properties": {
+            "paragraphs": [
+              {
+                "textRuns": [
+                  {
+                    "value": "HOW TO READ THIS CANVAS",
+                    "textStyle": {
+                      "fontFamily": "Segoe UI",
+                      "fontSize": "11pt",
+                      "fontWeight": "700",
+                      "color": "#1B4F72"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Twelve chapters flow top to bottom, uniting every page of the report: set the stage with the overview, study the heroes who define the meta, meet the players and teams, then descend into matches, drafts, combat, economy and the minute-by-minute detail of individual games. The filter bar directly below drives the entire story - every visual answers to the same filters, so what you select here is told consistently everywhere else. Scroll freely: the story is long, but every detail is here.",
+                    "textStyle": {
+                      "fontFamily": "Segoe UI",
+                      "fontSize": "11pt",
+                      "fontWeight": "normal"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "background": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "dropShadow": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "border": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

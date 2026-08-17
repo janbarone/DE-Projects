@@ -1,0 +1,249 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
+  "name": "a44d5e76-ef5e-4a73-9935-232944234b95",
+  "position": {
+    "x": 28.0,
+    "y": 2181.3808900083964,
+    "z": 62,
+    "height": 299.5744680851064,
+    "width": 455.1975683890578,
+    "tabOrder": 62
+  },
+  "visual": {
+    "visualType": "clusteredBarChart",
+    "query": {
+      "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold dim_player"
+                    }
+                  },
+                  "Property": "player_name"
+                }
+              },
+              "queryRef": "gold dim_player.player_name",
+              "nativeQueryRef": "player_name",
+              "active": true
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold fact_match_players"
+                    }
+                  },
+                  "Property": "Total Picks"
+                }
+              },
+              "queryRef": "gold fact_match_players.Total Picks",
+              "nativeQueryRef": "Total Picks"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Measure": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "gold fact_match_players"
+                  }
+                },
+                "Property": "Total Picks"
+              }
+            },
+            "direction": "Descending"
+          }
+        ],
+        "isDefaultSort": true
+      }
+    },
+    "objects": {
+      "valueAxis": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            },
+            "showAxisTitle": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "categoryAxis": [
+        {
+          "properties": {
+            "showAxisTitle": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            },
+            "maxMarginFactor": {
+              "expr": {
+                "Literal": {
+                  "Value": "20L"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "labels": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "10D"
+                }
+              }
+            },
+            "bold": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Top players by picks'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "border": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "a1b2c3d4e5f6a7b8c9d0",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "gold dim_player"
+              }
+            },
+            "Property": "player_name"
+          }
+        },
+        "type": "Advanced",
+        "filter": {
+          "Version": 2,
+          "From": [
+            {
+              "Name": "p",
+              "Entity": "gold dim_player",
+              "Type": 0
+            }
+          ],
+          "Where": [
+            {
+              "Condition": {
+                "Not": {
+                  "Expression": {
+                    "Comparison": {
+                      "ComparisonKind": 0,
+                      "Left": {
+                        "Column": {
+                          "Expression": {
+                            "SourceRef": {
+                              "Source": "p"
+                            }
+                          },
+                          "Property": "player_name"
+                        }
+                      },
+                      "Right": {
+                        "Literal": {
+                          "Value": "null"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "aa53f4ea29813ad40762",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "gold fact_match_players"
+              }
+            },
+            "Property": "Total Picks"
+          }
+        },
+        "type": "Advanced"
+      }
+    ]
+  }
+}

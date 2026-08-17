@@ -1,0 +1,136 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
+  "name": "d6d3e7e7-e475-4765-830d-e7fc578ca658",
+  "position": {
+    "x": 676.0,
+    "y": 5334.176339159705,
+    "z": 103,
+    "height": 200,
+    "width": 620,
+    "tabOrder": 103
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold dim_hero"
+                    }
+                  },
+                  "Property": "hero_localized_name"
+                }
+              },
+              "queryRef": "gold dim_hero.hero_localized_name",
+              "nativeQueryRef": "hero_localized_name",
+              "active": true
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold fact_picks_bans"
+                    }
+                  },
+                  "Property": "Draft Bans"
+                }
+              },
+              "queryRef": "gold fact_picks_bans.Draft Bans",
+              "nativeQueryRef": "Draft Bans",
+              "active": true
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold fact_picks_bans"
+                    }
+                  },
+                  "Property": "Ban Rate"
+                }
+              },
+              "queryRef": "gold fact_picks_bans.Ban Rate",
+              "nativeQueryRef": "Ban Rate",
+              "active": true
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold fact_picks_bans"
+                    }
+                  },
+                  "Property": "Avg Ban Position"
+                }
+              },
+              "queryRef": "gold fact_picks_bans.Avg Ban Position",
+              "nativeQueryRef": "Avg Ban Position",
+              "active": true
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Measure": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "gold fact_picks_bans"
+                  }
+                },
+                "Property": "Draft Bans"
+              }
+            },
+            "direction": "Descending"
+          }
+        ]
+      }
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Ban frequency by hero'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "border": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

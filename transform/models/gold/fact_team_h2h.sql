@@ -1,11 +1,13 @@
 {{ config(
     materialized='table',
     post_hook=[
-        "create index if not exists {{ this.schema }}_fact_th2h_match_idx on {{ this }}(match_id)",
-        "create index if not exists {{ this.schema }}_fact_th2h_a_idx on {{ this }}(team_a_id)",
-        "create index if not exists {{ this.schema }}_fact_th2h_b_idx on {{ this }}(team_b_id)"
-    ]
-) }}
+        "drop index if exists {{ this.schema }}.{{ this.schema }}_fact_th2h_match_idx",
+        "create index {{ this.schema }}_fact_th2h_match_idx on {{ this }}(match_id)",
+        "drop index if exists {{ this.schema }}.{{ this.schema }}_fact_th2h_a_idx",
+        "create index {{ this.schema }}_fact_th2h_a_idx on {{ this }}(team_a_id)",
+        "drop index if exists {{ this.schema }}.{{ this.schema }}_fact_th2h_b_idx",
+        "create index {{ this.schema }}_fact_th2h_b_idx on {{ this }}(team_b_id)"
+    ]) }}
 
 -- Team head-to-head fact: one row per match where both teams are known,
 -- with the team pair stored in canonical order (team_a_id < team_b_id) so each

@@ -1,0 +1,192 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
+  "name": "b3a03003-0000-0000-0000-000000000003",
+  "position": {
+    "x": 1996.0,
+    "y": 6242.176339159705,
+    "z": 119,
+    "height": 245,
+    "width": 610,
+    "tabOrder": 119
+  },
+  "visual": {
+    "visualType": "textbox",
+    "objects": {
+      "general": [
+        {
+          "properties": {
+            "paragraphs": [
+              {
+                "textRuns": [
+                  {
+                    "value": "Match Detail terms",
+                    "textStyle": {
+                      "fontFamily": "Segoe UI",
+                      "fontSize": "14pt",
+                      "fontWeight": "600",
+                      "color": "#1B4F72"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Items Ã¢â‚¬â€ ",
+                    "textStyle": {
+                      "fontFamily": "Segoe UI",
+                      "fontSize": "9.5pt",
+                      "fontWeight": "600"
+                    }
+                  },
+                  {
+                    "value": "items a player owned (decoded from OpenDota item IDs via dim_item).",
+                    "textStyle": {
+                      "fontFamily": "Segoe UI",
+                      "fontSize": "9.5pt",
+                      "fontWeight": "normal"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Abilities Ã¢â‚¬â€ ",
+                    "textStyle": {
+                      "fontFamily": "Segoe UI",
+                      "fontSize": "9.5pt",
+                      "fontWeight": "600"
+                    }
+                  },
+                  {
+                    "value": "skills a player used in a teamfight (internal names, e.g. 'nevermore_requiem').",
+                    "textStyle": {
+                      "fontFamily": "Segoe UI",
+                      "fontSize": "9.5pt",
+                      "fontWeight": "normal"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Gold delta Ã¢â‚¬â€ ",
+                    "textStyle": {
+                      "fontFamily": "Segoe UI",
+                      "fontSize": "9.5pt",
+                      "fontWeight": "600"
+                    }
+                  },
+                  {
+                    "value": "net gold a player gained during a teamfight.",
+                    "textStyle": {
+                      "fontFamily": "Segoe UI",
+                      "fontSize": "9.5pt",
+                      "fontWeight": "normal"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "XP delta Ã¢â‚¬â€ ",
+                    "textStyle": {
+                      "fontFamily": "Segoe UI",
+                      "fontSize": "9.5pt",
+                      "fontWeight": "600"
+                    }
+                  },
+                  {
+                    "value": "net experience a player gained during a teamfight.",
+                    "textStyle": {
+                      "fontFamily": "Segoe UI",
+                      "fontSize": "9.5pt",
+                      "fontWeight": "normal"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Deaths Ã¢â‚¬â€ ",
+                    "textStyle": {
+                      "fontFamily": "Segoe UI",
+                      "fontSize": "9.5pt",
+                      "fontWeight": "600"
+                    }
+                  },
+                  {
+                    "value": "how many times a player died in that teamfight.",
+                    "textStyle": {
+                      "fontFamily": "Segoe UI",
+                      "fontSize": "9.5pt",
+                      "fontWeight": "normal"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "background": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "dropShadow": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "border": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

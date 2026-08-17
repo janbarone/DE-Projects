@@ -1,0 +1,53 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
+  "name": "1e98d547-22f1-42bf-a9c8-f35382bdacc7",
+  "position": {
+    "x": 235.09319899244332,
+    "y": 4348.377850494719,
+    "z": 84,
+    "height": 114.48362720403023,
+    "width": 180.22670025188916,
+    "tabOrder": 84
+  },
+  "visual": {
+    "visualType": "card",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold fact_match_players"
+                    }
+                  },
+                  "Property": "Avg XPM"
+                }
+              },
+              "queryRef": "gold fact_match_players.Avg XPM",
+              "nativeQueryRef": "Avg XPM"
+            }
+          ]
+        }
+      }
+    },
+    "visualContainerObjects": {
+      "border": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

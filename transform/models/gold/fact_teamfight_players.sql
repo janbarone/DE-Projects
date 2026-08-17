@@ -1,4 +1,11 @@
-{{ config(materialized='table') }}
+{{ config(materialized='table',     post_hook=[
+        "drop index if exists {{ this.schema }}.{{ this.schema }}_fact_tfp_match_idx",
+        "create index {{ this.schema }}_fact_tfp_match_idx on {{ this }}(match_id)",
+        "drop index if exists {{ this.schema }}.{{ this.schema }}_fact_tfp_hero_idx",
+        "create index {{ this.schema }}_fact_tfp_hero_idx on {{ this }}(hero_id)",
+        "drop index if exists {{ this.schema }}.{{ this.schema }}_fact_tfp_account_idx",
+        "create index {{ this.schema }}_fact_tfp_account_idx on {{ this }}(account_id)"
+    ]) }}
 
 -- One row per (match, teamfight, player) at hero level.
 -- OpenDota's teamfight players array always has exactly 10 entries, ordered by

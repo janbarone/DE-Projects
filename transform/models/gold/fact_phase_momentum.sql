@@ -1,11 +1,13 @@
 {{ config(
     materialized='table',
     post_hook=[
-        "create index if not exists {{ this.schema }}_fact_phase_m_match_idx on {{ this }}(match_id)",
-        "create index if not exists {{ this.schema }}_fact_phase_m_team_idx on {{ this }}(team_number)",
-        "create index if not exists {{ this.schema }}_fact_phase_m_phase_idx on {{ this }}(fight_phase)"
-    ]
-) }}
+        "drop index if exists {{ this.schema }}.{{ this.schema }}_fact_phase_m_match_idx",
+        "create index {{ this.schema }}_fact_phase_m_match_idx on {{ this }}(match_id)",
+        "drop index if exists {{ this.schema }}.{{ this.schema }}_fact_phase_m_team_idx",
+        "create index {{ this.schema }}_fact_phase_m_team_idx on {{ this }}(team_number)",
+        "drop index if exists {{ this.schema }}.{{ this.schema }}_fact_phase_m_phase_idx",
+        "create index {{ this.schema }}_fact_phase_m_phase_idx on {{ this }}(fight_phase)"
+    ]) }}
 
 -- One row per (match, team, fight phase): the team's gold/XP swing and death
 -- count inside the teamfights that happened during that phase, plus the final

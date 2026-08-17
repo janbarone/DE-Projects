@@ -1,0 +1,117 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
+  "name": "a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d-chapter-05",
+  "position": {
+    "x": 28.0,
+    "y": 3244.9553580935026,
+    "z": 74,
+    "height": 122.0,
+    "width": 3784.0,
+    "tabOrder": 74
+  },
+  "visual": {
+    "visualType": "textbox",
+    "objects": {
+      "general": [
+        {
+          "properties": {
+            "paragraphs": [
+              {
+                "textRuns": [
+                  {
+                    "value": "Chapter 05 - Matches",
+                    "textStyle": {
+                      "fontFamily": "Segoe UI",
+                      "fontSize": "24pt",
+                      "fontWeight": "600",
+                      "color": "#B03A2E"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "The games themselves: when they were played, how long they ran, in which mode and lobby, and under which patch. The raw timeline of the professional scene.",
+                    "textStyle": {
+                      "fontFamily": "Segoe UI",
+                      "fontSize": "11.5pt",
+                      "fontWeight": "normal"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Consolidated from the 'Matches' page of the report.",
+                    "textStyle": {
+                      "fontFamily": "Segoe UI",
+                      "fontSize": "9pt",
+                      "fontWeight": "normal",
+                      "color": "#666666"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "background": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "dropShadow": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "border": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

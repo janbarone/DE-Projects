@@ -1,11 +1,13 @@
 {{ config(
     materialized='table',
     post_hook=[
-        "create index if not exists {{ this.schema }}_fact_hm_match_idx on {{ this }}(match_id)",
-        "create index if not exists {{ this.schema }}_fact_hm_radiant_idx on {{ this }}(radiant_hero_id)",
-        "create index if not exists {{ this.schema }}_fact_hm_dire_idx on {{ this }}(dire_hero_id)"
-    ]
-) }}
+        "drop index if exists {{ this.schema }}.{{ this.schema }}_fact_hm_match_idx",
+        "create index {{ this.schema }}_fact_hm_match_idx on {{ this }}(match_id)",
+        "drop index if exists {{ this.schema }}.{{ this.schema }}_fact_hm_radiant_idx",
+        "create index {{ this.schema }}_fact_hm_radiant_idx on {{ this }}(radiant_hero_id)",
+        "drop index if exists {{ this.schema }}.{{ this.schema }}_fact_hm_dire_idx",
+        "create index {{ this.schema }}_fact_hm_dire_idx on {{ this }}(dire_hero_id)"
+    ]) }}
 
 -- Hero-vs-hero matchup fact: one row per (match, radiant hero, dire hero) =
 -- 25 rows per match. Enables hero matchup / counter matrices that cannot be

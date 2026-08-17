@@ -1,0 +1,117 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
+  "name": "a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d-chapter-08",
+  "position": {
+    "x": 28.0,
+    "y": 4872.176339159705,
+    "z": 95,
+    "height": 122.0,
+    "width": 3784.0,
+    "tabOrder": 95
+  },
+  "visual": {
+    "visualType": "textbox",
+    "objects": {
+      "general": [
+        {
+          "properties": {
+            "paragraphs": [
+              {
+                "textRuns": [
+                  {
+                    "value": "Chapter 08 - Draft",
+                    "textStyle": {
+                      "fontFamily": "Segoe UI",
+                      "fontSize": "24pt",
+                      "fontWeight": "600",
+                      "color": "#B03A2E"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Victory is decided before the horn sounds. Picks and bans reveal the strategy of both teams before a single creep spawns - what was contested, what was respected, and what was stolen.",
+                    "textStyle": {
+                      "fontFamily": "Segoe UI",
+                      "fontSize": "11.5pt",
+                      "fontWeight": "normal"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Consolidated from the 'Draft' page of the report.",
+                    "textStyle": {
+                      "fontFamily": "Segoe UI",
+                      "fontSize": "9pt",
+                      "fontWeight": "normal",
+                      "color": "#666666"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "background": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "dropShadow": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "border": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

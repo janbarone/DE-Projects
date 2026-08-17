@@ -1,10 +1,13 @@
 {{ config(
     materialized='table',
     post_hook=[
-        "create index if not exists {{ this.schema }}_fact_mpdt_match_idx on {{ this }}(match_id)",
-        "create index if not exists {{ this.schema }}_fact_mpdt_player_idx on {{ this }}(player_slot)"
-    ]
-) }}
+        "drop index if exists {{ this.schema }}.{{ this.schema }}_fact_mpdt_match_idx",
+        "create index {{ this.schema }}_fact_mpdt_match_idx on {{ this }}(match_id)",
+        "drop index if exists {{ this.schema }}.{{ this.schema }}_fact_mpdt_hero_idx",
+        "create index {{ this.schema }}_fact_mpdt_hero_idx on {{ this }}(hero_id)",
+        "drop index if exists {{ this.schema }}.{{ this.schema }}_fact_mpdt_account_idx",
+        "create index {{ this.schema }}_fact_mpdt_account_idx on {{ this }}(account_id)"
+    ]) }}
 
 -- One row per (match, player, damage source): raw damage received from each
 -- unit, categorized by source type. Reads the incremental silver model

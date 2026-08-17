@@ -1,0 +1,104 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
+  "name": "a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d-footer",
+  "position": {
+    "x": 28.0,
+    "y": 8367.20152807658,
+    "z": 144,
+    "height": 130,
+    "width": 3784.0,
+    "tabOrder": 144
+  },
+  "visual": {
+    "visualType": "textbox",
+    "objects": {
+      "general": [
+        {
+          "properties": {
+            "paragraphs": [
+              {
+                "textRuns": [
+                  {
+                    "value": "END OF THE GRAND REPORT",
+                    "textStyle": {
+                      "fontFamily": "Segoe UI",
+                      "fontSize": "18pt",
+                      "fontWeight": "700",
+                      "color": "#B03A2E"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Every chapter of the Dota 2 Intelligence Report, on one canvas. The data behind it flows from a full pipeline: scraped from the OpenDota API, stored, transformed and modelled for analysis. Filter, scroll and explore - the whole war is on this one page.",
+                    "textStyle": {
+                      "fontFamily": "Segoe UI",
+                      "fontSize": "11pt",
+                      "fontWeight": "normal"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "background": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "dropShadow": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "border": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

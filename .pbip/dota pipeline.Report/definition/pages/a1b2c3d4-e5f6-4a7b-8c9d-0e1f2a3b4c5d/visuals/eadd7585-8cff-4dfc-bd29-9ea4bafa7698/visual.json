@@ -1,0 +1,71 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
+  "name": "eadd7585-8cff-4dfc-bd29-9ea4bafa7698",
+  "position": {
+    "x": 3438.3199999999997,
+    "y": 902.0,
+    "z": 52,
+    "height": 160,
+    "width": 230,
+    "tabOrder": 52
+  },
+  "visual": {
+    "visualType": "card",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold fact_matches"
+                    }
+                  },
+                  "Property": "Avg Score Differential (match)"
+                }
+              },
+              "queryRef": "gold fact_matches.Avg Score Differential (match)",
+              "nativeQueryRef": "Avg Score Differential (match)"
+            }
+          ]
+        }
+      }
+    },
+    "visualContainerObjects": {
+      "border": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "477ba4df07ec64d00917",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "gold fact_matches"
+              }
+            },
+            "Property": "Avg Score Differential (match)"
+          }
+        },
+        "type": "Advanced"
+      }
+    ]
+  }
+}

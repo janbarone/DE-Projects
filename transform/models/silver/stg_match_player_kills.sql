@@ -1,11 +1,6 @@
 {{ config(
     materialized='incremental',
-    unique_key=['match_id', 'player_slot', 'kill_index'],
-    post_hook=[
-        "create index if not exists {{ this.schema }}_stg_mpk_match_idx on {{ this }}(match_id)",
-        "create index if not exists {{ this.schema }}_stg_mpk_player_idx on {{ this }}(player_slot)",
-        "create index if not exists {{ this.schema }}_stg_mpk_minute_idx on {{ this }}(minute)"
-    ]
+    unique_key=['match_id', 'player_slot', 'kill_index']
 ) }}
 
 -- One row per (match, player, kill): the hero's kill timeline, flattened from

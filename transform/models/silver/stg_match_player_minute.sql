@@ -1,11 +1,6 @@
 {{ config(
     materialized='incremental',
-    unique_key=['match_id', 'player_slot', 'minute'],
-    post_hook=[
-        "create index if not exists {{ this.schema }}_stg_mpm_match_idx on {{ this }}(match_id)",
-        "create index if not exists {{ this.schema }}_stg_mpm_player_idx on {{ this }}(player_slot)",
-        "create index if not exists {{ this.schema }}_stg_mpm_minute_idx on {{ this }}(minute)"
-    ]
+    unique_key=['match_id', 'player_slot', 'minute']
 ) }}
 
 -- One row per (match, player, minute): the player's per-minute progression

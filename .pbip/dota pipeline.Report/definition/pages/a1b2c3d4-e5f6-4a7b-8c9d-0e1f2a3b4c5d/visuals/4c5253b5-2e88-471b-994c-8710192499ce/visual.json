@@ -1,0 +1,232 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
+  "name": "4c5253b5-2e88-471b-994c-8710192499ce",
+  "position": {
+    "x": 1012.0,
+    "y": 6242.176339159705,
+    "z": 116,
+    "height": 245,
+    "width": 300,
+    "tabOrder": 116
+  },
+  "visual": {
+    "visualType": "textbox",
+    "objects": {
+      "general": [
+        {
+          "properties": {
+            "paragraphs": [
+              {
+                "textRuns": [
+                  {
+                    "value": "Combat",
+                    "textStyle": {
+                      "fontFamily": "Segoe UI",
+                      "fontSize": "14pt",
+                      "fontWeight": "600",
+                      "color": "#1B4F72"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Most killed heroes table Ã¢â‚¬â€ ",
+                    "textStyle": {
+                      "fontFamily": "Segoe UI",
+                      "fontSize": "9.5pt",
+                      "fontWeight": "600"
+                    }
+                  },
+                  {
+                    "value": "victim frequency in teamfights.",
+                    "textStyle": {
+                      "fontFamily": "Segoe UI",
+                      "fontSize": "9.5pt",
+                      "fontWeight": "normal"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Top abilities / items in teamfights Ã¢â‚¬â€ ",
+                    "textStyle": {
+                      "fontFamily": "Segoe UI",
+                      "fontSize": "9.5pt",
+                      "fontWeight": "600"
+                    }
+                  },
+                  {
+                    "value": "what is used in fights.",
+                    "textStyle": {
+                      "fontFamily": "Segoe UI",
+                      "fontSize": "9.5pt",
+                      "fontWeight": "normal"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Avg damage & healing per fight Ã¢â‚¬â€ ",
+                    "textStyle": {
+                      "fontFamily": "Segoe UI",
+                      "fontSize": "9.5pt",
+                      "fontWeight": "600"
+                    }
+                  },
+                  {
+                    "value": "per-hero output.",
+                    "textStyle": {
+                      "fontFamily": "Segoe UI",
+                      "fontSize": "9.5pt",
+                      "fontWeight": "normal"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Teamfights by game phase Ã¢â‚¬â€ ",
+                    "textStyle": {
+                      "fontFamily": "Segoe UI",
+                      "fontSize": "9.5pt",
+                      "fontWeight": "600"
+                    }
+                  },
+                  {
+                    "value": "early/mid/late split (fight_phase).",
+                    "textStyle": {
+                      "fontFamily": "Segoe UI",
+                      "fontSize": "9.5pt",
+                      "fontWeight": "normal"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Buybacks in teamfights Ã¢â‚¬â€ ",
+                    "textStyle": {
+                      "fontFamily": "Segoe UI",
+                      "fontSize": "9.5pt",
+                      "fontWeight": "600"
+                    }
+                  },
+                  {
+                    "value": "per-hero buyback usage.",
+                    "textStyle": {
+                      "fontFamily": "Segoe UI",
+                      "fontSize": "9.5pt",
+                      "fontWeight": "normal"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Slicers â€“ ",
+                    "textStyle": {
+                      "fontFamily": "Segoe UI",
+                      "fontSize": "9.5pt",
+                      "fontWeight": "600"
+                    }
+                  },
+                  {
+                    "value": "Hero, Player, Match ID (added 2026-08-12).",
+                    "textStyle": {
+                      "fontFamily": "Segoe UI",
+                      "fontSize": "9.5pt",
+                      "fontWeight": "normal"
+                    }
+                  }
+                ]
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Cards â€“ ",
+                    "textStyle": {
+                      "fontFamily": "Segoe UI",
+                      "fontSize": "9.5pt",
+                      "fontWeight": "600"
+                    }
+                  },
+                  {
+                    "value": "Avg Fights per Match, Total Teamfights, Total Fight Damage.",
+                    "textStyle": {
+                      "fontFamily": "Segoe UI",
+                      "fontSize": "9.5pt",
+                      "fontWeight": "normal"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "background": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "dropShadow": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "border": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

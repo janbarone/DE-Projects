@@ -1,0 +1,312 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
+  "name": "a408a2f7-b9cb-45c6-999b-f7dbd13ca986",
+  "position": {
+    "x": 1336.433249370277,
+    "y": 1392.3733333333334,
+    "z": 57,
+    "height": 290,
+    "width": 1240,
+    "tabOrder": 57
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold dim_hero"
+                    }
+                  },
+                  "Property": "hero_localized_name"
+                }
+              },
+              "queryRef": "gold dim_hero.hero_localized_name",
+              "nativeQueryRef": "Hero",
+              "displayName": "Hero"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold fact_match_players"
+                    }
+                  },
+                  "Property": "Total Picks"
+                }
+              },
+              "queryRef": "gold fact_match_players.Total Picks",
+              "nativeQueryRef": "Total Picks"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold fact_match_players"
+                    }
+                  },
+                  "Property": "Player Win Rate"
+                }
+              },
+              "queryRef": "gold fact_match_players.Player Win Rate",
+              "nativeQueryRef": "Player Win Rate"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold fact_match_players"
+                    }
+                  },
+                  "Property": "Avg KDA"
+                }
+              },
+              "queryRef": "gold fact_match_players.Avg KDA",
+              "nativeQueryRef": "Avg KDA"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold fact_match_players"
+                    }
+                  },
+                  "Property": "Avg GPM"
+                }
+              },
+              "queryRef": "gold fact_match_players.Avg GPM",
+              "nativeQueryRef": "Avg GPM"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold fact_match_players"
+                    }
+                  },
+                  "Property": "Avg XPM"
+                }
+              },
+              "queryRef": "gold fact_match_players.Avg XPM",
+              "nativeQueryRef": "Avg XPM"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold fact_match_players"
+                    }
+                  },
+                  "Property": "Avg Hero Damage"
+                }
+              },
+              "queryRef": "gold fact_match_players.Avg Hero Damage",
+              "nativeQueryRef": "Avg Hero Damage"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "gold dim_hero"
+                  }
+                },
+                "Property": "hero_localized_name"
+              }
+            },
+            "direction": "Ascending"
+          }
+        ]
+      }
+    },
+    "objects": {
+      "columnHeaders": [
+        {
+          "properties": {
+            "columnAdjustment": {
+              "expr": {
+                "Literal": {
+                  "Value": "'growToFit'"
+                }
+              }
+            },
+            "defaultColumnWidth": {
+              "expr": {
+                "Literal": {
+                  "Value": "90D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "total": [
+        {
+          "properties": {
+            "totals": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Hero stats'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "border": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "63dbfbcb12d380050632",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "gold dim_hero"
+              }
+            },
+            "Property": "hero_localized_name"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "6cb44f2dc1d9214112ba",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "gold fact_match_players"
+              }
+            },
+            "Property": "Total Picks"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "a7e552bc64cd173b0330",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "gold fact_match_players"
+              }
+            },
+            "Property": "Player Win Rate"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "d776308365cad4920649",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "gold fact_match_players"
+              }
+            },
+            "Property": "Avg KDA"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "61823aa790b3890a25d0",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "gold fact_match_players"
+              }
+            },
+            "Property": "Avg GPM"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "862f9e932d5256c7dbdb",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "gold fact_match_players"
+              }
+            },
+            "Property": "Avg XPM"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "4df2ed04520ccecc6deb",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "gold fact_match_players"
+              }
+            },
+            "Property": "Avg Hero Damage"
+          }
+        },
+        "type": "Advanced"
+      }
+    ]
+  }
+}

@@ -50,7 +50,14 @@ from _fetch_league_matches import (  # noqa: E402
 from dota_common import (  # noqa: E402
     BASE,
     DATA_DIR,
+    RateLimitedError,
+    discover_league,
+    have_match,
     http_get,
+    is_drained,
+    is_stale_error,
+    mark_drained,
+    mark_match_skipped,
     print_quota,
     quota_remaining,
     timestamp_fetched,
@@ -67,17 +74,6 @@ def day_left() -> int | None:
     return int(q) if q is not None else None
 
 
-def on_disk(mid: int) -> bool:
-    return (DATA_DIR / "proMatches" / f"{mid}.json").exists()
-
-
-def is_stale_error(exc: Exception) -> bool:
-    """True for errors that mean the match no longer exists / is unreachable,
-    so we should skip it rather than block."""
-    text = str(exc).lower()
-    return "404" in text or "430" in text or "not found" in text
-
-
 def save_match(mid: int, ts: str) -> bool:
     """Fetch and save one match. Returns True if saved, False if it errored."""
     raw = http_get(f"{BASE}/matches/{mid}")
@@ -88,11 +84,11 @@ def save_match(mid: int, ts: str) -> bool:
 
 
 def next_pro_mid(feed) -> int | None:
-    """Pop the first match_id from a proMatches feed that is not yet on disk."""
+    """Pop the first match_id from a proMatches feed that is not yet known."""
     while feed:
         m = feed.pop(0)
         mid = int(m["match_id"])
-        if not on_disk(mid):
+        if not have_match(mid):
             return mid
     return None
 
@@ -101,42 +97,53 @@ def refresh_pro_feed() -> list | None:
     try:
         feed = json.loads(http_get(f"{BASE}/proMatches"))
         return feed if isinstance(feed, list) else None
+    except RateLimitedError:
+        raise
     except Exception as e:
         print(f"  proMatches feed ERROR: {e}")
         return None
 
 
-def phase1_league_priority(league_ids, limit_left, ts, saved, limit) -> tuple:
+def phase1_league_priority(league_ids, limit_left, ts, saved, limit, redrain) -> tuple:
     """Download every missing match for every league, one league at a time.
 
-    Each league is fully drained before the next starts. Returns
+    Leagues already fully drained (see dota_common.mark_drained) are skipped
+    without an API call, unless --redrain forces a full re-scan. Each league is
+    fully drained before the next starts. Returns
     (saved, already, failures, limit_left)."""
     already = 0
     failures = []
     for lid in league_ids:
         if limit is not None and limit_left is not None and limit_left <= 0:
             break
-        # --- discovery: match_ids for this league ---
-        try:
-            mids = json.loads(http_get(f"{BASE}/leagues/{lid}/matchIds"))
-        except Exception as e:
-            msg = f"league {lid}: discovery ERROR: {e}"
-            print(f"  {msg}")
-            log(f"FAIL {msg}")
-            failures.append(f"league {lid} (discovery)")
+        # --- local skip: league already fully drained on a previous run ---
+        if not redrain and is_drained(lid):
+            print(f"league {lid}: already drained, skipping discovery")
             continue
-        if not isinstance(mids, list) or not mids:
-            print(f"league {lid}: no match ids")
-            log(f"INFO league {lid}: no match ids")
+        # --- quota guard before spending a discovery call ---
+        q0 = quota_remaining()
+        if q0["day"] is not None and int(q0["day"]) <= DAY_STOP_AT:
+            raise QuotaStop(q0["day"])
+        # --- discovery: match_ids for this league ---
+        mids, status, detail = discover_league(lid)
+        if status == "rate_limited":
+            raise QuotaStop("rate limited (daily quota likely spent)")
+        if status in ("empty", "unavailable"):
+            mark_drained(lid)
+            msg = f"league {lid}: {detail}; skipping permanently"
+            print(f"  {msg}")
+            log(f"{'FAIL' if status == 'unavailable' else 'INFO'} {msg}")
             continue
 
-        missing = [m for m in mids if not on_disk(m)]
+        missing = [m for m in mids if not have_match(m)]
         league_skipped = len(mids) - len(missing)
         already += league_skipped
 
         if limit is not None and limit_left is not None:
             missing = missing[: max(limit_left, 0)]
         print(f"league {lid}: {len(missing)} to fetch, {league_skipped} already present")
+        if not missing:
+            mark_drained(lid)
 
         for mid in missing:
             q = quota_remaining()
@@ -153,13 +160,21 @@ def phase1_league_priority(league_ids, limit_left, ts, saved, limit) -> tuple:
                     if limit_left is not None and limit_left <= 0:
                         break
                 print(f"  match {mid} saved ({saved})")
+            except RateLimitedError as e:
+                raise QuotaStop("rate limited (daily quota likely spent)") from e
             except KeyboardInterrupt:
                 raise
             except Exception as e:
-                msg = f"match {mid} ERROR after {MAX_ATTEMPTS} tries: {e}"
-                print(f"  {msg}")
-                log(f"FAIL {msg}")
-                failures.append(mid)
+                if is_stale_error(e):
+                    mark_match_skipped(mid)
+                    msg = f"match {mid} unavailable; skipped permanently"
+                    print(f"  {msg}")
+                    log(f"INFO {msg}")
+                else:
+                    msg = f"match {mid} ERROR after {MAX_ATTEMPTS} tries: {e}"
+                    print(f"  {msg}")
+                    log(f"FAIL {msg}")
+                    failures.append(mid)
     return saved, already, failures, limit_left
 
 
@@ -222,9 +237,12 @@ def phase2_pro_scrape(limit, saved, ts) -> int:
                 save_match(mid, ts)
                 saved += 1
                 print(f"  pro match {mid} saved ({saved})")
+            except RateLimitedError as e:
+                raise QuotaStop("rate limited (daily quota likely spent)") from e
             except Exception as e:
                 if is_stale_error(e):
-                    print(f"  pro match {mid} unavailable, skipped ({e})")
+                    mark_match_skipped(mid)
+                    print(f"  pro match {mid} unavailable, skipped permanently")
                 else:
                     print(f"  pro match {mid} ERROR: {e}")
 
@@ -284,6 +302,8 @@ def main() -> None:
     parser.add_argument("--leagues", default=None,
                         help="league ids (comma-separated) to download; default = priority tiers "
                              "(premium, then professional)")
+    parser.add_argument("--redrain", action="store_true",
+                        help="ignore the drained-league registry and re-discover every league")
     parser.add_argument("--leagues-only", action="store_true",
                         help="(alias) same as --mode leagues")
     parser.add_argument("--promatches-only", action="store_true",
@@ -340,7 +360,7 @@ def main() -> None:
         # ---- Phase 1: league priority (drain every league) ----------------
         if run_leagues and league_ids:
             saved, already, failures, limit_left = phase1_league_priority(
-                league_ids, limit_left, ts, saved, args.limit)
+                league_ids, limit_left, ts, saved, args.limit, args.redrain)
 
         # ---- Phase 2: proMatches scrape ------------------------------------
         if not run_promatches:

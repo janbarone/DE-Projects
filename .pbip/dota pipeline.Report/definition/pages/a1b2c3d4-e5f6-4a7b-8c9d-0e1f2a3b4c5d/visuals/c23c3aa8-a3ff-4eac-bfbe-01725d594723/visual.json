@@ -1,0 +1,136 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
+  "name": "c23c3aa8-a3ff-4eac-bfbe-01725d594723",
+  "position": {
+    "x": 2638.0,
+    "y": 5006.176339159705,
+    "z": 101,
+    "height": 300,
+    "width": 620,
+    "tabOrder": 101
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold fact_hero_matchup_stats"
+                    }
+                  },
+                  "Property": "matchup_label"
+                }
+              },
+              "nativeQueryRef": "matchup_label",
+              "active": true,
+              "queryRef": "gold fact_hero_matchup_stats.matchup_label"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold fact_hero_matchup_stats"
+                    }
+                  },
+                  "Property": "Matchup Games"
+                }
+              },
+              "nativeQueryRef": "Matchup Games",
+              "active": true,
+              "queryRef": "gold fact_hero_matchup_stats.Matchup Games"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold fact_hero_matchup_stats"
+                    }
+                  },
+                  "Property": "Matchup Radiant Win Rate"
+                }
+              },
+              "nativeQueryRef": "Matchup Radiant Win Rate",
+              "active": true,
+              "queryRef": "gold fact_hero_matchup_stats.Matchup Radiant Win Rate"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold fact_hero_matchup_stats"
+                    }
+                  },
+                  "Property": "Matchup Dire Win Rate"
+                }
+              },
+              "nativeQueryRef": "Matchup Dire Win Rate",
+              "active": true,
+              "queryRef": "gold fact_hero_matchup_stats.Matchup Dire Win Rate"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Measure": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "gold fact_hero_matchup_stats"
+                  }
+                },
+                "Property": "Matchup Games"
+              }
+            },
+            "direction": "Descending"
+          }
+        ]
+      }
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Most common hero matchups'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "border": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

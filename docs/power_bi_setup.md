@@ -35,12 +35,16 @@ Power BI → **Model view → Manage relationships → New**. For each relations
 > `dim_item` *(2026-08-05)* joins to `fact_match_players.item_0` for the
 > "first items" table on the Economy page.
 
-> ⚠️ **This guide covers the round 1–3 star schema only.** The model now has **31
-> tables / 53 relationships**. The round 4–7 additions (timeline +
-> `fact_phase_momentum`, `fact_team_compositions`, and the per-minute
-> progression facts `fact_match_player_minute` / `_skills` /
-> `_item_purchases` + `dim_match_minute`) follow the same many-to-one pattern
-> and are enumerated in `docs/data_model.md` §"Gold relationship table".
+> ⚠️ **This guide covers the round 1–3 star schema only.** The model now has
+> **31 tables / 52 relationships** (3 bidirectional). The round 4+ additions
+> (timeline-era tables, the per-minute progression facts `fact_match_player_minute`
+> / `_skills` / `_item_purchases`, round-10 damage/runes facts, round-12/13
+> `fact_match_team_minute` / `fact_hero_side` / `fact_hero_matchup_stats`) follow
+> the same many-to-one pattern and are enumerated in `docs/data_model.md`
+> §"Gold relationship table". Tables pruned in Round 16
+> (`fact_match_player_kills`, `fact_match_timeline`(+_events),
+> `fact_team_compositions`, `fact_teamfight_item_uses`, `fact_teamfight_kills`,
+> `dim_match_minute`) are no longer part of the model.
 
 ### `fact_matches` → dimensions (many-to-one, *:1)
 
@@ -133,22 +137,8 @@ page's "most common first items" table uses.
 | `hero_id` | `dim_hero` | `hero_id` | yes |
 | `account_id` | `dim_player` | `account_id` | yes |
 
-### `fact_teamfight_item_uses` → (many-to-one, *:1)
-
-| From column | To table | To column | Active |
-|-------------|----------|-----------|--------|
-| `match_id` | `fact_matches` | `match_id` | yes |
-| `hero_id` | `dim_hero` | `hero_id` | yes |
-| `account_id` | `dim_player` | `account_id` | yes |
-
-### `fact_teamfight_kills` → (many-to-one, *:1)
-
-| From column | To table | To column | Active |
-|-------------|----------|-----------|--------|
-| `match_id` | `fact_matches` | `match_id` | yes |
-| `hero_id` | `dim_hero` | `hero_id` (killer) | yes |
-| `account_id` | `dim_player` | `account_id` | yes |
-| `victim_hero_id` | `dim_hero` | `hero_id` (victim) | yes |
+*(`fact_teamfight_item_uses` and `fact_teamfight_kills` sections removed in
+Round 16 — both tables were pruned from the model.)*
 
 **Exceptions to the default *:1 many-to-one:** the four `fact_matches` → child-fact
 links (`fact_match_players`, `fact_picks_bans`, `fact_teamfights`,
@@ -267,8 +257,7 @@ dim_region (dim) -----+
   `dim_hero`, `dim_hero_role`, `dim_game_mode`, `dim_lobby_type`, `dim_region`, `dim_date`
 - Fact tables (measure tables): `fact_matches`, `fact_match_players`,
   `fact_picks_bans`, `fact_teamfights`, `fact_team_matches`,
-  `fact_teamfight_players`, `fact_teamfight_ability_uses`,
-  `fact_teamfight_item_uses`, `fact_teamfight_kills`
+  `fact_teamfight_players`, `fact_teamfight_ability_uses`
 
 Notes:
 - `dim_hero_role` is a bridge for role filtering: select a role → filters heroes
@@ -277,13 +266,12 @@ Notes:
   players array is positionally ordered by slot, so hero/player resolve).
 - `fact_teamfights` links only to `fact_matches` (teamfight-level rows
   themselves carry no hero id; use `fact_teamfight_players` for hero-level).
-- `fact_teamfight_ability_uses` / `fact_teamfight_item_uses` /
-  `fact_teamfight_kills` are child facts that flatten the per-player maps from
-  `fact_teamfight_players` (ability_name/uses, item_name/uses, victim hero/kills).
-  They link to `fact_matches`, `dim_hero`, and `dim_player` directly (not to
-  `fact_teamfight_players`, whose key is composite) — so slicing a hero filters
-  kills where that hero is killer (via `hero_id`) or victim (via `victim_hero_id`),
-  or ability/item uses.
+- `fact_teamfight_ability_uses` is the child fact that flattens the per-player
+  `ability_uses` map from `fact_teamfight_players` (ability_name/uses). It links
+  to `fact_matches`, `dim_hero`, and `dim_player` directly (not to
+  `fact_teamfight_players`, whose key is composite). *(Round 16 pruned the
+  sibling `fact_teamfight_item_uses` / `fact_teamfight_kills` — no visuals used
+  them.)*
 
 ## 7. Useful starter measures
 

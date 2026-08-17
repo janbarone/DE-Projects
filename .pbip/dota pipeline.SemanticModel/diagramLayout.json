@@ -50,7 +50,7 @@
         {
           "location": {
             "x": 1148.7238038595597,
-            "y": 747.41209678327618
+            "y": 747.4120967832762
           },
           "nodeIndex": "gold dim_lobby_type",
           "nodeLineageTag": "758dd62f-0f6b-40b7-b1c8-5882902100e0",
@@ -63,7 +63,7 @@
         {
           "location": {
             "x": 2970.1006810812873,
-            "y": 1130.5452900937121
+            "y": 1130.545290093712
           },
           "nodeIndex": "gold dim_player",
           "nodeLineageTag": "28db8264-2963-4a01-ad28-359fe1e7563b",
@@ -153,32 +153,6 @@
         },
         {
           "location": {
-            "x": 3697,
-            "y": 16
-          },
-          "nodeIndex": "gold fact_teamfight_item_uses",
-          "nodeLineageTag": "b441bfc4-7f8d-487f-b01e-16180f9f0f4e",
-          "size": {
-            "height": 248,
-            "width": 234
-          },
-          "zIndex": 10
-        },
-        {
-          "location": {
-            "x": 4023.5,
-            "y": 19
-          },
-          "nodeIndex": "gold fact_teamfight_kills",
-          "nodeLineageTag": "13459da2-e416-4d2a-a257-ca66d690714e",
-          "size": {
-            "height": 272,
-            "width": 234
-          },
-          "zIndex": 11
-        },
-        {
-          "location": {
             "x": 2412.5,
             "y": 1247.5
           },
@@ -186,7 +160,7 @@
           "nodeLineageTag": "a4eaff26-cdd4-4bfe-91f6-df2c1215b8fc",
           "size": {
             "height": 300,
-            "width": 281.14285714285688
+            "width": 281.1428571428569
           },
           "zIndex": 12
         },
@@ -284,40 +258,10 @@
         },
         {
           "location": {},
-          "nodeIndex": "gold fact_match_timeline",
-          "nodeLineageTag": "dddd0001-0000-0000-0000-000000000001",
-          "size": {
-            "height": 300,
-            "width": 234
-          },
-          "zIndex": 0
-        },
-        {
-          "location": {},
-          "nodeIndex": "gold fact_team_compositions",
-          "nodeLineageTag": "aaaa000a-0000-0000-0000-000000000001",
-          "size": {
-            "height": 300,
-            "width": 234
-          },
-          "zIndex": 0
-        },
-        {
-          "location": {},
           "nodeIndex": "gold fact_team_h2h",
           "nodeLineageTag": "548c7a28-6038-4e79-a8b9-a87ea099e55c",
           "size": {
             "height": 296,
-            "width": 234
-          },
-          "zIndex": 0
-        },
-        {
-          "location": {},
-          "nodeIndex": "gold dim_match_minute",
-          "nodeLineageTag": "ffff0004-0000-0000-0000-000000000001",
-          "size": {
-            "height": 104,
             "width": 234
           },
           "zIndex": 0
@@ -354,16 +298,6 @@
         },
         {
           "location": {},
-          "nodeIndex": "gold fact_match_timeline_events",
-          "nodeLineageTag": "eeee0001-0000-0000-0000-000000000001",
-          "size": {
-            "height": 300,
-            "width": 234
-          },
-          "zIndex": 0
-        },
-        {
-          "location": {},
           "nodeIndex": "gold dim_rune",
           "nodeLineageTag": "aaaa0102-0000-0000-0000-000000000000",
           "size": {
@@ -386,16 +320,6 @@
           "location": {},
           "nodeIndex": "gold fact_match_player_damage_taken",
           "nodeLineageTag": "aaaa0106-0000-0000-0000-000000000000",
-          "size": {
-            "height": 300,
-            "width": 234
-          },
-          "zIndex": 0
-        },
-        {
-          "location": {},
-          "nodeIndex": "gold fact_match_player_kills",
-          "nodeLineageTag": "aaaa0103-0000-0000-0000-000000000000",
           "size": {
             "height": 300,
             "width": 234
@@ -796,19 +720,6 @@
       "nodes": [
         {
           "location": {
-            "x": 176,
-            "y": 180
-          },
-          "nodeIndex": "gold fact_teamfight_item_uses",
-          "nodeLineageTag": "986d4835-b3e0-429d-8468-7cac92c6a08f",
-          "size": {
-            "height": 248,
-            "width": 234
-          },
-          "zIndex": 0
-        },
-        {
-          "location": {
             "x": 865,
             "y": 106
           },
@@ -848,19 +759,6 @@
         "y": 0
       },
       "nodes": [
-        {
-          "location": {
-            "x": 226,
-            "y": 49
-          },
-          "nodeIndex": "gold fact_teamfight_kills",
-          "nodeLineageTag": "a26f762f-ede8-4364-88c5-105bddfaed78",
-          "size": {
-            "height": 272,
-            "width": 234
-          },
-          "zIndex": 0
-        },
         {
           "location": {
             "x": 919,
@@ -943,8 +841,8 @@
         },
         {
           "location": {
-            "x": 916.01517228281523,
-            "y": 633.29173323204373
+            "x": 916.0151722828152,
+            "y": 633.2917332320437
           },
           "nodeIndex": "gold fact_teamfights",
           "nodeLineageTag": "445b4ef2-304a-49db-98d0-04c7ebe39ca3",
@@ -957,7 +855,7 @@
         {
           "location": {
             "x": 1290.1348773418713,
-            "y": 633.42662948251882
+            "y": 633.4266294825188
           },
           "nodeIndex": "gold fact_team_matches",
           "nodeLineageTag": "0fb933b3-366e-449d-a08a-fc695e89f14f",
@@ -992,36 +890,10 @@
             "width": 234
           },
           "zIndex": 0
-        },
-        {
-          "location": {
-            "x": 1767.3254242046057,
-            "y": 740.87350758406171
-          },
-          "nodeIndex": "gold fact_teamfight_item_uses",
-          "nodeLineageTag": "986d4835-b3e0-429d-8468-7cac92c6a08f",
-          "size": {
-            "height": 248,
-            "width": 234
-          },
-          "zIndex": 0
-        },
-        {
-          "location": {
-            "x": 610.69138346446766,
-            "y": 578.12308928319521
-          },
-          "nodeIndex": "gold fact_teamfight_kills",
-          "nodeLineageTag": "a26f762f-ede8-4364-88c5-105bddfaed78",
-          "size": {
-            "height": 272,
-            "width": 234
-          },
-          "zIndex": 0
         }
       ],
       "name": "Layout 9",
-      "zoomValue": 63.287087723234222,
+      "zoomValue": 63.28708772323422,
       "pinKeyFieldsToTop": true,
       "showExtraHeaderInfo": false,
       "hideKeyFieldsWhenCollapsed": false,

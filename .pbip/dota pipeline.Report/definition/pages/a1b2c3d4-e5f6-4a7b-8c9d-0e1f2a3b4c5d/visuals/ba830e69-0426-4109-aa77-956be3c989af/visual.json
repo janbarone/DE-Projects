@@ -1,0 +1,73 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
+  "name": "ba830e69-0426-4109-aa77-956be3c989af",
+  "position": {
+    "x": 2904.0,
+    "y": 7275.176339159705,
+    "z": 137,
+    "height": 90,
+    "width": 300,
+    "tabOrder": 137
+  },
+  "visual": {
+    "visualType": "card",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold fact_match_player_damage"
+                    }
+                  },
+                  "Property": "Total Hero Damage"
+                }
+              },
+              "queryRef": "gold fact_match_player_damage.Total Hero Damage",
+              "nativeQueryRef": "Total Hero Damage"
+            }
+          ]
+        }
+      }
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Total hero damage'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "border": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

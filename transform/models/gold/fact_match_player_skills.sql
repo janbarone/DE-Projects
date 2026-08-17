@@ -1,11 +1,13 @@
 {{ config(
     materialized='table',
     post_hook=[
-        "create index if not exists {{ this.schema }}_fact_mps_match_idx on {{ this }}(match_id)",
-        "create index if not exists {{ this.schema }}_fact_mps_player_idx on {{ this }}(player_slot)",
-        "create index if not exists {{ this.schema }}_fact_mps_minute_idx on {{ this }}(minute)"
-    ]
-) }}
+        "drop index if exists {{ this.schema }}.{{ this.schema }}_fact_mps_match_idx",
+        "create index {{ this.schema }}_fact_mps_match_idx on {{ this }}(match_id)",
+        "drop index if exists {{ this.schema }}.{{ this.schema }}_fact_mps_hero_idx",
+        "create index {{ this.schema }}_fact_mps_hero_idx on {{ this }}(hero_id)",
+        "drop index if exists {{ this.schema }}.{{ this.schema }}_fact_mps_account_idx",
+        "create index {{ this.schema }}_fact_mps_account_idx on {{ this }}(account_id)"
+    ]) }}
 
 -- One row per (match, player, ability upgrade): the hero's skill progression.
 -- Reads the incremental silver model (stg_match_player_skills) so the jsonb

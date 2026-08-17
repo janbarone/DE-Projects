@@ -1,14 +1,25 @@
 {{ config(
     materialized='table',
     post_hook=[
-        "create index if not exists {{ this.schema }}_fact_matches_league_idx on {{ this }}(leagueid)",
-        "create index if not exists {{ this.schema }}_fact_matches_gm_idx on {{ this }}(game_mode_id)",
-        "create index if not exists {{ this.schema }}_fact_matches_lobby_idx on {{ this }}(lobby_type_id)",
-        "create index if not exists {{ this.schema }}_fact_matches_region_idx on {{ this }}(region_id)",
-        "create index if not exists {{ this.schema }}_fact_matches_radiant_idx on {{ this }}(radiant_team_id)",
-        "create index if not exists {{ this.schema }}_fact_matches_dire_idx on {{ this }}(dire_team_id)"
-    ]
-) }}
+        "drop index if exists {{ this.schema }}.{{ this.schema }}_fact_matches_match_idx",
+        "create index {{ this.schema }}_fact_matches_match_idx on {{ this }}(match_id)",
+        "drop index if exists {{ this.schema }}.{{ this.schema }}_fact_matches_league_idx",
+        "create index {{ this.schema }}_fact_matches_league_idx on {{ this }}(leagueid)",
+        "drop index if exists {{ this.schema }}.{{ this.schema }}_fact_matches_patch_idx",
+        "create index {{ this.schema }}_fact_matches_patch_idx on {{ this }}(patch)",
+        "drop index if exists {{ this.schema }}.{{ this.schema }}_fact_matches_start_date_idx",
+        "create index {{ this.schema }}_fact_matches_start_date_idx on {{ this }}(start_date)",
+        "drop index if exists {{ this.schema }}.{{ this.schema }}_fact_matches_gm_idx",
+        "create index {{ this.schema }}_fact_matches_gm_idx on {{ this }}(game_mode_id)",
+        "drop index if exists {{ this.schema }}.{{ this.schema }}_fact_matches_lobby_idx",
+        "create index {{ this.schema }}_fact_matches_lobby_idx on {{ this }}(lobby_type_id)",
+        "drop index if exists {{ this.schema }}.{{ this.schema }}_fact_matches_region_idx",
+        "create index {{ this.schema }}_fact_matches_region_idx on {{ this }}(region_id)",
+        "drop index if exists {{ this.schema }}.{{ this.schema }}_fact_matches_radiant_idx",
+        "create index {{ this.schema }}_fact_matches_radiant_idx on {{ this }}(radiant_team_id)",
+        "drop index if exists {{ this.schema }}.{{ this.schema }}_fact_matches_dire_idx",
+        "create index {{ this.schema }}_fact_matches_dire_idx on {{ this }}(dire_team_id)"
+    ]) }}
 
 -- One row per match, the hub fact. Game mode / lobby / region / team / league
 -- keys are exposed as foreign keys to the gold dimensions.

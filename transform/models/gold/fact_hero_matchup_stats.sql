@@ -1,9 +1,9 @@
 {{ config(
     materialized='table',
     post_hook=[
-        "create index if not exists {{ this.schema }}_fact_hms_label_idx on {{ this }}(matchup_label)"
-    ]
-) }}
+        "drop index if exists {{ this.schema }}.{{ this.schema }}_fact_hms_label_idx",
+        "create index {{ this.schema }}_fact_hms_label_idx on {{ this }}(matchup_label)"
+    ]) }}
 
 -- Per-matchup aggregate: games, radiant/dire wins and win rates, precomputed
 -- for DirectQuery. The live COUNTROWS/CALCULATE win-rate measures over

@@ -1,11 +1,13 @@
 {{ config(
     materialized='table',
     post_hook=[
-        "create index if not exists {{ this.schema }}_fact_team_matches_match_idx on {{ this }}(match_id)",
-        "create index if not exists {{ this.schema }}_fact_team_matches_team_idx on {{ this }}(team_id)",
-        "create index if not exists {{ this.schema }}_fact_team_matches_side_idx on {{ this }}(side)"
-    ]
-) }}
+        "drop index if exists {{ this.schema }}.{{ this.schema }}_fact_team_matches_match_idx",
+        "create index {{ this.schema }}_fact_team_matches_match_idx on {{ this }}(match_id)",
+        "drop index if exists {{ this.schema }}.{{ this.schema }}_fact_team_matches_team_idx",
+        "create index {{ this.schema }}_fact_team_matches_team_idx on {{ this }}(team_id)",
+        "drop index if exists {{ this.schema }}.{{ this.schema }}_fact_team_matches_side_idx",
+        "create index {{ this.schema }}_fact_team_matches_side_idx on {{ this }}(side)"
+    ]) }}
 
 -- Bridge fact: one row per (match, side) connecting dim_team through a single
 -- path, so both the radiant and dire team are queryable at the same time.

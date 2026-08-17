@@ -348,8 +348,6 @@ Per-minute progression facts (Rounds 6/7, Match Detail page):
 fact_matches 1 --> many  fact_match_player_minute (match_id)  -- many->1 dim_hero / dim_player
 fact_matches 1 --> many  fact_match_player_skills    (match_id)  -- many->1 dim_hero / dim_player
 fact_matches 1 --> many  fact_match_player_item_purchases (match_id) -- many->1 dim_hero / dim_player
-dim_match_minute (minute) <-- many -- fact_match_player_skills.minute
-dim_match_minute (minute) <-- many -- fact_match_player_item_purchases.minute
 ```
 
 ### Gold relationship table (for Power BI Model view)
@@ -422,23 +420,6 @@ queryable at the same time, split by the `side` column.
 | `hero_id` | `dim_hero` | `hero_id` | yes |
 | `account_id` | `dim_player` | `account_id` | yes |
 
-#### `fact_teamfight_item_uses` → (many-to-one, *:1)
-
-| From column | To table | To column | Active |
-|-------------|----------|-----------|--------|
-| `match_id` | `fact_matches` | `match_id` | yes |
-| `hero_id` | `dim_hero` | `hero_id` | yes |
-| `account_id` | `dim_player` | `account_id` | yes |
-
-#### `fact_teamfight_kills` → (many-to-one, *:1)
-
-| From column | To table | To column | Active |
-|-------------|----------|-----------|--------|
-| `match_id` | `fact_matches` | `match_id` | yes |
-| `hero_id` | `dim_hero` | `hero_id` (killer) | yes |
-| `account_id` | `dim_player` | `account_id` | yes |
-| `victim_hero_id` | `dim_hero` | `hero_id` (victim) | yes |
-
 #### `dim_patch` / `dim_item` → decode (many-to-one, *:1) *(rounds 1–2)*
 
 | From column | To table | To column | Active |
@@ -462,26 +443,6 @@ queryable at the same time, split by the `side` column.
 | `team_a_id` | `dim_team` | `team_id` | yes |
 | `team_b_id` | `dim_team` | `team_id` | second team link (inactive) |
 
-#### `fact_match_timeline` / `fact_match_timeline_events` / `fact_team_compositions` → `fact_matches` *(rounds 4–5)*
-
-Each links to `fact_matches` on `match_id` (active); `fact_team_compositions`
-also links `team_id` → `dim_team`.
-
-#### `dim_match_minute` → progression facts (many-to-one, *:1) *(rounds 6–7)*
-
-The minute dimension (0..140). Added in round 6 to give the Match Detail **Play
-Axis** one shared scrub minute; the Play Axis was removed in round 8, so the two
-`minute` links below are now **unused by any visual** (kept in the model for
-potential future use).
-
-| From column | To table | To column | Active |
-|-------------|----------|-----------|--------|
-| `minute` (fact_match_player_skills) | `dim_match_minute` | `minute` | yes |
-| `minute` (fact_match_player_item_purchases) | `dim_match_minute` | `minute` | yes |
-
-Note: `fact_match_player_minute` has **no** `minute` link to `dim_match_minute`
-(round 7 moved the scrub path to skills + item_purchases).
-
 #### `fact_match_player_minute` → (many-to-one, *:1) *(round 6)*
 
 | From column | To table | To column | Active |
@@ -497,7 +458,6 @@ Note: `fact_match_player_minute` has **no** `minute` link to `dim_match_minute`
 | `match_id` | `fact_matches` | `match_id` | yes |
 | `hero_id` | `dim_hero` | `hero_id` | yes |
 | `account_id` | `dim_player` | `account_id` | yes |
-| `minute` | `dim_match_minute` | `minute` | yes |
 
 #### `fact_match_player_item_purchases` → (many-to-one, *:1) *(round 7)*
 
@@ -506,7 +466,6 @@ Note: `fact_match_player_minute` has **no** `minute` link to `dim_match_minute`
 | `match_id` | `fact_matches` | `match_id` | yes |
 | `hero_id` | `dim_hero` | `hero_id` | yes |
 | `account_id` | `dim_player` | `account_id` | yes |
-| `minute` | `dim_match_minute` | `minute` | yes |
 
 Note (2026-08-08): the three `match_id` links above are **single-direction**
 (the default). A `bothDirections` variant was tried so the Match Detail
@@ -523,16 +482,6 @@ without any relationship change — a `Hero in Current Match` measure on
 `dim_hero` (CALCULATE over `fact_match_players`) plus a visual-level Advanced
 filter on both hero slicers. The model keeps **53 relationships, 3
 bidirectional**. See `docs/report_status.md` §5j.
-
-#### `fact_match_player_kills` → (many-to-one, *:1) *(round 10)*
-
-| From column | To table | To column | Active |
-|-------------|----------|-----------|--------|
-| `match_id` | `fact_matches` | `match_id` | yes |
-| `hero_id` | `dim_hero` | `hero_id` | yes |
-| `account_id` | `dim_player` | `account_id` | yes |
-| `victim_hero_id` | `dim_hero` | `hero_id` | **inactive** (two active paths to `dim_hero` would be ambiguous — same pattern as `fact_teamfight_kills`; the kill table uses the denormalized `victim_hero_name_localized` so no relationship is needed for rendering) |
-| `minute` | `dim_match_minute` | `minute` | yes |
 
 #### `fact_match_player_runes` → (many-to-one, *:1) *(round 10)*
 
@@ -559,25 +508,17 @@ bidirectional**. See `docs/report_status.md` §5j.
 | `hero_id` | `dim_hero` | `hero_id` | yes |
 | `account_id` | `dim_player` | `account_id` | yes |
 
-#### `fact_match_player_damage_taken_type` → (many-to-one, *:1) *(round 11)*
-
-| From column | To table | To column | Active |
-|-------------|----------|-----------|--------|
-| `match_id` | `fact_matches` | `match_id` | yes |
-| `hero_id` | `dim_hero` | `hero_id` | yes |
-| `account_id` | `dim_player` | `account_id` | yes |
-
 **Round 10/11 (2026-08-08):** `fact_match_players` also carries denormalized
 per-player columns for the Match Detail tables: `pick_sequence`, `enemy_heroes_killed`,
 `damage_taken_physical/magical/pure`, `ward_observer_bought`, `ward_sentry_bought`,
 `dust_bought`, `smoke_bought`, `gem_bought`, `support_gold`. The standalone
-`fact_match_player_damage_taken_type` gold table exists in the DB (round 11)
-but was **removed from the Power BI model** in Round 11d (§5o) — the visuals use
-the denormalized `fact_match_players.damage_taken_*` columns instead.
+`fact_match_player_damage_taken_type` gold table (round 11) was **removed from
+the Power BI model in Round 11d** (§5o) and **dropped from dbt + the DB in
+Round 16** — the visuals use the denormalized `fact_match_players.damage_taken_*`
+columns instead.
 
 **Round 12 (2026-08-08):** new `fact_match_team_minute` (per match, side, minute:
-team gold/xp summed from `fact_match_player_minute`), plus the missing
-`fact_match_player_minute.minute → dim_match_minute` relationship.
+team gold/xp summed from `fact_match_player_minute`).
 
 **Round 13 (2026-08-09):** dims normalized (league/team uppercase; game-mode/
 lobby prefix-stripped + uppercase; `primary_attr` friendly labels; `player_type`
@@ -586,8 +527,17 @@ lobby prefix-stripped + uppercase; `primary_attr` friendly labels; `player_type`
 tables `fact_hero_side` (per hero+side picks/wins/win rate) and
 `fact_hero_matchup_stats` (per `matchup_label` games + radiant/dire win rates)
 for Draft-page tables that must fold under DirectQuery; `order_no_int` on
-`fact_picks_bans` so `Avg Ban Position` folds. Model is now **38 tables, 72
-relationships (3 bidirectional)**.
+`fact_picks_bans` so `Avg Ban Position` folds. At that point the model was
+**38 tables, 72 relationships (3 bidirectional)**.
+
+**Round 16 (2026-08-16/17):** seven unused gold tables pruned from the Power BI
+model and dropped from dbt + the DB (verified zero references in `.pbip`):
+`fact_match_player_kills`, `fact_match_timeline`, `fact_match_timeline_events`,
+`fact_team_compositions`, `fact_teamfight_item_uses`, `fact_teamfight_kills`,
+`dim_match_minute`. The stale `gold.fact_team_h2h_new` experiment table was also
+dropped from the DB. Model is now **31 tables, 52 relationships (3
+bidirectional)**; dbt builds 32 gold models (the extra one, `fact_phase_momentum`,
+was never imported into Power BI). See `docs/report_status.md` §5t.
 
 ### Gold table inventory
 
@@ -609,27 +559,19 @@ relationships (3 bidirectional)**.
 | `fact_team_matches`   | 8,492  | one row per (match, side) bridge | `(match_id, side)` |
 | `fact_teamfight_players` | 169,440 | one row per (match, teamfight, player) | `(match_id, teamfight_id, player_slot)` |
 | `fact_teamfight_ability_uses` | 483,509 | one row per (match, teamfight, player, ability) | `(match_id, teamfight_id, player_slot, ability_name)` |
-| `fact_teamfight_item_uses` | 402,934 | one row per (match, teamfight, player, item) | `(match_id, teamfight_id, player_slot, item_name)` |
-| `fact_teamfight_kills` | 68,305 | one row per (match, teamfight, killer, victim hero) | `(match_id, teamfight_id, player_slot, victim_hero_id)` |
 | `dim_patch` | 61 | one row per patch version (decodes `fact_matches.patch`) | `patch_id` |
 | `dim_item` | 596 | one row per item (decodes `item_0..6` ids) | `item_id` |
-| `dim_match_minute` | 141 | one row per game minute 0..140 | `minute` |
 | `fact_hero_matchups` | 106,721 | one row per (match, radiant hero, dire hero) | `(match_id, radiant_hero_id, dire_hero_id)` |
 | `fact_hero_matchups_hero` | 213,390 | one row per (match, hero, opponent) side | `(match_id, hero_id, opponent_id)` |
 | `fact_team_h2h` | 4,220 | one row per (match, team_a, team_b) | `(match_id, team_a_id, team_b_id)` |
-| `fact_match_timeline` | 33,808 | one row per (match, teamfight, team) gold/xp snapshot | `(match_id, teamfight_id, team_number)` |
-| `fact_match_timeline_events` | 885,599 | one row per timeline item/ability event | `(match_id, teamfight_id, player_slot, kind, name)` |
 | `fact_phase_momentum` | 13,030 | one row per (match, team, fight phase) | `(match_id, team_number, fight_phase)` |
-| `fact_team_compositions` | 8,539 | one row per (match, team) role composition | `(match_id, team_number)` |
 | `fact_match_player_minute` | 1,253,200 | one row per (match, player, minute) — level/gold/xp progression | `(match_id, player_slot, minute)` |
 | `fact_match_player_skills` | 535,432 | one row per (match, player, skill upgrade) | `(match_id, player_slot, upgrade_index)` |
 | `fact_match_player_item_purchases` | 1,526,552 | one row per item purchase event | `(match_id, player_slot, purchase_index)` |
 | `dim_rune` | 10 | one row per rune type id (0-9) — decodes `fact_match_player_runes.rune_key` | `rune_key` |
-| `fact_match_player_kills` | 157,498 | one row per (match, killer, kill) from `kills_log` — victim decoded via `dim_hero.hero_name` | `(match_id, player_slot, kill_index)` |
 | `fact_match_player_runes` | 79,044 | one row per (match, player, rune type) from the aggregate `runes` map — `rune_count` per type | `(match_id, player_slot, rune_key)` |
 | `fact_match_player_damage` | 1,351,389 | one row per (match, player, target) from `damage` object — target categorized Hero/Building/Creep/Neutral/Ward/Other | `(match_id, player_slot, target_key)` |
 | `fact_match_player_damage_taken` | 936,459 | one row per (match, player, source) from `damage_taken` (raw, pre-mitigation) | `(match_id, player_slot, source_key)` |
-| `fact_match_player_damage_taken_type` | 104,057 | one row per (match, player, damage type) — raw damage received by Physical/Magical/Pure/Other, from `damage_inflictor_received` classified via ability/item `dmg_type` (`null` = auto-attack → Physical) | `(match_id, player_slot, damage_type)` |
 | `fact_match_team_minute` | 250,640 | one row per (match, side, minute) — team gold/xp summed from `fact_match_player_minute` | `(match_id, side, minute)` |
 | `fact_hero_side` | 255 | one row per (hero, side) — precomputed picks/wins/win rate for foldable Draft tables | `(hero_id, side)` |
 | `fact_hero_matchup_stats` | 14,462 | one row per matchup label — precomputed games + radiant/dire win rates | `matchup_label` |
@@ -798,7 +740,7 @@ positional guarantee lets us join to `fact_match_players` and `dim_hero`.
 | `gold_delta` | integer | |
 | `ability_uses` / `item_uses` / `ability_targets` / `killed` / `deaths_pos` | text | nested per-ability/per-item maps as text (jsonb cast to text; parsed back with `::jsonb` in the child facts) |
 
-#### fact_teamfight_ability_uses / fact_teamfight_item_uses / fact_teamfight_kills
+#### fact_teamfight_ability_uses
 
 Child facts that flatten the per-player maps from `fact_teamfight_players` into
 long format (one row per map entry), so Power BI can slice/pivot them without
@@ -818,12 +760,11 @@ Power BI friendly).
 | Table | Extra columns | Notes |
 |-------|---------------|-------|
 | `fact_teamfight_ability_uses` | `ability_name` (text), `uses` (int) | flattened from `ability_uses` |
-| `fact_teamfight_item_uses` | `item_name` (text), `uses` (int) | flattened from `item_uses` |
-| `fact_teamfight_kills` | `victim_hero_name` (text), `victim_hero_id` (text), `kills` (int) | flattened from `killed`; `victim_hero_name` is an `npc_dota_hero_*` value joining to `dim_hero.hero_name`, so `victim_hero_id` resolves to the victim hero row |
 
-Note: `killed` is a map of **victim hero name -> kill count** for that killer in
-that fight. 52,356 of 169,440 teamfight-player rows have at least one entry;
-rows with an empty map simply produce no rows here.
+Note: `fact_teamfight_ability_uses` is the only remaining teamfight child fact —
+`fact_teamfight_item_uses` and `fact_teamfight_kills` were **pruned in Round 16**
+(no visuals used them; §5t). The parent `fact_teamfight_players` still carries
+the `item_uses` / `killed` maps as text.
 
 #### dim_patch (patch decode) *(round 1)*
 
@@ -842,15 +783,6 @@ rows with an empty map simply produce no rows here.
 | `item_internal_name` | text | e.g. `item_blink` |
 | `item_name` | text | display name; coalesces to internal name for recipes / `ability_base` |
 
-#### dim_match_minute (minute dimension) *(rounds 6–7)*
-
-| Column | Type | Notes |
-|--------|------|-------|
-| `minute` | integer | 0..140 (max progression minute across player_minute / skills / item_purchases) |
-
-Single column; exists so the Play Axis (removed 2026-08-08) had **one shared
-minute** to scrub both progression table kinds. No visual consumes it now.
-
 #### fact_hero_matchups / fact_hero_matchups_hero / fact_team_h2h *(round 1)*
 
 - `fact_hero_matchups`: `match_id`, `radiant_hero_id`, `dire_hero_id`,
@@ -862,22 +794,13 @@ minute** to scrub both progression table kinds. No visual consumes it now.
 - `fact_team_h2h`: `match_id`, `team_a_id`, `team_b_id`, `team_a_win`,
   `team_a_score`, `team_b_score`.
 
-#### fact_match_timeline / fact_match_timeline_events / fact_phase_momentum / fact_team_compositions *(rounds 4–5)*
+#### fact_phase_momentum *(rounds 4–5)*
 
-- `fact_match_timeline`: per (match, teamfight, team) — `teamfight_id`,
-  `team_number`, `side`, `start_min`, `gold_delta`, `xp_delta`, `deaths`,
-  `items_used`/`abilities_used` (text maps), `radiant_win`.
-- `fact_match_timeline_events`: long-format flatten — one row per item/ability
-  use in a fight: `teamfight_id`, `start_min`, `side`, `player_slot`,
-  `account_id`, `hero_id`, `player_name`, `hero_localized_name`, `kind`
-  (`Item`/`Ability`), `name`, `uses`, `gold_delta`, `xp_delta`, `deaths`.
-- `fact_phase_momentum`: per (match, team, fight phase) — `fight_phase`
-  (`pre-game`/`early (0-20m)`/`mid (20-40m)`/`late (40m+)`), `phase_ord`,
-  `gold_delta`, `xp_delta`, `deaths`, `fights`, `radiant_win`, `duration_min`,
-  `team_win`.
-- `fact_team_compositions`: per (match, team) — `team_id`, `hero_count`, and
-  per-role counts (`support_count`, `carry_count`, `nuker_count`, ...), plus
-  `role_label`, `team_win`.
+Per (match, team, fight phase): `fight_phase` (`pre-game`/`early (0-20m)`/`mid
+(20-40m)`/`late (40m+)`), `phase_ord`, `gold_delta`, `xp_delta`, `deaths`,
+`fights`, `radiant_win`, `duration_min`, `team_win`. (Built by dbt but **not
+imported into Power BI** — `fact_match_timeline`, `fact_match_timeline_events`,
+and `fact_team_compositions` were pruned in Round 16, §5t.)
 
 #### fact_match_player_minute (per-minute progression) *(round 6)*
 
@@ -902,7 +825,7 @@ One row per (match, player, minute). Flattens the raw per-player `times` /
 | `player_name` / `hero_localized_name` | text | denormalized |
 
 Only players with **all 5 arrays** present (3,060 of 4,299 matches). No
-`dim_match_minute` link (see relationship section).
+`dim_match_minute` link.
 
 #### fact_match_player_skills (skill levelling) *(rounds 6–7)*
 
@@ -922,7 +845,7 @@ is **approximate** — the first minute the player's derived level reached
 | `ability_internal_name` | text | decoded via constants `ability_ids` |
 | `ability_name` | text | display name via `abilities`; **talents (round 11c)** have the `+{s:…}` value template stripped → e.g. `Reflection Duration`, and `attribute_bonus`/`special_bonus_attributes` → `Attribute Bonus` |
 | `is_talent` | boolean | true when the upgrade is a talent-tree pick (`special_bonus*` or `attribute_bonus`) |
-| `minute` | integer | approximate learn minute → FK to dim_match_minute |
+| `minute` | integer | approximate learn minute (no dimension) |
 | `learn_level` | bigint | player level at upgrade (`upgrade_index + 1`) |
 | `player_name` / `hero_localized_name` | text | denormalized |
 
@@ -945,7 +868,7 @@ negative times (pre-game starting items) clamp to minute 0.
 | `purchase_index` | bigint | ordinal within the player's purchase_log |
 | `item_internal_name` | text | source key |
 | `time_sec` | integer | raw seconds (negative = pre-game) |
-| `minute` | integer | clamped to 0 → FK to dim_match_minute |
+| `minute` | integer | clamped to 0 (no dimension) |
 | `item_name` | text | display name via `dim_item.item_internal_name` (unmatched keep internal name) |
 | `player_name` / `hero_localized_name` | text | denormalized |
 
@@ -977,8 +900,9 @@ responsibility:
   Power BI can slice and pivot without parsing JSON.
 
 This is why nested maps (e.g. `ability_uses` in `stg_teamfights`) are flattened
-into child facts (`fact_teamfight_ability_uses`, `fact_teamfight_item_uses`,
-`fact_teamfight_kills`) at **gold**, not silver: silver owns the canonical record
+into child facts (`fact_teamfight_ability_uses` — and formerly
+`fact_teamfight_item_uses` / `fact_teamfight_kills`, pruned Round 16) at
+**gold**, not silver: silver owns the canonical record
 (one row per teamfight with its maps intact, stored as text), and gold owns the
 consumer-friendly long-format shapes. Flattening in silver is also a valid
 choice - both are correct as long as bronze stays raw and all transform logic
@@ -996,21 +920,26 @@ SQL.
 
 ## Indexes
 
-Silver incremental tables:
+Indexes are created by **dbt post_hooks in each model** (named
+`gold_<table>_<col>_idx`, dropped + recreated on rebuild). **Silver tables have
+no DB-level indexes** (except PKs) — Round 15/16 removed them; the silver stage
+is scanned once per full build, so extra indexes only slowed writes.
 
-- `stg_matches`: leagueid, radiant_team_id, dire_team_id
-- `stg_match_players`: match_id, account_id, hero_id
-- `stg_picks_bans`: match_id, hero_id
-- `stg_teamfights`: match_id
+Gold fact tables (current as of Round 16; see each model's post_hook):
 
-Gold fact tables:
-
-- `fact_matches`: leagueid, game_mode_id, lobby_type_id, region_id, radiant_team_id, dire_team_id
+- `fact_matches`: match_id, leagueid, patch, start_date, game_mode_id,
+  lobby_type_id, region_id, radiant_team_id, dire_team_id (9 indexes — the
+  column-level ones support the Dashboard/Overview slicers)
 - `fact_team_matches`: match_id, team_id, side
 - `fact_match_players`: match_id, account_id, hero_id
 - `fact_picks_bans`: match_id, hero_id
 - `fact_teamfights`: match_id
 - `fact_teamfight_players`: match_id, hero_id, account_id
-- `fact_match_player_minute`: match_id, player_slot, minute
-- `fact_match_player_skills`: match_id, player_slot
-- `fact_match_player_item_purchases`: match_id, player_slot, minute
+- `fact_hero_matchups`: match_id, radiant_hero_id, dire_hero_id;
+  `fact_hero_matchups_hero`: match_id, hero_id, opponent_id;
+  `fact_team_h2h`: match_id, team_a_id, team_b_id;
+  `fact_hero_side`: hero_id, side; `fact_hero_matchup_stats`: matchup_label
+- `fact_match_player_minute` / `_skills` / `_item_purchases` / `_runes` /
+  `_damage` / `_damage_taken`: match_id, account_id, hero_id
+- `fact_match_team_minute`: match_id
+- `fact_phase_momentum`: match_id, team_number, fight_phase

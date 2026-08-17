@@ -1,10 +1,13 @@
 {{ config(
     materialized='table',
     post_hook=[
-        "create index if not exists {{ this.schema }}_fact_mpr_match_idx on {{ this }}(match_id)",
-        "create index if not exists {{ this.schema }}_fact_mpr_player_idx on {{ this }}(player_slot)"
-    ]
-) }}
+        "drop index if exists {{ this.schema }}.{{ this.schema }}_fact_mpr_match_idx",
+        "create index {{ this.schema }}_fact_mpr_match_idx on {{ this }}(match_id)",
+        "drop index if exists {{ this.schema }}.{{ this.schema }}_fact_mpr_hero_idx",
+        "create index {{ this.schema }}_fact_mpr_hero_idx on {{ this }}(hero_id)",
+        "drop index if exists {{ this.schema }}.{{ this.schema }}_fact_mpr_account_idx",
+        "create index {{ this.schema }}_fact_mpr_account_idx on {{ this }}(account_id)"
+    ]) }}
 
 -- One row per (match, player, rune type): total runes picked up. Reads the
 -- incremental silver model (stg_match_player_runes) so the jsonb unnest is not

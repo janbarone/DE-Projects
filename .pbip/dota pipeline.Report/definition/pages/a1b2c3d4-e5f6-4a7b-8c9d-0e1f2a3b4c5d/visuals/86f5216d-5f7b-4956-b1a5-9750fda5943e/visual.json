@@ -1,0 +1,93 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
+  "name": "86f5216d-5f7b-4956-b1a5-9750fda5943e",
+  "position": {
+    "x": 3552.0,
+    "y": 366.0,
+    "z": 17,
+    "height": 70,
+    "width": 250,
+    "tabOrder": 17
+  },
+  "visual": {
+    "visualType": "slicer",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold dim_game_mode"
+                    }
+                  },
+                  "Property": "game_mode_name"
+                }
+              },
+              "queryRef": "gold dim_game_mode.game_mode_name",
+              "nativeQueryRef": "Game Mode",
+              "active": true,
+              "displayName": "Game Mode"
+            }
+          ]
+        }
+      }
+    },
+    "objects": {
+      "data": [
+        {
+          "properties": {
+            "mode": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Dropdown'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "general": [
+        {
+          "properties": {}
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "border": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "b2ea3de52457885e8139",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "gold dim_game_mode"
+              }
+            },
+            "Property": "game_mode_name"
+          }
+        },
+        "type": "Categorical"
+      }
+    ]
+  }
+}

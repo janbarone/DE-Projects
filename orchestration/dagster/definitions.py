@@ -1,8 +1,10 @@
 """Dagster definitions for the DOTA medallion pipeline.
 
-Two assets:
-  bronze_loaded  ->  python scripts/run_pipeline.py --only-load
-  dbt_built      ->  python scripts/run_pipeline.py --only-dbt   (deps on bronze_loaded)
+Four assets:
+  bronze_loaded         ->  python scripts/run_pipeline.py --only-load
+  dbt_built             ->  python scripts/run_pipeline.py --only-dbt   (deps on bronze_loaded)
+  source_freshness      ->  python scripts/run_pipeline.py --only-freshness (deps on dbt_built)
+  db_backed_up          ->  python scripts/run_pipeline.py --only-backup (deps on dbt_built)
 
 Plus a daily schedule. Run locally with:  dagster dev -m definitions
 (or `dagster dev` from this directory).
@@ -43,12 +45,28 @@ def dbt_built(context: AssetExecutionContext) -> None:
     _run(context, "--only-dbt")
 
 
+@asset(
+    description="Check bronze source freshness against warn/error thresholds.",
+    deps=["dbt_built"],
+)
+def source_freshness(context: AssetExecutionContext) -> None:
+    _run(context, "--only-freshness")
+
+
+@asset(
+    description="Snapshot the database with pg_dump into backups/ (daily savepoint).",
+    deps=["dbt_built"],
+)
+def db_backed_up(context: AssetExecutionContext) -> None:
+    _run(context, "--only-backup", "--backup-docker")
+
+
 daily_job = define_asset_job("daily_medallion_refresh", selection="*")
 
 daily_schedule = ScheduleDefinition(job=daily_job, cron_schedule="0 3 * * *")
 
 defs = Definitions(
-    assets=[bronze_loaded, dbt_built],
+    assets=[bronze_loaded, dbt_built, source_freshness, db_backed_up],
     jobs=[daily_job],
     schedules=[daily_schedule],
 )
