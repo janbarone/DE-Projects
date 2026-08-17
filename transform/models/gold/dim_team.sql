@@ -9,7 +9,11 @@
 with team_dim as (
     select
         team_id,
-        upper(team_name) as team_name,
+        case
+            when nullif(upper(team_name), '') is null
+                then coalesce(nullif(upper(team_tag), ''), 'TEAM ' || team_id)
+            else upper(team_name)
+        end as team_name,
         team_tag,
         rating,
         wins,

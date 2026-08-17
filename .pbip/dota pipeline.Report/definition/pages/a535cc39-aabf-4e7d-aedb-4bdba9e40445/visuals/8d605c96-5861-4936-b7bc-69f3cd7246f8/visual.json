@@ -4,10 +4,10 @@
   "position": {
     "x": 20.403022670025187,
     "y": 462.46851385390426,
-    "z": 10,
+    "z": 9000,
     "height": 219.89924433249371,
     "width": 618.89168765743068,
-    "tabOrder": 10
+    "tabOrder": 9000
   },
   "visual": {
     "visualType": "clusteredBarChart",
@@ -157,51 +157,5 @@
       ]
     },
     "drillFilterOtherVisuals": true
-  },
-  "filterConfig": {
-    "filters": [
-      {
-        "name": "2d98d257aa2ecb8b8181",
-        "field": {
-          "Column": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "gold dim_hero"
-              }
-            },
-            "Property": "hero_localized_name"
-          }
-        },
-        "type": "Categorical"
-      },
-      {
-        "name": "ba02b2c03a10345a1acd",
-        "field": {
-          "Measure": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "gold fact_match_players"
-              }
-            },
-            "Property": "Avg Healing"
-          }
-        },
-        "type": "Advanced"
-      },
-      {
-        "name": "ec4264128c20888d130a",
-        "field": {
-          "Measure": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "gold fact_match_players"
-              }
-            },
-            "Property": "Avg Camps Stacked"
-          }
-        },
-        "type": "Advanced"
-      }
-    ]
   }
 }

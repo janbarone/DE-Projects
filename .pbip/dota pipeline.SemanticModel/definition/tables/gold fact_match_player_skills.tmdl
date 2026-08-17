@@ -130,6 +130,16 @@ table 'gold fact_match_player_skills'
 
 		annotation SummarizationSetBy = Automatic
 
+	column ability_img
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: ffff0002-0000-0000-0000-000000000010
+		dataCategory: ImageUrl
+		summarizeBy: none
+		sourceColumn: ability_img
+
+		annotation SummarizationSetBy = Automatic
+
 	partition 'gold fact_match_player_skills' = m
 		mode: directQuery
 		source =

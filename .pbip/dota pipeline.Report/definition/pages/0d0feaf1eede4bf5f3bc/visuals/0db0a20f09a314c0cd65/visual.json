@@ -1,0 +1,237 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
+  "name": "0db0a20f09a314c0cd65",
+  "position": {
+    "x": 0,
+    "y": 177,
+    "z": 6000,
+    "height": 214,
+    "width": 626,
+    "tabOrder": 14000
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold fact_matches"
+                    }
+                  },
+                  "Property": "match_id"
+                }
+              },
+              "queryRef": "gold fact_matches.match_id",
+              "nativeQueryRef": "match_id",
+              "displayName": "Match ID"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold fact_matches"
+                    }
+                  },
+                  "Property": "radiant_team_name"
+                }
+              },
+              "queryRef": "gold fact_matches.radiant_team_name",
+              "nativeQueryRef": "radiant_team_name",
+              "displayName": "Radiant Team"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold fact_matches"
+                    }
+                  },
+                  "Property": "dire_team_name"
+                }
+              },
+              "queryRef": "gold fact_matches.dire_team_name",
+              "nativeQueryRef": "dire_team_name",
+              "displayName": "Dire Team"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold fact_matches"
+                    }
+                  },
+                  "Property": "radiant_score"
+                }
+              },
+              "queryRef": "gold fact_matches.radiant_score",
+              "nativeQueryRef": "radiant_score",
+              "displayName": "Radiant Kills"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold fact_matches"
+                    }
+                  },
+                  "Property": "dire_score"
+                }
+              },
+              "queryRef": "gold fact_matches.dire_score",
+              "nativeQueryRef": "dire_score",
+              "displayName": "Dire Kills"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold fact_matches"
+                    }
+                  },
+                  "Property": "duration_min"
+                }
+              },
+              "queryRef": "gold fact_matches.duration_min",
+              "nativeQueryRef": "duration_min",
+              "displayName": "Duration (min)"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold fact_matches"
+                    }
+                  },
+                  "Property": "winner_name"
+                }
+              },
+              "queryRef": "gold fact_matches.winner_name",
+              "nativeQueryRef": "winner_name",
+              "displayName": "Winner"
+            }
+          ]
+        }
+      }
+    },
+    "objects": {
+      "columnHeaders": [
+        {
+          "properties": {
+            "columnAdjustment": {
+              "expr": {
+                "Literal": {
+                  "Value": "'growToFit'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "columnWidth": [
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "142.07966104523152D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "gold fact_matches.radiant_team_name"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "59.555547661529275D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "gold fact_matches.radiant_score"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "47.99999401615936D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "gold fact_matches.dire_score"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "69.44441757978656D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "gold fact_matches.duration_min"
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Match Details'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "border": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

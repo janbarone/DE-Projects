@@ -50,7 +50,7 @@
         {
           "location": {
             "x": 1148.7238038595597,
-            "y": 747.4120967832762
+            "y": 747.41209678327618
           },
           "nodeIndex": "gold dim_lobby_type",
           "nodeLineageTag": "758dd62f-0f6b-40b7-b1c8-5882902100e0",
@@ -63,7 +63,7 @@
         {
           "location": {
             "x": 2970.1006810812873,
-            "y": 1130.545290093712
+            "y": 1130.5452900937121
           },
           "nodeIndex": "gold dim_player",
           "nodeLineageTag": "28db8264-2963-4a01-ad28-359fe1e7563b",
@@ -160,7 +160,7 @@
           "nodeLineageTag": "a4eaff26-cdd4-4bfe-91f6-df2c1215b8fc",
           "size": {
             "height": 300,
-            "width": 281.1428571428569
+            "width": 281.14285714285688
           },
           "zIndex": 12
         },
@@ -362,6 +362,16 @@
           "nodeLineageTag": "aaaa010a-0000-0000-0000-000000000000",
           "size": {
             "height": 248,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {},
+          "nodeIndex": "gold fact_draft_sequence",
+          "nodeLineageTag": "aaaa000d-0000-0000-0000-000000000001",
+          "size": {
+            "height": 300,
             "width": 234
           },
           "zIndex": 0
@@ -841,8 +851,8 @@
         },
         {
           "location": {
-            "x": 916.0151722828152,
-            "y": 633.2917332320437
+            "x": 916.01517228281523,
+            "y": 633.29173323204373
           },
           "nodeIndex": "gold fact_teamfights",
           "nodeLineageTag": "445b4ef2-304a-49db-98d0-04c7ebe39ca3",
@@ -855,7 +865,7 @@
         {
           "location": {
             "x": 1290.1348773418713,
-            "y": 633.4266294825188
+            "y": 633.42662948251882
           },
           "nodeIndex": "gold fact_team_matches",
           "nodeLineageTag": "0fb933b3-366e-449d-a08a-fc695e89f14f",
@@ -893,7 +903,7 @@
         }
       ],
       "name": "Layout 9",
-      "zoomValue": 63.28708772323422,
+      "zoomValue": 63.287087723234222,
       "pinKeyFieldsToTop": true,
       "showExtraHeaderInfo": false,
       "hideKeyFieldsWhenCollapsed": false,

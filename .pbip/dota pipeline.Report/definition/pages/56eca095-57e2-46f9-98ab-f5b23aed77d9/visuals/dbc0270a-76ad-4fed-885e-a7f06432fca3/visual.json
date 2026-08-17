@@ -4,10 +4,10 @@
   "position": {
     "x": 335,
     "y": 15,
-    "z": 2,
+    "z": 1000,
     "height": 70,
     "width": 300,
-    "tabOrder": 2
+    "tabOrder": 1000
   },
   "visual": {
     "visualType": "slicer",
@@ -79,23 +79,5 @@
       ]
     },
     "drillFilterOtherVisuals": true
-  },
-  "filterConfig": {
-    "filters": [
-      {
-        "name": "3260253774a7356d1001",
-        "field": {
-          "Column": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "gold dim_player"
-              }
-            },
-            "Property": "player_name"
-          }
-        },
-        "type": "Categorical"
-      }
-    ]
   }
 }

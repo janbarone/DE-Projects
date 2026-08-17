@@ -4,10 +4,10 @@
   "position": {
     "x": 20,
     "y": 985,
-    "z": 8,
+    "z": 7000,
     "height": 200,
     "width": 620,
-    "tabOrder": 8
+    "tabOrder": 7000
   },
   "visual": {
     "visualType": "tableEx",
@@ -15,6 +15,21 @@
       "queryState": {
         "Values": {
           "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold dim_hero"
+                    }
+                  },
+                  "Property": "img"
+                }
+              },
+              "queryRef": "gold dim_hero.img",
+              "nativeQueryRef": "img",
+              "active": true
+            },
             {
               "field": {
                 "Column": {

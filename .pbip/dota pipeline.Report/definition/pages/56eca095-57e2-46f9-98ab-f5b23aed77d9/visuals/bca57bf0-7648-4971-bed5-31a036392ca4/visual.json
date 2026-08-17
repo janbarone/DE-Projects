@@ -4,10 +4,10 @@
   "position": {
     "x": 20.425531914893618,
     "y": 230.51671732522797,
-    "z": 10,
+    "z": 6000,
     "height": 289.84802431610944,
     "width": 780.06079027355622,
-    "tabOrder": 10
+    "tabOrder": 6000
   },
   "visual": {
     "visualType": "clusteredBarChart",
@@ -120,51 +120,5 @@
       ]
     },
     "drillFilterOtherVisuals": true
-  },
-  "filterConfig": {
-    "filters": [
-      {
-        "name": "411d253a8bb66b36400c",
-        "field": {
-          "Column": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "gold dim_hero"
-              }
-            },
-            "Property": "hero_localized_name"
-          }
-        },
-        "type": "Categorical"
-      },
-      {
-        "name": "e42cf190c0064bb7bb09",
-        "field": {
-          "Measure": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "gold fact_teamfight_players"
-              }
-            },
-            "Property": "Avg Fight Damage"
-          }
-        },
-        "type": "Advanced"
-      },
-      {
-        "name": "62b211909723e33d7ad3",
-        "field": {
-          "Measure": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "gold fact_teamfight_players"
-              }
-            },
-            "Property": "Avg Fight Healing"
-          }
-        },
-        "type": "Advanced"
-      }
-    ]
   }
 }

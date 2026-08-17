@@ -290,6 +290,71 @@ table 'gold fact_matches'
 
 		annotation SummarizationSetBy = Automatic
 
+	column radiant_team_name
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: aaaa0002-0000-0000-0000-0000000000c1
+		summarizeBy: none
+		sourceColumn: radiant_team_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column dire_team_name
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: aaaa0002-0000-0000-0000-0000000000c2
+		summarizeBy: none
+		sourceColumn: dire_team_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column radiant_heroes
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: aaaa0002-0000-0000-0000-0000000000c3
+		summarizeBy: none
+		sourceColumn: radiant_heroes
+
+		annotation SummarizationSetBy = Automatic
+
+	column dire_heroes
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: aaaa0002-0000-0000-0000-0000000000c4
+		summarizeBy: none
+		sourceColumn: dire_heroes
+
+		annotation SummarizationSetBy = Automatic
+
+	column winner_name
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: aaaa0002-0000-0000-0000-0000000000c5
+		summarizeBy: none
+		sourceColumn: winner_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column radiant_team_logo
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: aaaa0002-0000-0000-0000-0000000000c6
+		dataCategory: ImageUrl
+		summarizeBy: none
+		sourceColumn: radiant_team_logo
+
+		annotation SummarizationSetBy = Automatic
+
+	column dire_team_logo
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: aaaa0002-0000-0000-0000-0000000000c7
+		dataCategory: ImageUrl
+		summarizeBy: none
+		sourceColumn: dire_team_logo
+
+		annotation SummarizationSetBy = Automatic
+
 	partition 'gold fact_matches' = m
 		mode: directQuery
 		source =

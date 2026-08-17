@@ -4,10 +4,10 @@
   "position": {
     "x": 20.403022670025187,
     "y": 231.23425692695213,
-    "z": 8,
+    "z": 7000,
     "height": 215.36523929471034,
     "width": 620.02518891687657,
-    "tabOrder": 8
+    "tabOrder": 7000
   },
   "visual": {
     "visualType": "clusteredBarChart",
@@ -161,37 +161,5 @@
       ]
     },
     "drillFilterOtherVisuals": true
-  },
-  "filterConfig": {
-    "filters": [
-      {
-        "name": "d9c74660007dd0321aa1",
-        "field": {
-          "Column": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "gold dim_player"
-              }
-            },
-            "Property": "player_name"
-          }
-        },
-        "type": "Categorical"
-      },
-      {
-        "name": "710e03ca587cdb8aa8c4",
-        "field": {
-          "Measure": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "gold fact_match_players"
-              }
-            },
-            "Property": "Avg Net Worth"
-          }
-        },
-        "type": "Advanced"
-      }
-    ]
   }
 }

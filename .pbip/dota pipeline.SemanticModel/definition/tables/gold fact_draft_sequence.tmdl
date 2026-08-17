@@ -1,0 +1,148 @@
+table 'gold fact_draft_sequence'
+	lineageTag: aaaa000d-0000-0000-0000-000000000001
+
+	column match_id
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: aaaa000d-0000-0000-0000-000000000002
+		summarizeBy: none
+		sourceColumn: match_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column slot
+		dataType: int64
+		isHidden
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: aaaa000d-0000-0000-0000-000000000003
+		summarizeBy: none
+		sourceColumn: slot
+
+		annotation SummarizationSetBy = Automatic
+
+	column dire_pick_hero
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: aaaa000d-0000-0000-0000-000000000004
+		summarizeBy: none
+		sourceColumn: dire_pick_hero
+
+		annotation SummarizationSetBy = Automatic
+
+	column dire_pick_hero_img
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: aaaa000d-0000-0000-0000-000000000005
+		dataCategory: ImageUrl
+		summarizeBy: none
+		sourceColumn: dire_pick_hero_img
+
+		annotation SummarizationSetBy = Automatic
+
+	column dire_pick_seq
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: aaaa000d-0000-0000-0000-000000000006
+		summarizeBy: none
+		sourceColumn: dire_pick_seq
+
+		annotation SummarizationSetBy = Automatic
+
+	column dire_ban_hero
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: aaaa000d-0000-0000-0000-000000000007
+		summarizeBy: none
+		sourceColumn: dire_ban_hero
+
+		annotation SummarizationSetBy = Automatic
+
+	column dire_ban_hero_img
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: aaaa000d-0000-0000-0000-000000000008
+		dataCategory: ImageUrl
+		summarizeBy: none
+		sourceColumn: dire_ban_hero_img
+
+		annotation SummarizationSetBy = Automatic
+
+	column dire_ban_seq
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: aaaa000d-0000-0000-0000-000000000009
+		summarizeBy: none
+		sourceColumn: dire_ban_seq
+
+		annotation SummarizationSetBy = Automatic
+
+	column radiant_pick_hero
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: aaaa000d-0000-0000-0000-00000000000a
+		summarizeBy: none
+		sourceColumn: radiant_pick_hero
+
+		annotation SummarizationSetBy = Automatic
+
+	column radiant_pick_hero_img
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: aaaa000d-0000-0000-0000-00000000000b
+		dataCategory: ImageUrl
+		summarizeBy: none
+		sourceColumn: radiant_pick_hero_img
+
+		annotation SummarizationSetBy = Automatic
+
+	column radiant_pick_seq
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: aaaa000d-0000-0000-0000-00000000000c
+		summarizeBy: none
+		sourceColumn: radiant_pick_seq
+
+		annotation SummarizationSetBy = Automatic
+
+	column radiant_ban_hero
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: aaaa000d-0000-0000-0000-00000000000d
+		summarizeBy: none
+		sourceColumn: radiant_ban_hero
+
+		annotation SummarizationSetBy = Automatic
+
+	column radiant_ban_hero_img
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: aaaa000d-0000-0000-0000-00000000000e
+		dataCategory: ImageUrl
+		summarizeBy: none
+		sourceColumn: radiant_ban_hero_img
+
+		annotation SummarizationSetBy = Automatic
+
+	column radiant_ban_seq
+		dataType: int64
+		formatString: 0
+		sourceProviderType: bigint
+		lineageTag: aaaa000d-0000-0000-0000-00000000000f
+		summarizeBy: none
+		sourceColumn: radiant_ban_seq
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'gold fact_draft_sequence' = m
+		mode: directQuery
+		source =
+				let
+				    Source = PostgreSQL.Database("localhost", "dota"),
+				    gold_fact_draft_sequence = Source{[Schema="gold",Item="fact_draft_sequence"]}[Data]
+				in
+				    gold_fact_draft_sequence
+

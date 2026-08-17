@@ -1,0 +1,283 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
+  "name": "a746ae9e29cd2a11d4ab",
+  "position": {
+    "x": 656.66666666666663,
+    "y": 1085.5555555555554,
+    "z": 9000,
+    "height": 290,
+    "width": 623.33333333333337,
+    "tabOrder": 3000
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold fact_match_player_item_purchases"
+                    }
+                  },
+                  "Property": "minute"
+                }
+              },
+              "queryRef": "gold fact_match_player_item_purchases.minute",
+              "nativeQueryRef": "Minute",
+              "displayName": "Minute"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold dim_player"
+                    }
+                  },
+                  "Property": "avatar_medium"
+                }
+              },
+              "queryRef": "gold dim_player.avatar_medium",
+              "nativeQueryRef": "Player Avatar",
+              "displayName": "Player Avatar"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold fact_match_player_item_purchases"
+                    }
+                  },
+                  "Property": "player_name"
+                }
+              },
+              "queryRef": "gold fact_match_player_item_purchases.player_name",
+              "nativeQueryRef": "Player Name",
+              "displayName": "Player Name"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold dim_hero"
+                    }
+                  },
+                  "Property": "img"
+                }
+              },
+              "queryRef": "gold dim_hero.img",
+              "nativeQueryRef": " ",
+              "displayName": " "
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold fact_match_player_item_purchases"
+                    }
+                  },
+                  "Property": "hero_localized_name"
+                }
+              },
+              "queryRef": "gold fact_match_player_item_purchases.hero_localized_name",
+              "nativeQueryRef": "Hero",
+              "displayName": "Hero"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold fact_match_player_item_purchases"
+                    }
+                  },
+                  "Property": "img"
+                }
+              },
+              "queryRef": "gold fact_match_player_item_purchases.img",
+              "nativeQueryRef": " 1",
+              "displayName": " "
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold fact_match_player_item_purchases"
+                    }
+                  },
+                  "Property": "item_name"
+                }
+              },
+              "queryRef": "gold fact_match_player_item_purchases.item_name",
+              "nativeQueryRef": "Item Name",
+              "displayName": "Item Name"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "gold fact_match_player_item_purchases"
+                  }
+                },
+                "Property": "minute"
+              }
+            },
+            "direction": "Ascending"
+          }
+        ]
+      }
+    },
+    "objects": {
+      "columnHeaders": [
+        {
+          "properties": {
+            "columnAdjustment": {
+              "expr": {
+                "Literal": {
+                  "Value": "'growToFit'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "columnWidth": [
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "82.99998235658663D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "gold fact_match_player_item_purchases.hero_localized_name"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "79.11109323095667D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "gold fact_match_player_item_purchases.item_name"
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Dire - itemization over time'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "border": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "03f2e3d4-c5b6-4a03-8000-000000000002-f",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "gold fact_match_player_item_purchases"
+              }
+            },
+            "Property": "side"
+          }
+        },
+        "type": "Advanced",
+        "filter": {
+          "Version": 2,
+          "From": [
+            {
+              "Name": "f",
+              "Entity": "gold fact_match_player_item_purchases",
+              "Type": 0
+            }
+          ],
+          "Where": [
+            {
+              "Condition": {
+                "Not": {
+                  "Expression": {
+                    "Comparison": {
+                      "ComparisonKind": 0,
+                      "Left": {
+                        "Column": {
+                          "Expression": {
+                            "SourceRef": {
+                              "Source": "f"
+                            }
+                          },
+                          "Property": "side"
+                        }
+                      },
+                      "Right": {
+                        "Literal": {
+                          "Value": "'Radiant'"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "howCreated": "User"
+      }
+    ]
+  }
+}

@@ -4,10 +4,10 @@
   "position": {
     "x": 487.29483282674772,
     "y": 100.18237082066869,
-    "z": 5,
+    "z": 4000,
     "height": 299.57446808510639,
     "width": 418.23708206686933,
-    "tabOrder": 5
+    "tabOrder": 4000
   },
   "visual": {
     "visualType": "clusteredBarChart",
@@ -175,37 +175,5 @@
       ]
     },
     "drillFilterOtherVisuals": true
-  },
-  "filterConfig": {
-    "filters": [
-      {
-        "name": "8a8aea06600c43838070",
-        "field": {
-          "Column": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "gold dim_player"
-              }
-            },
-            "Property": "player_name"
-          }
-        },
-        "type": "Categorical"
-      },
-      {
-        "name": "a2b1daf68ba2104d548e",
-        "field": {
-          "Measure": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "gold fact_match_players"
-              }
-            },
-            "Property": "Avg KDA"
-          }
-        },
-        "type": "Advanced"
-      }
-    ]
   }
 }

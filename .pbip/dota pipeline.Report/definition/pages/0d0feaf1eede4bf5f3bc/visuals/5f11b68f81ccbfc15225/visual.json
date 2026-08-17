@@ -1,0 +1,287 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
+  "name": "5f11b68f81ccbfc15225",
+  "position": {
+    "x": 195.55555555555554,
+    "y": 414.44444444444446,
+    "z": 23000,
+    "height": 114.44444444444444,
+    "width": 321.11111111111109,
+    "tabOrder": 22000
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold fact_matches"
+                    }
+                  },
+                  "Property": "radiant_team_name"
+                }
+              },
+              "queryRef": "Min(gold fact_matches.radiant_team_name)",
+              "nativeQueryRef": " 1",
+              "displayName": " "
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold fact_matches"
+                    }
+                  },
+                  "Property": "radiant_team_logo"
+                }
+              },
+              "queryRef": "gold fact_matches.radiant_team_logo",
+              "nativeQueryRef": " ",
+              "displayName": " "
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "gold fact_matches"
+                  }
+                },
+                "Property": "radiant_team_logo"
+              }
+            },
+            "direction": "Descending"
+          }
+        ]
+      }
+    },
+    "objects": {
+      "columnWidth": [
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "220.02185868258587D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Min(gold fact_matches.radiant_team_name)"
+          }
+        }
+      ],
+      "columnHeaders": [
+        {
+          "properties": {
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "9D"
+                }
+              }
+            },
+            "wordWrap": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "alignment": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Center'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "grid": [
+        {
+          "properties": {
+            "imageHeight": {
+              "expr": {
+                "Literal": {
+                  "Value": "75D"
+                }
+              }
+            },
+            "imageWidth": {
+              "expr": {
+                "Literal": {
+                  "Value": "75D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "values": [
+        {
+          "properties": {
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "12D"
+                }
+              }
+            },
+            "bold": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "total": [
+        {
+          "properties": {
+            "totals": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "visualHeader": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "border": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            },
+            "width": {
+              "expr": {
+                "Literal": {
+                  "Value": "1D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "title": [
+        {
+          "properties": {
+            "titleWrap": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Team Radiant'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "background": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            },
+            "transparency": {
+              "expr": {
+                "Literal": {
+                  "Value": "0D"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "7197206e4f176dc834f0",
+        "ordinal": 0,
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "gold fact_matches"
+              }
+            },
+            "Property": "radiant_team_name"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "c84e357d98f212f360bc",
+        "ordinal": 1,
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "gold fact_match_players"
+              }
+            },
+            "Property": "side"
+          }
+        },
+        "type": "Categorical",
+        "howCreated": "User"
+      }
+    ],
+    "filterSortOrder": "Custom"
+  }
+}

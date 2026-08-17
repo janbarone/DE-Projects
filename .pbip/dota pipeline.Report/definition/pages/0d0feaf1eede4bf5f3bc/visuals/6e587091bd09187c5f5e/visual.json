@@ -1,0 +1,361 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
+  "name": "6e587091bd09187c5f5e",
+  "position": {
+    "x": 667.77777777777771,
+    "y": 73.333333333333329,
+    "z": 2000,
+    "height": 317.77777777777777,
+    "width": 612.22222222222217,
+    "tabOrder": 16000
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold dim_team"
+                    }
+                  },
+                  "Property": "logo_url"
+                }
+              },
+              "queryRef": "gold dim_team.logo_url",
+              "nativeQueryRef": "Team logo",
+              "displayName": "Team logo"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold dim_team"
+                    }
+                  },
+                  "Property": "team_name"
+                }
+              },
+              "queryRef": "gold dim_team.team_name",
+              "nativeQueryRef": "team_name",
+              "displayName": "Team"
+            },
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "gold fact_team_matches"
+                        }
+                      },
+                      "Property": "league_rank"
+                    }
+                  },
+                  "Function": 3
+                }
+              },
+              "queryRef": "Min(gold fact_team_matches.league_rank)",
+              "nativeQueryRef": "league_rank",
+              "displayName": "Rank"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold fact_team_matches"
+                    }
+                  },
+                  "Property": "Team Appearances"
+                }
+              },
+              "queryRef": "gold fact_team_matches.Team Appearances",
+              "nativeQueryRef": "Team Appearances",
+              "displayName": "Matches"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold fact_team_matches"
+                    }
+                  },
+                  "Property": "Team Wins"
+                }
+              },
+              "queryRef": "gold fact_team_matches.Team Wins",
+              "nativeQueryRef": "Team Wins",
+              "displayName": "Wins"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold fact_team_matches"
+                    }
+                  },
+                  "Property": "Team Losses"
+                }
+              },
+              "queryRef": "gold fact_team_matches.Team Losses",
+              "nativeQueryRef": "Team Losses",
+              "displayName": "Losses"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold fact_team_matches"
+                    }
+                  },
+                  "Property": "Team Win Rate"
+                }
+              },
+              "queryRef": "gold fact_team_matches.Team Win Rate",
+              "nativeQueryRef": "Team Win Rate",
+              "displayName": "Win Rate"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold fact_team_matches"
+                    }
+                  },
+                  "Property": "Team Lose Rate"
+                }
+              },
+              "queryRef": "gold fact_team_matches.Team Lose Rate",
+              "nativeQueryRef": "Team Lose Rate",
+              "displayName": "Lose Rate"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Measure": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "gold fact_team_matches"
+                  }
+                },
+                "Property": "Team Wins"
+              }
+            },
+            "direction": "Descending"
+          }
+        ]
+      }
+    },
+    "objects": {
+      "general": [
+        {
+          "properties": {}
+        }
+      ],
+      "columnHeaders": [
+        {
+          "properties": {
+            "columnAdjustment": {
+              "expr": {
+                "Literal": {
+                  "Value": "'growToFit'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "border": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Team Rankings'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "a361cc7a3938c676a740",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "gold fact_matches"
+              }
+            },
+            "Property": "match_id"
+          }
+        },
+        "type": "Categorical",
+        "filter": {
+          "Version": 2,
+          "From": [
+            {
+              "Name": "g",
+              "Entity": "gold fact_matches",
+              "Type": 0
+            }
+          ],
+          "Where": [
+            {
+              "Condition": {
+                "Not": {
+                  "Expression": {
+                    "In": {
+                      "Expressions": [
+                        {
+                          "Column": {
+                            "Expression": {
+                              "SourceRef": {
+                                "Source": "g"
+                              }
+                            },
+                            "Property": "match_id"
+                          }
+                        }
+                      ],
+                      "Values": [
+                        [
+                          {
+                            "Literal": {
+                              "Value": "null"
+                            }
+                          }
+                        ]
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "howCreated": "User",
+        "objects": {
+          "general": [
+            {
+              "properties": {
+                "isInvertedSelectionMode": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "true"
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "a1b2c3d4-main-team-has-appearances",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "gold fact_team_matches"
+              }
+            },
+            "Property": "Team Appearances"
+          }
+        },
+        "type": "Advanced",
+        "filter": {
+          "Version": 2,
+          "From": [
+            {
+              "Name": "tm",
+              "Entity": "gold fact_team_matches",
+              "Type": 0
+            }
+          ],
+          "Where": [
+            {
+              "Condition": {
+                "Comparison": {
+                  "ComparisonKind": 1,
+                  "Left": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Source": "tm"
+                        }
+                      },
+                      "Property": "Team Appearances"
+                    }
+                  },
+                  "Right": {
+                    "Literal": {
+                      "Value": "0D"
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "a1b2c3d4-main-team-appearances",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "gold fact_team_matches"
+              }
+            },
+            "Property": "Team Appearances"
+          }
+        },
+        "type": "Advanced",
+        "howCreated": "User"
+      }
+    ]
+  }
+}

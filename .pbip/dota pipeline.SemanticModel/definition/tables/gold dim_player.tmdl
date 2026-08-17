@@ -260,6 +260,16 @@ table 'gold dim_player'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
+	column avatar_medium
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: a1d47a47-5de3-4e25-bade-04ee15d71e42
+		dataCategory: ImageUrl
+		summarizeBy: none
+		sourceColumn: avatar_medium
+
+		annotation SummarizationSetBy = Automatic
+
 	partition 'gold dim_player' = m
 		mode: directQuery
 		source =

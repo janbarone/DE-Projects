@@ -4,10 +4,10 @@
   "position": {
     "x": 235,
     "y": 15,
-    "z": 2,
+    "z": 1000,
     "height": 70,
     "width": 280,
-    "tabOrder": 2
+    "tabOrder": 1000
   },
   "visual": {
     "visualType": "slicer",
@@ -79,23 +79,5 @@
       ]
     },
     "drillFilterOtherVisuals": true
-  },
-  "filterConfig": {
-    "filters": [
-      {
-        "name": "623547aa44717151ec5c",
-        "field": {
-          "Column": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "gold dim_league"
-              }
-            },
-            "Property": "league_name"
-          }
-        },
-        "type": "Categorical"
-      }
-    ]
   }
 }

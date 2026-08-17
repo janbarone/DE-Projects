@@ -1,6 +1,6 @@
 # Power BI Report — Status, Change Log & Known Issues
 
-Status as of **2026-08-17**. This file is the running ledger for the report at
+Status as of **2026-08-18**. This file is the running ledger for the report at
 `.pbip/dota pipeline.Report` (PBIR format) and its semantic model at
 `.pbip/dota pipeline.SemanticModel` (TMDL).
 
@@ -8,8 +8,9 @@ Status as of **2026-08-17**. This file is the running ledger for the report at
 > unused gold tables + their indexes/relationships (model 38 → **31 tables,
 > 52 relationships**), added index hardening + `on-run-end: analyze`, and
 > shipped the **Grand Report** page (all report pages merged on one 3840 px
-> canvas, `scripts/build_grand_page.py`). The gold layer rebuilt green
-> (227/227 PASS). Fresh dump —
+> canvas, `scripts/build_grand_page.py`). **The Grand Report page + builder
+> were deleted 2026-08-17; the MAIN page is the landing page (see §5v).**
+> The gold layer rebuilt green (227/227 PASS). Fresh dump —
 > `backups/gold_20260817_161207.dump` (see §5t).
 
 - Model mode: **DirectQuery** → PostgreSQL `localhost:5432` / db `dota`, **gold** schema.
@@ -22,13 +23,17 @@ Status as of **2026-08-17**. This file is the running ledger for the report at
 
 ## ▶ RESUME HERE — next session (what's left)
 
-All rounds (1–16) are built and JSON/TMDL-validated (290 report JSON files,
-0 bad, 0 BOMs; model = 31 tables, 52 relationships, 3 bidirectional; Grand
-Report page `--verify` = 474 field references all resolve). The gold layer was
-rebuilt green on 2026-08-17 (`dbt build --select gold --threads 1`,
-227/227 PASS) after the Round-16 pruning. The remaining backlog is report-level
-verification in Power BI Desktop plus non-report work (matchup matrix via
-USERELATIONSHIP, player drill-through — see §8).
+All rounds (1–20) are built and JSON/TMDL-validated (184 report JSON files,
+0 bad, 0 BOMs; model = 32 tables, 53 relationships; Grand Report page
+`--verify` = N/A — deleted). Round 20 (see §5w) added `gold fact_draft_sequence`
+(wide per-slot draft pivot), the MAIN "Match Draft Sequence" 8-column table,
+and hero pick/ban lists on the Players and Teams pages. Since the initial
+Round-20 build, `fact_draft_sequence` was fixed to (a) cover **all 4,098
+matches with draft data** (was 1,916 complete drafts) and (b) show the
+pick/ban sequence as **continuous 1–10 across both teams** in global draft
+order. The remaining backlog
+is report-level verification in Power BI Desktop plus non-report work
+(matchup matrix via USERELATIONSHIP, player drill-through — see §8).
 
 Safe resume checklist:
 
@@ -37,15 +42,16 @@ Safe resume checklist:
    **Heavy dbt builds may OOM-kill Postgres on this machine (§4) — run them
    with `--threads 1`.**
 2. Open `.pbip/dota pipeline.Report` in Power BI Desktop. The report now opens
-   on the **Grand Report** page (landing page, `a1b2c3d4-…`, 3840×8517 px —
-   every report page merged into chapters with a deduplicated global filter
-   bar; rebuild with `python scripts/build_grand_page.py`). Everything from
+   on the **MAIN** page (landing page, `0d0feaf1eede4bf5f3bc` — the old Grand
+   Report page and its builder were deleted, see §5v). Everything from
    Rounds 8–15 is as previously verified: Match Detail hero slicers scoped to
    the selected match, 25-column player tables, per-minute progression tables,
    Combat Match ID slicer, Hero Meta Top-opponents table, searchable
    high-cardinality slicers.
-3. Confirm the model imported cleanly: **31 tables, 52 relationships (3
-   bidirectional)** — the Round-16 pruning removed 7 tables from the model
+3. Confirm the model imported cleanly: **32 tables, 53 relationships (3
+   bidirectional)** — Round 20 added `gold fact_draft_sequence` +
+   `fact_draft_sequence.match_id → fact_matches.match_id` (see §5w). The
+   Round-16 pruning removed 7 tables from the model
    (`fact_teamfight_item_uses`, `fact_teamfight_kills`,
    `fact_team_compositions`, `fact_match_timeline`,
    `fact_match_timeline_events`, `dim_match_minute`,
@@ -1196,6 +1202,245 @@ aborts. Even `--threads 1` full builds crashed while scanning the big
 silver/bronze tables; **gold-only builds (`--select gold`) were stable** — use
 `--threads 1` + `--select gold` for heavy rebuilds. Power BI DirectQuery is
 unaffected (single-user, small queries). Documented in §4 below.
+
+### 5u. Round 17 — MAIN page: trickle-down year → league → team + leaderboards (2026-08-17)
+
+Revision pass on the user's MAIN page (`0d0feaf1eede4bf5f3bc`, added in
+Desktop since the Round-16 savepoint). All report/model edits — **no dbt
+rebuild, no DB change**:
+
+- [x] **Slicer trickle-down** — measure-based visual filters (the Round-9
+      pattern, §5j), so slicer items respond to upstream selections:
+  - League slicer (`975de97d`): added `[Total Matches] > 0` → only leagues
+    with matches; narrows automatically to leagues with matches in the
+    selected Year. (The pre-existing `match_id` not-blank filter cannot do
+    this — a many→one filter never reaches `dim_league`.)
+  - Team slicer (`70ad5b1d`): added `[Team Appearances] > 0` → teams with
+    matches in the selected league/year; all teams with matches when nothing
+    is selected (existing not-blank filter kept).
+- [x] **Team Details table (`6e587091`) → per-team leaderboard** (was
+      per-match rows): Team, League Rank, Matches, Wins, Losses, Win Rate,
+      Lose Rate. Drop `match_id` column.
+- [x] **Match Details table (`0db0a20f`)**: added Radiant Team, Dire Team
+      (resolved through the `fact_team_matches` bridge — `fact_matches`
+      radiant/dire_team_id have no relationship to `dim_team`),
+      radiant_score/dire_score (per-side kills), duration_min, Radiant
+      Heroes, Dire Heroes (`CONCATENATEX` over `fact_match_players` →
+      `dim_hero`, ordered by `player_slot`).
+- [x] **New measures** — `gold fact_team_matches`: `Team Losses`,
+      `Team Lose Rate`, `League Rank` (`RANKX(ALL(team_id))` on
+      wins→win-rate, scoped to the visible league/year); `gold fact_matches`:
+      `Radiant Team`, `Dire Team`, `Radiant Heroes`, `Dire Heroes`.
+- [x] **Grand Report builder fixes** (`scripts/build_grand_page.py`): slicer
+      `total` was hardcoded `40` → now counts real source slicers (43; the new
+      MAIN page also added a 13th section/chapter). Test derives deduped and
+      generated counts instead of magic numbers.
+- [x] **Verified:** pytest 33/33 PASS; Grand Report plan binding check 0
+      errors; all 7 new measure refs resolve in the model schema; report JSONs
+      valid. **Pending:** open in Desktop and click Refresh once — if the
+      measure-based slicer filters ever trigger the transient cyclic-reference
+      error persistently, fallback = prune `dim_league`/`dim_team` in dbt to
+      leagues/teams with matches (static slicer items, no year→league scope).
+- [x] **Fix pass (2026-08-17):** three rounds of Desktop errors fixed:
+  - `League Rank`: `DESC` was in RANKX's value slot (arg 3) → dropped
+    (RANKX defaults to descending).
+  - `Radiant/Dire Heroes` TOPN: stray count arg in the orderBy slot →
+    `TOPN(5, table, col, 1)`.
+  - **`side` is stored capitalized (`'Radiant'`/`'Dire'`)**, not lowercase —
+    all four `side = "radiant"` filters matched nothing → blank columns.
+  - Team Details league scoping: table groups on `dim_team.team_name`, which
+    a many→one filter can never reach; added `[Team Appearances] > 0` visual
+    measure filter (same pattern as the team slicer).
+- [x] **Match Details → precomputed columns (2026-08-17):** the four measures
+      relied on DirectQuery cross-table measure context (bidirectional
+      `fact_match_players`/`fact_team_matches`), which did NOT correlate in
+      DQ — every row showed the same team/hero values. **Replaced with
+      materialized columns in `gold fact_matches`**: `radiant_team_name`,
+      `dire_team_name` (via `fact_team_matches` → `dim_team`), `radiant_heroes`,
+      `dire_heroes` (`string_agg` over `stg_match_players` → `stg_heroes`,
+      ordered by `player_slot::int`, team_number 0/1 = Radiant/Dire).
+      Hero names source from `stg_heroes` (not `dim_hero`) — `dim_hero` is
+      downstream of `fact_matches` via `fact_match_players` (dependency
+      cycle). Team names still via `dim_team` (acyclic). Rebuilt with
+      `dbt run --select gold.fact_matches --threads 1` (light dep chain, no
+      OOM). TMDL columns added; Match Details visual switched to plain
+      columns; the 4 DQ-broken measures removed. **All 4,299 matches covered**
+      (team names on 4,245, hero lists on 4,296–4,299; ~3 matches have a
+      hero_id missing from `stg_heroes`). pytest 33/33, MAIN visual bindings
+      0 errors, JSON valid.
+- [x] **Leaderboard rank → precomputed column (2026-08-17):** the `League Rank`
+      RANKX measure returned 1 for every team — DirectQuery did not correlate
+      the RANKX iteration context (same cross-table context failure as the
+      hero measures). Replaced with a materialized `league_rank` column on
+      `gold fact_team_matches`, computed per league with
+      `ROW_NUMBER() OVER (PARTITION BY leagueid ORDER BY wins DESC,
+      win_rate DESC, team_id)` — the "most wins, then win rate" basis the user
+      asked for. Team Details visual now shows `Min(league_rank)` per team
+      (rank is constant per team within a league). Rebuilt with
+      `dbt run --select gold.fact_team_matches gold.fact_matches --threads 1`.
+      Verified: TI2021 → Team Spirit rank 1 (33 wins), LGD rank 2 (23 wins)…
+      Rank is league-scoped; if the year slicer is ALSO narrowed the rank stays
+      league-wide (rows still narrow via `[Team Appearances] > 0`).
+- [x] **Match Details Winner column (2026-08-17):** added `winner_name` column
+      to `gold fact_matches` (`Radiant`/`Dire`/`Draw` derived from `winner`,
+      matching the old `Match Winner` measure) and added a `Winner` projection
+      to the Match Details table. 2,199 Radiant / 2,098 Dire / 2 Draw.
+- [x] **MAIN page round 3 (2026-08-17):** Total Matches card now uses the
+      `Total Matches` measure (was a raw `Count(match_id)` column aggregation)
+      — it responds to the league/year/team slicers via cross-filtering. Hero
+      slicers side-scoped: `Hero - Radiant` (`d8d3896d`) now filters on the
+      pre-existing `Hero in Current Radiant Match` measure and `Hero - Dire`
+      (`853e404c`) on `Hero in Current Dire Match` (both were pointing at the
+      generic `Hero in Current Match`) — when a match is selected they show
+       only that match's 5 radiant / 5 dire heroes. Verified: pytest 33/33,
+       card + both hero slicer bindings resolve.
+- [x] **Match Details row click → hero slicers (2026-08-17):** clicking a row in
+      the Match Details table did not filter the `Hero - Radiant`/`Hero - Dire`
+      slicers, while the (new, Desktop-added) `match_id` slicer (`96d3a489`,
+      on `gold fact_matches.match_id`) did. Cause: **slicers always cross-filter,
+      but table row clicks default to cross-HIGHLIGHT** — slicer items (and
+      their measure-based `> 0` visual filters) only respond to real filters.
+      Fix: added explicit `visualInteractions` (`DataFilter`) on the MAIN page
+      (`page.json`) from Match Details (`0db0a20f`) → `d8d3896d` and `853e404c`.
+- [x] **Blank team names (2026-08-17):** match `1670686522` showed a blank
+      Radiant team. Cause: 14 teams (incl. `1333179`) have `name`/`tag` = `''`
+      in OpenDota (defunct/stack teams — every bronze match payload and the
+      `/teams` snapshot return empty; only the logo exists). 123 matches / 246
+      team slots were affected. Fix: `dim_team.sql` fallback
+      `team_name → team_tag → 'TEAM ' || team_id`. Rebuilt `gold.dim_team` +
+      `gold.fact_matches` (`--threads 1`). Verified: `1670686522` = "TEAM
+      1333179" vs "INVICTUS GAMING"; 0 blank team names remain.
+- [x] **Player Name slicer scoping (2026-08-17):** the Desktop-added Player Name
+      slicer (`09e96889`, on `gold dim_player.player_name`) ignored all
+      selections (showed every player). Fix (same Round-17 measure-filter
+      pattern): added a `[Total Picks] > 0` visual filter (measure lives on
+      `gold fact_match_players`; league/team/year reach it via the
+      bidirectional `f6515265`/`8e2c7288` relationships) + the not-null/not-blank
+      exclusion. Also added a `DataFilter` interaction from Match Details →
+      `09e96889` so clicking a match scopes the player list. Verified: filter
+      refs resolve, page JSON valid, pytest 33/33. Desktop-added `NoFilter`
+      interactions (hero slicers isolated from per-match visuals) preserved.
+- [x] **Hero images in Power BI (2026-08-17):** the user downloaded 125 local
+      hero icons (`hero_icons/`), but `dim_hero.img` already holds OpenDota
+      hero image paths — however they were **relative** (`/apps/dota2/images/
+      dota_react/heroes/antimage.png?`) with a trailing `?`, so PBI could not
+      load them. Fixed in `dim_hero.sql`: `'https://cdn.cloudflare.steamstatic
+      .com' || rtrim(h.img, '?') as img` (CDN base verified 200/image-png) and
+      set `dataCategory: ImageUrl` on the `img` column in `gold dim_hero.tmdl`.
+      Rebuilt `gold.dim_hero` (`--select`, 0.2s). 127/128 rows full URLs (the
+      `Unknown` placeholder has none). Result: drop `img` into any table visual
+      to render hero pictures (requires internet at render time). The local
+      base64 plan (`bronze.hero_icons` loader) was deferred — not needed. Note:
+      123/125 icon filenames match DB hero names; `Outworld Destroyer`→`Outworld
+      Devourer` and `Skeleton King`→`Wraith King` are renames; `Ring Master`,
+      `Kez`, `Largo` (new heroes) have no icon file.
+- [x] **Heroes per Team table (2026-08-17):** new tableEx visual `a5b6c7d8e9f0a1b2c3d4e5f6`
+      on MAIN (x0/y2330/w1280/h350, title "Heroes per Team") showing each
+      player of the current match: Team (`side`), Player Name (`dim_player`),
+      Hero (`dim_hero.hero_localized_name`), Hero Icon (`dim_hero.img` — renders
+      the picture, ImageUrl category). Sorted side DESC (Radiant first) then
+      `player_slot` ASC. Scoped by any match selection (match_id slicer
+      cross-filters by default; added `DataFilter` interaction from Match
+      Details `0db0a20f` → `a5b6c7d8`). Verified: 10 rows (5+5) for
+      match 1670686522 with icons; bindings resolve; page JSON valid.
+
+---
+
+### 5u. Round 18 — Grand Report line-chart crash fix + item/team/player/skill images (2026-08-17)
+
+- **Crash fix:** the MAIN (Grand Report) page crashed rendering **"Player Level
+  over time"** (`c6e251aa7f0a24d47015`) with
+  `e.categoryIdentities[a] is not a function` in `CartesianVisuals.min.js`. Root
+  cause: the `build_grand_page.py` copies carried **empty visual-level filters**
+  (`filterConfig.filters` entries with a `name`/`field`/`type` but **no `filter`
+  body`) onto every visual. Line charts choke on those stub filters while
+  tables/cards/slicers ignore them. Removed the empty `filterConfig` from the
+  three Grand Report line charts — `c6e251aa7f0a24d47015` (Player Level over
+  time), `d3a42cfcb825a9d1036c` (Player Net Worth over time),
+  `c7f6626f7fe807acc3d5` (Team XP & Net Worth by side) — mirroring the same fix
+  already applied to the Progression page charts. If a crash persists, the other
+  risk is series volume (~128 hero lines at full data); constrain with a Top-N
+  or the filter bar.
+- **Images (same pattern as `dim_hero.img` — URL column + `dataCategory:
+  ImageUrl`):**
+  - **Team logos** — `dim_team.logo_url` already held full Steam CDN URLs; added
+    `dataCategory: ImageUrl` in `gold dim_team.tmdl`.
+  - **Player avatars** — `dim_player.avatar_medium` was in the DB but not the
+    model; added the column + `dataCategory: ImageUrl` in `gold dim_player.tmdl`.
+  - **Item icons** — `dim_item` gained `img` (`dim_item.sql`: full
+    `https://cdn.cloudflare.steamstatic.com` URL from the items constant, 491/596
+    items) + column in `gold dim_item.tmdl`.
+  - **Ability icons** — `fact_match_player_skills` gained `ability_img`
+    (`fact_match_player_skills.sql`: CDN URL via ability_ids → abilities,
+    432k/535k rows; talents mostly no icon) + column in
+    `gold fact_match_player_skills.tmdl`.
+  - Rebuilt `gold.dim_item` + `gold.fact_match_player_skills` (dbt, tests pass);
+    item/ability URLs verified 200/image-png on the CDN. Drop the new columns
+    into any table visual to render pictures (internet required at render time).
+- **Verified:** 33/33 pytest, 0 bad report JSON, 0 TMDL BOMs.
+
+---
+
+### 5v. Round 19 — Grand Report removal + images available in the model (2026-08-17)
+
+- [x] **Grand Report deleted** — the `a1b2c3d4-…` page and
+      `scripts/build_grand_page.py` + `tests/test_build_grand_page.py` removed;
+      the **MAIN** page (`0d0feaf1eede4bf5f3bc`) is the landing page
+      (`pages.json`). Local `hero_icons/` folder deleted (unneeded — CDN URLs).
+- [x] **Image columns available in the model** (`dataCategory: ImageUrl`, no
+      visuals wired — for future use): `dim_hero.img`,
+      `dim_item.img`, `dim_player.avatar_medium`, `dim_team.logo_url`,
+      `fact_match_player_skills.ability_img`, and **new**
+      `fact_match_player_item_purchases.img` (added `di.img` to the gold model
+      so item purchases show icons; rebuilt `gold.fact_match_player_item_purchases`,
+      `--threads 1`).
+- [x] **Verified:** pytest 21/21, 0 bad report JSON, no `a1b2c3d4` refs in
+      `pages.json`.
+
+### 5w. Round 20 — MAIN draft-sequence table + hero pick/ban lists (2026-08-18)
+
+- [x] **New gold model `gold.fact_draft_sequence`** — one row per
+      `(match_id, slot 1–5)`: each team's pick and ban for that draft slot,
+      denormalized to hero localized names + image URLs for DirectQuery
+      rendering. `slot` is each team's own pick/ban order (1–5); the displayed
+      `*_seq` columns are **continuous 1–10 across both teams** in global draft
+      order (via `row_number` over `match_id, is_pick`). Every match
+      with at least one draft event is included; incomplete drafts leave the
+      missing slots blank (201 matches have no draft data at all).
+      20,490 rows (4,098 matches × 5). Columns: `match_id`, `slot`,
+      `dire_pick_hero(_img)`, `dire_pick_seq`, `dire_ban_hero(_img)`,
+      `dire_ban_seq`, `radiant_pick_hero(_img)`, `radiant_pick_seq`,
+      `radiant_ban_hero(_img)`, `radiant_ban_seq`. Image columns
+      `dataCategory: ImageUrl`. Built with `--threads 1`.
+- [x] **Fix 2026-08-18:** initial build restricted the model to complete drafts
+      (1,916 of 4,299 matches), so selecting any other match showed an empty
+      draft table. Relaxed the `matches` CTE to `select distinct match_id from
+      pb` and replaced the `not_null` seq tests with a `seq_in_range` custom
+      test (1–10 when present); seq columns may be NULL on partial drafts.
+- [x] **New relationship** `gold fact_draft_sequence.match_id → gold
+      fact_matches.match_id` (`aaaa000d-…-0010`), so the draft table is scoped
+      to the match selected in the MAIN "Match Details" table.
+- [x] **MAIN page** (`0d0feaf1eede4bf5f3bc`): new tableEx **"Match Draft
+      Sequence"** (visual `b7e4f2a1-3d8c-4f5e-9a2b-c1d3e5f7a9b1`) with 8
+      symmetric columns — Dire Hero, Pick Seq, Dire Hero Ban, Ban Seq,
+      Radiant Hero, Radiant Pick Seq, Radiant Hero Ban, Radiant Ban Seq — 5
+      rows per match, sorted by `slot` ascending. Page height 3000 stays.
+- [x] **Players page** (`cb9a7fde…`): 2 new tableEx visuals —
+      **"Heroes picked by players"** (`f1d0a1a1-…-0001`) and **"Heroes banned
+      by players"** (`f1d0a1a1-…-0002`) — hero icon + name + `Draft Picks` /
+      `Draft Bans`, sorted descending by the measure, **no top-N limit**
+      (all heroes listed). Page height 1000 → **1400**.
+- [x] **Teams page** (`baedb79c…`): 2 new tableEx visuals —
+      **"Heroes picked by teams"** (`f1d0b2b2-…-0001`) and **"Heroes banned by
+      teams"** (`f1d0b2b2-…-0002`) — same shape. Page height 1100 → **1510**.
+- [x] **Verified:** pytest 21/21; 184 report JSON files, 0 bad; 563 lineage
+      tags all unique (new `aaaa000d-…` tags ×15 + 1 relationship tag);
+      TMDL `sourceProviderType` matches Postgres (`text`→`nvarchar(max)`,
+      `bigint`→`bigint`).
+- [ ] **Remaining:** Desktop render pass (manual) — confirm the draft table
+      scopes to the selected match (previous empty-on-select was the
+      complete-draft-only filter, now fixed) and hero pick/ban lists render
+      with icons.
 
 ---
 

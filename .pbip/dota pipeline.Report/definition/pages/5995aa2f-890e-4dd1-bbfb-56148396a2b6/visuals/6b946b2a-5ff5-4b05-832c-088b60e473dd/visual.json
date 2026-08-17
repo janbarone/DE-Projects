@@ -4,10 +4,10 @@
   "position": {
     "x": 650,
     "y": 720,
-    "z": 22,
+    "z": 9000,
     "height": 260,
     "width": 610,
-    "tabOrder": 22
+    "tabOrder": 9000
   },
   "visual": {
     "visualType": "lineChart",
@@ -112,6 +112,7 @@
   "filterConfig": {
     "filters": [
       {
+        "name": "6b946b2a-ban-rank",
         "field": {
           "Measure": {
             "Expression": {
@@ -122,14 +123,21 @@
             "Property": "Hero Ban Rank"
           }
         },
-        "howCreated": "User",
-        "name": "6b946b2a-ban-rank",
         "type": "Advanced",
         "filter": {
+          "Version": 2,
+          "From": [
+            {
+              "Name": "h",
+              "Entity": "gold dim_hero",
+              "Type": 0
+            }
+          ],
           "Where": [
             {
               "Condition": {
                 "Comparison": {
+                  "ComparisonKind": 4,
                   "Left": {
                     "Measure": {
                       "Expression": {
@@ -144,21 +152,13 @@
                     "Literal": {
                       "Value": "15D"
                     }
-                  },
-                  "ComparisonKind": 4
+                  }
                 }
               }
             }
-          ],
-          "From": [
-            {
-              "Name": "h",
-              "Entity": "gold dim_hero",
-              "Type": 0
-            }
-          ],
-          "Version": 2
-        }
+          ]
+        },
+        "howCreated": "User"
       }
     ]
   }

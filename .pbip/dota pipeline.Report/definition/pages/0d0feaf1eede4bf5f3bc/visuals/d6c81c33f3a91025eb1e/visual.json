@@ -1,0 +1,557 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
+  "name": "d6c81c33f3a91025eb1e",
+  "position": {
+    "x": 656.66666666666663,
+    "y": 504.44444444444446,
+    "z": 7000,
+    "height": 461.11111111111109,
+    "width": 623.33333333333337,
+    "tabOrder": 1000
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold dim_player"
+                    }
+                  },
+                  "Property": "avatar_medium"
+                }
+              },
+              "queryRef": "gold dim_player.avatar_medium",
+              "nativeQueryRef": "Player Avatar",
+              "displayName": "Player Avatar"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold dim_player"
+                    }
+                  },
+                  "Property": "player_name"
+                }
+              },
+              "queryRef": "gold dim_player.player_name",
+              "nativeQueryRef": "Player Name",
+              "displayName": "Player Name"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold dim_hero"
+                    }
+                  },
+                  "Property": "hero_localized_name"
+                }
+              },
+              "queryRef": "gold dim_hero.hero_localized_name",
+              "nativeQueryRef": "Hero",
+              "displayName": "Hero"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold dim_hero"
+                    }
+                  },
+                  "Property": "img"
+                }
+              },
+              "queryRef": "gold dim_hero.img",
+              "nativeQueryRef": " ",
+              "displayName": " "
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold fact_match_players"
+                    }
+                  },
+                  "Property": "level"
+                }
+              },
+              "queryRef": "gold fact_match_players.level",
+              "nativeQueryRef": "Level",
+              "displayName": "Level"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold fact_match_players"
+                    }
+                  },
+                  "Property": "kills"
+                }
+              },
+              "queryRef": "gold fact_match_players.kills",
+              "nativeQueryRef": "Kills",
+              "displayName": "Kills"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold fact_match_players"
+                    }
+                  },
+                  "Property": "deaths"
+                }
+              },
+              "queryRef": "gold fact_match_players.deaths",
+              "nativeQueryRef": "Deaths",
+              "displayName": "Deaths"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold fact_match_players"
+                    }
+                  },
+                  "Property": "assists"
+                }
+              },
+              "queryRef": "gold fact_match_players.assists",
+              "nativeQueryRef": "Assists",
+              "displayName": "Assists"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold fact_match_players"
+                    }
+                  },
+                  "Property": "net_worth"
+                }
+              },
+              "queryRef": "gold fact_match_players.net_worth",
+              "nativeQueryRef": "Net worth",
+              "displayName": "Net worth"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold fact_match_players"
+                    }
+                  },
+                  "Property": "gold_per_min"
+                }
+              },
+              "queryRef": "gold fact_match_players.gold_per_min",
+              "nativeQueryRef": "GPM",
+              "displayName": "GPM"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold fact_match_players"
+                    }
+                  },
+                  "Property": "xp_per_min"
+                }
+              },
+              "queryRef": "gold fact_match_players.xp_per_min",
+              "nativeQueryRef": "XPM",
+              "displayName": "XPM"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold fact_match_players"
+                    }
+                  },
+                  "Property": "hero_damage"
+                }
+              },
+              "queryRef": "gold fact_match_players.hero_damage",
+              "nativeQueryRef": "Hero Damage",
+              "displayName": "Hero Damage"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold fact_match_players"
+                    }
+                  },
+                  "Property": "tower_damage"
+                }
+              },
+              "queryRef": "gold fact_match_players.tower_damage",
+              "nativeQueryRef": "Tower Damage",
+              "displayName": "Tower Damage"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold fact_match_players"
+                    }
+                  },
+                  "Property": "damage_taken_physical"
+                }
+              },
+              "queryRef": "gold fact_match_players.damage_taken_physical",
+              "nativeQueryRef": "Damage Taken - Physical",
+              "displayName": "Damage Taken - Physical"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold fact_match_players"
+                    }
+                  },
+                  "Property": "damage_taken_magical"
+                }
+              },
+              "queryRef": "gold fact_match_players.damage_taken_magical",
+              "nativeQueryRef": "Damage Taken - Magical",
+              "displayName": "Damage Taken - Magical"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold fact_match_players"
+                    }
+                  },
+                  "Property": "damage_taken_pure"
+                }
+              },
+              "queryRef": "gold fact_match_players.damage_taken_pure",
+              "nativeQueryRef": "Damage Taken - Pure",
+              "displayName": "Damage Taken - Pure"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold fact_match_players"
+                    }
+                  },
+                  "Property": "last_hits"
+                }
+              },
+              "queryRef": "gold fact_match_players.last_hits",
+              "nativeQueryRef": "Last Hits",
+              "displayName": "Last Hits"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold fact_match_players"
+                    }
+                  },
+                  "Property": "denies"
+                }
+              },
+              "queryRef": "gold fact_match_players.denies",
+              "nativeQueryRef": "Denies",
+              "displayName": "Denies"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold fact_match_players"
+                    }
+                  },
+                  "Property": "hero_healing"
+                }
+              },
+              "queryRef": "gold fact_match_players.hero_healing",
+              "nativeQueryRef": "Hero Healing",
+              "displayName": "Hero Healing"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold fact_match_players"
+                    }
+                  },
+                  "Property": "pick_sequence"
+                }
+              },
+              "queryRef": "gold fact_match_players.pick_sequence",
+              "nativeQueryRef": "Pick Sequence",
+              "displayName": "Pick Sequence"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold fact_match_players"
+                    }
+                  },
+                  "Property": "support_gold"
+                }
+              },
+              "queryRef": "gold fact_match_players.support_gold",
+              "nativeQueryRef": "Support Gold",
+              "displayName": "Support Gold"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold fact_match_players"
+                    }
+                  },
+                  "Property": "ward_observer_bought"
+                }
+              },
+              "queryRef": "gold fact_match_players.ward_observer_bought",
+              "nativeQueryRef": "Observer Wards bought",
+              "displayName": "Observer Wards bought"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold fact_match_players"
+                    }
+                  },
+                  "Property": "ward_sentry_bought"
+                }
+              },
+              "queryRef": "gold fact_match_players.ward_sentry_bought",
+              "nativeQueryRef": "Sentry Wards bought",
+              "displayName": "Sentry Wards bought"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold fact_match_players"
+                    }
+                  },
+                  "Property": "dust_bought"
+                }
+              },
+              "queryRef": "gold fact_match_players.dust_bought",
+              "nativeQueryRef": "Dust bought",
+              "displayName": "Dust bought"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold fact_match_players"
+                    }
+                  },
+                  "Property": "smoke_bought"
+                }
+              },
+              "queryRef": "gold fact_match_players.smoke_bought",
+              "nativeQueryRef": "Smoke of Deceit bought",
+              "displayName": "Smoke of Deceit bought"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold fact_match_players"
+                    }
+                  },
+                  "Property": "gem_bought"
+                }
+              },
+              "queryRef": "gold fact_match_players.gem_bought",
+              "nativeQueryRef": "Gem bought",
+              "displayName": "Gem bought"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "gold fact_match_players"
+                  }
+                },
+                "Property": "pick_sequence"
+              }
+            },
+            "direction": "Ascending"
+          }
+        ]
+      }
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Dire - Match Details'"
+                }
+              }
+            },
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "titleWrap": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "border": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "width": {
+              "expr": {
+                "Literal": {
+                  "Value": "1D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "background": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "transparency": {
+              "expr": {
+                "Literal": {
+                  "Value": "0D"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "e1f2a3b4-c5d6-4001-8000-000000000007",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "gold fact_match_players"
+              }
+            },
+            "Property": "side"
+          }
+        },
+        "type": "Advanced",
+        "filter": {
+          "Version": 2,
+          "From": [
+            {
+              "Name": "f",
+              "Entity": "gold fact_match_players",
+              "Type": 0
+            }
+          ],
+          "Where": [
+            {
+              "Condition": {
+                "Not": {
+                  "Expression": {
+                    "Comparison": {
+                      "ComparisonKind": 0,
+                      "Left": {
+                        "Column": {
+                          "Expression": {
+                            "SourceRef": {
+                              "Source": "f"
+                            }
+                          },
+                          "Property": "side"
+                        }
+                      },
+                      "Right": {
+                        "Literal": {
+                          "Value": "'Radiant'"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "howCreated": "User"
+      }
+    ]
+  }
+}

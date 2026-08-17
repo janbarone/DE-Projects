@@ -4,10 +4,10 @@
   "position": {
     "x": 20.340050377833755,
     "y": 322.22921914357681,
-    "z": 10,
+    "z": 6000,
     "height": 190,
     "width": 610,
-    "tabOrder": 10
+    "tabOrder": 6000
   },
   "visual": {
     "visualType": "table",
@@ -187,62 +187,6 @@
           ]
         },
         "howCreated": "User"
-      },
-      {
-        "name": "5a0b2c9380e2dbb982d9",
-        "field": {
-          "Column": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "gold fact_match_player_item_purchases"
-              }
-            },
-            "Property": "minute"
-          }
-        },
-        "type": "Advanced"
-      },
-      {
-        "name": "ecb6d500a4e83426753b",
-        "field": {
-          "Column": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "gold fact_match_player_item_purchases"
-              }
-            },
-            "Property": "player_name"
-          }
-        },
-        "type": "Categorical"
-      },
-      {
-        "name": "63855ed8b013ca3ede00",
-        "field": {
-          "Column": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "gold fact_match_player_item_purchases"
-              }
-            },
-            "Property": "hero_localized_name"
-          }
-        },
-        "type": "Categorical"
-      },
-      {
-        "name": "defe768abe606420ac38",
-        "field": {
-          "Column": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "gold fact_match_player_item_purchases"
-              }
-            },
-            "Property": "item_name"
-          }
-        },
-        "type": "Categorical"
       }
     ]
   }

@@ -4,10 +4,10 @@
   "position": {
     "x": 763.44888888888886,
     "y": 144.49777777777777,
-    "z": 8,
+    "z": 6000,
     "height": 300.37333333333333,
     "width": 496.07111111111112,
-    "tabOrder": 8
+    "tabOrder": 6000
   },
   "visual": {
     "visualType": "clusteredColumnChart",
@@ -244,20 +244,6 @@
             }
           ]
         }
-      },
-      {
-        "name": "e43e87395236683890e0",
-        "field": {
-          "Measure": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "gold fact_matches"
-              }
-            },
-            "Property": "Total Matches"
-          }
-        },
-        "type": "Advanced"
       }
     ]
   }

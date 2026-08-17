@@ -4,10 +4,10 @@
   "position": {
     "x": 660,
     "y": 15,
-    "z": 20,
+    "z": 7000,
     "height": 70,
     "width": 200,
-    "tabOrder": 20
+    "tabOrder": 7000
   },
   "visual": {
     "visualType": "slicer",
@@ -27,8 +27,9 @@
                 }
               },
               "queryRef": "gold dim_patch.patch_name",
-              "nativeQueryRef": "patch_name",
-              "active": true
+              "nativeQueryRef": "Patch Version",
+              "active": true,
+              "displayName": "Patch Version"
             }
           ]
         }
@@ -51,6 +52,21 @@
       "general": [
         {
           "properties": {}
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "border": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
         }
       ]
     },

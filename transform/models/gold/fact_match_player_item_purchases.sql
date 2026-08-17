@@ -25,6 +25,7 @@ select
     s.time_sec,
     s.minute,
     coalesce(di.item_name, s.item_internal_name) as item_name,
+    di.img,
     dp.player_name,
     dh.hero_localized_name
 from {{ ref('stg_match_player_item_purchases') }} s

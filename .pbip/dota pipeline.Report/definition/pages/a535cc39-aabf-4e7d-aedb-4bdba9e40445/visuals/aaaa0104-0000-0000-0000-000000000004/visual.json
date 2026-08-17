@@ -4,10 +4,10 @@
   "position": {
     "x": 650,
     "y": 153.138539042821,
-    "z": 23,
+    "z": 15000,
     "height": 66,
     "width": 200,
-    "tabOrder": 23
+    "tabOrder": 15000
   },
   "visual": {
     "visualType": "slicer",
@@ -71,23 +71,5 @@
       ]
     },
     "drillFilterOtherVisuals": true
-  },
-  "filterConfig": {
-    "filters": [
-      {
-        "name": "ef104a00411196892329",
-        "field": {
-          "Column": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "gold dim_game_mode"
-              }
-            },
-            "Property": "game_mode_name"
-          }
-        },
-        "type": "Categorical"
-      }
-    ]
   }
 }

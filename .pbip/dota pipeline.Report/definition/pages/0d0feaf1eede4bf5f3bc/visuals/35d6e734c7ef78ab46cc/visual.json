@@ -1,0 +1,159 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
+  "name": "35d6e734c7ef78ab46cc",
+  "position": {
+    "x": 821.11111111111109,
+    "y": 0,
+    "z": 4000,
+    "height": 65.555555555555557,
+    "width": 128.88888888888889,
+    "tabOrder": 15000
+  },
+  "visual": {
+    "visualType": "slicer",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold dim_date"
+                    }
+                  },
+                  "Property": "year"
+                }
+              },
+              "queryRef": "gold dim_date.year",
+              "nativeQueryRef": "Year",
+              "active": true,
+              "displayName": "Year"
+            }
+          ]
+        }
+      }
+    },
+    "objects": {
+      "data": [
+        {
+          "properties": {
+            "mode": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Dropdown'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "general": [
+        {
+          "properties": {
+            "orientation": {
+              "expr": {
+                "Literal": {
+                  "Value": "0D"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "border": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "098a87a649532e9777ce",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "gold dim_date"
+              }
+            },
+            "Property": "year"
+          }
+        },
+        "type": "Advanced",
+        "filter": {
+          "Version": 2,
+          "From": [
+            {
+              "Name": "g",
+              "Entity": "gold dim_date",
+              "Type": 0
+            }
+          ],
+          "Where": [
+            {
+              "Condition": {
+                "And": {
+                  "Left": {
+                    "Comparison": {
+                      "ComparisonKind": 2,
+                      "Left": {
+                        "Column": {
+                          "Expression": {
+                            "SourceRef": {
+                              "Source": "g"
+                            }
+                          },
+                          "Property": "year"
+                        }
+                      },
+                      "Right": {
+                        "Literal": {
+                          "Value": "2012L"
+                        }
+                      }
+                    }
+                  },
+                  "Right": {
+                    "Comparison": {
+                      "ComparisonKind": 4,
+                      "Left": {
+                        "Column": {
+                          "Expression": {
+                            "SourceRef": {
+                              "Source": "g"
+                            }
+                          },
+                          "Property": "year"
+                        }
+                      },
+                      "Right": {
+                        "Literal": {
+                          "Value": "2026L"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

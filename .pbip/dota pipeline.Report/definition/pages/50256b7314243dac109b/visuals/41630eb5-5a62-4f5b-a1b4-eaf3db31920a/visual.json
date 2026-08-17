@@ -4,10 +4,10 @@
   "position": {
     "x": 20.48,
     "y": 544.9955555555556,
-    "z": 12,
+    "z": 9000,
     "height": 160.42666666666668,
     "width": 488.10666666666668,
-    "tabOrder": 12
+    "tabOrder": 9000
   },
   "visual": {
     "visualType": "donutChart",
@@ -88,37 +88,5 @@
       ]
     },
     "drillFilterOtherVisuals": true
-  },
-  "filterConfig": {
-    "filters": [
-      {
-        "name": "2a3f69170e168164e676",
-        "field": {
-          "Column": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "gold fact_matches"
-              }
-            },
-            "Property": "score_bucket"
-          }
-        },
-        "type": "Categorical"
-      },
-      {
-        "name": "b0ebf38334a7bed20b3d",
-        "field": {
-          "Measure": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "gold fact_matches"
-              }
-            },
-            "Property": "Total Matches"
-          }
-        },
-        "type": "Advanced"
-      }
-    ]
   }
 }

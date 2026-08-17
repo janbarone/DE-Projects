@@ -4,10 +4,10 @@
   "position": {
     "x": 440,
     "y": 153.138539042821,
-    "z": 22,
+    "z": 14000,
     "height": 66,
     "width": 200,
-    "tabOrder": 22
+    "tabOrder": 14000
   },
   "visual": {
     "visualType": "slicer",
@@ -71,23 +71,5 @@
       ]
     },
     "drillFilterOtherVisuals": true
-  },
-  "filterConfig": {
-    "filters": [
-      {
-        "name": "eb23558303c26bec1958",
-        "field": {
-          "Column": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "gold dim_region"
-              }
-            },
-            "Property": "region_name"
-          }
-        },
-        "type": "Categorical"
-      }
-    ]
   }
 }

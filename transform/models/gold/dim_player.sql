@@ -11,6 +11,7 @@ with player_dim as (
         player_name,
         rank_tier,
         team_id,
+        avatar_medium,
         'Pro' as player_type
     from {{ ref('stg_players') }}
 
@@ -21,6 +22,7 @@ with player_dim as (
         personaname as player_name,
         null::text as rank_tier,
         null::text as team_id,
+        null::text as avatar_medium,
         'Match Participant' as player_type
     from (
         select
@@ -68,6 +70,7 @@ select
     d.player_name,
     d.rank_tier,
     d.team_id,
+    d.avatar_medium,
     d.player_type,
     coalesce(ps.match_picks, 0) as match_picks,
     coalesce(ps.match_wins, 0) as match_wins,

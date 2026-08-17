@@ -79,6 +79,7 @@ table 'gold dim_hero'
 		dataType: string
 		sourceProviderType: nvarchar(max)
 		lineageTag: de4dc687-194f-4b11-bb2e-02bda7353c98
+		dataCategory: ImageUrl
 		summarizeBy: none
 		sourceColumn: img
 

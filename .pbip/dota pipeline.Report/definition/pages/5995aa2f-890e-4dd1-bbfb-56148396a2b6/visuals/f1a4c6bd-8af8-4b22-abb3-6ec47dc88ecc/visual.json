@@ -4,10 +4,10 @@
   "position": {
     "x": 20,
     "y": 15,
-    "z": 1,
+    "z": 0,
     "height": 70,
     "width": 250,
-    "tabOrder": 1
+    "tabOrder": 0
   },
   "visual": {
     "visualType": "slicer",
@@ -71,23 +71,5 @@
       ]
     },
     "drillFilterOtherVisuals": true
-  },
-  "filterConfig": {
-    "filters": [
-      {
-        "name": "a3cb3be0b5822cbc0b62",
-        "field": {
-          "Column": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "gold dim_hero_role"
-              }
-            },
-            "Property": "role"
-          }
-        },
-        "type": "Categorical"
-      }
-    ]
   }
 }

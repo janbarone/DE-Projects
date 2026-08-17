@@ -8,7 +8,7 @@ model Model
 
 annotation __PBI_TimeIntelligenceEnabled = 0
 
-annotation PBI_QueryOrder = [ "gold dim_date", "gold dim_game_mode", "gold dim_hero_role", "gold dim_league", "gold dim_lobby_type", "gold dim_player", "gold dim_region", "gold dim_team", "gold fact_match_players", "gold fact_matches", "gold fact_picks_bans", "gold fact_team_matches", "gold fact_teamfight_ability_uses", "gold fact_teamfight_players", "gold fact_teamfights", "gold dim_hero", "gold dim_item", "gold dim_patch", "gold fact_hero_matchups", "gold fact_team_h2h", "gold fact_hero_matchups_hero", "gold fact_match_player_minute", "gold fact_match_player_skills", "gold fact_match_player_item_purchases", "gold dim_rune", "gold fact_match_player_runes", "gold fact_match_player_damage", "gold fact_match_player_damage_taken", "gold fact_match_team_minute", "gold fact_hero_side", "gold fact_hero_matchup_stats"
+annotation PBI_QueryOrder = ["gold dim_date","gold dim_game_mode","gold dim_hero_role","gold dim_league","gold dim_lobby_type","gold dim_player","gold dim_region","gold dim_team","gold fact_match_players","gold fact_matches","gold fact_picks_bans","gold fact_team_matches","gold fact_teamfight_ability_uses","gold fact_teamfight_players","gold fact_teamfights","gold dim_hero","gold dim_item","gold dim_patch","gold fact_hero_matchups","gold fact_team_h2h","gold fact_hero_matchups_hero","gold fact_match_player_minute","gold fact_match_player_skills","gold fact_match_player_item_purchases","gold dim_rune","gold fact_match_player_runes","gold fact_match_player_damage","gold fact_match_player_damage_taken","gold fact_match_team_minute","gold fact_hero_side","gold fact_hero_matchup_stats"]
 
 annotation PBI_ProTooling = ["DevMode"]
 
@@ -43,5 +43,7 @@ ref table 'gold fact_match_player_damage_taken'
 ref table 'gold fact_match_team_minute'
 ref table 'gold fact_hero_side'
 ref table 'gold fact_hero_matchup_stats'
+ref table 'gold fact_draft_sequence'
 
 ref cultureInfo en-US
+

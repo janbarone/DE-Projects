@@ -4,10 +4,10 @@
   "position": {
     "x": 20,
     "y": 715,
-    "z": 8,
+    "z": 7000,
     "height": 170,
     "width": 640,
-    "tabOrder": 8
+    "tabOrder": 7000
   },
   "visual": {
     "visualType": "clusteredColumnChart",
@@ -205,37 +205,5 @@
       ]
     },
     "drillFilterOtherVisuals": true
-  },
-  "filterConfig": {
-    "filters": [
-      {
-        "name": "8f996a834484ed403a05",
-        "field": {
-          "Column": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "gold fact_team_matches"
-              }
-            },
-            "Property": "side"
-          }
-        },
-        "type": "Categorical"
-      },
-      {
-        "name": "2a4d189a9e4079e64b95",
-        "field": {
-          "Measure": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "gold fact_team_matches"
-              }
-            },
-            "Property": "Team Win Rate"
-          }
-        },
-        "type": "Advanced"
-      }
-    ]
   }
 }

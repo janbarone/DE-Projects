@@ -4,10 +4,10 @@
   "position": {
     "x": 1070,
     "y": 153.138539042821,
-    "z": 25,
+    "z": 17000,
     "height": 66,
     "width": 200,
-    "tabOrder": 25
+    "tabOrder": 17000
   },
   "visual": {
     "visualType": "slicer",
@@ -71,23 +71,5 @@
       ]
     },
     "drillFilterOtherVisuals": true
-  },
-  "filterConfig": {
-    "filters": [
-      {
-        "name": "7a1c2120d4bc00330e52",
-        "field": {
-          "Column": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "gold dim_patch"
-              }
-            },
-            "Property": "patch_name"
-          }
-        },
-        "type": "Categorical"
-      }
-    ]
   }
 }

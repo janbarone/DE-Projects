@@ -211,3 +211,8 @@ relationship ffff0009-0000-0000-0000-000000000010
 relationship ffff000a-0000-0000-0000-000000000010
 	fromColumn: 'gold fact_hero_side'.hero_id
 	toColumn: 'gold dim_hero'.hero_id
+
+relationship aaaa000d-0000-0000-0000-000000000010
+	fromColumn: 'gold fact_draft_sequence'.match_id
+	toColumn: 'gold fact_matches'.match_id
+

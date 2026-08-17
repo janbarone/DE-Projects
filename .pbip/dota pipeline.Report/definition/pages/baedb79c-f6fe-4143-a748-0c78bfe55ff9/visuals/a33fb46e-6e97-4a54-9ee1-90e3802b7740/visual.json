@@ -4,10 +4,10 @@
   "position": {
     "x": 20.403022670025187,
     "y": 414.86146095717885,
-    "z": 6,
+    "z": 5000,
     "height": 290.176322418136,
     "width": 1240.0503778337531,
-    "tabOrder": 6
+    "tabOrder": 5000
   },
   "visual": {
     "visualType": "tableEx",
@@ -15,6 +15,21 @@
       "queryState": {
         "Values": {
           "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold dim_team"
+                    }
+                  },
+                  "Property": "logo_url"
+                }
+              },
+              "queryRef": "gold dim_team.logo_url",
+              "nativeQueryRef": " ",
+              "displayName": " "
+            },
             {
               "field": {
                 "Column": {
@@ -226,62 +241,6 @@
             }
           ]
         }
-      },
-      {
-        "name": "15eac0f32c0d1beb6927",
-        "field": {
-          "Column": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "gold fact_team_matches"
-              }
-            },
-            "Property": "side"
-          }
-        },
-        "type": "Categorical"
-      },
-      {
-        "name": "2ef321881a9d06d41181",
-        "field": {
-          "Measure": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "gold fact_team_matches"
-              }
-            },
-            "Property": "Team Appearances"
-          }
-        },
-        "type": "Advanced"
-      },
-      {
-        "name": "b42bae706b8027506a00",
-        "field": {
-          "Measure": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "gold fact_team_matches"
-              }
-            },
-            "Property": "Team Win Rate"
-          }
-        },
-        "type": "Advanced"
-      },
-      {
-        "name": "e96546909d60b4de8879",
-        "field": {
-          "Measure": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "gold fact_team_matches"
-              }
-            },
-            "Property": "Avg Score Differential"
-          }
-        },
-        "type": "Advanced"
       }
     ]
   }

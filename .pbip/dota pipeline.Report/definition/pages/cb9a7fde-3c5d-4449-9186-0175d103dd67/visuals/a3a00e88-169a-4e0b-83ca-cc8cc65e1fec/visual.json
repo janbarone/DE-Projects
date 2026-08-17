@@ -4,10 +4,10 @@
   "position": {
     "x": 20.151133501259444,
     "y": 720.40302267002517,
-    "z": 20,
+    "z": 6000,
     "height": 259.44584382871534,
     "width": 1240.5541561712846,
-    "tabOrder": 20
+    "tabOrder": 6000
   },
   "visual": {
     "visualType": "clusteredBarChart",
@@ -144,37 +144,5 @@
       ]
     },
     "drillFilterOtherVisuals": true
-  },
-  "filterConfig": {
-    "filters": [
-      {
-        "name": "04ed40bc8450a184e1e8",
-        "field": {
-          "Column": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "gold dim_league"
-              }
-            },
-            "Property": "league_name"
-          }
-        },
-        "type": "Categorical"
-      },
-      {
-        "name": "935146e200b1942c3944",
-        "field": {
-          "Measure": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "gold fact_match_players"
-              }
-            },
-            "Property": "Total Picks"
-          }
-        },
-        "type": "Advanced"
-      }
-    ]
   }
 }

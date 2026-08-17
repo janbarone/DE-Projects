@@ -4,10 +4,10 @@
   "position": {
     "x": 20,
     "y": 78,
-    "z": 4,
+    "z": 2000,
     "height": 300,
     "width": 610,
-    "tabOrder": 4
+    "tabOrder": 2000
   },
   "visual": {
     "visualType": "lineChart",
@@ -259,79 +259,5 @@
       ]
     },
     "drillFilterOtherVisuals": true
-  },
-  "filterConfig": {
-    "filters": [
-      {
-        "name": "62d732994620ebe814a8",
-        "field": {
-          "Column": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "gold fact_match_team_minute"
-              }
-            },
-            "Property": "minute"
-          }
-        },
-        "type": "Advanced"
-      },
-      {
-        "name": "83f01c02baeea26ec755",
-        "field": {
-          "Measure": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "gold fact_match_team_minute"
-              }
-            },
-            "Property": "Radiant Team Gold"
-          }
-        },
-        "type": "Advanced"
-      },
-      {
-        "name": "bc2f93252b40008128a2",
-        "field": {
-          "Measure": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "gold fact_match_team_minute"
-              }
-            },
-            "Property": "Dire Team Gold"
-          }
-        },
-        "type": "Advanced"
-      },
-      {
-        "name": "af8182ec6208c60c0e0a",
-        "field": {
-          "Measure": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "gold fact_match_team_minute"
-              }
-            },
-            "Property": "Radiant Team XP"
-          }
-        },
-        "type": "Advanced"
-      },
-      {
-        "name": "f5d19c7f4b788dd20748",
-        "field": {
-          "Measure": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "gold fact_match_team_minute"
-              }
-            },
-            "Property": "Dire Team XP"
-          }
-        },
-        "type": "Advanced"
-      }
-    ]
   }
 }

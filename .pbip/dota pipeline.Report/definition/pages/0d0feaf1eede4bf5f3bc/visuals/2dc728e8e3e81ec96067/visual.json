@@ -1,0 +1,36 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
+  "name": "2dc728e8e3e81ec96067",
+  "position": {
+    "x": 805.83348842980331,
+    "y": 2044.4444444444412,
+    "z": 25000,
+    "height": 56.666666666666664,
+    "width": 208.88888888888889,
+    "tabOrder": 23000
+  },
+  "visual": {
+    "visualType": "textbox",
+    "objects": {
+      "general": [
+        {
+          "properties": {
+            "paragraphs": [
+              {
+                "textRuns": [
+                  {
+                    "value": "** Select multiple heroes for comparison",
+                    "textStyle": {
+                      "fontSize": "8pt"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

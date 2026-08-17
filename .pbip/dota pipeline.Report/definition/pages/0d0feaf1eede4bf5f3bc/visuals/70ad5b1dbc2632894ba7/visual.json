@@ -1,0 +1,208 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
+  "name": "70ad5b1dbc2632894ba7",
+  "position": {
+    "x": 362.22222222222223,
+    "y": 0,
+    "z": 5000,
+    "height": 73.333333333333329,
+    "width": 271.11111111111109,
+    "tabOrder": 17000
+  },
+  "visual": {
+    "visualType": "slicer",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold dim_team"
+                    }
+                  },
+                  "Property": "team_name"
+                }
+              },
+              "queryRef": "gold dim_team.team_name",
+              "nativeQueryRef": "Team Name",
+              "active": true,
+              "displayName": "Team Name"
+            }
+          ]
+        }
+      }
+    },
+    "objects": {
+      "data": [
+        {
+          "properties": {
+            "mode": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Dropdown'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "general": [
+        {
+          "properties": {}
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "border": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "7e78d9e43fda0e3c2773",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "gold dim_team"
+              }
+            },
+            "Property": "team_name"
+          }
+        },
+        "type": "Advanced",
+        "filter": {
+          "Version": 2,
+          "From": [
+            {
+              "Name": "g",
+              "Entity": "gold dim_team",
+              "Type": 0
+            }
+          ],
+          "Where": [
+            {
+              "Condition": {
+                "And": {
+                  "Left": {
+                    "Not": {
+                      "Expression": {
+                        "Comparison": {
+                          "ComparisonKind": 0,
+                          "Left": {
+                            "Column": {
+                              "Expression": {
+                                "SourceRef": {
+                                  "Source": "g"
+                                }
+                              },
+                              "Property": "team_name"
+                            }
+                          },
+                          "Right": {
+                            "Literal": {
+                              "Value": "null"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "Right": {
+                    "Not": {
+                      "Expression": {
+                        "Comparison": {
+                          "ComparisonKind": 0,
+                          "Left": {
+                            "Column": {
+                              "Expression": {
+                                "SourceRef": {
+                                  "Source": "g"
+                                }
+                              },
+                              "Property": "team_name"
+                            }
+                          },
+                          "Right": {
+                            "Literal": {
+                              "Value": "''"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "a1b2c3d4-main-team-has-appearances",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "gold fact_team_matches"
+              }
+            },
+            "Property": "Team Appearances"
+          }
+        },
+        "type": "Advanced",
+        "filter": {
+          "Version": 2,
+          "From": [
+            {
+              "Name": "tm",
+              "Entity": "gold fact_team_matches",
+              "Type": 0
+            }
+          ],
+          "Where": [
+            {
+              "Condition": {
+                "Comparison": {
+                  "ComparisonKind": 1,
+                  "Left": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Source": "tm"
+                        }
+                      },
+                      "Property": "Team Appearances"
+                    }
+                  },
+                  "Right": {
+                    "Literal": {
+                      "Value": "0D"
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "howCreated": "User"
+      }
+    ]
+  }
+}

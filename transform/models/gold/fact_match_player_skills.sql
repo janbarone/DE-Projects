@@ -53,7 +53,8 @@ ability_dnames as (
     -- bonus lives in abilities under invoker_attribute_bonus.
     select
         replace(kv.key, '_', '') as norm_key,
-        kv.value->>'dname' as dname
+        kv.value->>'dname' as dname,
+        kv.value->>'img'  as img
     from {{ source('bronze', 'constants') }} c
     cross join lateral jsonb_each(c.payload) as kv(key, value)
     where c.resource = 'abilities'
@@ -76,6 +77,7 @@ decoded as (
             nullif(ai.payload->>(ug.ability_id), ''),
             ug.ability_id
         ) as raw_ability_name,
+        ad.img as ability_img_raw,
         coalesce(lfm.first_minute, mlm.last_minute, 0) as minute,
         ug.upgrade_index + 1 as learn_level,
         dp.player_name,
@@ -121,6 +123,12 @@ select
             end
         else raw_ability_name
     end as ability_name,
+    -- Full CDN URL so Power BI can render the ability icon (same pattern as
+    -- dim_hero.img). Talents and a few utility abilities have no icon -> null.
+    case
+        when nullif(ability_img_raw, '') is null then null
+        else 'https://cdn.cloudflare.steamstatic.com' || ability_img_raw
+    end as ability_img,
     minute,
     learn_level,
     player_name,

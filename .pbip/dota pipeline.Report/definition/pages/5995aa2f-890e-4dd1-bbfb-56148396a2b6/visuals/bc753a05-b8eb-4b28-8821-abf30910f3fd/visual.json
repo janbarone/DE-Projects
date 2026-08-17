@@ -4,10 +4,10 @@
   "position": {
     "x": 20,
     "y": 720,
-    "z": 21,
+    "z": 8000,
     "height": 260,
     "width": 610,
-    "tabOrder": 21
+    "tabOrder": 8000
   },
   "visual": {
     "visualType": "lineChart",
@@ -202,48 +202,6 @@
           ]
         },
         "howCreated": "User"
-      },
-      {
-        "name": "4713f8cc10bb108caa24",
-        "field": {
-          "Column": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "gold dim_patch"
-              }
-            },
-            "Property": "patch_name"
-          }
-        },
-        "type": "Categorical"
-      },
-      {
-        "name": "8590de82d55d96b8cb2e",
-        "field": {
-          "Column": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "gold dim_hero"
-              }
-            },
-            "Property": "hero_localized_name"
-          }
-        },
-        "type": "Categorical"
-      },
-      {
-        "name": "6b66d2d4e4105d84abe0",
-        "field": {
-          "Measure": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "gold fact_match_players"
-              }
-            },
-            "Property": "Player Win Rate"
-          }
-        },
-        "type": "Advanced"
       }
     ]
   }

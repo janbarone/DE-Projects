@@ -4,10 +4,10 @@
   "position": {
     "x": 20,
     "y": 100,
-    "z": 3,
+    "z": 2000,
     "height": 300,
     "width": 410,
-    "tabOrder": 3
+    "tabOrder": 2000
   },
   "visual": {
     "visualType": "clusteredBarChart",
@@ -182,37 +182,5 @@
       ]
     },
     "drillFilterOtherVisuals": true
-  },
-  "filterConfig": {
-    "filters": [
-      {
-        "name": "7815a156c0d05c7a6ce2",
-        "field": {
-          "Column": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "gold dim_team"
-              }
-            },
-            "Property": "team_name"
-          }
-        },
-        "type": "Categorical"
-      },
-      {
-        "name": "14e6e802c86c21540016",
-        "field": {
-          "Measure": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "gold fact_team_matches"
-              }
-            },
-            "Property": "Team Appearances"
-          }
-        },
-        "type": "Advanced"
-      }
-    ]
   }
 }

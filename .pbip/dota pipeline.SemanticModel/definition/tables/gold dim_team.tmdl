@@ -63,6 +63,7 @@ table 'gold dim_team'
 		dataType: string
 		sourceProviderType: nvarchar(max)
 		lineageTag: aa417e69-403c-41a6-9342-3b11fa37982c
+		dataCategory: ImageUrl
 		summarizeBy: none
 		sourceColumn: logo_url
 

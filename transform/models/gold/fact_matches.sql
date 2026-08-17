@@ -23,34 +23,84 @@
 
 -- One row per match, the hub fact. Game mode / lobby / region / team / league
 -- keys are exposed as foreign keys to the gold dimensions.
+-- radiant_team_name / dire_team_name and radiant_heroes / dire_heroes are
+-- precomputed strings (materialized) so the Match Details table renders
+-- correct per-row values in DirectQuery without cross-table measure context.
 select
-    match_id,
-    radiant_win,
-    winner,
-    duration_sec,
-    round(duration_sec / 60.0, 2) as duration_min,
-    round(duration_sec / 3600.0, 3) as duration_hour,
-    game_mode        as game_mode_id,
-    lobby_type       as lobby_type_id,
-    region           as region_id,
-    patch,
-    start_time,
-    start_time::date as start_date,
-    radiant_score,
-    dire_score,
+    sm.match_id,
+    sm.radiant_win,
+    sm.winner,
+    sm.duration_sec,
+    round(sm.duration_sec / 60.0, 2) as duration_min,
+    round(sm.duration_sec / 3600.0, 3) as duration_hour,
+    sm.game_mode        as game_mode_id,
+    sm.lobby_type       as lobby_type_id,
+    sm.region           as region_id,
+    sm.patch,
+    sm.start_time,
+    sm.start_time::date as start_date,
+    sm.radiant_score,
+    sm.dire_score,
     case
-        when abs(radiant_score - dire_score) < 5 then 'close'
-        when abs(radiant_score - dire_score) < 10 then 'moderate'
-        when abs(radiant_score - dire_score) < 20 then 'blowout'
+        when abs(sm.radiant_score - sm.dire_score) < 5 then 'close'
+        when abs(sm.radiant_score - sm.dire_score) < 10 then 'moderate'
+        when abs(sm.radiant_score - sm.dire_score) < 20 then 'blowout'
         else 'rout'
     end as score_bucket,
-    radiant_team_id,
-    dire_team_id,
-    has_radiant_team,
-    has_dire_team,
-    leagueid,
-    first_blood_time,
-    human_players,
-    pre_game_duration,
-    loaded_at
-from {{ ref('stg_matches') }}
+    sm.radiant_team_id,
+    sm.dire_team_id,
+    sm.has_radiant_team,
+    sm.has_dire_team,
+    sm.leagueid,
+    sm.first_blood_time,
+    sm.human_players,
+    sm.pre_game_duration,
+    sm.loaded_at,
+    case sm.winner
+        when 'radiant' then 'Radiant'
+        when 'dire' then 'Dire'
+        else 'Draw'
+    end as winner_name,
+    (
+        select t.team_name
+        from {{ ref('fact_team_matches') }} ftm
+        join {{ ref('dim_team') }} t on t.team_id = ftm.team_id
+        where ftm.match_id = sm.match_id
+          and ftm.side = 'Radiant'
+    ) as radiant_team_name,
+    (
+        select t.team_name
+        from {{ ref('fact_team_matches') }} ftm
+        join {{ ref('dim_team') }} t on t.team_id = ftm.team_id
+        where ftm.match_id = sm.match_id
+          and ftm.side = 'Dire'
+    ) as dire_team_name,
+    (
+        select t.logo_url
+        from {{ ref('fact_team_matches') }} ftm
+        join {{ ref('dim_team') }} t on t.team_id = ftm.team_id
+        where ftm.match_id = sm.match_id
+          and ftm.side = 'Radiant'
+    ) as radiant_team_logo,
+    (
+        select t.logo_url
+        from {{ ref('fact_team_matches') }} ftm
+        join {{ ref('dim_team') }} t on t.team_id = ftm.team_id
+        where ftm.match_id = sm.match_id
+          and ftm.side = 'Dire'
+    ) as dire_team_logo,
+    (
+        select string_agg(coalesce(h.localized_name, 'Unknown'), ', ' order by mp.player_slot::int)
+        from {{ ref('stg_match_players') }} mp
+        join {{ ref('stg_heroes') }} h on h.hero_id = mp.hero_id
+        where mp.match_id = sm.match_id
+          and mp.team_number = '0'
+    ) as radiant_heroes,
+    (
+        select string_agg(coalesce(h.localized_name, 'Unknown'), ', ' order by mp.player_slot::int)
+        from {{ ref('stg_match_players') }} mp
+        join {{ ref('stg_heroes') }} h on h.hero_id = mp.hero_id
+        where mp.match_id = sm.match_id
+          and mp.team_number = '1'
+    ) as dire_heroes
+from {{ ref('stg_matches') }} sm

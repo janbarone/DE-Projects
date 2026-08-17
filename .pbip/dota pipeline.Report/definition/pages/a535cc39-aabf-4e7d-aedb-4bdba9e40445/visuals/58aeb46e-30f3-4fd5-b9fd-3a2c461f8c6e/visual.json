@@ -4,10 +4,10 @@
   "position": {
     "x": 659.69773299748113,
     "y": 462.46851385390426,
-    "z": 11,
+    "z": 10000,
     "height": 219.89924433249371,
     "width": 609.823677581864,
-    "tabOrder": 11
+    "tabOrder": 10000
   },
   "visual": {
     "visualType": "tableEx",
@@ -15,6 +15,20 @@
       "queryState": {
         "Values": {
           "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold dim_item"
+                    }
+                  },
+                  "Property": "img"
+                }
+              },
+              "queryRef": "gold dim_item.img",
+              "nativeQueryRef": "img"
+            },
             {
               "field": {
                 "Column": {
@@ -116,37 +130,5 @@
       ]
     },
     "drillFilterOtherVisuals": true
-  },
-  "filterConfig": {
-    "filters": [
-      {
-        "name": "95ee2a5079a884ea6145",
-        "field": {
-          "Column": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "gold dim_item"
-              }
-            },
-            "Property": "item_name"
-          }
-        },
-        "type": "Categorical"
-      },
-      {
-        "name": "8c9fb83dd36638d7e5a3",
-        "field": {
-          "Measure": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "gold fact_match_players"
-              }
-            },
-            "Property": "Total Picks"
-          }
-        },
-        "type": "Advanced"
-      }
-    ]
   }
 }

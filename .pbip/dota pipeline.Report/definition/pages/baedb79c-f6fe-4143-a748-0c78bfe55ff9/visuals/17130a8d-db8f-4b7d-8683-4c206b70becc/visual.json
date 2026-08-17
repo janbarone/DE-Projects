@@ -4,10 +4,10 @@
   "position": {
     "x": 680.10075566750629,
     "y": 715.23929471032739,
-    "z": 7,
+    "z": 6000,
     "height": 184.76070528967253,
     "width": 580.352644836272,
-    "tabOrder": 7
+    "tabOrder": 6000
   },
   "visual": {
     "visualType": "barChart",
@@ -275,51 +275,5 @@
       ]
     },
     "drillFilterOtherVisuals": true
-  },
-  "filterConfig": {
-    "filters": [
-      {
-        "name": "9248b69d1b4001b38a86",
-        "field": {
-          "Column": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "gold dim_team"
-              }
-            },
-            "Property": "team_name"
-          }
-        },
-        "type": "Categorical"
-      },
-      {
-        "name": "8abaf0c5a86aeeaca9aa",
-        "field": {
-          "Measure": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "gold fact_team_matches"
-              }
-            },
-            "Property": "Team Appearances"
-          }
-        },
-        "type": "Advanced"
-      },
-      {
-        "name": "de35a48fc0a74228b7e1",
-        "field": {
-          "Column": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "gold fact_team_matches"
-              }
-            },
-            "Property": "side"
-          }
-        },
-        "type": "Categorical"
-      }
-    ]
   }
 }

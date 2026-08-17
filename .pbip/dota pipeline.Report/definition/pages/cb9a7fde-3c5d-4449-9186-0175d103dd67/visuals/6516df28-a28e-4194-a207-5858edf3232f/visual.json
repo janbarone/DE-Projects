@@ -4,10 +4,10 @@
   "position": {
     "x": 20,
     "y": 415,
-    "z": 7,
+    "z": 5000,
     "height": 290,
     "width": 1240,
-    "tabOrder": 7
+    "tabOrder": 5000
   },
   "visual": {
     "visualType": "tableEx",
@@ -15,6 +15,21 @@
       "queryState": {
         "Values": {
           "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold dim_player"
+                    }
+                  },
+                  "Property": "avatar_medium"
+                }
+              },
+              "queryRef": "gold dim_player.avatar_medium",
+              "nativeQueryRef": "Player Avatar",
+              "displayName": "Player Avatar"
+            },
             {
               "field": {
                 "Column": {
@@ -239,76 +254,6 @@
             }
           ]
         }
-      },
-      {
-        "name": "9dd914cd9251642d069e",
-        "field": {
-          "Measure": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "gold fact_match_players"
-              }
-            },
-            "Property": "Total Picks"
-          }
-        },
-        "type": "Advanced"
-      },
-      {
-        "name": "fd07239d95bd86711b09",
-        "field": {
-          "Measure": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "gold fact_match_players"
-              }
-            },
-            "Property": "Player Win Rate"
-          }
-        },
-        "type": "Advanced"
-      },
-      {
-        "name": "2438241c2bb771094d0d",
-        "field": {
-          "Measure": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "gold fact_match_players"
-              }
-            },
-            "Property": "Avg KDA"
-          }
-        },
-        "type": "Advanced"
-      },
-      {
-        "name": "e25055ed80025487d6c8",
-        "field": {
-          "Measure": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "gold fact_match_players"
-              }
-            },
-            "Property": "Avg GPM"
-          }
-        },
-        "type": "Advanced"
-      },
-      {
-        "name": "cda047b3d2c900cd0746",
-        "field": {
-          "Measure": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "gold fact_match_players"
-              }
-            },
-            "Property": "Avg XPM"
-          }
-        },
-        "type": "Advanced"
       }
     ]
   }

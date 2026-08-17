@@ -4,10 +4,10 @@
   "position": {
     "x": 660.42553191489367,
     "y": 100.18237082066869,
-    "z": 7,
+    "z": 5000,
     "height": 299.57446808510639,
     "width": 599.14893617021278,
-    "tabOrder": 7
+    "tabOrder": 5000
   },
   "visual": {
     "visualType": "lineChart",
@@ -88,37 +88,5 @@
       ]
     },
     "drillFilterOtherVisuals": true
-  },
-  "filterConfig": {
-    "filters": [
-      {
-        "name": "ddb40b57039508a30798",
-        "field": {
-          "Column": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "gold dim_patch"
-              }
-            },
-            "Property": "patch_name"
-          }
-        },
-        "type": "Categorical"
-      },
-      {
-        "name": "dcda6f57b462453ca82d",
-        "field": {
-          "Measure": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "gold fact_matches"
-              }
-            },
-            "Property": "Avg Match Duration (min)"
-          }
-        },
-        "type": "Advanced"
-      }
-    ]
   }
 }

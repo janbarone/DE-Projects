@@ -28,6 +28,16 @@ table 'gold dim_item'
 
 		annotation SummarizationSetBy = Automatic
 
+	column img
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: aaaa0006-0000-0000-0000-000000000005
+		dataCategory: ImageUrl
+		summarizeBy: none
+		sourceColumn: img
+
+		annotation SummarizationSetBy = Automatic
+
 	partition 'gold dim_item' = m
 		mode: directQuery
 		source =

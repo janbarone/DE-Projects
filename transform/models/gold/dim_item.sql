@@ -15,7 +15,8 @@ with item_ids as (
 items as (
     select
         kv.key                as item_internal_name,
-        (kv.value->>'dname')  as item_name
+        (kv.value->>'dname')  as item_name,
+        kv.value->>'img'      as img
     from {{ ref('stg_constants') }} c,
          lateral jsonb_each(c.resource_payload) as kv
     where c.resource = 'items'
@@ -24,6 +25,11 @@ items as (
 select
     ii.item_id            as item_id,
     ii.item_internal_name as item_internal_name,
-    coalesce(i.item_name, ii.item_internal_name) as item_name
+    coalesce(i.item_name, ii.item_internal_name) as item_name,
+    -- Full CDN URL so Power BI can render the icon (same pattern as dim_hero.img).
+    case
+        when nullif(i.img, '') is null then null
+        else 'https://cdn.cloudflare.steamstatic.com' || i.img
+    end as img
 from item_ids ii
 left join items i on i.item_internal_name = ii.item_internal_name

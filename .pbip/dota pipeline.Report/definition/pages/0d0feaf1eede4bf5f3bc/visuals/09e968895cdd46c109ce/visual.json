@@ -1,0 +1,228 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
+  "name": "09e968895cdd46c109ce",
+  "position": {
+    "x": 362.22222222222223,
+    "y": 87.777777777777771,
+    "z": 21000,
+    "height": 68.888888888888886,
+    "width": 271.11111111111109,
+    "tabOrder": 13000
+  },
+  "visual": {
+    "visualType": "slicer",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold dim_player"
+                    }
+                  },
+                  "Property": "player_name"
+                }
+              },
+              "queryRef": "gold dim_player.player_name",
+              "nativeQueryRef": "Player Name",
+              "active": true,
+              "displayName": "Player Name"
+            }
+          ]
+        }
+      }
+    },
+    "objects": {
+      "data": [
+        {
+          "properties": {
+            "mode": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Dropdown'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "selection": [
+        {
+          "properties": {
+            "singleSelect": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            },
+            "selectAllCheckboxEnabled": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "general": [
+        {
+          "properties": {}
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "border": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "a1b2c3d4-main-player-not-blank",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "gold dim_player"
+              }
+            },
+            "Property": "player_name"
+          }
+        },
+        "type": "Advanced",
+        "filter": {
+          "Version": 2,
+          "From": [
+            {
+              "Name": "p",
+              "Entity": "gold dim_player",
+              "Type": 0
+            }
+          ],
+          "Where": [
+            {
+              "Condition": {
+                "And": {
+                  "Left": {
+                    "Not": {
+                      "Expression": {
+                        "Comparison": {
+                          "ComparisonKind": 0,
+                          "Left": {
+                            "Column": {
+                              "Expression": {
+                                "SourceRef": {
+                                  "Source": "p"
+                                }
+                              },
+                              "Property": "player_name"
+                            }
+                          },
+                          "Right": {
+                            "Literal": {
+                              "Value": "null"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "Right": {
+                    "Not": {
+                      "Expression": {
+                        "Comparison": {
+                          "ComparisonKind": 0,
+                          "Left": {
+                            "Column": {
+                              "Expression": {
+                                "SourceRef": {
+                                  "Source": "p"
+                                }
+                              },
+                              "Property": "player_name"
+                            }
+                          },
+                          "Right": {
+                            "Literal": {
+                              "Value": "''"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "a1b2c3d4-main-player-has-picks",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "gold fact_match_players"
+              }
+            },
+            "Property": "Total Picks"
+          }
+        },
+        "type": "Advanced",
+        "filter": {
+          "Version": 2,
+          "From": [
+            {
+              "Name": "fmp",
+              "Entity": "gold fact_match_players",
+              "Type": 0
+            }
+          ],
+          "Where": [
+            {
+              "Condition": {
+                "Comparison": {
+                  "ComparisonKind": 1,
+                  "Left": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Source": "fmp"
+                        }
+                      },
+                      "Property": "Total Picks"
+                    }
+                  },
+                  "Right": {
+                    "Literal": {
+                      "Value": "0D"
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "howCreated": "User"
+      }
+    ]
+  }
+}

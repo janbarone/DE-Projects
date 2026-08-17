@@ -4,10 +4,10 @@
   "position": {
     "x": 20,
     "y": 675,
-    "z": 6,
+    "z": 5000,
     "height": 300,
     "width": 620,
-    "tabOrder": 6
+    "tabOrder": 5000
   },
   "visual": {
     "visualType": "tableEx",
@@ -26,9 +26,9 @@
                   "Property": "matchup_label"
                 }
               },
+              "queryRef": "gold fact_hero_matchup_stats.matchup_label",
               "nativeQueryRef": "matchup_label",
-              "active": true,
-              "queryRef": "gold fact_hero_matchup_stats.matchup_label"
+              "active": true
             },
             {
               "field": {
@@ -41,9 +41,9 @@
                   "Property": "Matchup Games"
                 }
               },
+              "queryRef": "gold fact_hero_matchup_stats.Matchup Games",
               "nativeQueryRef": "Matchup Games",
-              "active": true,
-              "queryRef": "gold fact_hero_matchup_stats.Matchup Games"
+              "active": true
             },
             {
               "field": {
@@ -56,9 +56,9 @@
                   "Property": "Matchup Radiant Win Rate"
                 }
               },
+              "queryRef": "gold fact_hero_matchup_stats.Matchup Radiant Win Rate",
               "nativeQueryRef": "Matchup Radiant Win Rate",
-              "active": true,
-              "queryRef": "gold fact_hero_matchup_stats.Matchup Radiant Win Rate"
+              "active": true
             },
             {
               "field": {
@@ -71,9 +71,9 @@
                   "Property": "Matchup Dire Win Rate"
                 }
               },
+              "queryRef": "gold fact_hero_matchup_stats.Matchup Dire Win Rate",
               "nativeQueryRef": "Matchup Dire Win Rate",
-              "active": true,
-              "queryRef": "gold fact_hero_matchup_stats.Matchup Dire Win Rate"
+              "active": true
             }
           ]
         }

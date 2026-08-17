@@ -21,7 +21,13 @@ with hero_dim as (
         end as primary_attr,
         h.attack_type,
         h.roles,
-        h.img,
+        'https://cdn.cloudflare.steamstatic.com' || rtrim(h.img, '?') as img,
+        case
+            when h.hero_name like 'npc_dota_hero_%'
+                then 'https://cdn.cloudflare.steamstatic.com/apps/dota2/images/dota_react/heroes/icons/'
+                     || replace(h.hero_name, 'npc_dota_hero_', '') || '.png'
+            else null
+        end as hero_icon_sm,
         s.pro_pick,
         s.pro_win,
         s.pro_ban,
@@ -38,6 +44,7 @@ with hero_dim as (
         '0',
         'unknown',
         'Unknown',
+        null,
         null,
         null,
         null,
@@ -87,6 +94,7 @@ select
     d.attack_type,
     d.roles,
     d.img,
+    d.hero_icon_sm,
     d.pro_pick,
     d.pro_win,
     d.pro_ban,

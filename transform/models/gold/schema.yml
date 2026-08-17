@@ -328,6 +328,36 @@ models:
               arguments:
                 values: ['0', '1']
 
+  - name: fact_draft_sequence
+    description: One row per (match, slot 1-5); each team's pick and ban for
+      that draft slot, denormalized to hero names + images for DirectQuery.
+    columns:
+      - name: match_id
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('fact_matches')
+                field: match_id
+      - name: slot
+        tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: [1, 2, 3, 4, 5]
+      - name: dire_pick_seq
+        tests:
+          - seq_in_range
+      - name: dire_ban_seq
+        tests:
+          - seq_in_range
+      - name: radiant_pick_seq
+        tests:
+          - seq_in_range
+      - name: radiant_ban_seq
+        tests:
+          - seq_in_range
+
   - name: fact_teamfights
     description: One row per (match, teamfight).
     columns:

@@ -4,10 +4,10 @@
   "position": {
     "x": 495,
     "y": 15,
-    "z": 20,
+    "z": 8000,
     "height": 70,
     "width": 300,
-    "tabOrder": 20
+    "tabOrder": 8000
   },
   "visual": {
     "visualType": "slicer",
@@ -52,6 +52,21 @@
         {
           "properties": {
             "selfFilterEnabled": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "border": [
+        {
+          "properties": {
+            "show": {
               "expr": {
                 "Literal": {
                   "Value": "true"

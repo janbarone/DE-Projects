@@ -4,10 +4,10 @@
   "position": {
     "x": 649,
     "y": 78,
-    "z": 5,
+    "z": 3000,
     "height": 300,
     "width": 611,
-    "tabOrder": 5
+    "tabOrder": 3000
   },
   "visual": {
     "visualType": "lineChart",
@@ -226,51 +226,5 @@
       ]
     },
     "drillFilterOtherVisuals": true
-  },
-  "filterConfig": {
-    "filters": [
-      {
-        "name": "1e4638258094917c2680",
-        "field": {
-          "Column": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "gold fact_match_player_minute"
-              }
-            },
-            "Property": "minute"
-          }
-        },
-        "type": "Advanced"
-      },
-      {
-        "name": "b778bf94de142de50ac6",
-        "field": {
-          "Measure": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "gold fact_match_player_minute"
-              }
-            },
-            "Property": "Player Gold over Time"
-          }
-        },
-        "type": "Advanced"
-      },
-      {
-        "name": "e3102a0d7ad2e39ddb3d",
-        "field": {
-          "Column": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "gold fact_match_player_minute"
-              }
-            },
-            "Property": "hero_localized_name"
-          }
-        },
-        "type": "Categorical"
-      }
-    ]
   }
 }

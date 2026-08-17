@@ -4,10 +4,10 @@
   "position": {
     "x": 870,
     "y": 100,
-    "z": 7,
+    "z": 5000,
     "height": 300,
     "width": 390,
-    "tabOrder": 7
+    "tabOrder": 5000
   },
   "visual": {
     "visualType": "barChart",
@@ -211,51 +211,5 @@
       ]
     },
     "drillFilterOtherVisuals": true
-  },
-  "filterConfig": {
-    "filters": [
-      {
-        "name": "10897797c0b8ed784e89",
-        "field": {
-          "Column": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "gold dim_hero"
-              }
-            },
-            "Property": "hero_localized_name"
-          }
-        },
-        "type": "Categorical"
-      },
-      {
-        "name": "db12739670b30617b440",
-        "field": {
-          "Measure": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "gold fact_picks_bans"
-              }
-            },
-            "Property": "Draft Picks"
-          }
-        },
-        "type": "Advanced"
-      },
-      {
-        "name": "9fbb828ba50c49376133",
-        "field": {
-          "Measure": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "gold fact_picks_bans"
-              }
-            },
-            "Property": "Draft Bans"
-          }
-        },
-        "type": "Advanced"
-      }
-    ]
   }
 }

@@ -4,10 +4,10 @@
   "position": {
     "x": 445,
     "y": 100,
-    "z": 6,
+    "z": 4000,
     "height": 300,
     "width": 410,
-    "tabOrder": 6
+    "tabOrder": 4000
   },
   "visual": {
     "visualType": "clusteredBarChart",
@@ -175,37 +175,5 @@
       ]
     },
     "drillFilterOtherVisuals": true
-  },
-  "filterConfig": {
-    "filters": [
-      {
-        "name": "9baf8ad00878304b97a7",
-        "field": {
-          "Column": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "gold dim_hero"
-              }
-            },
-            "Property": "hero_localized_name"
-          }
-        },
-        "type": "Categorical"
-      },
-      {
-        "name": "e7c9fbbc5045ab0a8e73",
-        "field": {
-          "Measure": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "gold fact_match_players"
-              }
-            },
-            "Property": "Player Win Rate"
-          }
-        },
-        "type": "Advanced"
-      }
-    ]
   }
 }

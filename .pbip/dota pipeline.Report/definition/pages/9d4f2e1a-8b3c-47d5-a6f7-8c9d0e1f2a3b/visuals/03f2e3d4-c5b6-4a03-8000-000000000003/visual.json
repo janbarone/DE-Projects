@@ -4,10 +4,10 @@
   "position": {
     "x": 20,
     "y": 523,
-    "z": 12,
+    "z": 8000,
     "height": 190,
     "width": 610,
-    "tabOrder": 12
+    "tabOrder": 8000
   },
   "visual": {
     "visualType": "tableEx",
@@ -223,90 +223,6 @@
           ]
         },
         "howCreated": "User"
-      },
-      {
-        "name": "c47f069228030077e5de",
-        "field": {
-          "Column": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "gold fact_match_player_skills"
-              }
-            },
-            "Property": "minute"
-          }
-        },
-        "type": "Advanced"
-      },
-      {
-        "name": "aa6492f223bcce6e0c52",
-        "field": {
-          "Column": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "gold fact_match_player_skills"
-              }
-            },
-            "Property": "player_name"
-          }
-        },
-        "type": "Categorical"
-      },
-      {
-        "name": "99ca49439809215a754e",
-        "field": {
-          "Column": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "gold fact_match_player_skills"
-              }
-            },
-            "Property": "hero_localized_name"
-          }
-        },
-        "type": "Categorical"
-      },
-      {
-        "name": "a294c30d04ea47098c40",
-        "field": {
-          "Column": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "gold fact_match_player_skills"
-              }
-            },
-            "Property": "ability_name"
-          }
-        },
-        "type": "Categorical"
-      },
-      {
-        "name": "40e55742b96a7ceda4ea",
-        "field": {
-          "Column": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "gold fact_match_player_skills"
-              }
-            },
-            "Property": "learn_level"
-          }
-        },
-        "type": "Advanced"
-      },
-      {
-        "name": "f5992e98e6e84dcc390c",
-        "field": {
-          "Column": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "gold fact_match_player_skills"
-              }
-            },
-            "Property": "is_talent"
-          }
-        },
-        "type": "Categorical"
       }
     ]
   }

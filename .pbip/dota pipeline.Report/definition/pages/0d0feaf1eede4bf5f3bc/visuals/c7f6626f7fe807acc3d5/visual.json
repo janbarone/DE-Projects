@@ -1,0 +1,263 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
+  "name": "c7f6626f7fe807acc3d5",
+  "position": {
+    "x": 0.27793287424780527,
+    "y": 2546.6666666666642,
+    "z": 16000,
+    "height": 300,
+    "width": 1280,
+    "tabOrder": 10000
+  },
+  "visual": {
+    "visualType": "lineChart",
+    "query": {
+      "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold fact_match_team_minute"
+                    }
+                  },
+                  "Property": "minute"
+                }
+              },
+              "queryRef": "gold fact_match_team_minute.minute",
+              "nativeQueryRef": "minute",
+              "active": true
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold fact_match_team_minute"
+                    }
+                  },
+                  "Property": "Radiant Team Gold"
+                }
+              },
+              "queryRef": "gold fact_match_team_minute.Radiant Team Gold",
+              "nativeQueryRef": "Radiant Gold",
+              "active": true,
+              "displayName": "Radiant Gold"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold fact_match_team_minute"
+                    }
+                  },
+                  "Property": "Dire Team Gold"
+                }
+              },
+              "queryRef": "gold fact_match_team_minute.Dire Team Gold",
+              "nativeQueryRef": "Dire Gold",
+              "active": true,
+              "displayName": "Dire Gold"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold fact_match_team_minute"
+                    }
+                  },
+                  "Property": "Radiant Team XP"
+                }
+              },
+              "queryRef": "gold fact_match_team_minute.Radiant Team XP",
+              "nativeQueryRef": "Radiant XP",
+              "active": true,
+              "displayName": "Radiant XP"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold fact_match_team_minute"
+                    }
+                  },
+                  "Property": "Dire Team XP"
+                }
+              },
+              "queryRef": "gold fact_match_team_minute.Dire Team XP",
+              "nativeQueryRef": "Dire XP",
+              "active": true,
+              "displayName": "Dire XP"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Measure": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "gold fact_match_team_minute"
+                  }
+                },
+                "Property": "Radiant Team Gold"
+              }
+            },
+            "direction": "Descending"
+          }
+        ],
+        "isDefaultSort": true
+      }
+    },
+    "objects": {
+      "lineStyles": [
+        {
+          "properties": {
+            "lineStyle": {
+              "expr": {
+                "Literal": {
+                  "Value": "'solid'"
+                }
+              }
+            },
+            "strokeLineJoin": {
+              "expr": {
+                "Literal": {
+                  "Value": "'round'"
+                }
+              }
+            },
+            "strokeWidth": {
+              "expr": {
+                "Literal": {
+                  "Value": "5D"
+                }
+              }
+            },
+            "lineChartType": {
+              "expr": {
+                "Literal": {
+                  "Value": "'linear'"
+                }
+              }
+            },
+            "interpolationSmooth": {
+              "expr": {
+                "Literal": {
+                  "Value": "'cardinal'"
+                }
+              }
+            },
+            "areaShow": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            },
+            "showMarker": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "labels": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "valueAxis": [
+        {
+          "properties": {
+            "titleText": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Gold and XP'"
+                }
+              }
+            },
+            "axisStyle": {
+              "expr": {
+                "Literal": {
+                  "Value": "'showTitleOnly'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "categoryAxis": [
+        {
+          "properties": {
+            "titleText": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Minute'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Team XP & Net Worth by side'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "border": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

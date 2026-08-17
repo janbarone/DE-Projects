@@ -4,10 +4,10 @@
   "position": {
     "x": 860,
     "y": 153.138539042821,
-    "z": 24,
+    "z": 16000,
     "height": 66,
     "width": 200,
-    "tabOrder": 24
+    "tabOrder": 16000
   },
   "visual": {
     "visualType": "slicer",
@@ -71,23 +71,5 @@
       ]
     },
     "drillFilterOtherVisuals": true
-  },
-  "filterConfig": {
-    "filters": [
-      {
-        "name": "7ed3a218518094117b80",
-        "field": {
-          "Column": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "gold dim_lobby_type"
-              }
-            },
-            "Property": "lobby_type_name"
-          }
-        },
-        "type": "Categorical"
-      }
-    ]
   }
 }

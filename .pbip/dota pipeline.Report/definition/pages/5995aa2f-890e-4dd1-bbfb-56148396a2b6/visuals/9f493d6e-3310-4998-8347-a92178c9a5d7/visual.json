@@ -4,10 +4,10 @@
   "position": {
     "x": 20.151133501259444,
     "y": 99.496221662468514,
-    "z": 5,
+    "z": 3000,
     "height": 301.007556675063,
     "width": 424.43324937027705,
-    "tabOrder": 5
+    "tabOrder": 3000
   },
   "visual": {
     "visualType": "clusteredBarChart",
@@ -175,37 +175,5 @@
       ]
     },
     "drillFilterOtherVisuals": true
-  },
-  "filterConfig": {
-    "filters": [
-      {
-        "name": "6a18067ab2408ad4a90a",
-        "field": {
-          "Column": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "gold dim_hero"
-              }
-            },
-            "Property": "hero_localized_name"
-          }
-        },
-        "type": "Categorical"
-      },
-      {
-        "name": "6c6f8c67475d0e77574b",
-        "field": {
-          "Measure": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "gold fact_match_players"
-              }
-            },
-            "Property": "Total Picks"
-          }
-        },
-        "type": "Advanced"
-      }
-    ]
   }
 }

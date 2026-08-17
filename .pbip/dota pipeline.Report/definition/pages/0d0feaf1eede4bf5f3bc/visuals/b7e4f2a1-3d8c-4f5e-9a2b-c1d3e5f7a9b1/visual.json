@@ -1,0 +1,271 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
+  "name": "b7e4f2a1-3d8c-4f5e-9a2b-c1d3e5f7a9b1",
+  "position": {
+    "x": 0,
+    "y": 2860,
+    "z": 24000,
+    "height": 140,
+    "width": 1280,
+    "tabOrder": 24000
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold fact_draft_sequence"
+                    }
+                  },
+                  "Property": "dire_pick_hero"
+                }
+              },
+              "queryRef": "gold fact_draft_sequence.dire_pick_hero",
+              "nativeQueryRef": "dire_pick_hero",
+              "displayName": "Dire Hero"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold fact_draft_sequence"
+                    }
+                  },
+                  "Property": "dire_pick_seq"
+                }
+              },
+              "queryRef": "gold fact_draft_sequence.dire_pick_seq",
+              "nativeQueryRef": "dire_pick_seq",
+              "displayName": "Pick Seq"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold fact_draft_sequence"
+                    }
+                  },
+                  "Property": "dire_ban_hero"
+                }
+              },
+              "queryRef": "gold fact_draft_sequence.dire_ban_hero",
+              "nativeQueryRef": "dire_ban_hero",
+              "displayName": "Dire Hero Ban"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold fact_draft_sequence"
+                    }
+                  },
+                  "Property": "dire_ban_seq"
+                }
+              },
+              "queryRef": "gold fact_draft_sequence.dire_ban_seq",
+              "nativeQueryRef": "dire_ban_seq",
+              "displayName": "Ban Seq"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold fact_draft_sequence"
+                    }
+                  },
+                  "Property": "radiant_pick_hero"
+                }
+              },
+              "queryRef": "gold fact_draft_sequence.radiant_pick_hero",
+              "nativeQueryRef": "radiant_pick_hero",
+              "displayName": "Radiant Hero"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold fact_draft_sequence"
+                    }
+                  },
+                  "Property": "radiant_pick_seq"
+                }
+              },
+              "queryRef": "gold fact_draft_sequence.radiant_pick_seq",
+              "nativeQueryRef": "radiant_pick_seq",
+              "displayName": "Radiant Pick Seq"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold fact_draft_sequence"
+                    }
+                  },
+                  "Property": "radiant_ban_hero"
+                }
+              },
+              "queryRef": "gold fact_draft_sequence.radiant_ban_hero",
+              "nativeQueryRef": "radiant_ban_hero",
+              "displayName": "Radiant Hero Ban"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "gold fact_draft_sequence"
+                    }
+                  },
+                  "Property": "radiant_ban_seq"
+                }
+              },
+              "queryRef": "gold fact_draft_sequence.radiant_ban_seq",
+              "nativeQueryRef": "radiant_ban_seq",
+              "displayName": "Radiant Ban Seq"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "gold fact_draft_sequence"
+                  }
+                },
+                "Property": "slot"
+              }
+            },
+            "direction": "Ascending"
+          }
+        ]
+      }
+    },
+    "objects": {
+      "columnHeaders": [
+        {
+          "properties": {
+            "columnAdjustment": {
+              "expr": {
+                "Literal": {
+                  "Value": "'growToFit'"
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "11D"
+                }
+              }
+            },
+            "wordWrap": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "alignment": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Center'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "values": [
+        {
+          "properties": {
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "11D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "total": [
+        {
+          "properties": {
+            "totals": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Match Draft Sequence'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "border": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "background": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

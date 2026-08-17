@@ -17,6 +17,14 @@ table 'gold fact_team_matches'
 		formatString: 0.0
 		lineageTag: 9395fcd4-b503-4018-aa82-77a3727ef1b2
 
+	measure 'Team Losses' = [Team Appearances] - [Team Wins]
+		formatString: #,##0
+		lineageTag: aaaa0003-0000-0000-0000-000000000001
+
+	measure 'Team Lose Rate' = 1 - [Team Win Rate]
+		formatString: 0.0%
+		lineageTag: aaaa0003-0000-0000-0000-000000000002
+
 	column match_id
 		dataType: string
 		sourceProviderType: nvarchar(max)
@@ -81,6 +89,16 @@ table 'gold fact_team_matches'
 		lineageTag: 2c35b7fb-f953-49c4-b94b-048953a13a45
 		summarizeBy: sum
 		sourceColumn: opponent_score
+
+		annotation SummarizationSetBy = Automatic
+
+	column league_rank
+		dataType: int64
+		formatString: 0
+		sourceProviderType: int
+		lineageTag: aaaa0003-0000-0000-0000-000000000004
+		summarizeBy: none
+		sourceColumn: league_rank
 
 		annotation SummarizationSetBy = Automatic
 

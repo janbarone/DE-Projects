@@ -4,10 +4,10 @@
   "position": {
     "x": 649.67111111111114,
     "y": 75.093333333333334,
-    "z": 21,
+    "z": 11000,
     "height": 83.057777777777773,
     "width": 450.56,
-    "tabOrder": 21
+    "tabOrder": 11000
   },
   "visual": {
     "visualType": "slicer",
@@ -162,20 +162,6 @@
           ]
         },
         "howCreated": "User"
-      },
-      {
-        "name": "9c31b41287306c85994c",
-        "field": {
-          "Column": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "gold dim_hero"
-              }
-            },
-            "Property": "hero_localized_name"
-          }
-        },
-        "type": "Categorical"
       }
     ]
   }

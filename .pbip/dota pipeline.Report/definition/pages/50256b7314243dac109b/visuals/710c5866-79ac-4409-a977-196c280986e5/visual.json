@@ -4,10 +4,10 @@
   "position": {
     "x": 20.48,
     "y": 144.49777777777777,
-    "z": 7,
+    "z": 5000,
     "height": 300.37333333333333,
     "width": 736.14222222222224,
-    "tabOrder": 7
+    "tabOrder": 5000
   },
   "visual": {
     "visualType": "clusteredBarChart",
@@ -196,37 +196,5 @@
       ]
     },
     "drillFilterOtherVisuals": true
-  },
-  "filterConfig": {
-    "filters": [
-      {
-        "name": "18175b18790202d44b45",
-        "field": {
-          "Column": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "gold dim_league"
-              }
-            },
-            "Property": "league_name"
-          }
-        },
-        "type": "Categorical"
-      },
-      {
-        "name": "588d51bba2e27674e7d4",
-        "field": {
-          "Measure": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "gold fact_matches"
-              }
-            },
-            "Property": "Total Matches"
-          }
-        },
-        "type": "Advanced"
-      }
-    ]
   }
 }

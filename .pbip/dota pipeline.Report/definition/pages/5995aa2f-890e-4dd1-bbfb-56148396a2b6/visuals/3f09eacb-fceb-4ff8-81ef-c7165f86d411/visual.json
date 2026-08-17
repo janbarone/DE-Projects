@@ -4,10 +4,10 @@
   "position": {
     "x": 20,
     "y": 990,
-    "z": 23,
+    "z": 11000,
     "height": 270,
     "width": 1240,
-    "tabOrder": 23
+    "tabOrder": 11000
   },
   "visual": {
     "visualType": "tableEx",
@@ -26,10 +26,10 @@
                   "Property": "opponent_name"
                 }
               },
+              "queryRef": "gold fact_hero_matchups_hero.opponent_name",
               "nativeQueryRef": "opponent_name",
-              "displayName": "Opponent",
               "active": true,
-              "queryRef": "gold fact_hero_matchups_hero.opponent_name"
+              "displayName": "Opponent"
             },
             {
               "field": {
@@ -42,9 +42,9 @@
                   "Property": "Hero Matchup Games"
                 }
               },
+              "queryRef": "gold fact_hero_matchups_hero.Hero Matchup Games",
               "nativeQueryRef": "Hero Matchup Games",
-              "active": true,
-              "queryRef": "gold fact_hero_matchups_hero.Hero Matchup Games"
+              "active": true
             },
             {
               "field": {
@@ -57,9 +57,9 @@
                   "Property": "Hero Matchup Win Rate"
                 }
               },
+              "queryRef": "gold fact_hero_matchups_hero.Hero Matchup Win Rate",
               "nativeQueryRef": "Hero Matchup Win Rate",
-              "active": true,
-              "queryRef": "gold fact_hero_matchups_hero.Hero Matchup Win Rate"
+              "active": true
             }
           ]
         }

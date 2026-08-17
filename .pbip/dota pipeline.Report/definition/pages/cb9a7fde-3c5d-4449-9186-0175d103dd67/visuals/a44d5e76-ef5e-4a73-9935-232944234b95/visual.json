@@ -4,10 +4,10 @@
   "position": {
     "x": 20.425531914893618,
     "y": 100.18237082066869,
-    "z": 4,
+    "z": 3000,
     "height": 299.57446808510639,
     "width": 455.19756838905778,
-    "tabOrder": 4
+    "tabOrder": 3000
   },
   "visual": {
     "visualType": "clusteredBarChart",
@@ -229,20 +229,6 @@
             }
           ]
         }
-      },
-      {
-        "name": "aa53f4ea29813ad40762",
-        "field": {
-          "Measure": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "gold fact_match_players"
-              }
-            },
-            "Property": "Total Picks"
-          }
-        },
-        "type": "Advanced"
       }
     ]
   }

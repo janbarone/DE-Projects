@@ -632,9 +632,46 @@ bidirectional)**; dbt builds 32 gold models. Index hardening (fixed the
 double-schema-prefix bug, added `match_id`/`patch`/`start_date` indexes on
 `fact_matches`, removed leftover silver index hooks) + `on-run-end: analyze`.
 **New Grand Report page** (144 visuals, built by `scripts/build_grand_page.py`)
-is the report landing page; verified green: 227/227 gold build steps, 33/33
-pytest, 474 field references resolve. Fresh dump:
-`backups/gold_20260817_161207.dump` (304.7 MB).
+was the report landing page; **removed 2026-08-17** (page + builder script
+deleted; the MAIN page `0d0feaf1eede4bf5f3bc` is the landing page now).
+Verified green at the time: 227/227 gold build steps, 33/33 pytest, 474 field
+references resolve. Fresh dump: `backups/gold_20260817_161207.dump` (304.7 MB).
+
+**Round 17/18 (2026-08-17):** the **Grand Report page and its builder**
+(`scripts/build_grand_page.py`) were deleted; the new **MAIN** page
+(`0d0feaf1eede4bf5f3bc`) is the landing page. **Image columns are now
+available in the model** (`dataCategory: ImageUrl`, no visuals wired yet):
+`dim_hero.img`, `dim_item.img`, `dim_player.avatar_medium`,
+`dim_team.logo_url`, `fact_match_player_skills.ability_img`, and
+`fact_match_player_item_purchases.img`. pytest 21/21.
+
+**Round 19 (2026-08-17/18):** **Match detail fixes.** (1) Fixed the tableEx
+render crash (`Cannot read properties of undefined (reading 'queryName')`) on
+"Dire - skill levelling over time" (`c3c4766012d0ee51351b`) — stray
+`"active": false`/`isDefaultSort` entries in its projections removed. (2) **Team
+Radiant/Dire tables** (`5f11b68f81ccbfc15225`/`e19afae52e062a202fb0`) showed
+*both* teams because they pulled `logo_url` from `dim_team` with no
+fact_matches↔dim_team relationship; precomputed `radiant_team_logo` /
+`dire_team_logo` columns were added to `gold.fact_matches` (correlated subquery
+pattern) and both tables were rewired (4117/4111 logos present). Model stays at
+31 tables; lineage tags re-checked unique.
+
+**Round 20 (2026-08-18):** **MAIN draft-sequence table + hero pick/ban lists.**
+New gold model **`gold.fact_draft_sequence`** — one row per (match, slot 1–5)
+with each team's pick + ban hero (localized name + image URL) and per-slot
+sequences (**continuous 1–10 across both teams** in global draft order; 20,490
+rows = 4,098 matches × 5, covering every match with draft data; matches with
+incomplete drafts leave the missing slots blank; 201 matches have no draft
+data at all; image columns `dataCategory: ImageUrl`); new
+relationship `fact_draft_sequence.match_id → fact_matches.match_id`. **MAIN**
+page gained the **"Match Draft Sequence"** 8-column table (Dire Hero, Pick
+Seq, Dire Hero Ban, Ban Seq, Radiant Hero, Radiant Pick Seq, Radiant Hero Ban,
+Radiant Ban Seq) scoped to the selected match. **Players page** gained
+"Heroes picked/banned by players" and **Teams page** gained "Heroes
+picked/banned by teams" — hero icon + name + `Draft Picks`/`Draft Bans`
+measures, sorted descending, no top-N limit. Model is now **32 tables, 53
+relationships**; pytest 21/21, 184 report JSON files 0 bad.
+
 
 **Known notes for the next session:**
 - Connect Power BI to the **gold** schema (not silver) - it's the presentation

@@ -308,6 +308,16 @@ cultureInfo en-US
 			      "State": "Generated",
 			      "Terms": [
 			        {
+			          "Team": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        },
+			        {
 			          "Team Name": {
 			            "State": "Suggested",
 			            "Source": {
@@ -413,7 +423,7 @@ cultureInfo en-US
 			      "State": "Generated",
 			      "Terms": [
 			        {
-			          "Patch": {
+			          "Patch Version": {
 			            "State": "Suggested",
 			            "Source": {
 			              "Type": "External",
@@ -423,7 +433,7 @@ cultureInfo en-US
 			          }
 			        },
 			        {
-			          "Patch Version": {
+			          "Patch": {
 			            "State": "Suggested",
 			            "Source": {
 			              "Type": "External",
@@ -1240,6 +1250,669 @@ cultureInfo en-US
 			      "Terms": [
 			        {
 			          "Hero": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "gold_fact_hero_matchups_hero.opponent_name": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "gold fact_hero_matchups_hero",
+			          "ConceptualProperty": "opponent_name"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Opponent": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "gold_fact_matches.radiant_team": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "gold fact_matches",
+			          "ConceptualProperty": "Radiant Team"
+			        }
+			      },
+			      "State": "Generated"
+			    },
+			    "gold_fact_matches.dire_team": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "gold fact_matches",
+			          "ConceptualProperty": "Dire Team"
+			        }
+			      },
+			      "State": "Generated"
+			    },
+			    "gold_fact_matches.radiant_score": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "gold fact_matches",
+			          "ConceptualProperty": "radiant_score"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Radiant Kills": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "gold_fact_matches.dire_score": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "gold fact_matches",
+			          "ConceptualProperty": "dire_score"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Dire Kills": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "gold_fact_matches.duration_min": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "gold fact_matches",
+			          "ConceptualProperty": "duration_min"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Duration (min)": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "gold_fact_matches.radiant_heroes": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "gold fact_matches",
+			          "ConceptualProperty": "Radiant Heroes"
+			        }
+			      },
+			      "State": "Generated"
+			    },
+			    "gold_fact_matches.dire_heroes": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "gold fact_matches",
+			          "ConceptualProperty": "Dire Heroes"
+			        }
+			      },
+			      "State": "Generated"
+			    },
+			    "gold_fact_team_matches.league_rank": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "gold fact_team_matches",
+			          "ConceptualProperty": "League Rank"
+			        }
+			      },
+			      "State": "Generated"
+			    },
+			    "gold_fact_team_matches.team_appearances": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "gold fact_team_matches",
+			          "ConceptualProperty": "Team Appearances"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Matches": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "gold_fact_team_matches.team_wins": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "gold fact_team_matches",
+			          "ConceptualProperty": "Team Wins"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Wins": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "gold_fact_team_matches.team_losses": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "gold fact_team_matches",
+			          "ConceptualProperty": "Team Losses"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Losses": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "gold_fact_team_matches.team_win_rate": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "gold fact_team_matches",
+			          "ConceptualProperty": "Team Win Rate"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Win Rate": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "gold_fact_team_matches.team_lose_rate": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "gold fact_team_matches",
+			          "ConceptualProperty": "Team Lose Rate"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Lose Rate": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "gold_fact_matches.radiant_team_name": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "gold fact_matches",
+			          "ConceptualProperty": "radiant_team_name"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Radiant Team": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "gold_fact_matches.dire_team_name": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "gold fact_matches",
+			          "ConceptualProperty": "dire_team_name"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Dire Team": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "gold_fact_matches.winner_name": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "gold fact_matches",
+			          "ConceptualProperty": "winner_name"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Winner": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "gold_fact_matches.radiant_heroes1": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "gold fact_matches",
+			          "ConceptualProperty": "radiant_heroes"
+			        }
+			      },
+			      "State": "Generated"
+			    },
+			    "gold_fact_matches.dire_heroes1": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "gold fact_matches",
+			          "ConceptualProperty": "dire_heroes"
+			        }
+			      },
+			      "State": "Generated"
+			    },
+			    "gold_fact_matches.total_matches": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "gold fact_matches",
+			          "ConceptualProperty": "Total Matches"
+			        }
+			      },
+			      "State": "Generated"
+			    },
+			    "gold_dim_hero.img": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "gold dim_hero",
+			          "ConceptualProperty": "img"
+			        }
+			      },
+			      "State": "Generated"
+			    },
+			    "gold_fact_matches.radiant_team_logo": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "gold fact_matches",
+			          "ConceptualProperty": "radiant_team_logo"
+			        }
+			      },
+			      "State": "Generated"
+			    },
+			    "gold_fact_matches.dire_team_logo": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "gold fact_matches",
+			          "ConceptualProperty": "dire_team_logo"
+			        }
+			      },
+			      "State": "Generated"
+			    },
+			    "gold_dim_team.logo_url": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "gold dim_team",
+			          "ConceptualProperty": "logo_url"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Team logo": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "gold_dim_player.avatar_medium": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "gold dim_player",
+			          "ConceptualProperty": "avatar_medium"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Player Avatar": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "gold_fact_match_player_item_purchases.minute": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "gold fact_match_player_item_purchases",
+			          "ConceptualProperty": "minute"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Minute": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "gold_fact_match_player_item_purchases.player_name": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "gold fact_match_player_item_purchases",
+			          "ConceptualProperty": "player_name"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Player Name": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "gold_fact_match_player_item_purchases.hero_localized_name": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "gold fact_match_player_item_purchases",
+			          "ConceptualProperty": "hero_localized_name"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Hero": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "gold_fact_match_player_item_purchases.img": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "gold fact_match_player_item_purchases",
+			          "ConceptualProperty": "img"
+			        }
+			      },
+			      "State": "Generated"
+			    },
+			    "gold_fact_match_player_item_purchases.item_name": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "gold fact_match_player_item_purchases",
+			          "ConceptualProperty": "item_name"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Item Name": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "gold_fact_match_player_skills.ability_img": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "gold fact_match_player_skills",
+			          "ConceptualProperty": "ability_img"
+			        }
+			      },
+			      "State": "Generated"
+			    },
+			    "gold_fact_draft_sequence.dire_pick_hero": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "gold fact_draft_sequence",
+			          "ConceptualProperty": "dire_pick_hero"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Dire Hero": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "gold_fact_draft_sequence.dire_pick_seq": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "gold fact_draft_sequence",
+			          "ConceptualProperty": "dire_pick_seq"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Pick Seq": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "gold_fact_draft_sequence.dire_ban_hero": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "gold fact_draft_sequence",
+			          "ConceptualProperty": "dire_ban_hero"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Dire Hero Ban": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "gold_fact_draft_sequence.dire_ban_seq": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "gold fact_draft_sequence",
+			          "ConceptualProperty": "dire_ban_seq"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Ban Seq": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "gold_fact_draft_sequence.radiant_pick_hero": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "gold fact_draft_sequence",
+			          "ConceptualProperty": "radiant_pick_hero"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Radiant Hero": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "gold_fact_draft_sequence.radiant_pick_seq": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "gold fact_draft_sequence",
+			          "ConceptualProperty": "radiant_pick_seq"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Radiant Pick Seq": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "gold_fact_draft_sequence.radiant_ban_hero": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "gold fact_draft_sequence",
+			          "ConceptualProperty": "radiant_ban_hero"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Radiant Hero Ban": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "gold_fact_draft_sequence.radiant_ban_seq": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "gold fact_draft_sequence",
+			          "ConceptualProperty": "radiant_ban_seq"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "Radiant Ban Seq": {
 			            "State": "Suggested",
 			            "Source": {
 			              "Type": "External",

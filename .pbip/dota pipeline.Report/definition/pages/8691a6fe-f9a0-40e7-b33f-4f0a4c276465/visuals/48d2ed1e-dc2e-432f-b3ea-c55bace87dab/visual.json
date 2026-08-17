@@ -58,47 +58,6 @@
                   "Value": "true"
                 }
               }
-            },
-            "filter": {
-              "filter": {
-                "Version": 2,
-                "From": [
-                  {
-                    "Name": "g",
-                    "Entity": "gold fact_matches",
-                    "Type": 0
-                  }
-                ],
-                "Where": [
-                  {
-                    "Condition": {
-                      "In": {
-                        "Expressions": [
-                          {
-                            "Column": {
-                              "Expression": {
-                                "SourceRef": {
-                                  "Source": "g"
-                                }
-                              },
-                              "Property": "match_id"
-                            }
-                          }
-                        ],
-                        "Values": [
-                          [
-                            {
-                              "Literal": {
-                                "Value": "'2466472513'"
-                              }
-                            }
-                          ]
-                        ]
-                      }
-                    }
-                  }
-                ]
-              }
             }
           }
         }
@@ -120,23 +79,5 @@
       ]
     },
     "drillFilterOtherVisuals": true
-  },
-  "filterConfig": {
-    "filters": [
-      {
-        "name": "89861c58c4350768b623",
-        "field": {
-          "Column": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "gold fact_matches"
-              }
-            },
-            "Property": "match_id"
-          }
-        },
-        "type": "Categorical"
-      }
-    ]
   }
 }

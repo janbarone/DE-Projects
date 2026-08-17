@@ -116,6 +116,16 @@ table 'gold fact_match_player_item_purchases'
 
 		annotation SummarizationSetBy = Automatic
 
+	column img
+		dataType: string
+		sourceProviderType: nvarchar(max)
+		lineageTag: ffff0003-0000-0000-0000-000000000015
+		dataCategory: ImageUrl
+		summarizeBy: none
+		sourceColumn: img
+
+		annotation SummarizationSetBy = Automatic
+
 	partition 'gold fact_match_player_item_purchases' = m
 		mode: directQuery
 		source =
