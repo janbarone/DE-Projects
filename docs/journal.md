@@ -113,6 +113,8 @@ _Format: date — what you did — outcome/result (and any errors → see Lesson
   7-bans-per-team matches flow through (see Lessons #9). Also loosened brittle
   `accepted_values` tests, wired constants-refresh into the pipeline +
   orchestrators, and swapped the Airflow dbt step to dbt-cosmos.
+- **2026-08-21:** League priority revised — the scraper now drains TI leagues
+  first, then premium, then professional (see `docs/history.md` Round 22).
 
 ---
 

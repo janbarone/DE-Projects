@@ -44,7 +44,10 @@ from dota_common import (  # noqa: E402
     write_json,
 )
 
-DEFAULT_LEAGUES = [
+# Explicit The International league ids, drained FIRST by the main scraper.
+# OpenDota labels the TIs inconsistently (old ones = "professional", newer =
+# "premium"), so they are pinned explicitly instead of derived from tier.
+TI_LEAGUE_IDS = [
     16899, 11625, 65001, 65006, 600, 2733, 4664, 5401, 9870,
     10749, 13256, 14268, 15728, 16935, 18324, 19719,
 ]
@@ -95,7 +98,7 @@ def main() -> None:
     elif args.leagues:
         league_ids = [int(x) for x in args.leagues.replace(" ", "").split(",") if x]
     else:
-        league_ids = list(DEFAULT_LEAGUES)
+        league_ids = list(TI_LEAGUE_IDS)
 
     ts = timestamp_fetched()
     saved = 0

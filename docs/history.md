@@ -356,3 +356,12 @@ Dagster, so dims stay current when a patch adds heroes/items (keeps
 referential-integrity tests green). Swapped the Airflow `dbt_build`
 BashOperator for a dbt-cosmos `DbtBuildOperator` (native `dbt build`, single
 task).
+
+**Round 22 (2026-08-21, league priority):** the main scraper's phase 1 now
+drains leagues in priority order — the explicit The International list first,
+then premium, then professional (previously premium → professional only). The
+hardcoded `DEFAULT_LEAGUES` was renamed `TI_LEAGUE_IDS` and is now shared with
+`_fetch_matches.py`, where `all_league_ids()` prepends it and de-dupes the tier
+passes. Motivation: OpenDota labels TIs inconsistently (old ones = professional,
+newer = premium), so tier order alone buried TI2012–2017 in the 2,472-league
+professional bucket.

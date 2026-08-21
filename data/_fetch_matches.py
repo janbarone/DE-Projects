@@ -1,16 +1,16 @@
 """MAIN MATCH FETCHER: one scraper that downloads every match, in two phases.
 
-  Phase 1 - League priority. Only the priority tiers are drained: PREMIUM
-            leagues first, then PROFESSIONAL leagues (all other tiers are
-            disregarded). For each, discover its match_ids via
+  Phase 1 - League priority. Leagues are drained in this order: the explicit
+            The International ids first, then PREMIUM, then PROFESSIONAL (all
+            other tiers are disregarded). For each, discover its match_ids via
             /leagues/{id}/matchIds and download EVERY missing match. Leagues are
             processed one at a time, so each league is fully drained before the
             next starts. Each match is retried (MAX_ATTEMPTS), progress/failures
             are logged to _league_matches_log.txt, and the run stops if the
             daily quota drops below the safety margin (DAY_STOP_AT).
-  Phase 2 - Pro scrape. Once the premium + professional leagues are exhausted,
-            keep polling /proMatches and download new matches indefinitely,
-            until the daily quota is used up.
+  Phase 2 - Pro scrape. Once the priority leagues are exhausted, keep polling
+            /proMatches and download new matches indefinitely, until the daily
+            quota is used up.
 
 Phase control (draining ~2.7k priority leagues takes days/weeks, so you choose):
   --mode full         (default) phase 1 drains as long as the daily quota
@@ -43,6 +43,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from _fetch_league_matches import (  # noqa: E402
     DAY_STOP_AT,
     MAX_ATTEMPTS,
+    TI_LEAGUE_IDS,
     QuotaStop,
     fetch_match,
     log,
@@ -178,17 +179,18 @@ def phase1_league_priority(league_ids, limit_left, ts, saved, limit, redrain) ->
     return saved, already, failures, limit_left
 
 
-# Priority tiers for phase 1, in the order they are drained: premium first,
-# then professional. All other tiers (amateur / unknown / excluded) are
-# disregarded.
+# Priority tiers for phase 1, drained AFTER the explicit TI list. All other
+# tiers (amateur / unknown / excluded) are disregarded.
 PRIORITY_TIERS = ["premium", "professional"]
 
 
 def all_league_ids() -> list:
-    """League ids to drain from the /leagues endpoint (fresh), falling back to the
-    local leagues.json copy if the call fails.
+    """League ids to drain from the /leagues endpoint (fresh), falling back to
+    the local leagues.json copy if the call fails.
 
-    Only the PRIORITY_TIERS are returned, premium first then professional."""
+    Order: explicit TI_LEAGUE_IDS first, then premium, then professional.
+    TIs are pinned explicitly because OpenDota labels them inconsistently
+    (old TIs = "professional", newer ones = "premium")."""
     try:
         recs = json.loads(http_get(f"{BASE}/leagues"))
     except Exception as e:
@@ -201,11 +203,21 @@ def all_league_ids() -> list:
     if not isinstance(recs, list) or not recs:
         return []
 
-    ids = []
+    tier_by_id = {}
+    for r in recs:
+        if isinstance(r, dict) and "leagueid" in r:
+            tier_by_id[int(r["leagueid"])] = r.get("tier")
+
+    # 1) explicit TIs first (keep our pinned order; skip any no longer listed)
+    ids = [lid for lid in TI_LEAGUE_IDS if lid in tier_by_id]
+    seen = set(ids)
+
+    # 2) then premium, 3) then professional (API order, de-duped against the TIs)
     for tier in PRIORITY_TIERS:
-        for r in recs:
-            if isinstance(r, dict) and r.get("tier") == tier and "leagueid" in r:
-                ids.append(int(r["leagueid"]))
+        for lid, t in tier_by_id.items():
+            if t == tier and lid not in seen:
+                ids.append(lid)
+                seen.add(lid)
     return ids
 
 
@@ -262,8 +274,8 @@ def prompt_mode(default: str = "full") -> str:
     print("=" * 60)
     print("  DOTA Match Fetcher  --  select download mode")
     print("=" * 60)
-    print("  1. Full       - premium + professional leagues first, then proMatches once they're exhausted")
-    print("  2. Leagues    - drain premium + professional leagues only (phase 1)")
+    print("  1. Full       - TI leagues first, then premium + professional, then proMatches")
+    print("  2. Leagues    - drain TI + premium + professional leagues only (phase 1)")
     print("  3. ProMatches - scrape proMatches only (phase 2)")
     print("  0. Exit")
     print("=" * 60)
@@ -290,7 +302,7 @@ def prompt_mode(default: str = "full") -> str:
 
 def main() -> None:
     parser = argparse.ArgumentParser(
-        description="Download every premium + professional league's matches first, "
+        description="Download TI, premium and professional league matches first, "
                     "then scrape proMatches until the daily quota is used up.")
     parser.add_argument("--mode", default=None,
                         choices=["full", "leagues", "promatches"],
@@ -300,8 +312,8 @@ def main() -> None:
                         help="stop after this many fetches; omit to drain leagues then scrape "
                              "until the daily quota is exhausted")
     parser.add_argument("--leagues", default=None,
-                        help="league ids (comma-separated) to download; default = priority tiers "
-                             "(premium, then professional)")
+                        help="league ids (comma-separated) to download; default = TI list, "
+                             "then premium, then professional")
     parser.add_argument("--redrain", action="store_true",
                         help="ignore the drained-league registry and re-discover every league")
     parser.add_argument("--leagues-only", action="store_true",
