@@ -29,7 +29,7 @@ Power BI → **Model view → Manage relationships → New**. For each relations
 
 > These relationships already exist in `.pbip/.../relationships.tmdl`. The
 > tables below marked *(2026-08-05)* are new from the feature pass — see
-> `docs/report_status.md` §5b. Their "second" hero/team link is intentionally
+> `git history (branch archive/report-status-history)` §5b. Their "second" hero/team link is intentionally
 > **inactive** (`dire_hero_id`, `team_b_id`) because DirectQuery allows only one
 > active relationship per column pair; use `USERELATIONSHIP` in measures.
 > `dim_item` *(2026-08-05)* joins to `fact_match_players.item_0` for the

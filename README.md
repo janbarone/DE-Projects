@@ -4,6 +4,14 @@ A raw-fetch pipeline for the [OpenDota API](https://docs.opendota.com/) that sto
 
 **Goal:** show the full data flow from source to dashboard (ingestion -> PostgreSQL -> dbt/SQL transforms -> Power BI) as a junior data engineer portfolio project.
 
+## Documentation
+
+- **`docs/journal.md`** — the plain, human story: where we are now, how we built
+  it, what we did each session, and the lessons learned (errors → fix → don't repeat).
+- **`docs/data_model.md`** — the gold schema and table/relationship mapping.
+- **`docs/power_bi_setup.md`** — how the Power BI report/model is wired.
+- **`docs/audit_2026-08-18.md`** — the prioritized (P0–P4) backlog.
+
 ## Project Status
 
 **Current state: end-to-end pipeline complete and reproducible.** The full flow
@@ -482,7 +490,7 @@ on Hero Meta — fixed by setting `crossFilteringBehavior: bothDirections` on
 `dim_hero_role ↔ dim_hero`. The leaderboards deliberately use **measures** (not
 precomputed columns) because columns ignore the Year/League slicers. Gold dims
 were extended with precomputed `match_*` columns but they are **not imported**
-by the model. Full ledger in `docs/report_status.md`.
+by the model. Full ledger in `git history (branch archive/report-status-history)`.
 
 **Feature pass (2026-08-05, same day):** added the data foundations for the next
 set of report features — `dim_patch` (real patch versions + a Patch slicer on the
@@ -501,7 +509,7 @@ visuals (match-closeness donut, early-FB rate, leaver games, score differential)
 Data layer: `dim_item` (596 rows, decodes `item_0..6`), `score_bucket`,
 `fight_phase`, `matchup_label` columns, ~20 new measures, +1 relationship (35
 total). 133/133 dbt tests; 90/90 report JSON files parse. Full ledger:
-`docs/report_status.md` §5c.
+`git history (branch archive/report-status-history)` §5c.
 
 **Round 3 (2026-08-05, validation + About page):** fixed the load errors the
 new pages surfaced in Desktop — (1) stripped UTF-8 BOMs from the 7 Economy
@@ -514,16 +522,16 @@ DirectQuery. Added a **new About & Glossary page** (`736e1272`, 1280×1000):
 per-page description of every visual. **Gotcha:** textbox visuals must live in
 `visuals/<guid>/visual.json` folders — a flat `visuals/<guid>.json` file is
 silently ignored (page appears empty). 102/102 report JSON files parse, 0 BOMs.
-Full ledger: `docs/report_status.md` §5d.
+Full ledger: `git history (branch archive/report-status-history)` §5d.
 
 **Round 8/9 (2026-08-08, Match Detail polish + savepoint):** Round 8 trimmed
 the Match Detail player tables and side-scoped the Radiant/Dire hero slicers;
-**Round 9** (see `docs/report_status.md` §5j) made the hero slicers list **only
+**Round 9** (see `git history (branch archive/report-status-history)` §5j) made the hero slicers list **only
 the heroes in the currently selected match** via a new `Hero in Current Match`
 measure on `gold dim_hero` plus a visual-level Advanced filter on both slicers —
 **verified working in Power BI Desktop**. No dbt/relationship changes. Full
 `pg_dump` taken as the savepoint: `backups/gold4_20260808_191856.dump`. The
-report is committed; full ledger in `docs/report_status.md`.
+report is committed; full ledger in `git history (branch archive/report-status-history)`.
 
 **Round 10 (2026-08-08, Match Breakdown page, §5k):** new dedicated page with
 per-match hero-kill counts (split Radiant/Dire), rune pickups by hero (incl.
@@ -681,7 +689,7 @@ relationships**; pytest 21/21, 184 report JSON files 0 bad.
   Draft, Match Breakdown, Progression, Match Detail, and the Combat Match ID
   slicer — render in Power BI Desktop. The remaining work is non-report:
   the orchestrator (bronze_load -> dbt build), the matchup matrix, and search
-  slicers (see `docs/report_status.md` §8).
+  slicers (see `git history (branch archive/report-status-history)` §8).
 - **PBIP gotchas (all hit + fixed):** (1) files must be **UTF-8
   without BOM**; (2) measure names are unique model-wide (rename before
   colliding); (3) avoid non-column aggregates like `AVERAGE(ABS(...))` in

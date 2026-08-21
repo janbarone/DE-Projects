@@ -1,6 +1,6 @@
 # Report Improvements — Detailed Implementation Spec
 
-Companion to `report_status.md`. This is the working spec for the improvement
+Companion to `git history (branch archive/report-status-history)`. This is the working spec for the improvement
 list agreed 2026-08-05: for every idea it gives the goal, the exact data it
 needs, how to implement it (SQL / DAX / JSON), where it lands in the report,
 effort, risk, and dependencies.
@@ -280,7 +280,7 @@ in Tier 2/3.
 - Round 16: `fact_teamfight_kills` (and `fact_match_player_kills`) were removed
   from the model — no visual used them. Victim analysis now relies on
   `fact_hero_matchups` (1.2) and the denormalized
-  `fact_match_players.enemy_heroes_killed`. §3.7 of `report_status.md` was
+  `fact_match_players.enemy_heroes_killed`. §3.7 of `git history (branch archive/report-status-history)` was
   updated accordingly.
 
 ### 5.2 Re-backup the database **[DONE 2026-08-17]**

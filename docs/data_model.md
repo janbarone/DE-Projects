@@ -315,7 +315,7 @@ fixed:
   `match_avg_kda`, `match_avg_gpm`, ...) computed from the gold facts at build
   time. They are **static snapshots that ignore slicers**, so the report does
   not import them — leaderboards use measures instead. See
-  `docs/report_status.md` §4 / §7.
+  `git history (branch archive/report-status-history)` §4 / §7.
 
 ### Gold relationship diagram (with cardinality)
 
@@ -481,7 +481,7 @@ reaches every fact table.
 without any relationship change — a `Hero in Current Match` measure on
 `dim_hero` (CALCULATE over `fact_match_players`) plus a visual-level Advanced
 filter on both hero slicers. The model keeps **53 relationships, 3
-bidirectional**. See `docs/report_status.md` §5j.
+bidirectional**. See `git history (branch archive/report-status-history)` §5j.
 
 #### `fact_match_player_runes` → (many-to-one, *:1) *(round 10)*
 
@@ -537,7 +537,7 @@ model and dropped from dbt + the DB (verified zero references in `.pbip`):
 `dim_match_minute`. The stale `gold.fact_team_h2h_new` experiment table was also
 dropped from the DB. Model is now **31 tables, 52 relationships (3
 bidirectional)**; dbt builds 32 gold models (the extra one, `fact_phase_momentum`,
-was never imported into Power BI). See `docs/report_status.md` §5t.
+was never imported into Power BI). See `git history (branch archive/report-status-history)` §5t.
 
 ### Gold table inventory
 
