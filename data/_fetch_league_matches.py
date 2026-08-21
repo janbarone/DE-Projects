@@ -21,6 +21,7 @@ Usage:
 import argparse
 import json
 import os
+import re
 import sys
 import time
 
@@ -44,13 +45,54 @@ from dota_common import (  # noqa: E402
     write_json,
 )
 
-# Explicit The International league ids, drained FIRST by the main scraper.
-# OpenDota labels the TIs inconsistently (old ones = "professional", newer =
-# "premium"), so they are pinned explicitly instead of derived from tier.
-TI_LEAGUE_IDS = [
-    16899, 11625, 65001, 65006, 600, 2733, 4664, 5401, 9870,
-    10749, 13256, 14268, 15728, 16935, 18324, 19719,
-]
+# The International leagues are auto-discovered by name ("The International
+# YYYY"). OpenDota labels their tier inconsistently (old ones = "professional",
+# newer = "premium"), so they are keyed off the name instead. A couple of ids
+# the regex misses are pinned as extras:
+#   11625 = "The International 10" (2-digit name, the COVID-delayed 2021 event)
+#   16899 = generic "The International" catch-all
+EXTRA_TI_LEAGUE_IDS = [16899, 11625]
+TI_NAME_RE = re.compile(r"^The International (\d{4})$")
+
+
+def load_leagues() -> list:
+    """League records from /leagues, falling back to the local leagues.json."""
+    try:
+        recs = json.loads(http_get(f"{BASE}/leagues"))
+        if isinstance(recs, list):
+            return recs
+    except Exception as e:
+        print(f"  /leagues ERROR: {e}")
+    path = DATA_DIR / "leagues" / "leagues.json"
+    if path.exists():
+        try:
+            recs = json.loads(path.read_text(encoding="utf-8"))
+            if isinstance(recs, list):
+                return recs
+        except Exception as e:
+            print(f"  leagues.json ERROR: {e}")
+    return []
+
+
+def discover_ti_league_ids(leagues) -> list:
+    """The International league ids, chronological by year, plus any
+    EXTRA_TI_LEAGUE_IDS the name regex misses (only those present in `leagues`)."""
+    present = set()
+    matched = []
+    for r in leagues:
+        if not isinstance(r, dict) or "leagueid" not in r:
+            continue
+        lid = int(r["leagueid"])
+        present.add(lid)
+        m = TI_NAME_RE.match(str(r.get("name", "")))
+        if m:
+            matched.append((int(m.group(1)), lid))
+    matched.sort(key=lambda x: x[0])
+    ids = [lid for _, lid in matched]
+    for lid in EXTRA_TI_LEAGUE_IDS:
+        if lid in present and lid not in ids:
+            ids.append(lid)
+    return ids
 
 MAX_ATTEMPTS = 2  # enough tries per match; skip if still failing
 DAY_STOP_AT = 50  # stop if remaining daily quota is below this
@@ -98,7 +140,7 @@ def main() -> None:
     elif args.leagues:
         league_ids = [int(x) for x in args.leagues.replace(" ", "").split(",") if x]
     else:
-        league_ids = list(TI_LEAGUE_IDS)
+        league_ids = discover_ti_league_ids(load_leagues())
 
     ts = timestamp_fetched()
     saved = 0

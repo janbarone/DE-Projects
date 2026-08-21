@@ -1,8 +1,9 @@
 """MAIN MATCH FETCHER: one scraper that downloads every match, in two phases.
 
-  Phase 1 - League priority. Leagues are drained in this order: the explicit
-            The International ids first, then PREMIUM, then PROFESSIONAL (all
-            other tiers are disregarded). For each, discover its match_ids via
+  Phase 1 - League priority. Leagues are drained in this order: the
+            auto-discovered The International ids first, then PREMIUM, then
+            PROFESSIONAL (all other tiers are disregarded). For each, discover
+            its match_ids via
             /leagues/{id}/matchIds and download EVERY missing match. Leagues are
             processed one at a time, so each league is fully drained before the
             next starts. Each match is retried (MAX_ATTEMPTS), progress/failures
@@ -44,9 +45,10 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from _fetch_league_matches import (  # noqa: E402
     DAY_STOP_AT,
     MAX_ATTEMPTS,
-    TI_LEAGUE_IDS,
     QuotaStop,
+    discover_ti_league_ids,
     fetch_match,
+    load_leagues,
     log,
 )
 from dota_common import (  # noqa: E402
@@ -191,22 +193,12 @@ PRIORITY_TIERS = ["premium", "professional"]
 
 
 def all_league_ids() -> list:
-    """League ids to drain from the /leagues endpoint (fresh), falling back to
-    the local leagues.json copy if the call fails.
+    """League ids to drain, in priority order.
 
-    Order: explicit TI_LEAGUE_IDS first, then premium, then professional.
-    TIs are pinned explicitly because OpenDota labels them inconsistently
-    (old TIs = "professional", newer ones = "premium")."""
-    try:
-        recs = json.loads(http_get(f"{BASE}/leagues"))
-    except Exception as e:
-        print(f"  /leagues ERROR: {e}")
-        recs = None
-    if not isinstance(recs, list) or not recs:
-        path = DATA_DIR / "leagues" / "leagues.json"
-        if path.exists():
-            recs = json.loads(path.read_text(encoding="utf-8"))
-    if not isinstance(recs, list) or not recs:
+    Auto-discovered The International ids first, then premium, then
+    professional. Falls back to the local leagues.json copy if /leagues fails."""
+    recs = load_leagues()
+    if not recs:
         return []
 
     tier_by_id = {}
@@ -214,8 +206,8 @@ def all_league_ids() -> list:
         if isinstance(r, dict) and "leagueid" in r:
             tier_by_id[int(r["leagueid"])] = r.get("tier")
 
-    # 1) explicit TIs first (keep our pinned order; skip any no longer listed)
-    ids = [lid for lid in TI_LEAGUE_IDS if lid in tier_by_id]
+    # 1) auto-discovered TIs first (name regex + extras), chronological
+    ids = discover_ti_league_ids(recs)
     seen = set(ids)
 
     # 2) then premium, 3) then professional (API order, de-duped against the TIs)

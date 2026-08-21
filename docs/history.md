@@ -372,3 +372,12 @@ exponentially between polls (30s → 60s → … → capped at 10 min), stops at
 `DAY_STOP_AT` safety margin like phase 1 (was running to 0 remaining), and
 quits after `MAX_EMPTY_POLLS` consecutive empty polls instead of polling
 forever.
+
+**Round 24 (2026-08-21, TI auto-discovery):** The International leagues are now
+discovered by name instead of a hand-maintained id list. `discover_ti_league_ids()`
+matches `^The International (\d{4})$` against the /leagues data (sorted
+chronologically by year), plus a tiny `EXTRA_TI_LEAGUE_IDS` list for the names
+the regex misses ("The International 10" = 11625, and the generic 16899
+catch-all). This auto-excludes the qualifiers/open-qualifiers/practice/fake
+"International" leagues, and new TIs (e.g. 2027+) are picked up with zero manual
+changes. `all_league_ids()` and the `_fetch_league_matches.py` helper both use it.

@@ -119,6 +119,9 @@ _Format: date — what you did — outcome/result (and any errors → see Lesson
   off exponentially, stops at the `DAY_STOP_AT` safety margin, and quits after
   consecutive empty polls instead of burning the daily quota on an empty feed
   (see `docs/history.md` Round 23).
+- **2026-08-21:** TI auto-discovery added — The International leagues are now
+  found by name (`The International YYYY`) instead of a hand-maintained list, so
+  new TIs are picked up automatically (see `docs/history.md` Round 24).
 
 ---
 
