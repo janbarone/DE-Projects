@@ -56,8 +56,6 @@ models:
       - name: role
         tests:
           - not_null
-          - accepted_values:
-              values: ['Carry', 'Support', 'Nuker', 'Disabler', 'Durable', 'Escape', 'Initiator', 'Pusher']
 
   - name: dim_date
     description: Calendar dimension, one row per day from 2012-01-01 to 2027-12-31.

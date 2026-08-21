@@ -22,7 +22,8 @@ select
     tf.teamfight_id,
     tf.start_time     as teamfight_start,
     tf.end_time       as teamfight_end,
-    -- positional mapping: array idx 1-5 -> slots 0-4, idx 6-10 -> slots 128-132
+    -- positional mapping: array idx 1-5 -> slots 0-4, idx 6-10 -> slots 128-132.
+    -- NOTE: assumes 5 players per team (Dota is always 5v5); revisit if that changes.
     (case when tfp.ord <= 5 then tfp.ord - 1 else tfp.ord + 122 end)::text as player_slot,
     mp.hero_id,
     mp.account_id,

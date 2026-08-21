@@ -65,7 +65,7 @@ def _sleep_until(next_time: float) -> None:
 def http_get(url: str, timeout: int = 120) -> str:
     """GET a URL respecting OpenDota's rate limits. Returns response body text.
 
-    Safeguards (anonymous tier: 60/min, 2000/day):
+    Safeguards (anonymous tier: 60/min, 3000/day):
     - throttles to ~55 req/min via MIN_INTERVAL
     - honors the Retry-After header on 429
     - exponential backoff on repeated 429s and transient 5xx/network errors

@@ -31,6 +31,7 @@ player_phase as (
         tf.match_id,
         tf.teamfight_id,
         pf.fight_phase,
+        -- 5v5 assumption: ord 1-5 radiant, 6-10 dire (Dota has always been 5v5)
         case when tp.ord <= 5 then '0' else '1' end as team_number,
         nullif(tp.p->>'gold_delta', '')::int as gold_delta,
         nullif(tp.p->>'xp_delta', '')::int   as xp_delta,
