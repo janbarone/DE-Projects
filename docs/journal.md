@@ -115,6 +115,10 @@ _Format: date — what you did — outcome/result (and any errors → see Lesson
   orchestrators, and swapped the Airflow dbt step to dbt-cosmos.
 - **2026-08-21:** League priority revised — the scraper now drains TI leagues
   first, then premium, then professional (see `docs/history.md` Round 22).
+- **2026-08-21:** Phase-2 scraping optimized — `/proMatches` polling now backs
+  off exponentially, stops at the `DAY_STOP_AT` safety margin, and quits after
+  consecutive empty polls instead of burning the daily quota on an empty feed
+  (see `docs/history.md` Round 23).
 
 ---
 

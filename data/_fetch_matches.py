@@ -8,9 +8,10 @@
             next starts. Each match is retried (MAX_ATTEMPTS), progress/failures
             are logged to _league_matches_log.txt, and the run stops if the
             daily quota drops below the safety margin (DAY_STOP_AT).
-  Phase 2 - Pro scrape. Once the priority leagues are exhausted, keep polling
-            /proMatches and download new matches indefinitely, until the daily
-            quota is used up.
+  Phase 2 - Pro scrape. Once the priority leagues are exhausted, poll
+            /proMatches for new matches with exponential backoff, stopping at
+            the daily quota safety margin (DAY_STOP_AT) or after enough empty
+            polls.
 
 Phase control (draining ~2.7k priority leagues takes days/weeks, so you choose):
   --mode full         (default) phase 1 drains as long as the daily quota
@@ -66,7 +67,12 @@ from dota_common import (  # noqa: E402
     write_json,
 )
 
-POLL_SECONDS = 30        # how long to wait between /proMatches re-polls
+# Phase-2 /proMatches polling: back off exponentially when nothing new, so an
+# empty feed doesn't burn the daily quota. Stops after MAX_EMPTY_POLLS empty
+# polls (no new pro matches today) and respects DAY_STOP_AT.
+POLL_BASE_SECONDS = 30      # first wait after an empty poll
+POLL_MAX_SECONDS = 600      # cap the backoff (10 minutes)
+MAX_EMPTY_POLLS = 20        # stop phase 2 after this many consecutive empty polls
 
 
 def day_left() -> int | None:
@@ -222,25 +228,32 @@ def all_league_ids() -> list:
 
 
 def phase2_pro_scrape(limit, saved, ts) -> int:
-    """Poll /proMatches and download new matches until quota is used up or --limit reached."""
-    print("league queue drained; scraping proMatches for new matches (until quota runs out)...")
+    """Poll /proMatches and download new matches, quota-efficiently.
+
+    Backs off exponentially when the feed has nothing new (so an empty feed
+    doesn't burn the daily quota), stops after MAX_EMPTY_POLLS consecutive empty
+    polls, and stops before the quota hits zero (DAY_STOP_AT safety margin)."""
+    print("league queue drained; scraping proMatches for new matches...")
+    empty_polls = 0
     while True:
         if limit is not None and saved >= limit:
             print(f"reached --limit {limit}")
             break
-        if day_left() is not None and day_left() <= 0:
-            print("daily quota exhausted; stopping")
+        if day_left() is not None and day_left() <= DAY_STOP_AT:
+            print("daily quota almost used up; stopping phase 2")
             break
 
         feed = refresh_pro_feed()
         if feed is None:
-            time.sleep(POLL_SECONDS)
+            time.sleep(POLL_BASE_SECONDS)
             continue
+
+        got_new = False
         while feed:
             if limit is not None and saved >= limit:
                 break
             dl = day_left()
-            if dl is not None and dl <= 0:
+            if dl is not None and dl <= DAY_STOP_AT:
                 break
             mid = next_pro_mid(feed)
             if mid is None:
@@ -248,6 +261,7 @@ def phase2_pro_scrape(limit, saved, ts) -> int:
             try:
                 save_match(mid, ts)
                 saved += 1
+                got_new = True
                 print(f"  pro match {mid} saved ({saved})")
             except RateLimitedError as e:
                 raise QuotaStop("rate limited (daily quota likely spent)") from e
@@ -258,9 +272,23 @@ def phase2_pro_scrape(limit, saved, ts) -> int:
                 else:
                     print(f"  pro match {mid} ERROR: {e}")
 
-        # Current feed fully drained. Wait, then re-poll for new matches.
-        print(f"  nothing new in this feed; re-polling /proMatches in {POLL_SECONDS}s...")
-        time.sleep(POLL_SECONDS)
+        # Re-check quota before deciding to keep polling (inner loop may have
+        # broken out because the safety margin was hit).
+        dl = day_left()
+        if dl is not None and dl <= DAY_STOP_AT:
+            break
+
+        if got_new:
+            empty_polls = 0
+            continue
+
+        empty_polls += 1
+        if empty_polls >= MAX_EMPTY_POLLS:
+            print(f"  no new pro matches after {empty_polls} polls; stopping phase 2")
+            break
+        wait = min(POLL_BASE_SECONDS * (2 ** (empty_polls - 1)), POLL_MAX_SECONDS)
+        print(f"  nothing new; re-polling /proMatches in {wait}s...")
+        time.sleep(wait)
     return saved
 
 

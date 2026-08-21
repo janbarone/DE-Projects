@@ -365,3 +365,10 @@ hardcoded `DEFAULT_LEAGUES` was renamed `TI_LEAGUE_IDS` and is now shared with
 passes. Motivation: OpenDota labels TIs inconsistently (old ones = professional,
 newer = premium), so tier order alone buried TI2012–2017 in the 2,472-league
 professional bucket.
+
+**Round 23 (2026-08-21, phase-2 quota efficiency):** the `/proMatches` tail no
+longer burns the daily quota on an empty feed. Phase 2 now backs off
+exponentially between polls (30s → 60s → … → capped at 10 min), stops at the
+`DAY_STOP_AT` safety margin like phase 1 (was running to 0 remaining), and
+quits after `MAX_EMPTY_POLLS` consecutive empty polls instead of polling
+forever.
