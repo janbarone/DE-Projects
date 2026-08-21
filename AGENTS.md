@@ -8,8 +8,9 @@ working tree.
 
 ## The 4 rules (follow every session, every task)
 
-1. **Always log what you do** — append an entry to **`docs/journal.md` → Log**
-   (date, what you did, files touched, outcome). If it's not logged, it didn't happen.
+1. **Always log what you do** — append a short entry to **`docs/journal.md` → Log**
+   (date, what you did, files touched, outcome). If it's a big/round-worthy change,
+   also add a detailed entry to **`docs/history.md`**. If it's not logged, it didn't happen.
 2. **Always document implemented / tests / errors / how you fixed them** —
    update **`docs/journal.md` → Lessons** with every error + fix + "don't repeat"
    reminder, and update **`README.md`** (status, counts) when the project state changes.
@@ -28,6 +29,7 @@ session.
 | You did / saw… | Update this |
 |---|---|
 | Any task or session (what happened) | `docs/journal.md` → Log |
+| A big change worth a detailed round entry | `docs/history.md` |
 | An error / bug and its fix | `docs/journal.md` → Lessons (+ README if status changed) |
 | Changed last/next/action state | `docs/journal.md` → ▶ STATUS |
 | Implemented a feature / new model / pipeline change | `README.md` + `docs/journal.md` → Log/Story |
@@ -76,6 +78,7 @@ See `readme.txt` (original instructions), `README.md`, and `docs/`.
 - `transform/models/silver/`, `transform/models/gold/` — dbt models
 - `.pbip/dota pipeline.Report/` (PBIR) + `.pbip/dota pipeline.SemanticModel/` (TMDL)
 - `docs/journal.md` — **the one human doc** (STATUS + Story + Log + Lessons)
+- `docs/history.md` — detailed round-by-round changelog (big changes go here)
 - `docs/audit_2026-08-18.md` — prioritized backlog (P0–P4); tick items off as fixed
 - `docs/data_model.md`, `docs/power_bi_setup.md` — technical reference (update only when those change)
 - old detailed Power BI ledger — removed; recoverable from git branch `archive/report-status-history`

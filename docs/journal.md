@@ -97,6 +97,9 @@ that I write down what I learned along the way.
 _Append new entries at the bottom (newest at the bottom, like a diary)._
 _Format: date — what you did — outcome/result (and any errors → see Lessons)._
 
+> Short version here; the full round-by-round changelog lives in
+> `docs/history.md`.
+
 - **2026-08-18 (seeded):** End-to-end pipeline complete and reproducible —
   ingestion, bronze loader, dbt silver/gold (227 passing gold build steps),
   Power BI 6+ page report (PBIP/DirectQuery), Dagster + Airflow orchestration,
@@ -104,7 +107,7 @@ _Format: date — what you did — outcome/result (and any errors → see Lesson
 - **2026-08-18 (seeded):** Round 20 of the Power BI report shipped
   (`fact_draft_sequence` + MAIN draft-sequence table + pick/ban lists), then
   the draft-sequence fact was fixed to cover all matches with draft data.
-  Detailed Power BI history lives in `git history (branch archive/report-status-history)` §5w.
+  Full detail in `docs/history.md`.
 
 ---
 
