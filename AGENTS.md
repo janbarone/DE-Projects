@@ -62,6 +62,10 @@ See `readme.txt` (original instructions), `README.md`, and `docs/`.
   Check it is up with `docker ps` before DB/dbt work.
 - `sample_data/` is the committed reproducible dataset (200 matches);
   `data/` is the live scrape (gitignored, 26k+ files — far ahead of bronze).
+- After a patch adds heroes/items, refresh constants before building so dbt
+  referential-integrity tests stay green:
+  `python scripts/run_pipeline.py --refresh-constants --data-dir data` (the
+  orchestrators run a `refresh_constants` / `constants_refreshed` step).
 - Key/ID columns are **text** in silver/gold (Power BI DirectQuery requirement);
   `jsonb` columns are stored as text too. Preserve this convention in new models.
 - New gold models need: the SQL model, `schema.yml` tests, the TMDL table file,

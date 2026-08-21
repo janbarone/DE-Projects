@@ -555,6 +555,7 @@ was never imported into Power BI). See `git history (branch archive/report-statu
 | `fact_matches`        | 4,299 | one row per match | `match_id` |
 | `fact_match_players`  | 42,755 | one row per (match, player) | `(match_id, player_slot)` |
 | `fact_picks_bans`     | 88,804 | one row per (match, draft order) | `(match_id, order_no)` |
+| `fact_draft_sequence` | ~20,490 | one row per (match, draft slot) — wide pick/ban pivot; slot count derived dynamically (grows with bans-per-team) | `(match_id, slot)` |
 | `fact_teamfights`     | 16,944 | one row per (match, teamfight) | `(match_id, teamfight_id)` |
 | `fact_team_matches`   | 8,492  | one row per (match, side) bridge | `(match_id, side)` |
 | `fact_teamfight_players` | 169,440 | one row per (match, teamfight, player) | `(match_id, teamfight_id, player_slot)` |

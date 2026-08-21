@@ -5,6 +5,9 @@
 
 -- One row per (match, draft order): the picks_bans[] array flattened.
 -- `team` (0 = Radiant, 1 = Dire) is the side making the pick/ban.
+-- NOTE: everything here is order-driven (rank by the API's `order` field) and
+-- never assumes a fixed number of picks/bans or a fixed draft phase pattern —
+-- Dota's draft rules change across patches.
 select
     m.payload->>'match_id' as match_id,
     pb.value->>'order' as order_no,

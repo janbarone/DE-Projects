@@ -4,6 +4,7 @@ This is the "thin" shared runner that both orchestrators (Dagster / Airflow)
 and humans call, so the pipeline logic lives in exactly one place.
 
 Steps (default with --backup):
+  0. (optional) python data/_fetch_constants.py --data-dir <data_dir>
   1. python scripts/load_bronze.py --data-dir <data_dir>
   2. dbt build --profiles-dir <profiles_dir> --project-dir transform
   3. pg_dump -> backups/<prefix>_YYYYMMDD_HHMMSS.dump
@@ -11,6 +12,8 @@ Steps (default with --backup):
 Usage:
     python scripts/run_pipeline.py                       # load + dbt
     python scripts/run_pipeline.py --data-dir sample_data
+    python scripts/run_pipeline.py --refresh-constants    # fetch constants first
+    python scripts/run_pipeline.py --only-constants       # constants only
     python scripts/run_pipeline.py --only-load            # ingestion only
     python scripts/run_pipeline.py --only-dbt             # transforms only
     python scripts/run_pipeline.py --backup               # + pg_dump snapshot
@@ -61,6 +64,13 @@ def run(cmd: list[str], cwd: Path | None = None, env: dict | None = None) -> Non
 
 def load_bronze(python: str, data_dir: Path) -> None:
     run([python, str(BASE / "scripts" / "load_bronze.py"), "--data-dir", str(data_dir)], cwd=BASE)
+
+
+def refresh_constants(python: str, data_dir: Path) -> None:
+    """Fetch OpenDota static constants (heroes/items/abilities/...) into the
+    data dir so silver/gold dims stay current when a new patch adds heroes or
+    items (keeps dbt referential-integrity tests green)."""
+    run([python, str(BASE / "data" / "_fetch_constants.py"), "--data-dir", str(data_dir)], cwd=BASE)
 
 
 def dbt_build(dbt: str, profiles_dir: Path, project_dir: Path, full_refresh: bool) -> None:
@@ -143,6 +153,16 @@ def main() -> None:
     ap.add_argument("--only-load", action="store_true", help="run ingestion only, skip dbt")
     ap.add_argument("--only-dbt", action="store_true", help="run dbt only, skip ingestion")
     ap.add_argument(
+        "--refresh-constants",
+        action="store_true",
+        help="fetch OpenDota static constants before loading, so dims stay current",
+    )
+    ap.add_argument(
+        "--only-constants",
+        action="store_true",
+        help="run only the constants fetch, skipping ingestion, dbt and backup",
+    )
+    ap.add_argument(
         "--backup",
         action="store_true",
         help="after dbt, snapshot the database with pg_dump (backups/<prefix>_<ts>.dump)",
@@ -180,7 +200,11 @@ def main() -> None:
     args = ap.parse_args()
 
     backups_dir = Path(args.backups_dir)
+    data_dir = Path(args.data_dir)
 
+    if args.only_constants:
+        refresh_constants(args.python, data_dir)
+        return
     if args.only_backup:
         backup_db(backups_dir, args.backup_prefix, args.backup_docker)
         return
@@ -190,11 +214,12 @@ def main() -> None:
         return
 
     dbt = args.dbt or _find_dbt()
-    data_dir = Path(args.data_dir)
     profiles_dir = Path(args.profiles_dir)
     project_dir = Path(args.project_dir)
 
     if not args.only_dbt:
+        if args.refresh_constants:
+            refresh_constants(args.python, data_dir)
         load_bronze(args.python, data_dir)
     if not args.only_load:
         dbt_build(dbt, profiles_dir, project_dir, args.full_refresh)

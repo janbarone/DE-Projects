@@ -341,3 +341,18 @@ closing the gaps between a "script collection" and a production pipeline:
 - **Logging** — structured JSON logging for `load_bronze.py` / `run_pipeline.py`
   via `data/dota_common.py::configure_logging`.
 - 13 pytest unit tests added (throttle/retry/backoff + loader upsert logic).
+
+**Round 21 (2026-08-21, dynamic draft + hardening):** the draft-sequence model
+no longer assumes 5 bans/team. `fact_draft_sequence` now derives its slot count
+from the data (`max(team_seq)` from `stg_picks_bans`), so the newest matches
+with 7 bans/team (14 total) flow through without code changes; dropped the
+`slot` `accepted_values` and the `seq_in_range` `> 10` cap (the macro now only
+asserts positive integers). Loosened other brittle `accepted_values` lists
+(`primary_attr`, damage `target_category`/`source_category`, `score_bucket`) so
+future rule changes don't fail tests. Wired `--refresh-constants` /
+`--only-constants` into `run_pipeline.py` (+ `_fetch_constants.py --data-dir`)
+and added a `refresh_constants` / `constants_refreshed` step to Airflow and
+Dagster, so dims stay current when a patch adds heroes/items (keeps
+referential-integrity tests green). Swapped the Airflow `dbt_build`
+BashOperator for a dbt-cosmos `DbtBuildOperator` (native `dbt build`, single
+task).

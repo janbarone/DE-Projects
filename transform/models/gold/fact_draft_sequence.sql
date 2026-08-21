@@ -7,11 +7,13 @@
         "create index {{ this.schema }}_fact_ds_slot_idx on {{ this }}(slot)"
     ]) }}
 
--- One row per (match, slot 1-5): each team's pick and ban for that draft
+-- One row per (match, draft slot): each team's pick and ban for that draft
 -- slot, denormalized to hero names + images for DirectQuery rendering.
--- slot = the team's own pick order (1-5) and ban order (1-5), both derived
--- from the global draft order_no. The displayed *_seq columns are continuous
--- 1-10: they count picks and bans across BOTH teams in global draft order.
+-- slot = the team's own pick order and ban order, both derived from the
+-- global draft order_no. The slot count is data-driven (max picks or bans per
+-- team across the data), so rule changes (e.g. bans 5 -> 7 per team) need no
+-- code change. The displayed *_seq columns count picks and bans across BOTH
+-- teams in global draft order (1..N picks, 1..M bans).
 -- Every match with at least one draft event is included; matches with an
 -- incomplete draft just leave the missing slots blank (only 201 matches have
 -- no picks_bans rows at all).
@@ -56,7 +58,7 @@ matches as (
     select distinct match_id from pb
 ),
 slots as (
-    select generate_series(1, 5) as slot
+    select generate_series(1, coalesce((select max(team_seq)::int from pb), 5)) as slot
 ),
 grid as (
     select m.match_id, s.slot

@@ -108,6 +108,11 @@ _Format: date — what you did — outcome/result (and any errors → see Lesson
   (`fact_draft_sequence` + MAIN draft-sequence table + pick/ban lists), then
   the draft-sequence fact was fixed to cover all matches with draft data.
   Full detail in `docs/history.md`.
+- **2026-08-21:** Made the draft sequence dynamic — `fact_draft_sequence` now
+  derives its slot count from the data instead of hardcoding 5, so the new
+  7-bans-per-team matches flow through (see Lessons #9). Also loosened brittle
+  `accepted_values` tests, wired constants-refresh into the pipeline +
+  orchestrators, and swapped the Airflow dbt step to dbt-cosmos.
 
 ---
 
@@ -168,5 +173,15 @@ fix, and a **don't-repeat** reminder. Read this before starting new work.
 - **Fix:** Note the visual's GUID from its `visual.json`, fix the query ref/JSON,
   and don't let Desktop re-save over hand-edited files without diffing.
 - **Don't repeat:** Validate JSON after every edit; diff before re-saving.
+
+**9. Hardcoded draft rule counts (5 bans/team) broke when Dota changed to 7**
+- **Symptom:** Newest matches had 14 bans (7 per team); the draft-sequence
+  pivot silently dropped ban slots 6–7, and the `slot` / `*_seq` tests failed.
+- **Cause:** `generate_series(1, 5)` and `accepted_values [1..5]` / `> 10`
+  hardcoded the old rule.
+- **Fix:** Derive the slot count from the data (`max(team_seq)`), and loosen the
+  pinned tests. See `docs/history.md` (Round 21).
+- **Don't repeat:** Never hardcode game-rule counts (picks, bans, slots, phases);
+  derive them from the data — rules change across patches.
 
 _Keep adding below as new issues come up._

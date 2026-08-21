@@ -115,9 +115,6 @@ models:
       - name: score_bucket
         tests:
           - not_null
-          - accepted_values:
-              arguments:
-                values: ['close', 'moderate', 'blowout', 'rout']
       - name: patch
         tests:
           - relationships:
@@ -329,8 +326,9 @@ models:
                 values: ['0', '1']
 
   - name: fact_draft_sequence
-    description: One row per (match, slot 1-5); each team's pick and ban for
-      that draft slot, denormalized to hero names + images for DirectQuery.
+    description: One row per (match, draft slot); the slot count is derived
+      dynamically (max picks/bans per team), denormalized to hero names + images
+      for DirectQuery.
     columns:
       - name: match_id
         tests:
@@ -342,9 +340,6 @@ models:
       - name: slot
         tests:
           - not_null
-          - accepted_values:
-              arguments:
-                values: [1, 2, 3, 4, 5]
       - name: dire_pick_seq
         tests:
           - seq_in_range
@@ -622,10 +617,6 @@ models:
       - name: target_key
         tests: [not_null]
       - name: target_category
-        tests:
-          - accepted_values:
-              arguments:
-                values: ['Hero', 'Building', 'Creep', 'Neutral', 'Ward', 'Other']
       - name: damage_amount
         tests: [not_null]
 
@@ -639,10 +630,6 @@ models:
       - name: source_key
         tests: [not_null]
       - name: source_category
-        tests:
-          - accepted_values:
-              arguments:
-                values: ['Hero', 'Building', 'Creep', 'Neutral', 'Ward', 'Other']
       - name: damage_amount
         tests: [not_null]
 

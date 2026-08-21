@@ -97,7 +97,7 @@ services:
       AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@airflow-postgres/airflow
       AIRFLOW__CORE__LOAD_EXAMPLES: "false"
       # Pipeline deps (dbt, psycopg, etc.) are installed into the image at boot.
-      _PIP_ADDITIONAL_REQUIREMENTS: "dbt-core~=1.12.0 dbt-postgres~=1.11.0 psycopg[binary]>=3.2 python-dotenv requests"
+      _PIP_ADDITIONAL_REQUIREMENTS: "dbt-core~=1.12.0 dbt-postgres~=1.11.0 astronomer-cosmos>=1.6,<2 psycopg[binary]>=3.2 python-dotenv requests"
       DATABASE_URL: postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@postgres:5432/${POSTGRES_DB:-dota}
       POSTGRES_HOST: postgres
     volumes:
@@ -120,7 +120,7 @@ services:
       AIRFLOW__CORE__EXECUTOR: LocalExecutor
       AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@airflow-postgres/airflow
       AIRFLOW__CORE__LOAD_EXAMPLES: "false"
-      _PIP_ADDITIONAL_REQUIREMENTS: "dbt-core~=1.12.0 dbt-postgres~=1.11.0 psycopg[binary]>=3.2 python-dotenv requests"
+      _PIP_ADDITIONAL_REQUIREMENTS: "dbt-core~=1.12.0 dbt-postgres~=1.11.0 astronomer-cosmos>=1.6,<2 psycopg[binary]>=3.2 python-dotenv requests"
       DATABASE_URL: postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@postgres:5432/${POSTGRES_DB:-dota}
       POSTGRES_HOST: postgres
     volumes:

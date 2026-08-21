@@ -1,25 +1,25 @@
 """Airflow DAG for the DOTA medallion pipeline.
 
-Four tasks wired as a DAG:
-  load_bronze  (ingestion)  ->  dbt_build  (silver + gold + tests)
-                                   |-> dbt_source_freshness  (monitor bronze)
-                                   |-> pg_dump_backup        (backups/)
+Tasks wired as a DAG:
 
-All tasks shell out to the shared `scripts/run_pipeline.py` so the pipeline
-logic is defined once, not duplicated in the orchestrator.
+  refresh_constants -> load_bronze -> dbt_build -> [dbt_source_freshness, pg_dump_backup]
+
+- refresh_constants / load_bronze / freshness / backup shell out to the shared
+  `scripts/run_pipeline.py` so the pipeline logic is defined once.
+- dbt_build is a first-class dbt-cosmos `DbtBuildOperator` (native `dbt build`,
+  single task, using the committed `profiles.yml`).
 
 The backup step streams pg_dump out of the running `dota_postgres` container
 (--backup-docker) because the orchestrator image does not ship a pg_dump
 binary. `backups/` is a repo mount inside the container (/opt/dota/backups),
 so the dump lands on the host like a manual `pg_dump`.
-
-Replace BashOperator with the dbt-cosmos provider for a first-class dbt
-integration if preferred (adds astronomer-cosmos + dbt-postgres to the image).
 """
 from datetime import datetime, timedelta
 
 from airflow import DAG
 from airflow.operators.bash import BashOperator
+from cosmos import ProfileConfig, ProjectConfig
+from cosmos.operators import DbtBuildOperator
 
 default_args = {
     "owner": "data-engineering",
@@ -37,8 +37,16 @@ with DAG(
     start_date=datetime(2026, 1, 1),
     catchup=False,
     max_active_runs=1,
-    tags=["dota", "medallion", "dbt"],
+    tags=["dota", "medallion", "dbt", "cosmos"],
 ) as dag:
+
+    refresh_constants = BashOperator(
+        task_id="refresh_constants",
+        bash_command=(
+            "python /opt/dota/scripts/run_pipeline.py --only-constants "
+            "--data-dir {{ var.value.get('data_dir', 'sample_data') }}"
+        ),
+    )
 
     load_bronze = BashOperator(
         task_id="load_bronze",
@@ -48,12 +56,15 @@ with DAG(
         ),
     )
 
-    dbt_build = BashOperator(
+    dbt_build = DbtBuildOperator(
         task_id="dbt_build",
-        bash_command=(
-            "python /opt/dota/scripts/run_pipeline.py --only-dbt "
-            "--profiles-dir /opt/dota --project-dir /opt/dota/transform"
+        profile_config=ProfileConfig(
+            profile_name="transform",
+            target_name="dev",
+            profiles_yml_filepath="/opt/dota/profiles.yml",
         ),
+        project_config=ProjectConfig(dbt_project_path="/opt/dota/transform"),
+        install_deps=False,
     )
 
     dbt_source_freshness = BashOperator(
@@ -72,4 +83,4 @@ with DAG(
         ),
     )
 
-    load_bronze >> dbt_build >> [dbt_source_freshness, pg_dump_backup]
+    refresh_constants >> load_bronze >> dbt_build >> [dbt_source_freshness, pg_dump_backup]

@@ -10,6 +10,7 @@ import argparse
 import json
 import os
 import sys
+from pathlib import Path
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
@@ -37,12 +38,18 @@ CANDIDATE_KEYS = ["name", "id", "hero_id", "account_id", "match_id", "leagueid",
 def main() -> None:
     parser = argparse.ArgumentParser(description="Fetch OpenDota static constants (append-only).")
     parser.add_argument("--force", action="store_true", help="delete existing files and re-fetch everything")
+    parser.add_argument(
+        "--data-dir",
+        default=str(DATA_DIR),
+        help="directory to write constants into (default: the data/ dir this script lives in)",
+    )
     args = parser.parse_args()
 
+    constants_dir = Path(args.data_dir) / "constants"
     ts = timestamp_fetched()
 
     for resource in RESOURCES:
-        file = DATA_DIR / "constants" / f"{resource}.json"
+        file = constants_dir / f"{resource}.json"
         try:
             if args.force and file.exists():
                 file.unlink()

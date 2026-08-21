@@ -1,8 +1,9 @@
 """Dagster definitions for the DOTA medallion pipeline.
 
-Four assets:
-  bronze_loaded         ->  python scripts/run_pipeline.py --only-load
-  dbt_built             ->  python scripts/run_pipeline.py --only-dbt   (deps on bronze_loaded)
+Five assets:
+  constants_refreshed   ->  python scripts/run_pipeline.py --only-constants
+  bronze_loaded         ->  python scripts/run_pipeline.py --only-load   (deps on constants_refreshed)
+  dbt_built             ->  python scripts/run_pipeline.py --only-dbt    (deps on bronze_loaded)
   source_freshness      ->  python scripts/run_pipeline.py --only-freshness (deps on dbt_built)
   db_backed_up          ->  python scripts/run_pipeline.py --only-backup (deps on dbt_built)
 
@@ -35,7 +36,12 @@ def _run(context: AssetExecutionContext, *args: str) -> None:
         raise Exception(f"pipeline step failed (exit {result.returncode}): {' '.join(cmd)}")
 
 
-@asset(description="Load raw JSON (sample or live scrape) into PostgreSQL bronze.")
+@asset(description="Refresh OpenDota static constants (heroes/items/...) into the data dir.")
+def constants_refreshed(context: AssetExecutionContext) -> None:
+    _run(context, "--only-constants", "--data-dir", DATA_DIR)
+
+
+@asset(description="Load raw JSON (sample or live scrape) into PostgreSQL bronze.", deps=["constants_refreshed"])
 def bronze_loaded(context: AssetExecutionContext) -> None:
     _run(context, "--only-load", "--data-dir", DATA_DIR)
 
@@ -66,7 +72,7 @@ daily_job = define_asset_job("daily_medallion_refresh", selection="*")
 daily_schedule = ScheduleDefinition(job=daily_job, cron_schedule="0 3 * * *")
 
 defs = Definitions(
-    assets=[bronze_loaded, dbt_built, source_freshness, db_backed_up],
+    assets=[constants_refreshed, bronze_loaded, dbt_built, source_freshness, db_backed_up],
     jobs=[daily_job],
     schedules=[daily_schedule],
 )

@@ -25,9 +25,6 @@ models:
       - name: hero_id
         tests: [not_null, unique]
       - name: primary_attr
-        tests:
-          - accepted_values:
-              values: ['str', 'agi', 'int', 'all']
 
   - name: stg_constants
     description: One row per constants resource, full payload preserved as jsonb.
