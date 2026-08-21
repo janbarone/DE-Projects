@@ -19,9 +19,11 @@ jobs:
       - name: Ruff (Python)
         run: ruff check .
       - name: SQLFluff (dbt SQL)
-        # sqlfluff's dbt templater needs the dbt adapter to resolve ref()/source()
+        # sqlfluff's dbt templater needs the sqlfluff-templater-dbt plugin
+        # (separate package since sqlfluff 3.x) + dbt itself from requirements.txt.
         run: |
           pip install -r requirements.txt
+          pip install "sqlfluff-templater-dbt>=3.0"
           sqlfluff lint transform/models --dialect postgres
 
   unit-test:
@@ -58,6 +60,7 @@ jobs:
     env:
       DATABASE_URL: postgresql://postgres:postgres@localhost:5432/dota
       POSTGRES_HOST: localhost
+      PGPASSWORD: postgres
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5

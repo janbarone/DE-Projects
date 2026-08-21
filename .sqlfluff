@@ -14,7 +14,7 @@ profile = transform
 target = dev
 
 [sqlfluff:rules:capitalisation.keywords]
-capitalisation_policy = upper
+capitalisation_policy = lower
 
 [sqlfluff:rules:capitalisation.identifiers]
 extended_capitalisation_policy = lower
