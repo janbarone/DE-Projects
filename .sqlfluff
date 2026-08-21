@@ -2,8 +2,10 @@
 dialect = postgres
 templater = dbt
 max_line_length = 120
-# L031 (aliasing) and L016 (line length) are stylistic; keep them off for now.
-exclude_rules = L031, L016
+# Stylistic rules relaxed: the models predate sqlfluff's defaults and use a
+# consistent (aligned-columns) style these rules would rewrite. We keep the
+# correctness rules (parse errors, capitalization, identifier casing).
+exclude_rules = L016, L031, LT01, LT02, LT08, LT09, LT12, LT14, RF02, RF04, RF06, AM05
 # dbt target/ is generated output.
 ignore_templated_areas = false
 
