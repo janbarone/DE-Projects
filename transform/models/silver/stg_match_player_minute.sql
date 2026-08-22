@@ -28,10 +28,10 @@ select
     case when (p.value->>'player_slot')::int < 128 then 'Radiant' else 'Dire' end as side,
     s.elem::numeric as time_sec,
     floor(s.elem::numeric / 60)::int as minute,
-    (p.value->'gold_t'->(s.ord - 1))::int   as gold,
-    (p.value->'xp_t'->(s.ord - 1))::int     as xp,
-    (p.value->'lh_t'->(s.ord - 1))::int     as last_hits,
-    (p.value->'dn_t'->(s.ord - 1))::int     as denies
+    (p.value->'gold_t'->((s.ord - 1)::int))::int   as gold,
+    (p.value->'xp_t'->((s.ord - 1)::int))::int     as xp,
+    (p.value->'lh_t'->((s.ord - 1)::int))::int     as last_hits,
+    (p.value->'dn_t'->((s.ord - 1)::int))::int     as denies
 from new_matches m
 cross join lateral jsonb_array_elements(m.payload->'players') as p
 cross join lateral jsonb_array_elements(p.value->'times') with ordinality as s(elem, ord)
