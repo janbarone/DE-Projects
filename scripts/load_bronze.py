@@ -57,16 +57,33 @@ def load_json(path: Path):
     return json.loads(path.read_text(encoding="utf-8"))
 
 
-def load_group(cur, conn, pattern: Path, table, key, one_per_file, commit_every=200):
-    """Upsert every matching file into the given bronze table. Returns record count."""
+def load_group(cur, conn, pattern: Path, table, key, one_per_file,
+               skip_existing=None, commit_every=200):
+    """Upsert every matching file into the given bronze table. Returns record count.
+
+    When `skip_existing` is a set of keys already present, files whose key is in
+    that set are skipped without reading them (matches are immutable, so this is
+    safe and makes repeat loads fast)."""
     count = 0
+    skipped = 0
     files = sorted(pattern.parent.glob(pattern.name))
     if not files:
         logger.warning("no files for pattern=%s table=%s", pattern, table)
         return 0
 
+    total = len(files)
     upsert_sql = UPSERT_SQL.format(table=table, key=key)
     for i, f in enumerate(files, 1):
+        if i % 500 == 0 or i == total:
+            logger.info("progress table=%s processed=%s/%s inserted=%s skipped=%s",
+                        table, i, total, count, skipped)
+        if skip_existing is not None:
+            try:
+                if int(f.stem) in skip_existing:
+                    skipped += 1
+                    continue
+            except (TypeError, ValueError):
+                pass
         data = load_json(f)
         if one_per_file:
             # One raw doc per file -> payload is the whole file value (dict or
@@ -90,7 +107,8 @@ def load_group(cur, conn, pattern: Path, table, key, one_per_file, commit_every=
                 count += 1
         if one_per_file and i % commit_every == 0:
             conn.commit()  # commit periodically so large groups don't roll back
-    logger.info("loaded table=%s rows=%s files=%s", table, count, len(files))
+    logger.info("loaded table=%s rows=%s files=%s skipped=%s",
+                table, count, total, skipped)
     return count
 
 
@@ -116,10 +134,22 @@ def main() -> None:
 
     logger.info("loading bronze from %s", data_dir)
     with psycopg.connect(url) as conn, conn.cursor() as cur:
+        # Snapshot existing match ids so already-loaded match files can be
+        # skipped (matches are immutable, so this is safe and much faster).
+        existing_matches = set()
+        try:
+            cur.execute("select match_id from bronze.matches")
+            existing_matches = {int(row[0]) for row in cur.fetchall()}
+        except Exception:
+            existing_matches = set()
+        logger.info("existing bronze matches=%s", len(existing_matches))
+
         totals = {}
         for subpath, table, key, one_per_file in MAP:
             pattern = data_dir / subpath
-            totals[table] = load_group(cur, conn, pattern, table, key, one_per_file)
+            skip = existing_matches if table == "bronze.matches" else None
+            totals[table] = load_group(cur, conn, pattern, table, key,
+                                       one_per_file, skip)
             conn.commit()  # persist each group so partial runs don't roll back
         logger.info("bronze load complete totals=%s", totals)
 
