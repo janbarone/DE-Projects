@@ -122,6 +122,10 @@ _Format: date — what you did — outcome/result (and any errors → see Lesson
 - **2026-08-21:** TI auto-discovery added — The International leagues are now
   found by name (`The International YYYY`) instead of a hand-maintained list, so
   new TIs are picked up automatically (see `docs/history.md` Round 24).
+- **2026-08-21/22:** Got CI fully green (lint + pytest + full dbt build) and
+  consolidated the repo on `main`. Added `shortcuts/` launchers for the routine
+  pipeline operations, then ran a full `--full-refresh` rebuild — green
+  (315 PASS / 0 ERR). See `docs/history.md` Round 25.
 
 ---
 

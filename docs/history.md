@@ -381,3 +381,19 @@ the regex misses ("The International 10" = 11625, and the generic 16899
 catch-all). This auto-excludes the qualifiers/open-qualifiers/practice/fake
 "International" leagues, and new TIs (e.g. 2027+) are picked up with zero manual
 changes. `all_league_ids()` and the `_fetch_league_matches.py` helper both use it.
+
+**Round 25 (2026-08-21/22, CI green + launchers):** got GitHub Actions CI
+working end-to-end. The lint job was fixed by installing
+`sqlfluff-templater-dbt` (sqlfluff 3.x moved the dbt templater out of core),
+adding a Postgres service (the templater compiles against a live DB), aligning
+keyword capitalisation to `lower` (the models are lowercase), and relaxing the
+layout/aliasing/reference style rules to match the existing hand-formatted
+models. The dbt-build job was fixed by setting `PGPASSWORD` for the `psql` init
+step. All three jobs now pass (lint + pytest + full dbt build on sample_data).
+Also consolidated the repo on `main` (deleted the stale `master`, set `main` as
+the GitHub default branch) and added `shortcuts/` launchers —
+`DOTA_Pipeline_Launcher.bat` (double-click menu) and `dota_pipeline_launcher.py`
+— covering the 9 routine operations (incremental, full refresh, scrape,
+constants, full pipeline, tests, backup, docker, Power BI). A full
+`--full-refresh` rebuild then completed green (54 min, 315 PASS / 0 ERR),
+confirming the dynamic draft-slot and loosened-tests changes end to end.
