@@ -13,7 +13,7 @@ with new_matches as (
     select payload, loaded_at
     from {{ source('bronze', 'matches') }}
     where payload->>'match_id' is not null
-      and payload->>'match_id' not in (select match_id from {{ this }})
+      and payload->>'match_id' not in (select distinct match_id from {{ this }})
 )
 {% else %}
 with new_matches as (
