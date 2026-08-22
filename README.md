@@ -54,7 +54,7 @@ docker compose up -d                                              # Postgres
 .\.venv\Scripts\python.exe scripts\run_pipeline.py --data-dir sample_data
 ```
 
-Then open `.pbip/dota pipeline.pbip` in Power BI Desktop (with Docker running)
+Then open [`.pbip/dota pipeline.pbip`](.pbip/dota%20pipeline.pbip) in Power BI Desktop (with Docker running)
 to see the report.
 
 ## What's done
@@ -65,27 +65,25 @@ to see the report.
 - **Power BI** — multi-page report on the gold layer (DirectQuery)
 - **Orchestration** — Dagster *and* Airflow over one shared runner
 - **CI/CD** — lint + pytest + full `dbt build` on every push
-- **Reproducibility** — committed 200-match sample + pinned deps + portable `profiles.yml`
+- **Reproducibility** — committed 200-match sample + pinned deps + portable [`profiles.yml`](profiles.yml)
 - **Migrations** — Alembic for the bronze schema
 
 ## What's next
 
 - Final visual pass over the report in Power BI Desktop.
 - Backfill the live database with the remaining scraped match files.
-- Schedule the scrapers so new matches land automatically (the orchestrators currently run against the committed `sample_data/`).
+- Schedule the scrapers so new matches land automatically (the orchestrators currently run against the committed [`sample_data/`](sample_data/)).
 
 ## Project layout
 
-```
-data/            scrapers + raw JSON (live scrape is gitignored)
-scripts/         load_bronze.py, run_pipeline.py, make_sample.py
-transform/       dbt project (silver + gold models)
-orchestration/   Dagster + Airflow definitions
-.pbip/           Power BI report + semantic model (PBIP/TMDL)
-sample_data/     committed 200-match reproducible dataset
-db/              init SQL + Alembic migrations
-tests/           pytest
-```
+- [`data/`](data/) — scrapers + raw JSON (live scrape is gitignored)
+- [`scripts/`](scripts/) — [`load_bronze.py`](scripts/load_bronze.py), [`run_pipeline.py`](scripts/run_pipeline.py), [`make_sample.py`](scripts/make_sample.py)
+- [`transform/`](transform/) — dbt project (silver + gold models)
+- [`orchestration/`](orchestration/) — Dagster + Airflow definitions
+- [`.pbip/`](.pbip/) — Power BI report + semantic model (PBIP/TMDL)
+- [`sample_data/`](sample_data/) — committed 200-match reproducible dataset
+- [`db/`](db/) — init SQL + Alembic migrations
+- [`tests/`](tests/) — pytest
 
 ## Screenshots
 
@@ -95,5 +93,5 @@ tests/           pytest
 
 ## Documentation
 
-- **`docs/data_model.md`** — silver and gold schema, table inventory, and relationships
-- **`docs/power_bi_setup.md`** — how the Power BI report and semantic model are wired
+- **[`docs/data_model.md`](docs/data_model.md)** — silver and gold schema, table inventory, and relationships
+- **[`docs/power_bi_setup.md`](docs/power_bi_setup.md)** — how the Power BI report and semantic model are wired

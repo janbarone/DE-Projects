@@ -40,7 +40,7 @@ Power BI → **Model view → Manage relationships → New**. For each relations
 > (timeline-era tables, the per-minute progression facts `fact_match_player_minute`
 > / `_skills` / `_item_purchases`, round-10 damage/runes facts, round-12/13
 > `fact_match_team_minute` / `fact_hero_side` / `fact_hero_matchup_stats`) follow
-> the same many-to-one pattern and are enumerated in `docs/data_model.md`
+> the same many-to-one pattern and are enumerated in [`docs/data_model.md`](data_model.md)
 > §"Gold relationship table". Tables pruned in Round 16
 > (`fact_match_player_kills`, `fact_match_timeline`(+_events),
 > `fact_team_compositions`, `fact_teamfight_item_uses`, `fact_teamfight_kills`,
@@ -302,7 +302,7 @@ HeroWinRate = DIVIDE([HeroWins], [HeroPicks])
 per-hero value that cannot change with any filter. Use it only as a labeled
 "global" reference, never as the main win-rate measure.
 
-Full column reference, types, and nuance notes: see `docs/data_model.md`.
+Full column reference, types, and nuance notes: see [`docs/data_model.md`](data_model.md).
 
 ## 8. DirectQuery + jsonb columns → error 10682 (fixed 2026-08-04)
 

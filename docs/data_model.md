@@ -894,7 +894,7 @@ responsibility:
   the data is clean. Silver is a faithful, queryable copy of what happened.
   **One exception:** any nested payload that will travel to gold must be stored
   as **text** (jsonb cast to text), because jsonb columns break Power BI
-  DirectQuery query folding (error 10682 - see `docs/power_bi_setup.md` §8).
+  DirectQuery query folding (error 10682 - see [`docs/power_bi_setup.md`](power_bi_setup.md) §8).
   Parsing back with `::jsonb` happens in downstream SQL where needed.
 - **Gold (presentation):** shaped *for the BI tool*. Star schema, dims/facts,
   decode tables, and **detail / bridge tables** materialized specifically so
