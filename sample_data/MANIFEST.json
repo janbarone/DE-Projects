@@ -256,5 +256,5 @@
     "constants\\skillshots.json",
     "constants\\xp_level.json"
   ],
-  "source": "C:\\Users\\Jan\\Desktop\\PROJECTS\\DOTA Pipeline\\data"
+  "source": "data"
 }

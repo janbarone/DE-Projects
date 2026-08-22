@@ -87,10 +87,13 @@ db/              init SQL + Alembic migrations
 tests/           pytest
 ```
 
+## Screenshots
+
+![Power BI dashboard](screenshots/dashboard-1.png)
+![Power BI dashboard](screenshots/dashboard-2.png)
+![Power BI dashboard](screenshots/dashboard-3.png)
+
 ## Documentation
 
-- **`docs/journal.md`** — the human story: where we are, how we built it, and lessons learned
-- **`docs/history.md`** — the full round-by-round changelog
-- **`docs/data_model.md`** — gold schema and relationships
-- **`docs/power_bi_setup.md`** — how the Power BI report/model is wired
-- **`docs/audit_2026-08-18.md`** — prioritized backlog (P0–P4)
+- **`docs/data_model.md`** — silver and gold schema, table inventory, and relationships
+- **`docs/power_bi_setup.md`** — how the Power BI report and semantic model are wired

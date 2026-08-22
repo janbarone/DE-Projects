@@ -292,7 +292,7 @@ def main() -> None:
         "coverage": report,
         "match_ids": [m["match_id"] for m in selected],
         "reference_files": copied_ref,
-        "source": str(source),
+        "source": str(source.relative_to(BASE)) if source.is_absolute() and source.is_relative_to(BASE) else str(source),
     }
     (target / "MANIFEST.json").write_text(json.dumps(manifest, indent=2), encoding="utf-8")
 

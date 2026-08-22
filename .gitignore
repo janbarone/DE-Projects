@@ -33,3 +33,20 @@ transform/.user.yml
 # OS
 .DS_Store
 Thumbs.db
+
+# Local working notes / scaffolding (kept out of the public repo)
+readme.txt
+AGENTS.md
+docs/journal.md
+docs/history.md
+docs/audit_2026-08-18.md
+docs/report_improvements.md
+docs/dbt_guide.txt
+docs/leagues_priority.csv
+docs/schema_inventory.csv
+docs/gold_relationships.csv
+docs/gold_connections.xlsx
+transform/README.md
+
+# Unusable lock file (UTF-16 BOM, referenced nowhere)
+requirements.lock
