@@ -131,6 +131,11 @@ _Format: date — what you did — outcome/result (and any errors → see Lesson
   `select distinct` + a pre-filter CTE in all 12 silver models (Lesson #10).
   Also added progress logging to load_bronze and step timing to run_pipeline.
   The full incremental build is now running green on 4 threads.
+- **2026-08-22:** Optimized the slow build — measured per-model timings and fixed
+  the biggest culprits: `fact_matches` (6 correlated subqueries -> joins, 39 min
+  -> 18s), `stg_match_player_minute` (5-way join -> array indexing), dropped the
+  final `order by` from 5 heavy facts, and tuned Postgres (2GB buffers, 256MB
+  work_mem, parallel workers). Full build now ~1h vs 3.5h (see Round 27).
 
 ---
 
@@ -215,5 +220,13 @@ fix, and a **don't-repeat** reminder. Read this before starting new work.
 - **Don't repeat:** anti-joining against a fact table needs `distinct` (or a
   unique dim), and always check the subquery's cardinality — a streaming query
   can still OOM through a bloated subquery.
+
+**11. `jsonb -> bigint` — array index must be `int`, not `bigint`**
+- **Symptom:** CI dbt build failed with `operator does not exist: jsonb -> bigint`.
+- **Cause:** `with ordinality` returns a bigint counter; the `jsonb -> <index>`
+  operator only accepts an integer index.
+- **Fix:** cast the ordinal to int: `->((s.ord - 1)::int)`.
+- **Don't repeat:** when indexing jsonb arrays via `with ordinality`, always cast
+  the ordinal to `int`.
 
 _Keep adding below as new issues come up._

@@ -408,3 +408,16 @@ Fixed with `select distinct match_id` in all 12 silver incrementals, plus a
 expansion. Memory dropped from OOM-at-9.7GB to ~1-2 GiB/query, so `--threads 4`
 is now safe (~21% memory, ~400% CPU). Also added load_bronze progress
 (skip-already-loaded + every-500-files) and run_pipeline step timing.
+
+**Round 27 (2026-08-22, build performance):** the full incremental build took
+3h26m; measured per-model timings and fixed the biggest culprits. Root causes:
+(1) Postgres ran defaults (work_mem 4MB, shared_buffers 128MB, no parallel
+queries) so every sort/aggregation spilled to disk; (2) `fact_matches` used 6
+correlated subqueries (39 min for only 29.5k rows); (3) `stg_match_player_minute`
+did a 5-way lateral positional join (66 min); (4) 5 heavy gold facts had an
+unnecessary final `order by`. Fixes: bumped Postgres to shared_buffers=2GB,
+work_mem=256MB, maintenance_work_mem=512MB, max_parallel_workers_per_gather=4,
+parallel_setup_cost=100; rewrote `fact_matches` as 2 grouped CTEs (39 min ->
+~18s); rewrote `stg_match_player_minute` to index the parallel arrays directly
+(casting the ordinality counter to int); dropped the final `order by`. Full
+build now estimated ~1h-1h15m instead of 3h26m.
