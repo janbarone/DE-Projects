@@ -397,3 +397,14 @@ the GitHub default branch) and added `shortcuts/` launchers —
 constants, full pipeline, tests, backup, docker, Power BI). A full
 `--full-refresh` rebuild then completed green (54 min, 315 PASS / 0 ERR),
 confirming the dynamic draft-slot and loosened-tests changes end to end.
+
+**Round 26 (2026-08-22, OOM root cause fixed):** Postgres was OOM-killed
+(signal 9) during silver incremental builds once bronze grew to ~29.5k matches.
+Root cause: the incremental `NOT IN (select match_id from <this>)` anti-join
+materialized every duplicate match_id (e.g. 1.35M rows for
+stg_match_player_damage instead of ~4.3k distinct), exhausting the Docker VM.
+Fixed with `select distinct match_id` in all 12 silver incrementals, plus a
+`new_matches` CTE that pre-filters to unloaded matches before the JSONB lateral
+expansion. Memory dropped from OOM-at-9.7GB to ~1-2 GiB/query, so `--threads 4`
+is now safe (~21% memory, ~400% CPU). Also added load_bronze progress
+(skip-already-loaded + every-500-files) and run_pipeline step timing.

@@ -53,9 +53,11 @@ See `readme.txt` (original instructions), `README.md`, and `docs/`.
 
 - **Power BI Desktop must be closed** while editing `.pbip` files, otherwise it
   overwrites the JSON/TMDL on save.
-- **Heavy dbt builds may OOM-kill Postgres on this machine — run them with
-  `--threads 1`** (`dbt build --profiles-dir . --project-dir transform
-  --threads 1`).
+- **Heavy dbt builds used to OOM-kill Postgres** — root cause was the silver
+  incremental `NOT IN (select match_id ...)` anti-joins materializing duplicate
+  match_ids (fixed with `select distinct match_id`; see journal Lesson #10).
+  `--threads 4` is now safe (`dbt build --profiles-dir . --project-dir
+  transform --threads 4`).
 - dbt profile is committed at `profiles.yml` (repo root); always invoke with
   `--profiles-dir . --project-dir transform`.
 - Postgres runs in Docker (`dota_postgres`, db `dota`, user/pass `postgres`).

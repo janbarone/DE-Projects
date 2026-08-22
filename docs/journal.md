@@ -126,6 +126,11 @@ _Format: date — what you did — outcome/result (and any errors → see Lesson
   consolidated the repo on `main`. Added `shortcuts/` launchers for the routine
   pipeline operations, then ran a full `--full-refresh` rebuild — green
   (315 PASS / 0 ERR). See `docs/history.md` Round 25.
+- **2026-08-22:** Fixed the Postgres OOM crashes during incremental builds —
+  root cause was `NOT IN` anti-joins materializing duplicate match_ids; added
+  `select distinct` + a pre-filter CTE in all 12 silver models (Lesson #10).
+  Also added progress logging to load_bronze and step timing to run_pipeline.
+  The full incremental build is now running green on 4 threads.
 
 ---
 
@@ -196,5 +201,19 @@ fix, and a **don't-repeat** reminder. Read this before starting new work.
   pinned tests. See `docs/history.md` (Round 21).
 - **Don't repeat:** Never hardcode game-rule counts (picks, bans, slots, phases);
   derive them from the data — rules change across patches.
+
+**10. Incremental `NOT IN` anti-join OOM-killed Postgres (signal 9)**
+- **Symptom:** dbt build crashed Postgres mid-silver-load ("server closed the
+  connection unexpectedly", then "recovery mode"); Docker logs showed
+  "server process terminated by signal 9: Killed" (the Linux OOM killer).
+- **Cause:** `where match_id not in (select match_id from <this>)` materialized
+  every duplicate match_id (1.35M rows for a table with only ~4.3k distinct
+  matches), exhausting the Docker VM's memory.
+- **Fix:** `select distinct match_id` in the subquery (1.35M -> 4.3k rows), plus
+  pre-filtering new matches into a `new_matches` CTE before the JSONB lateral
+  expansion. Memory dropped from OOM-at-9.7GB to ~1-2 GiB.
+- **Don't repeat:** anti-joining against a fact table needs `distinct` (or a
+  unique dim), and always check the subquery's cardinality — a streaming query
+  can still OOM through a bloated subquery.
 
 _Keep adding below as new issues come up._
