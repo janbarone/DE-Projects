@@ -26,6 +26,7 @@ import os
 import shutil
 import subprocess
 import sys
+import time
 from pathlib import Path
 
 BASE = Path(__file__).resolve().parent.parent
@@ -60,6 +61,15 @@ def run(cmd: list[str], cwd: Path | None = None, env: dict | None = None) -> Non
     proc = subprocess.run([str(c) for c in cmd], cwd=str(cwd) if cwd else None, env=full_env)
     if proc.returncode != 0:
         raise SystemExit(f"command failed (exit {proc.returncode}): {' '.join(map(str, cmd))}")
+
+
+def step_start(msg: str) -> float:
+    logger.info("step start: %s", msg)
+    return time.time()
+
+
+def step_done(msg: str, start: float) -> None:
+    logger.info("step done: %s elapsed=%.1fs", msg, time.time() - start)
 
 
 def load_bronze(python: str, data_dir: Path) -> None:
@@ -219,14 +229,24 @@ def main() -> None:
 
     if not args.only_dbt:
         if args.refresh_constants:
+            t0 = step_start("refresh constants")
             refresh_constants(args.python, data_dir)
+            step_done("refresh constants", t0)
+        t0 = step_start("load bronze")
         load_bronze(args.python, data_dir)
+        step_done("load bronze", t0)
     if not args.only_load:
+        t0 = step_start("dbt build")
         dbt_build(dbt, profiles_dir, project_dir, args.full_refresh)
+        step_done("dbt build", t0)
     if args.freshness:
+        t0 = step_start("dbt source freshness")
         dbt_source_freshness(dbt, profiles_dir, project_dir)
+        step_done("dbt source freshness", t0)
     if args.backup:
+        t0 = step_start("backup")
         backup_db(backups_dir, args.backup_prefix, args.backup_docker)
+        step_done("backup", t0)
 
     logger.info("pipeline complete data_dir=%s", data_dir)
 

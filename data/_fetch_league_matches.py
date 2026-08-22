@@ -149,17 +149,19 @@ def main() -> None:
     limit_left = args.limit  # None = unlimited
     quota_stopped = False
 
+    total = len(league_ids)
     try:
-        for lid in league_ids:
+        for idx, lid in enumerate(league_ids, 1):
             # --- local skip: league already fully drained on a previous run ---
             if not args.redrain and is_drained(lid):
-                print(f"league {lid}: already drained, skipping discovery")
+                print(f"league {idx}/{total} id={lid}: already drained, skipping discovery")
                 continue
             # --- quota guard before spending a discovery call ---
             q0 = quota_remaining()
             if q0["day"] is not None and int(q0["day"]) <= DAY_STOP_AT:
                 raise QuotaStop(q0["day"])
             # --- discovery: match_ids for this league ---
+            print(f"league {idx}/{total} id={lid}: discovering match ids...")
             mids, status, detail = discover_league(lid)
             if status == "rate_limited":
                 raise QuotaStop("rate limited (daily quota likely spent)")
@@ -176,7 +178,7 @@ def main() -> None:
 
             if args.limit is not None and limit_left is not None:
                 missing = missing[: max(limit_left, 0)]
-            print(f"league {lid}: {len(missing)} to fetch, {league_skipped} already present")
+            print(f"league {idx}/{total} id={lid}: {len(missing)} to fetch, {league_skipped} already present")
             if not missing:
                 mark_drained(lid)
 

@@ -42,6 +42,7 @@ log_msg(f"proPlayers: +{len(added)}")
 all_teams = []
 page = 0
 while True:
+    print(f"teams     : fetching page {page}...")
     recs = load_json_array(http_get(f"{BASE}/teams?page={page}"))
     if not recs:
         break
