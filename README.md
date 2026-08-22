@@ -61,7 +61,7 @@ to see the report.
 
 - **Ingestion** — throttled, quota-aware, resumable OpenDota scrapers
 - **Bronze** — raw `jsonb` + `loaded_at` stamp, idempotent loader
-- **Silver / Gold** — dbt: 32 gold models, clean star schema, referential integrity, freshness checks
+- **Silver / Gold** — dbt: 33 gold models, clean star schema, referential integrity, freshness checks
 - **Power BI** — multi-page report on the gold layer (DirectQuery)
 - **Orchestration** — Dagster *and* Airflow over one shared runner
 - **CI/CD** — lint + pytest + full `dbt build` on every push
@@ -70,9 +70,9 @@ to see the report.
 
 ## What's next
 
-1. Final visual verification of the latest report round in Power BI Desktop.
-2. Backfill the live DB (the scrape has ~15k match files vs ~4,300 loaded).
-3. Optionally swap Airflow's `BashOperator` for the dbt-cosmos provider.
+- Final visual pass over the report in Power BI Desktop.
+- Backfill the live database with the remaining scraped match files.
+- Schedule the scrapers so new matches land automatically (the orchestrators currently run against the committed `sample_data/`).
 
 ## Project layout
 
