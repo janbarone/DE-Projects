@@ -32,4 +32,3 @@ from {{ ref('stg_match_player_item_purchases') }} s
 left join {{ ref('dim_item') }} di on di.item_internal_name = s.item_internal_name
 left join {{ ref('dim_player') }} dp on dp.account_id = s.account_id
 left join {{ ref('dim_hero') }} dh on dh.hero_id = s.hero_id
-order by s.match_id, s.player_slot, s.purchase_index

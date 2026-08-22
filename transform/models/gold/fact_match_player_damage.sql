@@ -44,4 +44,3 @@ from {{ ref('stg_match_player_damage') }} s
 left join {{ ref('dim_hero') }} vh on vh.hero_name = s.target_key
 left join {{ ref('dim_player') }} dp on dp.account_id = s.account_id
 left join {{ ref('dim_hero') }} dh on dh.hero_id = s.hero_id
-order by s.match_id, s.player_slot, s.target_key

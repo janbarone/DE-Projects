@@ -134,4 +134,3 @@ select
     player_name,
     hero_localized_name
 from decoded
-order by match_id, player_slot, upgrade_index

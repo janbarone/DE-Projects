@@ -23,9 +23,31 @@
 
 -- One row per match, the hub fact. Game mode / lobby / region / team / league
 -- keys are exposed as foreign keys to the gold dimensions.
--- radiant_team_name / dire_team_name and radiant_heroes / dire_heroes are
--- precomputed strings (materialized) so the Match Details table renders
--- correct per-row values in DirectQuery without cross-table measure context.
+-- radiant/dire team name + logo and hero lists are precomputed in two grouped
+-- CTEs (no correlated subqueries) so the per-row lookup cost stays constant as
+-- the match count grows.
+with team_info as (
+    select
+        ftm.match_id,
+        max(case when ftm.side = 'Radiant' then t.team_name end) as radiant_team_name,
+        max(case when ftm.side = 'Dire'    then t.team_name end) as dire_team_name,
+        max(case when ftm.side = 'Radiant' then t.logo_url  end) as radiant_team_logo,
+        max(case when ftm.side = 'Dire'    then t.logo_url  end) as dire_team_logo
+    from {{ ref('fact_team_matches') }} ftm
+    join {{ ref('dim_team') }} t on t.team_id = ftm.team_id
+    group by ftm.match_id
+),
+heroes as (
+    select
+        mp.match_id,
+        string_agg(coalesce(h.localized_name, 'Unknown'), ', ' order by mp.player_slot::int)
+            filter (where mp.team_number = '0') as radiant_heroes,
+        string_agg(coalesce(h.localized_name, 'Unknown'), ', ' order by mp.player_slot::int)
+            filter (where mp.team_number = '1') as dire_heroes
+    from {{ ref('stg_match_players') }} mp
+    join {{ ref('stg_heroes') }} h on h.hero_id = mp.hero_id
+    group by mp.match_id
+)
 select
     sm.match_id,
     sm.radiant_win,
@@ -61,46 +83,12 @@ select
         when 'dire' then 'Dire'
         else 'Draw'
     end as winner_name,
-    (
-        select t.team_name
-        from {{ ref('fact_team_matches') }} ftm
-        join {{ ref('dim_team') }} t on t.team_id = ftm.team_id
-        where ftm.match_id = sm.match_id
-          and ftm.side = 'Radiant'
-    ) as radiant_team_name,
-    (
-        select t.team_name
-        from {{ ref('fact_team_matches') }} ftm
-        join {{ ref('dim_team') }} t on t.team_id = ftm.team_id
-        where ftm.match_id = sm.match_id
-          and ftm.side = 'Dire'
-    ) as dire_team_name,
-    (
-        select t.logo_url
-        from {{ ref('fact_team_matches') }} ftm
-        join {{ ref('dim_team') }} t on t.team_id = ftm.team_id
-        where ftm.match_id = sm.match_id
-          and ftm.side = 'Radiant'
-    ) as radiant_team_logo,
-    (
-        select t.logo_url
-        from {{ ref('fact_team_matches') }} ftm
-        join {{ ref('dim_team') }} t on t.team_id = ftm.team_id
-        where ftm.match_id = sm.match_id
-          and ftm.side = 'Dire'
-    ) as dire_team_logo,
-    (
-        select string_agg(coalesce(h.localized_name, 'Unknown'), ', ' order by mp.player_slot::int)
-        from {{ ref('stg_match_players') }} mp
-        join {{ ref('stg_heroes') }} h on h.hero_id = mp.hero_id
-        where mp.match_id = sm.match_id
-          and mp.team_number = '0'
-    ) as radiant_heroes,
-    (
-        select string_agg(coalesce(h.localized_name, 'Unknown'), ', ' order by mp.player_slot::int)
-        from {{ ref('stg_match_players') }} mp
-        join {{ ref('stg_heroes') }} h on h.hero_id = mp.hero_id
-        where mp.match_id = sm.match_id
-          and mp.team_number = '1'
-    ) as dire_heroes
+    ti.radiant_team_name,
+    ti.dire_team_name,
+    ti.radiant_team_logo,
+    ti.dire_team_logo,
+    hr.radiant_heroes,
+    hr.dire_heroes
 from {{ ref('stg_matches') }} sm
+left join team_info ti on ti.match_id = sm.match_id
+left join heroes hr on hr.match_id = sm.match_id
