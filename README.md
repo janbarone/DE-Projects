@@ -41,6 +41,10 @@ about 14 minutes on a 16 GB laptop and produces a 1 GB database. The full 29k
 scrape is kept only as an archive. Loading all of it is not necessary for the
 portfolio and is too heavy for a 6 GB Docker VM.
 
+The 1,500-match `demo_data/` is generated from the local `data/` scrape. A fresh
+clone only has the committed 200-match `sample_data/`; build that into `dota`
+and switch the PBIP to `dota` if you do not have the full scrape.
+
 ## Tech stack and why
 
 | Tool | Why it is used |
