@@ -2,7 +2,7 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/page/2.1.0/schema.json",
   "name": "5995aa2f-890e-4dd1-bbfb-56148396a2b6",
   "displayName": "Hero Meta",
-  "displayOption": "FitToPage",
+  "displayOption": "FitToWidth",
   "height": 1280,
   "width": 1280,
   "visualInteractions": [

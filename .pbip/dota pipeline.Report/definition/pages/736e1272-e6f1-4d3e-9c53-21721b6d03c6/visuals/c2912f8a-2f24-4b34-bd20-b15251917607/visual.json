@@ -19,7 +19,7 @@
               {
                 "textRuns": [
                   {
-                    "value": "Players",
+                    "value": "Draft",
                     "textStyle": {
                       "fontFamily": "Segoe UI",
                       "fontSize": "14pt",
@@ -32,15 +32,7 @@
               {
                 "textRuns": [
                   {
-                    "value": "Top players by KDA / picks Ã¢â‚¬â€ ",
-                    "textStyle": {
-                      "fontFamily": "Segoe UI",
-                      "fontSize": "9.5pt",
-                      "fontWeight": "600"
-                    }
-                  },
-                  {
-                    "value": "leaderboards from measures.",
+                    "value": "Pick and ban order, first/mid/late draft phases, side activity, hero matchups, and team head-to-head records.",
                     "textStyle": {
                       "fontFamily": "Segoe UI",
                       "fontSize": "9.5pt",
@@ -52,55 +44,7 @@
               {
                 "textRuns": [
                   {
-                    "value": "Player leaderboard table Ã¢â‚¬â€ ",
-                    "textStyle": {
-                      "fontFamily": "Segoe UI",
-                      "fontSize": "9.5pt",
-                      "fontWeight": "600"
-                    }
-                  },
-                  {
-                    "value": "picks, win rate, KDA, GPM, XPM (null names excluded).",
-                    "textStyle": {
-                      "fontFamily": "Segoe UI",
-                      "fontSize": "9.5pt",
-                      "fontWeight": "normal"
-                    }
-                  }
-                ]
-              },
-              {
-                "textRuns": [
-                  {
-                    "value": "Player appearances by month Ã¢â‚¬â€ ",
-                    "textStyle": {
-                      "fontFamily": "Segoe UI",
-                      "fontSize": "9.5pt",
-                      "fontWeight": "600"
-                    }
-                  },
-                  {
-                    "value": "activity trend.",
-                    "textStyle": {
-                      "fontFamily": "Segoe UI",
-                      "fontSize": "9.5pt",
-                      "fontWeight": "normal"
-                    }
-                  }
-                ]
-              },
-              {
-                "textRuns": [
-                  {
-                    "value": "Slicers Ã¢â‚¬â€ ",
-                    "textStyle": {
-                      "fontFamily": "Segoe UI",
-                      "fontSize": "9.5pt",
-                      "fontWeight": "600"
-                    }
-                  },
-                  {
-                    "value": "hero, league, player type.",
+                    "value": "The draft-sequence table on Match Explorer shows the full pick/ban order for one match.",
                     "textStyle": {
                       "fontFamily": "Segoe UI",
                       "fontSize": "9.5pt",

@@ -2,11 +2,11 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
   "name": "6e587091bd09187c5f5e",
   "position": {
-    "x": 667.77777777777771,
-    "y": 73.333333333333329,
+    "x": 667.7777777777777,
+    "y": 73.33333333333333,
     "z": 2000,
-    "height": 317.77777777777777,
-    "width": 612.22222222222217,
+    "height": 310,
+    "width": 612.2222222222222,
     "tabOrder": 16000
   },
   "visual": {
@@ -208,7 +208,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Team Rankings'"
+                  "Value": "'Match Teams'"
                 }
               }
             }

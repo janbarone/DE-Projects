@@ -19,7 +19,7 @@
               {
                 "textRuns": [
                   {
-                    "value": "Match Detail terms",
+                    "value": "Glossary",
                     "textStyle": {
                       "fontFamily": "Segoe UI",
                       "fontSize": "14pt",
@@ -32,15 +32,7 @@
               {
                 "textRuns": [
                   {
-                    "value": "Items Ã¢â‚¬â€ ",
-                    "textStyle": {
-                      "fontFamily": "Segoe UI",
-                      "fontSize": "9.5pt",
-                      "fontWeight": "600"
-                    }
-                  },
-                  {
-                    "value": "items a player owned (decoded from OpenDota item IDs via dim_item).",
+                    "value": "Radiant / Dire: the two sides of a match.",
                     "textStyle": {
                       "fontFamily": "Segoe UI",
                       "fontSize": "9.5pt",
@@ -52,15 +44,7 @@
               {
                 "textRuns": [
                   {
-                    "value": "Abilities Ã¢â‚¬â€ ",
-                    "textStyle": {
-                      "fontFamily": "Segoe UI",
-                      "fontSize": "9.5pt",
-                      "fontWeight": "600"
-                    }
-                  },
-                  {
-                    "value": "skills a player used in a teamfight (internal names, e.g. 'nevermore_requiem').",
+                    "value": "Win rate: wins divided by matches or picks. KDA: (kills + assists) / deaths.",
                     "textStyle": {
                       "fontFamily": "Segoe UI",
                       "fontSize": "9.5pt",
@@ -72,15 +56,7 @@
               {
                 "textRuns": [
                   {
-                    "value": "Gold delta Ã¢â‚¬â€ ",
-                    "textStyle": {
-                      "fontFamily": "Segoe UI",
-                      "fontSize": "9.5pt",
-                      "fontWeight": "600"
-                    }
-                  },
-                  {
-                    "value": "net gold a player gained during a teamfight.",
+                    "value": "GPM / XPM: gold or experience per minute. Net worth: item value plus reliable gold.",
                     "textStyle": {
                       "fontFamily": "Segoe UI",
                       "fontSize": "9.5pt",
@@ -92,15 +68,7 @@
               {
                 "textRuns": [
                   {
-                    "value": "XP delta Ã¢â‚¬â€ ",
-                    "textStyle": {
-                      "fontFamily": "Segoe UI",
-                      "fontSize": "9.5pt",
-                      "fontWeight": "600"
-                    }
-                  },
-                  {
-                    "value": "net experience a player gained during a teamfight.",
+                    "value": "Last hits / denies: creeps killed for gold / friendly creeps denied.",
                     "textStyle": {
                       "fontFamily": "Segoe UI",
                       "fontSize": "9.5pt",
@@ -112,15 +80,19 @@
               {
                 "textRuns": [
                   {
-                    "value": "Deaths Ã¢â‚¬â€ ",
+                    "value": "Stuns: crowd-control duration applied. Healing: hero healing provided.",
                     "textStyle": {
                       "fontFamily": "Segoe UI",
                       "fontSize": "9.5pt",
-                      "fontWeight": "600"
+                      "fontWeight": "normal"
                     }
-                  },
+                  }
+                ]
+              },
+              {
+                "textRuns": [
                   {
-                    "value": "how many times a player died in that teamfight.",
+                    "value": "Camps stacked: neutral camps stacked for extra spawns.",
                     "textStyle": {
                       "fontFamily": "Segoe UI",
                       "fontSize": "9.5pt",

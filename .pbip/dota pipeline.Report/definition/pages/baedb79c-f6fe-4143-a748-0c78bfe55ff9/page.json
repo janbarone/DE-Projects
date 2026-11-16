@@ -2,7 +2,7 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/page/2.1.0/schema.json",
   "name": "baedb79c-f6fe-4143-a748-0c78bfe55ff9",
   "displayName": "Teams",
-  "displayOption": "FitToPage",
+  "displayOption": "FitToWidth",
   "height": 1510,
   "width": 1280,
   "visualInteractions": [

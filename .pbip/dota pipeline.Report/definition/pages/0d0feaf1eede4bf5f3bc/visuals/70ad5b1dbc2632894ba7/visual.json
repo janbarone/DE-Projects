@@ -5,8 +5,8 @@
     "x": 362.22222222222223,
     "y": 0,
     "z": 5000,
-    "height": 73.333333333333329,
-    "width": 271.11111111111109,
+    "height": 73.33333333333333,
+    "width": 271.1111111111111,
     "tabOrder": 17000
   },
   "visual": {
@@ -186,6 +186,55 @@
                       "Expression": {
                         "SourceRef": {
                           "Source": "tm"
+                        }
+                      },
+                      "Property": "Team Appearances"
+                    }
+                  },
+                  "Right": {
+                    "Literal": {
+                      "Value": "0D"
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "howCreated": "User"
+      },
+      {
+        "name": "mf_779d1ce221a1dea0",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "gold fact_team_matches"
+              }
+            },
+            "Property": "Team Appearances"
+          }
+        },
+        "type": "Advanced",
+        "filter": {
+          "Version": 2,
+          "From": [
+            {
+              "Name": "m",
+              "Entity": "gold fact_team_matches",
+              "Type": 0
+            }
+          ],
+          "Where": [
+            {
+              "Condition": {
+                "Comparison": {
+                  "ComparisonKind": 1,
+                  "Left": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Source": "m"
                         }
                       },
                       "Property": "Team Appearances"

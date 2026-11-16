@@ -2,7 +2,7 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/page/2.1.0/schema.json",
   "name": "9d4f2e1a-8b3c-47d5-a6f7-8c9d0e1f2a3b",
   "displayName": "Match Detail",
-  "displayOption": "FitToPage",
+  "displayOption": "FitToWidth",
   "height": 850,
   "width": 1280,
   "objects": {

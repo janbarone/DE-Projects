@@ -19,7 +19,7 @@
               {
                 "textRuns": [
                   {
-                    "value": "About",
+                    "value": "Data quality and how to use",
                     "textStyle": {
                       "fontFamily": "Segoe UI",
                       "fontSize": "14pt",
@@ -32,15 +32,7 @@
               {
                 "textRuns": [
                   {
-                    "value": "What this report is Ã¢â‚¬â€  Ã¢â‚¬â€ ",
-                    "textStyle": {
-                      "fontFamily": "Segoe UI",
-                      "fontSize": "9.5pt",
-                      "fontWeight": "600"
-                    }
-                  },
-                  {
-                    "value": "how the dashboard is built: OpenDota API to PostgreSQL gold schema, dbt models, DirectQuery.",
+                    "value": "Demo coverage: 1,172/1,500 matches have both teams, 1,373 have draft data, 1,253 have teamfights, and 1,376 have item purchases.",
                     "textStyle": {
                       "fontFamily": "Segoe UI",
                       "fontSize": "9.5pt",
@@ -52,55 +44,7 @@
               {
                 "textRuns": [
                   {
-                    "value": "Glossary Ã¢â‚¬â€  Ã¢â‚¬â€ ",
-                    "textStyle": {
-                      "fontFamily": "Segoe UI",
-                      "fontSize": "9.5pt",
-                      "fontWeight": "600"
-                    }
-                  },
-                  {
-                    "value": "definitions of Dota terms used across every page.",
-                    "textStyle": {
-                      "fontFamily": "Segoe UI",
-                      "fontSize": "9.5pt",
-                      "fontWeight": "normal"
-                    }
-                  }
-                ]
-              },
-              {
-                "textRuns": [
-                  {
-                    "value": "Page cards Ã¢â‚¬â€  Ã¢â‚¬â€ ",
-                    "textStyle": {
-                      "fontFamily": "Segoe UI",
-                      "fontSize": "9.5pt",
-                      "fontWeight": "600"
-                    }
-                  },
-                  {
-                    "value": "one per page describing the visuals you can find there.",
-                    "textStyle": {
-                      "fontFamily": "Segoe UI",
-                      "fontSize": "9.5pt",
-                      "fontWeight": "normal"
-                    }
-                  }
-                ]
-              },
-              {
-                "textRuns": [
-                  {
-                    "value": "Guide Ã¢â‚¬â€  Ã¢â‚¬â€ ",
-                    "textStyle": {
-                      "fontFamily": "Segoe UI",
-                      "fontSize": "9.5pt",
-                      "fontWeight": "600"
-                    }
-                  },
-                  {
-                    "value": "which slicers to use and what each page is best for.",
+                    "value": "Click a bar, table row, or slicer to filter the page. Use the page tabs to move between themes.",
                     "textStyle": {
                       "fontFamily": "Segoe UI",
                       "fontSize": "9.5pt",

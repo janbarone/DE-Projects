@@ -19,7 +19,7 @@
               {
                 "textRuns": [
                   {
-                    "value": "Teams",
+                    "value": "Players",
                     "textStyle": {
                       "fontFamily": "Segoe UI",
                       "fontSize": "14pt",
@@ -32,15 +32,7 @@
               {
                 "textRuns": [
                   {
-                    "value": "Appearances by side Ã¢â‚¬â€ ",
-                    "textStyle": {
-                      "fontFamily": "Segoe UI",
-                      "fontSize": "9.5pt",
-                      "fontWeight": "600"
-                    }
-                  },
-                  {
-                    "value": "how often a team played Radiant vs Dire.",
+                    "value": "Leaderboards for picks, win rate, KDA, GPM, and XPM.",
                     "textStyle": {
                       "fontFamily": "Segoe UI",
                       "fontSize": "9.5pt",
@@ -52,75 +44,7 @@
               {
                 "textRuns": [
                   {
-                    "value": "Team win rate over time Ã¢â‚¬â€ ",
-                    "textStyle": {
-                      "fontFamily": "Segoe UI",
-                      "fontSize": "9.5pt",
-                      "fontWeight": "600"
-                    }
-                  },
-                  {
-                    "value": "win-rate trend (measure).",
-                    "textStyle": {
-                      "fontFamily": "Segoe UI",
-                      "fontSize": "9.5pt",
-                      "fontWeight": "normal"
-                    }
-                  }
-                ]
-              },
-              {
-                "textRuns": [
-                  {
-                    "value": "Top teams by appearances / win rate Ã¢â‚¬â€ ",
-                    "textStyle": {
-                      "fontFamily": "Segoe UI",
-                      "fontSize": "9.5pt",
-                      "fontWeight": "600"
-                    }
-                  },
-                  {
-                    "value": "leaderboards.",
-                    "textStyle": {
-                      "fontFamily": "Segoe UI",
-                      "fontSize": "9.5pt",
-                      "fontWeight": "normal"
-                    }
-                  }
-                ]
-              },
-              {
-                "textRuns": [
-                  {
-                    "value": "Team leaderboard table Ã¢â‚¬â€ ",
-                    "textStyle": {
-                      "fontFamily": "Segoe UI",
-                      "fontSize": "9.5pt",
-                      "fontWeight": "600"
-                    }
-                  },
-                  {
-                    "value": "appearances, win rate, avg score differential.",
-                    "textStyle": {
-                      "fontFamily": "Segoe UI",
-                      "fontSize": "9.5pt",
-                      "fontWeight": "normal"
-                    }
-                  }
-                ]
-              },
-              {
-                "textRuns": [
-                  {
-                    "value": "Slicers Ã¢â‚¬â€ ",
-                    "textStyle": {
-                      "fontFamily": "Segoe UI",
-                      "fontSize": "9.5pt",
-                      "fontWeight": "600"
-                    }
-                  },
-                  {
-                    "value": "year, team (single active path via fact_team_matches bridge).",
+                    "value": "The player leaderboard uses a minimum-match filter; one-game samples are excluded.",
                     "textStyle": {
                       "fontFamily": "Segoe UI",
                       "fontSize": "9.5pt",

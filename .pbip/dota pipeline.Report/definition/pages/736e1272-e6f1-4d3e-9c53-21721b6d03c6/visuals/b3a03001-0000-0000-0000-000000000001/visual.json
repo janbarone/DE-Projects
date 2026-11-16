@@ -19,7 +19,7 @@
               {
                 "textRuns": [
                   {
-                    "value": "Match Detail",
+                    "value": "Match Explorer",
                     "textStyle": {
                       "fontFamily": "Segoe UI",
                       "fontSize": "14pt",
@@ -32,15 +32,7 @@
               {
                 "textRuns": [
                   {
-                    "value": "Match selector Ã¢â‚¬â€  Ã¢â‚¬â€ ",
-                    "textStyle": {
-                      "fontFamily": "Segoe UI",
-                      "fontSize": "9.5pt",
-                      "fontWeight": "600"
-                    }
-                  },
-                  {
-                    "value": "match_id dropdown at the top drives every visual on this page.",
+                    "value": "One match at a time: scoreboard, player tables, items, skill order, talents, progression, and the full draft sequence.",
                     "textStyle": {
                       "fontFamily": "Segoe UI",
                       "fontSize": "9.5pt",
@@ -52,75 +44,7 @@
               {
                 "textRuns": [
                   {
-                    "value": "Player stat cards Ã¢â‚¬â€  Ã¢â‚¬â€ ",
-                    "textStyle": {
-                      "fontFamily": "Segoe UI",
-                      "fontSize": "9.5pt",
-                      "fontWeight": "600"
-                    }
-                  },
-                  {
-                    "value": "Radiant & Dire 10 cards with hero, player, KDA, GPM/XPM, net worth, LH/DN, stuns, healing, damage.",
-                    "textStyle": {
-                      "fontFamily": "Segoe UI",
-                      "fontSize": "9.5pt",
-                      "fontWeight": "normal"
-                    }
-                  }
-                ]
-              },
-              {
-                "textRuns": [
-                  {
-                    "value": "Player tables Ã¢â‚¬â€  Ã¢â‚¬â€ ",
-                    "textStyle": {
-                      "fontFamily": "Segoe UI",
-                      "fontSize": "9.5pt",
-                      "fontWeight": "600"
-                    }
-                  },
-                  {
-                    "value": "one table per side: hero, player, roles, items, KDA, gold/XP, farm, damage & healing.",
-                    "textStyle": {
-                      "fontFamily": "Segoe UI",
-                      "fontSize": "9.5pt",
-                      "fontWeight": "normal"
-                    }
-                  }
-                ]
-              },
-              {
-                "textRuns": [
-                  {
-                    "value": "Timeline tables Ã¢â‚¬â€  Ã¢â‚¬â€ ",
-                    "textStyle": {
-                      "fontFamily": "Segoe UI",
-                      "fontSize": "9.5pt",
-                      "fontWeight": "600"
-                    }
-                  },
-                  {
-                    "value": "chronological teamfight breakdown: items & abilities used per player over the match (uses, gold/XP delta, deaths).",
-                    "textStyle": {
-                      "fontFamily": "Segoe UI",
-                      "fontSize": "9.5pt",
-                      "fontWeight": "normal"
-                    }
-                  }
-                ]
-              },
-              {
-                "textRuns": [
-                  {
-                    "value": "Note Ã¢â‚¬â€  Ã¢â‚¬â€ ",
-                    "textStyle": {
-                      "fontFamily": "Segoe UI",
-                      "fontSize": "9.5pt",
-                      "fontWeight": "600"
-                    }
-                  },
-                  {
-                    "value": "about 29% of matches have no teamfight data, so the timeline can legitimately be empty.",
+                    "value": "Select a match, then click through the visuals.",
                     "textStyle": {
                       "fontFamily": "Segoe UI",
                       "fontSize": "9.5pt",

@@ -1,8 +1,8 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/page/2.1.0/schema.json",
   "name": "0d0feaf1eede4bf5f3bc",
-  "displayName": "MAIN",
-  "displayOption": "FitToPage",
+  "displayName": "Match Explorer",
+  "displayOption": "FitToWidth",
   "height": 3000,
   "width": 1280,
   "visualInteractions": [

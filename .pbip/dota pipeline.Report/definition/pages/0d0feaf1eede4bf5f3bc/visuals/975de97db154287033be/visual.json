@@ -5,7 +5,7 @@
     "x": 0,
     "y": 0,
     "z": 3000,
-    "height": 73.333333333333329,
+    "height": 73.33333333333333,
     "width": 335.55555555555554,
     "tabOrder": 19000
   },
@@ -224,6 +224,55 @@
                       "Expression": {
                         "SourceRef": {
                           "Source": "fm"
+                        }
+                      },
+                      "Property": "Total Matches"
+                    }
+                  },
+                  "Right": {
+                    "Literal": {
+                      "Value": "0D"
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "howCreated": "User"
+      },
+      {
+        "name": "mf_5b70c61e1a37f0e3",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "gold fact_matches"
+              }
+            },
+            "Property": "Total Matches"
+          }
+        },
+        "type": "Advanced",
+        "filter": {
+          "Version": 2,
+          "From": [
+            {
+              "Name": "m",
+              "Entity": "gold fact_matches",
+              "Type": 0
+            }
+          ],
+          "Where": [
+            {
+              "Condition": {
+                "Comparison": {
+                  "ComparisonKind": 1,
+                  "Left": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Source": "m"
                         }
                       },
                       "Property": "Total Matches"

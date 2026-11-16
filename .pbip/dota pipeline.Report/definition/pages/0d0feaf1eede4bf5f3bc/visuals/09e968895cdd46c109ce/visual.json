@@ -3,10 +3,10 @@
   "name": "09e968895cdd46c109ce",
   "position": {
     "x": 362.22222222222223,
-    "y": 87.777777777777771,
+    "y": 87.77777777777777,
     "z": 21000,
-    "height": 68.888888888888886,
-    "width": 271.11111111111109,
+    "height": 68.88888888888889,
+    "width": 271.1111111111111,
     "tabOrder": 13000
   },
   "visual": {
@@ -206,6 +206,55 @@
                       "Expression": {
                         "SourceRef": {
                           "Source": "fmp"
+                        }
+                      },
+                      "Property": "Total Picks"
+                    }
+                  },
+                  "Right": {
+                    "Literal": {
+                      "Value": "0D"
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "howCreated": "User"
+      },
+      {
+        "name": "mf_a3a4ea15b0870075",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "gold fact_match_players"
+              }
+            },
+            "Property": "Total Picks"
+          }
+        },
+        "type": "Advanced",
+        "filter": {
+          "Version": 2,
+          "From": [
+            {
+              "Name": "m",
+              "Entity": "gold fact_match_players",
+              "Type": 0
+            }
+          ],
+          "Where": [
+            {
+              "Condition": {
+                "Comparison": {
+                  "ComparisonKind": 1,
+                  "Left": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Source": "m"
                         }
                       },
                       "Property": "Total Picks"

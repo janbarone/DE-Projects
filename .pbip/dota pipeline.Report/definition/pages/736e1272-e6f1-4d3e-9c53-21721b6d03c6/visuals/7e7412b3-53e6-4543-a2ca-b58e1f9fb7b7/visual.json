@@ -19,10 +19,11 @@
               {
                 "textRuns": [
                   {
-                    "value": "Dota Pro Report Ã¢â‚¬â€ About, Guide & Glossary",
+                    "value": "DOTA 2 Pro Match Analytics - About & Glossary",
                     "textStyle": {
                       "fontFamily": "Segoe UI",
-                      "fontSize": "24pt"
+                      "fontSize": "9.5pt",
+                      "fontWeight": "normal"
                     }
                   }
                 ]
