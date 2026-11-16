@@ -45,7 +45,7 @@ table 'gold dim_patch'
 		mode: directQuery
 		source =
 				let
-				    Source = PostgreSQL.Database("localhost", "dota"),
+				    Source = PostgreSQL.Database("localhost", "dota_demo"),
 				    gold_dim_patch = Source{[Schema="gold",Item="dim_patch"]}[Data]
 				in
 				    gold_dim_patch

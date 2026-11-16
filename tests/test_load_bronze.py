@@ -53,6 +53,7 @@ def test_load_group_one_row_per_file_strips_timestamp(tmp_path):
         payload = params[1].obj
         assert "timestamp_fetched" not in payload
         assert payload["players"] == []
+        assert params[2] is not None  # source_fetched_at
 
 
 def test_load_group_list_branch(tmp_path):
@@ -74,8 +75,10 @@ def test_load_group_list_branch(tmp_path):
     keys = [params[0] for _, params in cur.executed]
     assert keys == [1, 2]
     assert all("timestamp_fetched" not in params[1].obj for _, params in cur.executed)
+    assert all(params[2] is not None for _, params in cur.executed)
 
 
 def test_upsert_sql_is_idempotent():
     sql = load_bronze.UPSERT_SQL.format(table="bronze.matches", key="match_id")
     assert "ON CONFLICT (match_id) DO UPDATE" in sql
+    assert "source_fetched_at = EXCLUDED.source_fetched_at" in sql

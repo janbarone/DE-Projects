@@ -29,9 +29,13 @@ import sys
 import time
 from pathlib import Path
 
+from dotenv import load_dotenv
+
 BASE = Path(__file__).resolve().parent.parent
+load_dotenv(BASE / ".env")
 sys.path.insert(0, str(BASE / "data"))
 
+from db_profile import apply_profile  # noqa: E402
 from dota_common import get_logger  # noqa: E402
 
 logger = get_logger("dota.run_pipeline")
@@ -83,10 +87,26 @@ def refresh_constants(python: str, data_dir: Path) -> None:
     run([python, str(BASE / "data" / "_fetch_constants.py"), "--data-dir", str(data_dir)], cwd=BASE)
 
 
-def dbt_build(dbt: str, profiles_dir: Path, project_dir: Path, full_refresh: bool) -> None:
-    cmd = [dbt, "build", "--profiles-dir", str(profiles_dir), "--project-dir", str(project_dir)]
+def scrape_matches(python: str, mode: str, limit: int | None) -> None:
+    """Scrape live OpenDota matches into data/ (the scraper owns its data dir)."""
+    cmd = [python, str(BASE / "data" / "_fetch_matches.py"), "--mode", mode]
+    if limit is not None:
+        cmd.extend(["--limit", str(limit)])
+    run(cmd, cwd=BASE)
+
+
+def dbt_build(dbt: str, profiles_dir: Path, project_dir: Path, full_refresh: bool,
+              threads: int, select: str | None = None) -> None:
+    cmd = [
+        dbt, "build",
+        "--profiles-dir", str(profiles_dir),
+        "--project-dir", str(project_dir),
+        "--threads", str(threads),
+    ]
     if full_refresh:
         cmd.append("--full-refresh")
+    if select:
+        cmd.extend(["--select", select])
     run(cmd, cwd=BASE)
 
 
@@ -129,7 +149,9 @@ def _docker_pg_dump(out_file: Path) -> None:
     )
     if probe.returncode != 0 or probe.stdout.strip() != "true":
         raise SystemExit("dota_postgres container is not running")
-    cmd = ["docker", "exec", "dota_postgres", "pg_dump", "-U", "postgres", "-d", "dota", "-Fc"]
+    user = os.environ.get("POSTGRES_USER", "postgres")
+    db = os.environ.get("POSTGRES_DB", "dota")
+    cmd = ["docker", "exec", "dota_postgres", "pg_dump", "-U", user, "-d", db, "-Fc"]
     logger.info("run command=%s", " ".join(cmd))
     with out_file.open("wb") as fh:
         proc = subprocess.run(cmd, stdout=fh)
@@ -146,7 +168,10 @@ def backup_db(backups_dir: Path, prefix: str, use_docker: bool) -> Path:
         _docker_pg_dump(out_file)
     else:
         pg_dump = _find_pg_dump()
-        cmd = [pg_dump, "-U", "postgres", "-d", "dota", "-Fc", "-f", str(out_file)]
+        db_url = os.environ.get("DATABASE_URL")
+        if not db_url:
+            raise SystemExit("DATABASE_URL not set; cannot back up the database")
+        cmd = [pg_dump, "--dbname", db_url, "-Fc", "-f", str(out_file)]
         run(cmd, cwd=BASE)
     logger.info("backup written backups=%s", out_file)
     return out_file
@@ -171,6 +196,45 @@ def main() -> None:
         "--only-constants",
         action="store_true",
         help="run only the constants fetch, skipping ingestion, dbt and backup",
+    )
+    ap.add_argument(
+        "--scrape",
+        action="store_true",
+        help="scrape new live matches before loading (writes to data/)",
+    )
+    ap.add_argument(
+        "--only-scrape",
+        action="store_true",
+        help="run only the live scraper, skipping load, dbt and backup",
+    )
+    ap.add_argument(
+        "--scrape-mode",
+        choices=["promatches", "leagues", "full"],
+        default="promatches",
+        help="scraper mode for --scrape (default: promatches, quota-friendly)",
+    )
+    ap.add_argument(
+        "--scrape-limit",
+        type=int,
+        default=int(os.environ.get("DOTA_SCRAPE_LIMIT", "100")),
+        help="max matches to scrape (default: DOTA_SCRAPE_LIMIT or 100)",
+    )
+    ap.add_argument(
+        "--db-profile",
+        choices=["auto", "default", "full", "none"],
+        default="auto",
+        help="Postgres memory profile: auto uses full for --full-refresh, default otherwise",
+    )
+    ap.add_argument(
+        "--threads",
+        type=int,
+        default=None,
+        help="dbt threads override (default: 3 for full profile, 2 for default)",
+    )
+    ap.add_argument(
+        "--select",
+        default=None,
+        help="optional dbt --select expression (useful for a targeted rebuild)",
     )
     ap.add_argument(
         "--backup",
@@ -215,6 +279,9 @@ def main() -> None:
     if args.only_constants:
         refresh_constants(args.python, data_dir)
         return
+    if args.only_scrape:
+        scrape_matches(args.python, args.scrape_mode, args.scrape_limit)
+        return
     if args.only_backup:
         backup_db(backups_dir, args.backup_prefix, args.backup_docker)
         return
@@ -232,12 +299,45 @@ def main() -> None:
             t0 = step_start("refresh constants")
             refresh_constants(args.python, data_dir)
             step_done("refresh constants", t0)
+        if args.scrape:
+            t0 = step_start("scrape matches")
+            scrape_matches(args.python, args.scrape_mode, args.scrape_limit)
+            step_done("scrape matches", t0)
         t0 = step_start("load bronze")
         load_bronze(args.python, data_dir)
         step_done("load bronze", t0)
     if not args.only_load:
+        profile = args.db_profile
+        if profile == "auto":
+            profile = "full" if args.full_refresh else "default"
+        threads = args.threads
+        if threads is None:
+            threads = int(os.environ.get("DBT_THREADS", "3" if profile == "full" else "2"))
+
+        applied = None
+        if profile != "none":
+            try:
+                apply_profile(profile)
+                applied = profile
+                logger.info("postgres profile applied profile=%s dbt_threads=%s", profile, threads)
+            except Exception as exc:
+                if args.full_refresh:
+                    raise SystemExit(
+                        f"could not apply full Postgres profile: {exc}. "
+                        "Do not run a full refresh without it; use --db-profile none only if you know the risk."
+                    ) from exc
+                logger.warning("could not apply Postgres profile (%s); continuing", exc)
+
         t0 = step_start("dbt build")
-        dbt_build(dbt, profiles_dir, project_dir, args.full_refresh)
+        try:
+            dbt_build(dbt, profiles_dir, project_dir, args.full_refresh, threads, args.select)
+        finally:
+            if applied == "full":
+                try:
+                    apply_profile("default")
+                    logger.info("postgres profile restored profile=default")
+                except Exception as exc:
+                    logger.warning("could not restore default Postgres profile: %s", exc)
         step_done("dbt build", t0)
     if args.freshness:
         t0 = step_start("dbt source freshness")

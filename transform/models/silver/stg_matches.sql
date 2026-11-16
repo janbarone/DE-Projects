@@ -6,14 +6,14 @@
 -- One row per match, flattened from the raw match jsonb.
 {% if is_incremental() %}
 with new_matches as (
-    select payload, loaded_at
+    select payload, loaded_at, source_fetched_at
     from {{ source('bronze', 'matches') }}
     where payload->>'match_id' is not null
       and payload->>'match_id' not in (select distinct match_id from {{ this }})
 )
 {% else %}
 with new_matches as (
-    select payload, loaded_at
+    select payload, loaded_at, source_fetched_at
     from {{ source('bronze', 'matches') }}
 )
 {% endif %}
@@ -43,5 +43,5 @@ select
     nullif(payload->>'pre_game_duration', '')::int as pre_game_duration,
     nullif(payload->>'replay_salt', '') as replay_salt,
     nullif(payload->>'version', '') as version,
-    coalesce((payload->>'timestamp_fetched')::timestamptz, loaded_at) as loaded_at
+    coalesce(source_fetched_at, loaded_at) as loaded_at
 from new_matches

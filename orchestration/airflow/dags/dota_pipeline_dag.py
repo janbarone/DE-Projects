@@ -2,7 +2,8 @@
 
 Tasks wired as a DAG:
 
-  refresh_constants -> load_bronze -> dbt_build -> [dbt_source_freshness, pg_dump_backup]
+  refresh_constants -> scrape_matches -> load_bronze -> dbt_build
+                    -> [dbt_source_freshness, pg_dump_backup]
 
 - refresh_constants / load_bronze / freshness / backup shell out to the shared
   `scripts/run_pipeline.py` so the pipeline logic is defined once.
@@ -44,7 +45,16 @@ with DAG(
         task_id="refresh_constants",
         bash_command=(
             "python /opt/dota/scripts/run_pipeline.py --only-constants "
-            "--data-dir {{ var.value.get('data_dir', 'sample_data') }}"
+            "--data-dir {{ var.value.get('data_dir', 'data') }}"
+        ),
+    )
+
+    scrape_matches = BashOperator(
+        task_id="scrape_matches",
+        bash_command=(
+            "python /opt/dota/scripts/run_pipeline.py --only-scrape "
+            "--scrape-mode promatches "
+            "--scrape-limit {{ var.value.get('scrape_limit', '100') }}"
         ),
     )
 
@@ -52,7 +62,7 @@ with DAG(
         task_id="load_bronze",
         bash_command=(
             "python /opt/dota/scripts/run_pipeline.py --only-load "
-            "--data-dir {{ var.value.get('data_dir', 'sample_data') }}"
+            "--data-dir {{ var.value.get('data_dir', 'data') }}"
         ),
     )
 
@@ -83,4 +93,4 @@ with DAG(
         ),
     )
 
-    refresh_constants >> load_bronze >> dbt_build >> [dbt_source_freshness, pg_dump_backup]
+    refresh_constants >> scrape_matches >> load_bronze >> dbt_build >> [dbt_source_freshness, pg_dump_backup]

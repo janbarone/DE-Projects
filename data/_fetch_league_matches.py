@@ -41,6 +41,7 @@ from dota_common import (  # noqa: E402
     print_quota,
     quota_remaining,
     timestamp_fetched,
+    validate_match_payload,
     wait_exit,
     write_json,
 )
@@ -115,8 +116,7 @@ def fetch_match(mid: int, ts: str) -> dict:
         try:
             raw = http_get(f"{BASE}/matches/{mid}")
             o = json.loads(raw)
-            if not isinstance(o, dict) or not o.get("match_id"):
-                raise ValueError("response has no match data")
+            validate_match_payload(o, mid)
             return o
         except Exception as e:
             last_err = e
@@ -165,11 +165,16 @@ def main() -> None:
             mids, status, detail = discover_league(lid)
             if status == "rate_limited":
                 raise QuotaStop("rate limited (daily quota likely spent)")
-            if status in ("empty", "unavailable"):
+            if status in ("empty", "gone"):
                 mark_drained(lid)
                 msg = f"league {lid}: {detail}; skipping permanently"
                 print(f"  {msg}")
-                log(f"{'FAIL' if status == 'unavailable' else 'INFO'} {msg}")
+                log(f"{'FAIL' if status == 'gone' else 'INFO'} {msg}")
+                continue
+            if status == "unavailable":
+                msg = f"league {lid}: transient discovery failure ({detail}); will retry next run"
+                print(f"  {msg}")
+                log(f"INFO {msg}")
                 continue
 
             missing = [m for m in mids if not have_match(m)]

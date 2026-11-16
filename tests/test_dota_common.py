@@ -127,6 +127,24 @@ def test_have_match_treats_skipped_as_present(monkeypatch, tmp_path):
     assert dc.have_match(mid)
 
 
+def test_have_match_rejects_truncated_file(monkeypatch, tmp_path):
+    monkeypatch.setattr(dc, "DATA_DIR", tmp_path)
+    path = tmp_path / "proMatches" / "556.json"
+    path.parent.mkdir(parents=True)
+    path.write_text("{}", encoding="utf-8")
+    assert not dc.have_match(556)
+    path.write_text("x" * dc.MIN_MATCH_FILE_BYTES, encoding="utf-8")
+    assert dc.have_match(556)
+
+
+def test_validate_match_payload_rejects_empty_or_mismatched():
+    with pytest.raises(ValueError):
+        dc.validate_match_payload({"match_id": 1, "players": []}, 1)
+    with pytest.raises(ValueError):
+        dc.validate_match_payload({"match_id": 2, "players": [{}]}, 1)
+    assert dc.validate_match_payload({"match_id": 1, "players": [{}]}, 1)["match_id"] == 1
+
+
 def test_discover_league_ok(monkeypatch):
     def fake_get(url, timeout, headers):
         return FakeResponse(200, {}, '[100, 200, 300]')
@@ -147,7 +165,7 @@ def test_discover_league_empty(monkeypatch):
     assert mids == []
 
 
-def test_discover_league_unavailable_after_retries(monkeypatch):
+def test_discover_league_404_is_permanent_gone(monkeypatch):
     calls = {"n": 0}
 
     def fake_get(url, timeout, headers):
@@ -158,9 +176,25 @@ def test_discover_league_unavailable_after_retries(monkeypatch):
 
     monkeypatch.setattr(dc.requests, "get", fake_get)
     mids, status, detail = dc.discover_league(5)
+    assert status == "gone"
+    assert mids is None
+    assert calls["n"] == 1  # permanent errors are not retried
+
+
+def test_discover_league_transient_5xx_is_not_permanent(monkeypatch):
+    calls = {"n": 0}
+
+    def fake_get(url, timeout, headers):
+        calls["n"] += 1
+        err = requests.HTTPError("503 Server Error")
+        err.response = FakeResponse(503)
+        raise err
+
+    monkeypatch.setattr(dc, "http_get", lambda url: fake_get(url, 1, {}))
+    mids, status, detail = dc.discover_league(5, retries=1)
     assert status == "unavailable"
     assert mids is None
-    assert calls["n"] == dc.DISCOVERY_RETRIES
+    assert calls["n"] == 1
 
 
 def test_discover_league_rate_limited(monkeypatch):

@@ -108,7 +108,7 @@ table 'gold fact_team_h2h'
 		mode: directQuery
 		source =
 				let
-				    Source = PostgreSQL.Database("localhost", "dota"),
+				    Source = PostgreSQL.Database("localhost", "dota_demo"),
 				    gold_fact_team_h2h = Source{[Schema="gold",Item="fact_team_h2h"]}[Data]
 				in
 				    gold_fact_team_h2h

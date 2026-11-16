@@ -2,7 +2,7 @@ version: 2
 
 sources:
   - name: bronze
-    database: dota
+    database: "{{ env_var('POSTGRES_DB', 'dota') }}"
     schema: bronze
     loader: python_load_bronze
     description: >
@@ -22,33 +22,55 @@ sources:
             description: Full raw match JSON (players, picks_bans, teamfights, chat, ...).
           - name: loaded_at
             description: When the row was loaded into bronze.
+          - name: source_fetched_at
+            description: When the source file/payload was fetched from OpenDota.
 
       - name: leagues
         description: One row per league from /leagues.
+        loaded_at_field: loaded_at
+        freshness:
+          warn_after: {count: 7, period: day}
+          error_after: {count: 30, period: day}
         columns:
           - name: leagueid
             description: Primary key. Unique league identifier.
 
       - name: players
         description: One row per pro player from /proPlayers.
+        loaded_at_field: loaded_at
+        freshness:
+          warn_after: {count: 7, period: day}
+          error_after: {count: 30, period: day}
         columns:
           - name: account_id
             description: Primary key. Steam account identifier.
 
       - name: teams
         description: One row per team from /teams.
+        loaded_at_field: loaded_at
+        freshness:
+          warn_after: {count: 7, period: day}
+          error_after: {count: 30, period: day}
         columns:
           - name: team_id
             description: Primary key. Unique team identifier.
 
       - name: hero_stats
         description: One row per hero aggregate from /heroStats.
+        loaded_at_field: loaded_at
+        freshness:
+          warn_after: {count: 7, period: day}
+          error_after: {count: 30, period: day}
         columns:
           - name: id
             description: Primary key. Hero identifier.
 
       - name: constants
         description: One row per static resource (heroes, items, abilities, ...).
+        loaded_at_field: loaded_at
+        freshness:
+          warn_after: {count: 7, period: day}
+          error_after: {count: 30, period: day}
         columns:
           - name: resource
             description: Primary key. Resource name, e.g. 'heroes'.

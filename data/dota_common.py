@@ -1,6 +1,8 @@
 """Shared helpers for the OpenDota pipeline scripts."""
 import json
 import logging
+import os
+import tempfile
 import time
 from datetime import datetime, timezone
 from pathlib import Path
@@ -16,7 +18,10 @@ _HEADERS = {"User-Agent": "opencode-dota-pipeline/1.0"}
 MIN_INTERVAL = 1.1  # ~55 req/min, safely under the 60/min unauthenticated limit
 RETRY_BASE_DELAY = 5.0  # seconds, doubles on each retry (5, 10, 20, ...)
 MAX_RETRIES = 4  # transient (5xx/network) retries inside http_get
-MAX_429 = 4  # cap on consecutive 429s before raising (each retry costs daily quota)
+MAX_429 = 5  # cap on consecutive 429s before raising
+DEFAULT_429_WAIT = 60.0  # minute limiter: wait a full minute when no Retry-After
+MAX_429_WAIT = 300.0
+MIN_MATCH_FILE_BYTES = 1024  # smaller files are truncated, not valid match JSON
 _last_request = 0.0
 _last_quota = {"minute": None, "day": None}  # remaining quota from last response
 
@@ -87,16 +92,27 @@ def http_get(url: str, timeout: int = 120) -> str:
             _last_quota["day"] = resp.headers.get("X-Rate-Limit-Remaining-Day")
 
             if resp.status_code == 429:
+                # A 429 with daily quota left is usually the per-minute limiter;
+                # wait a full minute instead of burning retries in a few seconds.
+                day = _last_quota.get("day")
+                try:
+                    if day is not None and int(day) <= 0:
+                        raise RateLimitedError(f"daily quota exhausted ({url})")
+                except (TypeError, ValueError):
+                    pass
                 attempt += 1
                 if attempt > MAX_429:
                     raise RateLimitedError(
                         f"rate limited after {attempt - 1} retries ({url})")
                 retry_after = resp.headers.get("Retry-After")
-                wait = retry_after if retry_after is not None else RETRY_BASE_DELAY * (2 ** (attempt - 1))
-                try:
-                    wait = float(wait)
-                except (TypeError, ValueError):
-                    wait = RETRY_BASE_DELAY * (2 ** (attempt - 1))
+                if retry_after is not None:
+                    try:
+                        wait = float(retry_after)
+                    except (TypeError, ValueError):
+                        wait = DEFAULT_429_WAIT
+                else:
+                    wait = DEFAULT_429_WAIT
+                wait = max(0.0, min(wait, MAX_429_WAIT))
                 print(f"  rate-limited (429), waiting {wait:.0f}s...")
                 time.sleep(wait)
                 continue
@@ -137,10 +153,26 @@ def load_json_array(text: str) -> list:
 
 
 def write_json(path, obj) -> None:
+    """Write JSON atomically so a crash cannot leave a truncated file."""
     path = Path(path)
     path.parent.mkdir(parents=True, exist_ok=True)
-    with open(path, "w", encoding="utf-8") as f:
-        json.dump(obj, f, ensure_ascii=False, indent=2)
+    tmp_name = None
+    try:
+        with tempfile.NamedTemporaryFile(
+            "w", encoding="utf-8", dir=path.parent, prefix=f".{path.name}.",
+            delete=False, newline="\n",
+        ) as f:
+            tmp_name = f.name
+            json.dump(obj, f, ensure_ascii=False, indent=2)
+            f.flush()
+            os.fsync(f.fileno())
+        os.replace(tmp_name, path)
+    finally:
+        if tmp_name and os.path.exists(tmp_name):
+            try:
+                os.remove(tmp_name)
+            except OSError:
+                pass
 
 
 def update_array_file(path, new_records, key_field, ts) -> list:
@@ -234,8 +266,14 @@ def is_match_skipped(mid: int) -> bool:
 
 def have_match(mid: int) -> bool:
     """True if the match is already saved on disk or permanently skipped, so no
-    API call is needed for it."""
-    return (DATA_DIR / "proMatches" / f"{mid}.json").exists() or is_match_skipped(mid)
+    API call is needed for it. Tiny files are treated as truncated and refetched."""
+    if is_match_skipped(mid):
+        return True
+    path = DATA_DIR / "proMatches" / f"{mid}.json"
+    try:
+        return path.is_file() and path.stat().st_size >= MIN_MATCH_FILE_BYTES
+    except OSError:
+        return False
 
 
 DISCOVERY_RETRIES = 2  # attempts before an unavailable league is skipped permanently
@@ -265,9 +303,28 @@ def discover_league(lid: int, retries: int = DISCOVERY_RETRIES) -> tuple:
             return None, "rate_limited", None
         except Exception as e:
             last_err = e
+            # Only 404/430 are permanent. A 5xx/network error must not drain
+            # the league; leave it unavailable so the next run retries it.
+            if is_stale_error(e):
+                return None, "gone", str(e)
             if attempt < retries:
                 time.sleep(2)
     return None, "unavailable", str(last_err)
+
+
+def validate_match_payload(match, mid: int | None = None) -> dict:
+    """Reject empty/error payloads before they are written to disk or bronze."""
+    if not isinstance(match, dict):
+        raise ValueError("match payload is not an object")
+    got = match.get("match_id")
+    if got is None:
+        raise ValueError("match payload has no match_id")
+    if mid is not None and int(got) != int(mid):
+        raise ValueError(f"match_id mismatch: expected {mid}, got {got}")
+    players = match.get("players")
+    if not isinstance(players, list) or not players:
+        raise ValueError("match payload has no players")
+    return match
 
 
 def select_fields(obj: dict, include=None, exclude=None) -> dict:

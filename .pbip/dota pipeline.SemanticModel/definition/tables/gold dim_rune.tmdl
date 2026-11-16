@@ -24,7 +24,7 @@ table 'gold dim_rune'
 		mode: directQuery
 		source =
 				let
-				    Source = PostgreSQL.Database("localhost", "dota"),
+				    Source = PostgreSQL.Database("localhost", "dota_demo"),
 				    gold_dim_rune = Source{[Schema="gold",Item="dim_rune"]}[Data]
 				in
 				    gold_dim_rune

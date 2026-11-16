@@ -65,6 +65,7 @@ from dota_common import (  # noqa: E402
     print_quota,
     quota_remaining,
     timestamp_fetched,
+    validate_match_payload,
     wait_exit,
     write_json,
 )
@@ -84,9 +85,10 @@ def day_left() -> int | None:
 
 
 def save_match(mid: int, ts: str) -> bool:
-    """Fetch and save one match. Returns True if saved, False if it errored."""
+    """Fetch, validate and save one match. Raises on an invalid payload."""
     raw = http_get(f"{BASE}/matches/{mid}")
     o = json.loads(raw)
+    validate_match_payload(o, mid)
     o["timestamp_fetched"] = ts
     write_json(DATA_DIR / "proMatches" / f"{mid}.json", o)
     return True
@@ -139,11 +141,16 @@ def phase1_league_priority(league_ids, limit_left, ts, saved, limit, redrain) ->
         mids, status, detail = discover_league(lid)
         if status == "rate_limited":
             raise QuotaStop("rate limited (daily quota likely spent)")
-        if status in ("empty", "unavailable"):
+        if status in ("empty", "gone"):
             mark_drained(lid)
             msg = f"league {lid}: {detail}; skipping permanently"
             print(f"  {msg}")
-            log(f"{'FAIL' if status == 'unavailable' else 'INFO'} {msg}")
+            log(f"{'FAIL' if status == 'gone' else 'INFO'} {msg}")
+            continue
+        if status == "unavailable":
+            msg = f"league {lid}: transient discovery failure ({detail}); will retry next run"
+            print(f"  {msg}")
+            log(f"INFO {msg}")
             continue
 
         missing = [m for m in mids if not have_match(m)]

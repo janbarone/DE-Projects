@@ -11,9 +11,13 @@ Power BI Desktop → **Get data → PostgreSQL database**
 
 - Server: `localhost`
 - Port: `5432`
-- Database: `dota`
+- Database: `dota_demo` (portfolio) or `dota` (full archive)
 - User / password: `postgres` / `postgres` (from `.env`)
-- Advanced: load all 18 `gold.*` tables (9 dims + 9 facts).
+- Advanced: load all 33 `gold.*` tables (13 dims + 20 facts).
+
+The checked-in PBIP points at `dota_demo`. Switch it with
+`python scripts/switch_powerbi_db.py --database dota_demo` (or `dota`), and
+keep Power BI Desktop closed while switching.
 
 If a relationship fails to validate, first check Power BI **auto-created**
 relationships on import (tables share key column names) and **delete the

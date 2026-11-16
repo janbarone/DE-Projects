@@ -141,7 +141,7 @@ table 'gold fact_draft_sequence'
 		mode: directQuery
 		source =
 				let
-				    Source = PostgreSQL.Database("localhost", "dota"),
+				    Source = PostgreSQL.Database("localhost", "dota_demo"),
 				    gold_fact_draft_sequence = Source{[Schema="gold",Item="fact_draft_sequence"]}[Data]
 				in
 				    gold_fact_draft_sequence

@@ -235,6 +235,18 @@ def copy_reference(source: Path, target: Path) -> list[str]:
     return copied
 
 
+def ensure_safe_target(source: Path, target: Path) -> None:
+    """Refuse to delete the source tree (or an ancestor/descendant of it)."""
+    src = source.resolve()
+    tgt = target.resolve()
+    if src == tgt:
+        raise SystemExit(f"target must differ from source: {tgt}")
+    if src in tgt.parents or tgt in src.parents:
+        raise SystemExit(f"target must not be inside/around source: source={src} target={tgt}")
+    if tgt.parent == tgt:
+        raise SystemExit(f"refusing to use a filesystem root as target: {tgt}")
+
+
 def main() -> None:
     ap = argparse.ArgumentParser(description="Curate a reproducible sample dataset.")
     ap.add_argument("--source", default=str(BASE / "data"))
@@ -275,6 +287,7 @@ def main() -> None:
         print("\n(dry run - nothing copied)")
         return
 
+    ensure_safe_target(source, target)
     if target.exists():
         shutil.rmtree(target)
     (target / "proMatches").mkdir(parents=True, exist_ok=True)

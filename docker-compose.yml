@@ -3,30 +3,23 @@ services:
     image: postgres:16
     container_name: dota_postgres
     restart: unless-stopped
+    # Keep only the one setting that needs a restart here. The rest are
+    # managed at runtime by scripts/db_profile.py (safe default / full build)
+    # so a full refresh can temporarily use more memory and then revert.
     command:
       - postgres
       - -c
-      - shared_buffers=2GB
+      - shared_buffers=${PG_SHARED_BUFFERS:-1GB}
       - -c
-      - work_mem=256MB
-      - -c
-      - maintenance_work_mem=512MB
-      - -c
-      - effective_cache_size=6GB
-      - -c
-      - max_parallel_workers_per_gather=4
-      - -c
-      - max_parallel_workers=8
-      - -c
-      - parallel_setup_cost=100
-      - -c
-      - min_parallel_table_scan_size=0
+      - max_connections=${PG_MAX_CONNECTIONS:-100}
     environment:
       POSTGRES_USER: ${POSTGRES_USER:-postgres}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
       POSTGRES_DB: ${POSTGRES_DB:-dota}
     ports:
       - "${POSTGRES_PORT:-5432}:5432"
+    # Default Docker /dev/shm is 64MB; Postgres parallel queries need more.
+    shm_size: 1gb
     volumes:
       - pgdata:/var/lib/postgresql/data
       # Runs schema SQL on first container boot (empty volume)
@@ -54,7 +47,8 @@ services:
       DAGSTER_HOME: /opt/dagster/dagster_home
       DATABASE_URL: postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@postgres:5432/${POSTGRES_DB:-dota}
       POSTGRES_HOST: postgres
-      DOTA_DATA_DIR: /opt/dota/sample_data
+      DOTA_DATA_DIR: /opt/dota/data
+      DOTA_SCRAPE_LIMIT: "100"
       DOTA_PYTHON: python
     volumes:
       - .:/opt/dota

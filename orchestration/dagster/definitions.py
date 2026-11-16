@@ -1,8 +1,9 @@
 """Dagster definitions for the DOTA medallion pipeline.
 
-Five assets:
+Six assets:
   constants_refreshed   ->  python scripts/run_pipeline.py --only-constants
-  bronze_loaded         ->  python scripts/run_pipeline.py --only-load   (deps on constants_refreshed)
+  scraped_matches       ->  python scripts/run_pipeline.py --only-scrape (deps on constants_refreshed)
+  bronze_loaded         ->  python scripts/run_pipeline.py --only-load   (deps on scraped_matches)
   dbt_built             ->  python scripts/run_pipeline.py --only-dbt    (deps on bronze_loaded)
   source_freshness      ->  python scripts/run_pipeline.py --only-freshness (deps on dbt_built)
   db_backed_up          ->  python scripts/run_pipeline.py --only-backup (deps on dbt_built)
@@ -24,7 +25,8 @@ from dagster import (
 
 # repo root is two levels up from orchestration/dagster/
 REPO = Path(__file__).resolve().parents[2]
-DATA_DIR = os.environ.get("DOTA_DATA_DIR", "sample_data")
+DATA_DIR = os.environ.get("DOTA_DATA_DIR", "data")
+SCRAPE_LIMIT = os.environ.get("DOTA_SCRAPE_LIMIT", "100")
 PYTHON = os.environ.get("DOTA_PYTHON", "python")
 
 
@@ -41,7 +43,13 @@ def constants_refreshed(context: AssetExecutionContext) -> None:
     _run(context, "--only-constants", "--data-dir", DATA_DIR)
 
 
-@asset(description="Load raw JSON (sample or live scrape) into PostgreSQL bronze.", deps=["constants_refreshed"])
+@asset(description="Scrape new live OpenDota matches into data/.", deps=["constants_refreshed"])
+def scraped_matches(context: AssetExecutionContext) -> None:
+    _run(context, "--only-scrape", "--scrape-mode", "promatches",
+         "--scrape-limit", SCRAPE_LIMIT)
+
+
+@asset(description="Load raw JSON (live scrape) into PostgreSQL bronze.", deps=["scraped_matches"])
 def bronze_loaded(context: AssetExecutionContext) -> None:
     _run(context, "--only-load", "--data-dir", DATA_DIR)
 
@@ -72,7 +80,8 @@ daily_job = define_asset_job("daily_medallion_refresh", selection="*")
 daily_schedule = ScheduleDefinition(job=daily_job, cron_schedule="0 3 * * *")
 
 defs = Definitions(
-    assets=[constants_refreshed, bronze_loaded, dbt_built, source_freshness, db_backed_up],
+    assets=[constants_refreshed, scraped_matches, bronze_loaded, dbt_built,
+            source_freshness, db_backed_up],
     jobs=[daily_job],
     schedules=[daily_schedule],
 )

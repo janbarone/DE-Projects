@@ -31,20 +31,30 @@ with level_first_minute as (
     from {{ ref('fact_match_player_minute') }}
     group by match_id, player_slot, level
 ),
-max_level_minute as (
+max_level as (
     select
         match_id,
         player_slot,
-        first_minute as last_minute
-    from (
-        select
-            match_id,
-            player_slot,
-            first_minute,
-            row_number() over (partition by match_id, player_slot order by level desc) as rn
-        from level_first_minute
-    ) t
-    where rn = 1
+        max(level) as max_level
+    from level_first_minute
+    group by match_id, player_slot
+),
+max_level_minute as (
+    select
+        lfm.match_id,
+        lfm.player_slot,
+        lfm.first_minute as last_minute
+    from level_first_minute lfm
+    join max_level ml
+        on ml.match_id = lfm.match_id
+       and ml.player_slot = lfm.player_slot
+       and ml.max_level = lfm.level
+),
+upgrades as (
+    select
+        *,
+        upgrade_index + 1 as learn_level
+    from {{ ref('stg_match_player_skills') }}
 ),
 ability_dnames as (
     -- abilities keys (e.g. sandking_caustic_finale) use a different naming
@@ -70,6 +80,7 @@ decoded as (
         ug.side,
         ug.upgrade_index,
         ug.ability_id,
+        ug.learn_level,
         ai.payload->>(ug.ability_id) as ability_internal_name,
         coalesce(
             ad.dname,
@@ -79,10 +90,9 @@ decoded as (
         ) as raw_ability_name,
         ad.img as ability_img_raw,
         coalesce(lfm.first_minute, mlm.last_minute, 0) as minute,
-        ug.upgrade_index + 1 as learn_level,
         dp.player_name,
         dh.hero_localized_name
-    from {{ ref('stg_match_player_skills') }} ug
+    from upgrades ug
     left join {{ source('bronze', 'constants') }} ai on ai.resource = 'ability_ids'
     left join ability_dnames ad
         on ad.norm_key = replace(nullif(ai.payload->>(ug.ability_id), ''), '_', '')
@@ -91,7 +101,7 @@ decoded as (
     left join level_first_minute lfm
         on lfm.match_id = ug.match_id
        and lfm.player_slot = ug.player_slot
-       and lfm.level = ug.upgrade_index + 1
+       and lfm.level = ug.learn_level
     left join max_level_minute mlm
         on mlm.match_id = ug.match_id
        and mlm.player_slot = ug.player_slot

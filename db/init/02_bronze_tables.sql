@@ -6,42 +6,48 @@
 CREATE TABLE IF NOT EXISTS bronze.matches (
     match_id      bigint PRIMARY KEY,
     payload       jsonb  NOT NULL,
-    loaded_at     timestamptz NOT NULL DEFAULT now()
+    loaded_at     timestamptz NOT NULL DEFAULT now(),
+    source_fetched_at timestamptz
 );
 
 -- Leagues: one row per league entry in leagues.json.
 CREATE TABLE IF NOT EXISTS bronze.leagues (
     leagueid      integer PRIMARY KEY,
     payload       jsonb  NOT NULL,
-    loaded_at     timestamptz NOT NULL DEFAULT now()
+    loaded_at     timestamptz NOT NULL DEFAULT now(),
+    source_fetched_at timestamptz
 );
 
 -- Players: one row per pro player in proPlayers.json.
 CREATE TABLE IF NOT EXISTS bronze.players (
     account_id    integer PRIMARY KEY,
     payload       jsonb  NOT NULL,
-    loaded_at     timestamptz NOT NULL DEFAULT now()
+    loaded_at     timestamptz NOT NULL DEFAULT now(),
+    source_fetched_at timestamptz
 );
 
 -- Teams: one row per team in teams.json.
 CREATE TABLE IF NOT EXISTS bronze.teams (
     team_id       integer PRIMARY KEY,
     payload       jsonb  NOT NULL,
-    loaded_at     timestamptz NOT NULL DEFAULT now()
+    loaded_at     timestamptz NOT NULL DEFAULT now(),
+    source_fetched_at timestamptz
 );
 
 -- Hero stats: one row per hero aggregate in heroStats.json.
 CREATE TABLE IF NOT EXISTS bronze.hero_stats (
     id            integer PRIMARY KEY,
     payload       jsonb  NOT NULL,
-    loaded_at     timestamptz NOT NULL DEFAULT now()
+    loaded_at     timestamptz NOT NULL DEFAULT now(),
+    source_fetched_at timestamptz
 );
 
 -- Constants: one row per constants/*.json resource, keyed by resource name.
 CREATE TABLE IF NOT EXISTS bronze.constants (
     resource      text PRIMARY KEY,
     payload       jsonb  NOT NULL,
-    loaded_at     timestamptz NOT NULL DEFAULT now()
+    loaded_at     timestamptz NOT NULL DEFAULT now(),
+    source_fetched_at timestamptz
 );
 
 -- Keep the loader from scanning files with nothing to do.

@@ -23,7 +23,7 @@ table 'gold dim_region'
 		mode: directQuery
 		source =
 				let
-				    Source = PostgreSQL.Database("localhost", "dota"),
+				    Source = PostgreSQL.Database("localhost", "dota_demo"),
 				    gold_dim_region = Source{[Schema="gold",Item="dim_region"]}[Data]
 				in
 				    gold_dim_region
