@@ -32,18 +32,17 @@ It is reproducible: `git clone` + `docker compose up` runs against a committed
 
 | Dataset | Size | Use |
 |---|---|---|
-| `sample_data/` | 200 matches, 107 MB | CI and reproducibility |
-| `demo_data/` | 1,500 matches, 634 MB | portfolio dashboard (recommended) |
-| `data/` | 29k matches, 11.4 GB | full scrape archive (optional) |
+| `sample_data/` | 200 matches, 107 MB | CI smoke test |
+| `demo_data/` | 1,500 matches, 634 MB | portfolio dashboard (committed) |
+| `data/` | 29k matches, 11.4 GB | full scrape archive (optional, gitignored) |
 
 For an entry-level portfolio, use the curated 1,500-match demo. It builds in
 about 14 minutes on a 16 GB laptop and produces a 1 GB database. The full 29k
 scrape is kept only as an archive. Loading all of it is not necessary for the
 portfolio and is too heavy for a 6 GB Docker VM.
 
-The 1,500-match `demo_data/` is generated from the local `data/` scrape. A fresh
-clone only has the committed 200-match `sample_data/`; build that into `dota`
-and switch the PBIP to `dota` if you do not have the full scrape.
+The 1,500-match `demo_data/` is committed, so a fresh clone can build the same
+report. The full 29k scrape stays local and gitignored.
 
 ## Tech stack and why
 
@@ -61,6 +60,7 @@ and switch the PBIP to `dota` if you do not have the full scrape.
 ```powershell
 python -m venv .venv
 .\.venv\Scripts\python.exe -m pip install -r requirements.txt -r requirements-dev.txt
+copy .env.example .env
 
 docker compose up -d                                              # Postgres
 
@@ -124,7 +124,7 @@ reloadable settings.
 ## Project layout
 
 - [`data/`](data/) - scrapers + raw JSON (live scrape is gitignored)
-- `demo_data/` - local 1,500-match portfolio subset (gitignored)
+- `demo_data/` - committed 1,500-match portfolio subset
 - [`scripts/`](scripts/) - pipeline runner, demo builder, memory profiles,
   cleanup, CLI
 - [`spark/`](spark/) - M0/M1 PySpark scaffold

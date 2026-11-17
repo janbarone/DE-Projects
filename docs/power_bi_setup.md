@@ -11,15 +11,13 @@ Power BI Desktop → **Get data → PostgreSQL database**
 
 - Server: `localhost`
 - Port: `5432`
-- Database: `dota_demo` (portfolio) or `dota` (full archive)
+- Database: `dota_demo` (portfolio) or `dota_live` (full archive)
 - User / password: `postgres` / `postgres` (from `.env`)
 - Advanced: load all 33 `gold.*` tables (13 dims + 20 facts).
 
-The checked-in PBIP points at `dota_demo` (the local 1,500-match demo). The
-demo database is built from `demo_data/`, which is generated from the full
-local scrape. On a fresh clone with only `sample_data/`, build `dota` and switch
-the PBIP with `python scripts/switch_powerbi_db.py --database dota`. Keep Power
-BI Desktop closed while switching.
+The checked-in PBIP points at `dota_demo` (the committed 1,500-match demo).
+Build it with `python scripts/demo_pipeline.py --matches 1500 --switch-powerbi`.
+Keep Power BI Desktop closed while switching.
 
 If a relationship fails to validate, first check Power BI **auto-created**
 relationships on import (tables share key column names) and **delete the

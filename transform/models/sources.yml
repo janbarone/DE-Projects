@@ -2,7 +2,7 @@ version: 2
 
 sources:
   - name: bronze
-    database: "{{ env_var('POSTGRES_DB', 'dota') }}"
+    database: "{{ env_var('POSTGRES_DB', 'dota_demo') }}"
     schema: bronze
     loader: python_load_bronze
     description: >

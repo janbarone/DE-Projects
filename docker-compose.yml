@@ -15,7 +15,7 @@ services:
     environment:
       POSTGRES_USER: ${POSTGRES_USER:-postgres}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
-      POSTGRES_DB: ${POSTGRES_DB:-dota}
+      POSTGRES_DB: ${POSTGRES_DB:-dota_demo}
     ports:
       - "${POSTGRES_PORT:-5432}:5432"
     # Default Docker /dev/shm is 64MB; Postgres parallel queries need more.
@@ -25,7 +25,7 @@ services:
       # Runs schema SQL on first container boot (empty volume)
       - ./db/init:/docker-entrypoint-initdb.d:ro
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres} -d ${POSTGRES_DB:-dota}"]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres} -d ${POSTGRES_DB:-dota_demo}"]
       interval: 5s
       timeout: 5s
       retries: 10
@@ -45,7 +45,7 @@ services:
         condition: service_healthy
     environment:
       DAGSTER_HOME: /opt/dagster/dagster_home
-      DATABASE_URL: postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@postgres:5432/${POSTGRES_DB:-dota}
+      DATABASE_URL: postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@postgres:5432/${POSTGRES_DB:-dota_demo}
       POSTGRES_HOST: postgres
       DOTA_DATA_DIR: /opt/dota/data
       DOTA_SCRAPE_LIMIT: "100"
@@ -110,7 +110,7 @@ services:
       AIRFLOW__CORE__LOAD_EXAMPLES: "false"
       # Pipeline deps (dbt, psycopg, etc.) are installed into the image at boot.
       _PIP_ADDITIONAL_REQUIREMENTS: "dbt-core~=1.12.0 dbt-postgres~=1.11.0 astronomer-cosmos>=1.6,<2 psycopg[binary]>=3.2 python-dotenv requests"
-      DATABASE_URL: postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@postgres:5432/${POSTGRES_DB:-dota}
+      DATABASE_URL: postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@postgres:5432/${POSTGRES_DB:-dota_demo}
       POSTGRES_HOST: postgres
     volumes:
       - ./orchestration/airflow/dags:/opt/airflow/dags
@@ -133,7 +133,7 @@ services:
       AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@airflow-postgres/airflow
       AIRFLOW__CORE__LOAD_EXAMPLES: "false"
       _PIP_ADDITIONAL_REQUIREMENTS: "dbt-core~=1.12.0 dbt-postgres~=1.11.0 astronomer-cosmos>=1.6,<2 psycopg[binary]>=3.2 python-dotenv requests"
-      DATABASE_URL: postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@postgres:5432/${POSTGRES_DB:-dota}
+      DATABASE_URL: postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@postgres:5432/${POSTGRES_DB:-dota_demo}
       POSTGRES_HOST: postgres
     volumes:
       - ./orchestration/airflow/dags:/opt/airflow/dags

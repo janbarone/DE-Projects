@@ -1,0 +1,98 @@
+{
+  "0": {
+    "id": 0,
+    "name": "lobby_type_normal",
+    "balanced": true,
+    "timestamp_fetched": "2026-08-01T11:38:48.246Z"
+  },
+  "1": {
+    "id": 1,
+    "name": "lobby_type_practice",
+    "balanced": true,
+    "timestamp_fetched": "2026-08-01T11:38:48.246Z"
+  },
+  "2": {
+    "id": 2,
+    "name": "lobby_type_tournament",
+    "balanced": true,
+    "timestamp_fetched": "2026-08-01T11:38:48.246Z"
+  },
+  "3": {
+    "id": 3,
+    "name": "lobby_type_tutorial",
+    "balanced": false,
+    "timestamp_fetched": "2026-08-01T11:38:48.246Z"
+  },
+  "4": {
+    "id": 4,
+    "name": "lobby_type_coop_bots",
+    "balanced": false,
+    "timestamp_fetched": "2026-08-01T11:38:48.246Z"
+  },
+  "5": {
+    "id": 5,
+    "name": "lobby_type_ranked_team_mm",
+    "balanced": true,
+    "timestamp_fetched": "2026-08-01T11:38:48.246Z"
+  },
+  "6": {
+    "id": 6,
+    "name": "lobby_type_ranked_solo_mm",
+    "balanced": true,
+    "timestamp_fetched": "2026-08-01T11:38:48.246Z"
+  },
+  "7": {
+    "id": 7,
+    "name": "lobby_type_ranked",
+    "balanced": true,
+    "timestamp_fetched": "2026-08-01T11:38:48.246Z"
+  },
+  "8": {
+    "id": 8,
+    "name": "lobby_type_1v1_mid",
+    "balanced": false,
+    "timestamp_fetched": "2026-08-01T11:38:48.246Z"
+  },
+  "9": {
+    "id": 9,
+    "name": "lobby_type_battle_cup",
+    "balanced": true,
+    "timestamp_fetched": "2026-08-01T11:38:48.246Z"
+  },
+  "10": {
+    "id": 10,
+    "name": "lobby_type_local_bots",
+    "balanced": true,
+    "timestamp_fetched": "2026-08-01T11:38:48.246Z"
+  },
+  "11": {
+    "id": 11,
+    "name": "lobby_type_spectator",
+    "balanced": true,
+    "timestamp_fetched": "2026-08-01T11:38:48.246Z"
+  },
+  "12": {
+    "id": 12,
+    "name": "lobby_type_event",
+    "balanced": false,
+    "timestamp_fetched": "2026-08-01T11:38:48.246Z"
+  },
+  "13": {
+    "id": 13,
+    "name": "lobby_type_gauntlet",
+    "balanced": true,
+    "timestamp_fetched": "2026-08-01T11:38:48.246Z"
+  },
+  "14": {
+    "id": 14,
+    "name": "lobby_type_new_player",
+    "balanced": false,
+    "timestamp_fetched": "2026-08-01T11:38:48.246Z"
+  },
+  "15": {
+    "id": 15,
+    "name": "lobby_type_featured",
+    "balanced": false,
+    "timestamp_fetched": "2026-08-01T11:38:48.246Z"
+  }
+}

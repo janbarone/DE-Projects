@@ -4,7 +4,6 @@
 # Raw data (large, not committed) - but keep the pipeline scripts tracked
 data/*
 !data/*.py
-demo_data/
 
 # Logs
 *.log

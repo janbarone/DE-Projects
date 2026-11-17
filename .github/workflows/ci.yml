@@ -25,6 +25,7 @@ jobs:
           --health-timeout 5s
           --health-retries 10
     env:
+      POSTGRES_DB: dota
       POSTGRES_HOST: localhost
       POSTGRES_PASSWORD: postgres
     steps:
@@ -77,6 +78,7 @@ jobs:
           --health-retries 10
     env:
       DATABASE_URL: postgresql://postgres:postgres@localhost:5432/dota
+      POSTGRES_DB: dota
       POSTGRES_HOST: localhost
       PGPASSWORD: postgres
     steps:
