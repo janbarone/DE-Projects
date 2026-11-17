@@ -1,7 +1,6 @@
 services:
   postgres:
     image: postgres:16
-    container_name: dota_postgres
     restart: unless-stopped
     # Keep only the one setting that needs a restart here. The rest are
     # managed at runtime by scripts/db_profile.py (safe default / full build)
@@ -39,7 +38,6 @@ services:
   dagster:
     image: dagster/dagster:1.9.4
     profiles: ["dagster"]
-    container_name: dota_dagster
     depends_on:
       postgres:
         condition: service_healthy
@@ -67,7 +65,6 @@ services:
   airflow-postgres:
     image: postgres:16
     profiles: ["airflow"]
-    container_name: airflow_meta_postgres
     environment:
       POSTGRES_USER: airflow
       POSTGRES_PASSWORD: airflow
@@ -83,7 +80,6 @@ services:
   airflow-init:
     image: apache/airflow:2.10.4
     profiles: ["airflow"]
-    container_name: airflow_init
     depends_on:
       airflow-postgres:
         condition: service_healthy
@@ -100,7 +96,6 @@ services:
   airflow-webserver:
     image: apache/airflow:2.10.4
     profiles: ["airflow"]
-    container_name: airflow_webserver
     depends_on:
       airflow-init:
         condition: service_completed_successfully
@@ -124,7 +119,6 @@ services:
   airflow-scheduler:
     image: apache/airflow:2.10.4
     profiles: ["airflow"]
-    container_name: airflow_scheduler
     depends_on:
       airflow-init:
         condition: service_completed_successfully

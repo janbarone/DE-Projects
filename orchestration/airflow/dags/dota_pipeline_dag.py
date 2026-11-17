@@ -10,7 +10,7 @@ Tasks wired as a DAG:
 - dbt_build is a first-class dbt-cosmos `DbtBuildOperator` (native `dbt build`,
   single task, using the committed `profiles.yml`).
 
-The backup step streams pg_dump out of the running `dota_postgres` container
+The backup step streams pg_dump out of the running Compose Postgres service
 (--backup-docker) because the orchestrator image does not ship a pg_dump
 binary. `backups/` is a repo mount inside the container (/opt/dota/backups),
 so the dump lands on the host like a manual `pg_dump`.

@@ -139,22 +139,28 @@ def _find_pg_dump() -> str:
 
 
 def _docker_pg_dump(out_file: Path) -> None:
-    """Fallback: stream pg_dump out of the running dota_postgres container."""
+    """Fallback: stream pg_dump out of this Compose project's Postgres service."""
     if not shutil.which("docker"):
         raise SystemExit("pg_dump and docker both unavailable")
     probe = subprocess.run(
-        ["docker", "inspect", "-f", "{{.State.Running}}", "dota_postgres"],
-        capture_output=True,
-        text=True,
+        ["docker", "compose", "ps", "-q", "postgres"],
+        cwd=str(BASE), capture_output=True, text=True,
     )
-    if probe.returncode != 0 or probe.stdout.strip() != "true":
-        raise SystemExit("dota_postgres container is not running")
+    container_id = probe.stdout.strip()
+    if probe.returncode != 0 or not container_id:
+        raise SystemExit("postgres Compose service is not running")
+    state = subprocess.run(
+        ["docker", "inspect", "-f", "{{.State.Running}}", container_id],
+        capture_output=True, text=True,
+    )
+    if state.returncode != 0 or state.stdout.strip() != "true":
+        raise SystemExit("postgres Compose service is not running")
     user = os.environ.get("POSTGRES_USER", "postgres")
-    db = os.environ.get("POSTGRES_DB", "dota")
-    cmd = ["docker", "exec", "dota_postgres", "pg_dump", "-U", user, "-d", db, "-Fc"]
+    db = os.environ.get("POSTGRES_DB", "dota_demo")
+    cmd = ["docker", "compose", "exec", "-T", "postgres", "pg_dump", "-U", user, "-d", db, "-Fc"]
     logger.info("run command=%s", " ".join(cmd))
     with out_file.open("wb") as fh:
-        proc = subprocess.run(cmd, stdout=fh)
+        proc = subprocess.run(cmd, cwd=str(BASE), stdout=fh)
     if proc.returncode != 0:
         raise SystemExit(f"pg_dump failed (exit {proc.returncode})")
 
@@ -269,7 +275,7 @@ def main() -> None:
     ap.add_argument(
         "--backup-docker",
         action="store_true",
-        help="run pg_dump inside the dota_postgres container (docker exec fallback)",
+        help="run pg_dump inside the Compose postgres service (docker exec fallback)",
     )
     args = ap.parse_args()
 

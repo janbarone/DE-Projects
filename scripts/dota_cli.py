@@ -158,11 +158,19 @@ def show_status() -> int:
         return 1
 
     run([_python(), str(ROOT / "scripts" / "db_profile.py"), "--profile", "show"])
-    result = subprocess.run(
-        ["docker", "inspect", "-f", "{{.State.Health.Status}}", "dota_postgres"],
-        capture_output=True, text=True,
+    probe = subprocess.run(
+        ["docker", "compose", "ps", "-q", "postgres"],
+        cwd=str(ROOT), capture_output=True, text=True,
     )
-    print(f"postgres container: {result.stdout.strip() or 'not running'}")
+    container_id = probe.stdout.strip()
+    if not container_id:
+        print("postgres container: not running")
+    else:
+        result = subprocess.run(
+            ["docker", "inspect", "-f", "{{.State.Health.Status}}", container_id],
+            capture_output=True, text=True,
+        )
+        print(f"postgres container: {result.stdout.strip() or 'unknown'}")
     return 0
 
 

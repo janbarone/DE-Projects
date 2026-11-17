@@ -64,6 +64,9 @@ copy .env.example .env
 
 docker compose up -d                                              # Postgres
 
+# Run one local stack at a time. If another Postgres already uses port 5432,
+# stop it or change POSTGRES_PORT and DATABASE_URL together.
+
 # Portfolio demo (recommended): creates dota_demo and points the PBIP at it.
 .\.venv\Scripts\python.exe scripts\demo_pipeline.py --matches 1500 --switch-powerbi
 
