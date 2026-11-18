@@ -102,13 +102,16 @@ backups, tests, status, memory profiles, cleanup, Power BI, and Spark.
   raises work_mem/parallelism and always restores the safe default
 - **Portfolio mode** - 1,500-match curated demo, 315 dbt build steps green,
   1 GB instead of 18 GB
+- **Spark M1a** - local PySpark gold for 5 core tables, Delta output, and
+  parity against dbt (row counts, keys, and aggregates)
 
 ## What is next
 
 - Final visual pass over the report in Power BI Desktop against `dota_demo`.
-- Extend the M0 Spark smoke test with a local Delta write.
-- Finish the M0 Azure account and DP-203 Learn modules, then start M1 in
-  `docs/cloud_azure_plan.md`.
+- Finish M1: replace silver reads with bronze JSONB parsing and add the
+  remaining core gold tables.
+- Finish the Azure account and DP-203/Fabric Learn modules, then move to M2
+  Databricks in `docs/cloud_azure_plan.md`.
 - Optional: keep the 29k live database as an archive, but do not rebuild it on
   this laptop; use `demo_data/` for the portfolio.
 

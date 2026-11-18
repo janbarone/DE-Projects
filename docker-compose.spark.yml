@@ -1,13 +1,14 @@
 services:
   spark:
     image: apache/spark:3.5.3
-    container_name: dota_spark
     environment:
       DOTA_JDBC_URL: jdbc:postgresql://host.docker.internal:5432/dota_demo
       DOTA_JDBC_USER: postgres
       DOTA_JDBC_PASSWORD: postgres
+      DOTA_DELTA_DIR: /opt/spark/delta
     volumes:
       - ./spark:/opt/spark/smoke:ro
+      - ./spark/delta:/opt/spark/delta
     extra_hosts:
       - "host.docker.internal:host-gateway"
     command: ["/bin/bash", "-lc", "sleep infinity"]

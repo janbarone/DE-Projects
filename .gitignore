@@ -50,3 +50,9 @@ transform/README.md
 
 # Unusable lock file (UTF-16 BOM, referenced nowhere)
 requirements.lock
+# Spark local Delta / metastore outputs
+spark/delta/*
+!spark/delta/.gitkeep
+spark/warehouse/
+spark/metastore_db/
+spark/.ivy2/
