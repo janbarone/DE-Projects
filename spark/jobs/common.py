@@ -35,7 +35,11 @@ def read_table(spark: SparkSession, table: str) -> DataFrame:
     return spark.read.jdbc(url=JDBC_URL, table=table, properties=JDBC_PROPS)
 
 
-def write_delta(df: DataFrame, name: str) -> str:
-    path = f"{DELTA_DIR}/gold/{name}"
+def read_silver(spark: SparkSession, name: str) -> DataFrame:
+    return spark.read.format("delta").load(f"{DELTA_DIR}/silver/{name}")
+
+
+def write_delta(df: DataFrame, name: str, layer: str = "gold") -> str:
+    path = f"{DELTA_DIR}/{layer}/{name}"
     df.write.format("delta").mode("overwrite").option("overwriteSchema", "true").save(path)
     return path

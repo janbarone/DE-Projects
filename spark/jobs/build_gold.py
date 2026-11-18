@@ -5,20 +5,20 @@ dim_hero, dim_team, fact_matches, fact_match_players (core columns), and
 fact_picks_bans. The next M1 step is replacing silver reads with bronze JSONB
 parsing and filling the enriched columns.
 """
-from common import read_table, spark_session, write_delta
+from common import read_silver, spark_session, write_delta
 
 spark = spark_session("dota-m1-gold")
 
-sources = {
-    "stg_matches": "silver.stg_matches",
-    "stg_match_players": "silver.stg_match_players",
-    "stg_picks_bans": "silver.stg_picks_bans",
-    "stg_heroes": "silver.stg_heroes",
-    "stg_hero_stats": "silver.stg_hero_stats",
-    "stg_teams": "silver.stg_teams",
-}
-for view, table in sources.items():
-    read_table(spark, table).createOrReplaceTempView(view)
+sources = [
+    "stg_matches",
+    "stg_match_players",
+    "stg_picks_bans",
+    "stg_heroes",
+    "stg_hero_stats",
+    "stg_teams",
+]
+for view in sources:
+    read_silver(spark, view).createOrReplaceTempView(view)
 
 # ---------------------------------------------------------------------------
 # dim_hero

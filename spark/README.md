@@ -13,7 +13,7 @@ docker compose -f docker-compose.spark.yml run --rm spark \
 
 It reads `bronze.matches` from `dota_demo` over JDBC and prints the row count.
 
-## M1a: local PySpark gold + dbt parity
+## M1b: local PySpark bronze -> silver -> gold + dbt parity
 
 ```powershell
 .\spark\Run_M1.cmd
@@ -34,7 +34,21 @@ docker compose -f docker-compose.spark.yml run --rm spark `
   /opt/spark/smoke/jobs/parity_check.py
 ```
 
-Current M1a scope:
+Current scope:
+
+Silver, parsed from `bronze.matches` JSONB:
+
+- `stg_matches`
+- `stg_match_players`
+- `stg_picks_bans`
+
+Reference silver:
+
+- `stg_heroes`
+- `stg_hero_stats`
+- `stg_teams`
+
+Gold:
 
 - `dim_hero`
 - `dim_team`
@@ -42,23 +56,27 @@ Current M1a scope:
 - `fact_match_players` (core columns)
 - `fact_picks_bans`
 
-Output is local Delta at `spark/delta/gold/` (gitignored). The parity check
-compares row counts, key sets, and aggregate metrics against the dbt gold layer
-in PostgreSQL.
+Output is local Delta at `spark/delta/silver/` and `spark/delta/gold/`
+(gitignored). The parity check compares row counts, key sets, and aggregate
+metrics against the dbt silver and gold layers in PostgreSQL.
 
-M1a passes with:
+Expected rows:
 
-- `dim_hero`: 128 rows
-- `dim_team`: 21,893 rows
-- `fact_matches`: 1,500 rows
-- `fact_match_players`: 14,992 rows
-- `fact_picks_bans`: 30,124 rows
+- `stg_matches`: 1,500
+- `stg_match_players`: 14,992
+- `stg_picks_bans`: 30,124
+- `dim_hero`: 128
+- `dim_team`: 21,893
+- `fact_matches`: 1,500
+- `fact_match_players`: 14,992
+- `fact_picks_bans`: 30,124
 
 ## Next M1 steps
 
-1. Replace the silver JDBC reads with bronze JSONB parsing in Spark.
-2. Add the remaining core gold tables and enriched `fact_match_players` columns.
-3. Move the jobs to Databricks using Auto Loader, Delta, and Unity Catalog.
+1. Add the remaining core gold tables and enriched `fact_match_players` columns.
+2. Add row-level hash parity, not just counts and aggregates.
+3. Add a Spark CI workflow.
+4. Move the jobs to Databricks using Auto Loader, Delta, and Unity Catalog.
 
 ## Memory
 
