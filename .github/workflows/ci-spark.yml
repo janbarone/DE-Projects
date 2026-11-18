@@ -1,0 +1,76 @@
+name: CI Spark
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  spark-parity:
+    name: PySpark bronze -> gold parity
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: dota
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres -d dota"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    env:
+      DATABASE_URL: postgresql://postgres:postgres@localhost:5432/dota
+      POSTGRES_DB: dota
+      POSTGRES_HOST: localhost
+      POSTGRES_PASSWORD: postgres
+      DOTA_JDBC_URL: jdbc:postgresql://localhost:5432/dota
+      DOTA_JDBC_USER: postgres
+      DOTA_JDBC_PASSWORD: postgres
+      DOTA_DELTA_DIR: ${{ github.workspace }}/spark/delta
+      PGPASSWORD: postgres
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+      - name: Install Python and Spark deps
+        run: |
+          pip install -r requirements.txt
+          pip install pyspark==3.5.3
+      - name: Init bronze schema
+        run: |
+          sudo apt-get update && sudo apt-get install -y postgresql-client
+          psql -h localhost -U postgres -d dota -f db/init/01_schemas.sql
+          psql -h localhost -U postgres -d dota -f db/init/02_bronze_tables.sql
+      - name: Load sample data and build dbt reference
+        run: |
+          python scripts/load_bronze.py --data-dir sample_data
+          dbt build --profiles-dir . --project-dir transform
+      - name: Build Spark silver and gold
+        run: |
+          PACKAGES="org.postgresql:postgresql:42.7.4,io.delta:delta-spark_2.12:3.0.0"
+          spark-submit --master local[2] --driver-memory 1g \
+            --conf spark.jars.ivy=/tmp/.ivy2 \
+            --packages "$PACKAGES" \
+            spark/jobs/bronze_to_silver.py
+          spark-submit --master local[2] --driver-memory 1g \
+            --conf spark.jars.ivy=/tmp/.ivy2 \
+            --packages "$PACKAGES" \
+            spark/jobs/build_gold.py
+      - name: Compare Spark to dbt
+        run: |
+          PACKAGES="org.postgresql:postgresql:42.7.4,io.delta:delta-spark_2.12:3.0.0"
+          spark-submit --master local[2] --driver-memory 1g \
+            --conf spark.jars.ivy=/tmp/.ivy2 \
+            --packages "$PACKAGES" \
+            spark/jobs/parity_check.py

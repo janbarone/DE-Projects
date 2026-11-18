@@ -104,6 +104,7 @@ backups, tests, status, memory profiles, cleanup, Power BI, and Spark.
   1 GB instead of 18 GB
 - **Spark M1b** - PySpark bronze -> silver -> gold for the 5 core tables,
   Delta output, and parity against dbt (row counts, keys, and aggregates)
+- **Spark CI** - GitHub Actions runs the PySpark pipeline and dbt parity
 
 ## What is next
 
