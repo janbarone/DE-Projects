@@ -101,6 +101,28 @@ CHECKS = {
     },
 }
 
+
+EXTRA_CHECKS = {
+    "gold/dim_game_mode": {"dbt": "gold.dim_game_mode", "keys": ["game_mode_id"], "metrics": {"rows": F.count("*")}},
+    "gold/dim_lobby_type": {"dbt": "gold.dim_lobby_type", "keys": ["lobby_type_id"], "metrics": {"rows": F.count("*")}},
+    "gold/dim_region": {"dbt": "gold.dim_region", "keys": ["region_id"], "metrics": {"rows": F.count("*")}},
+    "gold/dim_item": {"dbt": "gold.dim_item", "keys": ["item_id"], "metrics": {"rows": F.count("*")}},
+    "gold/dim_patch": {"dbt": "gold.dim_patch", "keys": ["patch_id"], "metrics": {"rows": F.count("*")}},
+    "gold/dim_league": {"dbt": "gold.dim_league", "keys": ["leagueid"], "metrics": {"rows": F.count("*")}},
+    "gold/dim_hero_role": {"dbt": "gold.dim_hero_role", "keys": ["hero_id", "role"], "metrics": {"rows": F.count("*")}},
+    "gold/dim_rune": {"dbt": "gold.dim_rune", "keys": ["rune_key"], "metrics": {"rows": F.count("*")}},
+    "gold/dim_date": {"dbt": "gold.dim_date", "keys": ["date"], "metrics": {"rows": F.count("*")}},
+    "gold/dim_player": {"dbt": "gold.dim_player", "keys": ["account_id"], "metrics": {"rows": F.count("*"), "picks": F.sum("match_picks")}},
+    "gold/fact_team_matches": {"dbt": "gold.fact_team_matches", "keys": ["match_id", "side"], "metrics": {"rows": F.count("*")}},
+    "gold/fact_hero_side": {"dbt": "gold.fact_hero_side", "keys": ["hero_id", "side"], "metrics": {"rows": F.count("*"), "picks": F.sum("hero_side_picks")}},
+    "gold/fact_hero_matchups": {"dbt": "gold.fact_hero_matchups", "keys": ["match_id", "radiant_hero_id", "dire_hero_id"], "metrics": {"rows": F.count("*")}},
+    "gold/fact_hero_matchup_stats": {"dbt": "gold.fact_hero_matchup_stats", "keys": ["matchup_label"], "metrics": {"rows": F.count("*"), "games": F.sum("matchup_games")}},
+    "gold/fact_hero_matchups_hero": {"dbt": "gold.fact_hero_matchups_hero", "keys": ["match_id", "hero_id", "opponent_id"], "metrics": {"rows": F.count("*")}},
+    "gold/fact_team_h2h": {"dbt": "gold.fact_team_h2h", "keys": ["match_id"], "metrics": {"rows": F.count("*")}},
+    "gold/fact_draft_sequence": {"dbt": "gold.fact_draft_sequence", "keys": ["match_id", "slot"], "metrics": {"rows": F.count("*")}},
+}
+CHECKS.update(EXTRA_CHECKS)
+
 failures = []
 for label, config in CHECKS.items():
     delta = spark.read.format("delta").load(f"{DELTA_DIR}/{label}")

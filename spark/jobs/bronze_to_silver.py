@@ -234,4 +234,35 @@ teams = teams_bronze.select(
 write_delta(teams, "stg_teams", "silver")
 print(f"stg_teams rows={teams.count()}")
 
+players_bronze = read_table(spark, "bronze.players")
+players_ref = players_bronze.select(
+    null_text(j("account_id")).alias("account_id"),
+    null_text(j("name")).alias("player_name"),
+    null_text(j("rank_tier")).alias("rank_tier"),
+    null_text(j("team_id")).alias("team_id"),
+    null_text(j("avatarmedium")).alias("avatar_medium"),
+).filter(F.col("account_id").isNotNull())
+write_delta(players_ref, "stg_players", "silver")
+print(f"stg_players rows={players_ref.count()}")
+
+leagues_bronze = read_table(spark, "bronze.leagues")
+leagues_ref = leagues_bronze.select(
+    null_text(j("leagueid")).alias("leagueid"),
+    null_text(j("name")).alias("league_name"),
+    null_text(j("tier")).alias("tier"),
+    null_text(j("ticket")).alias("ticket"),
+    null_text(j("banner")).alias("banner"),
+).filter(F.col("leagueid").isNotNull())
+write_delta(leagues_ref, "stg_leagues", "silver")
+print(f"stg_leagues rows={leagues_ref.count()}")
+
+constants_bronze = read_table(spark, "bronze.constants")
+constants_ref = constants_bronze.select(
+    F.col("resource"),
+    F.col("payload").alias("resource_payload"),
+    F.col("loaded_at"),
+)
+write_delta(constants_ref, "stg_constants", "silver")
+print(f"stg_constants rows={constants_ref.count()}")
+
 spark.stop()

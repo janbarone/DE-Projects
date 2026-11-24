@@ -306,22 +306,56 @@ print(f"fact_matches rows={fact_matches.count()}")
 # fact_match_players (core columns; enriched dbt-only columns come later)
 # ---------------------------------------------------------------------------
 fact_players_sql = """
+WITH team_comps AS (
+    SELECT match_id, team_number,
+           CONCAT_WS('_', SORT_ARRAY(COLLECT_LIST(hero_id))) AS comp_sig
+    FROM stg_match_players
+    GROUP BY match_id, team_number
+),
+hero_stats AS (
+    SELECT hero_id,
+           COUNT(*) AS hero_games,
+           SUM(CASE WHEN team_win THEN 1 ELSE 0 END) AS hero_wins,
+           ROUND(SUM(CASE WHEN team_win THEN 1 ELSE 0 END) / NULLIF(COUNT(*), 0), 4) AS hero_win_rate
+    FROM stg_match_players
+    WHERE hero_id <> '0' AND team_win IS NOT NULL
+    GROUP BY hero_id
+),
+pick_order AS (
+    SELECT match_id, hero_id,
+           MAX(CASE WHEN is_pick THEN seq END) AS pick_sequence,
+           MAX(CASE WHEN NOT is_pick THEN seq END) AS ban_sequence
+    FROM (
+        SELECT match_id, hero_id, is_pick,
+               ROW_NUMBER() OVER (PARTITION BY match_id, is_pick ORDER BY order_no_int) AS seq
+        FROM stg_picks_bans
+    ) s
+    GROUP BY match_id, hero_id
+)
 SELECT
-    match_id,
-    player_slot,
-    account_id,
-    hero_id,
-    team_number,
-    CASE WHEN team_number = '0' THEN 'Radiant' ELSE 'Dire' END AS side,
-    team_win,
-    kills, deaths, assists, kda,
-    gold, gold_spent, net_worth, gold_per_min, xp_per_min,
-    hero_damage, hero_healing, tower_damage, tower_kills, stuns,
-    last_hits, denies, camps_stacked, creeps_stacked, neutral_kills,
-    rune_pickups, obs_placed, sen_placed, level,
-    item_0, item_1, item_2, item_3, item_4, item_5, item_neutral,
-    leaver_status, randomed, firstblood_claimed, buyback_count, loaded_at
-FROM stg_match_players
+    mp.match_id,
+    mp.player_slot,
+    mp.account_id,
+    mp.hero_id,
+    mp.team_number,
+    CASE WHEN mp.team_number = '0' THEN 'Radiant' ELSE 'Dire' END AS side,
+    mp.team_win,
+    tc.comp_sig,
+    hs.hero_games,
+    hs.hero_win_rate,
+    po.pick_sequence,
+    po.ban_sequence,
+    mp.kills, mp.deaths, mp.assists, mp.kda,
+    mp.gold, mp.gold_spent, mp.net_worth, mp.gold_per_min, mp.xp_per_min,
+    mp.hero_damage, mp.hero_healing, mp.tower_damage, mp.tower_kills, mp.stuns,
+    mp.last_hits, mp.denies, mp.camps_stacked, mp.creeps_stacked, mp.neutral_kills,
+    mp.rune_pickups, mp.obs_placed, mp.sen_placed, mp.level,
+    mp.item_0, mp.item_1, mp.item_2, mp.item_3, mp.item_4, mp.item_5, mp.item_neutral,
+    mp.leaver_status, mp.randomed, mp.firstblood_claimed, mp.buyback_count, mp.loaded_at
+FROM stg_match_players mp
+LEFT JOIN team_comps tc ON mp.match_id = tc.match_id AND mp.team_number = tc.team_number
+LEFT JOIN hero_stats hs ON mp.hero_id = hs.hero_id
+LEFT JOIN pick_order po ON mp.match_id = po.match_id AND mp.hero_id = po.hero_id
 """
 fact_players = spark.sql(fact_players_sql)
 write_delta(fact_players, "fact_match_players")

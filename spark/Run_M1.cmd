@@ -8,12 +8,22 @@ echo Building silver Delta from bronze JSONB...
 %SPARK% /opt/spark/smoke/jobs/bronze_to_silver.py
 if errorlevel 1 exit /b 1
 
-echo Building gold tables in Delta...
+echo Building core gold tables in Delta...
 %SPARK% /opt/spark/smoke/jobs/build_gold.py
+if errorlevel 1 exit /b 1
+
+echo Building remaining dimensions...
+%SPARK% /opt/spark/smoke/jobs/build_dims.py
+if errorlevel 1 exit /b 1
+%SPARK% /opt/spark/smoke/jobs/build_player_dim.py
+if errorlevel 1 exit /b 1
+
+echo Building remaining facts...
+%SPARK% /opt/spark/smoke/jobs/build_facts_extra.py
 if errorlevel 1 exit /b 1
 
 echo Running parity check against dbt...
 %SPARK% /opt/spark/smoke/jobs/parity_check.py
 if errorlevel 1 exit /b 1
-echo M1a completed and parity passed.
+echo M1c completed and parity passed.
 endlocal
