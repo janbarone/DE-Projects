@@ -1,5 +1,5 @@
 """M1c: build the remaining core dimensions from Spark Delta silver."""
-from common import DELTA_DIR, read_silver, spark_session, write_delta
+from common import read_gold, read_silver, spark_session, write_delta
 from pyspark.sql import functions as F
 from pyspark.sql import types as T
 
@@ -7,7 +7,7 @@ spark = spark_session("dota-m1c-dims")
 constants = read_silver(spark, "stg_constants")
 for name in ("stg_matches", "stg_leagues"):
     read_silver(spark, name).createOrReplaceTempView(name)
-spark.read.format("delta").load(f"{DELTA_DIR}/gold/dim_hero").createOrReplaceTempView("dim_hero")
+read_gold(spark, "dim_hero").createOrReplaceTempView("dim_hero")
 
 gm_schema = T.MapType(
     T.StringType(),

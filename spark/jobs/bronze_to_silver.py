@@ -1,11 +1,11 @@
 """M1b: parse bronze.matches JSONB into Spark silver Delta tables."""
-from common import read_table, spark_session, write_delta
+from common import read_bronze, spark_session, write_delta
 from pyspark.sql import functions as F
 from pyspark.sql import types as T
 from schemas import HERO_RECORD_SCHEMA, PICKS_BANS_SCHEMA, PLAYER_SCHEMA
 
 spark = spark_session("dota-m1-silver")
-bronze = read_table(spark, "bronze.matches")
+bronze = read_bronze(spark, "matches")
 
 
 def j(field: str):
@@ -183,7 +183,7 @@ print(f"stg_picks_bans rows={stg_picks.count()}")
 # ---------------------------------------------------------------------------
 # Reference silver tables used by the gold dimensions
 # ---------------------------------------------------------------------------
-constants = read_table(spark, "bronze.constants")
+constants = read_bronze(spark, "constants")
 hero_map = (
     constants.filter(F.col("resource") == "heroes")
     .select(F.from_json("payload", T.MapType(T.StringType(), HERO_RECORD_SCHEMA)).alias("heroes"))
@@ -201,7 +201,7 @@ hero_map = (
 write_delta(hero_map, "stg_heroes", "silver")
 print(f"stg_heroes rows={hero_map.count()}")
 
-hero_stats_bronze = read_table(spark, "bronze.hero_stats")
+hero_stats_bronze = read_bronze(spark, "hero_stats")
 hero_stats = hero_stats_bronze.select(
     null_text(j("id")).alias("hero_id"),
     null_text(j("pro_pick")).cast("int").alias("pro_pick"),
@@ -221,7 +221,7 @@ hero_stats = hero_stats_bronze.select(
 write_delta(hero_stats, "stg_hero_stats", "silver")
 print(f"stg_hero_stats rows={hero_stats.count()}")
 
-teams_bronze = read_table(spark, "bronze.teams")
+teams_bronze = read_bronze(spark, "teams")
 teams = teams_bronze.select(
     null_text(j("team_id")).alias("team_id"),
     null_text(j("name")).alias("team_name"),
@@ -234,7 +234,7 @@ teams = teams_bronze.select(
 write_delta(teams, "stg_teams", "silver")
 print(f"stg_teams rows={teams.count()}")
 
-players_bronze = read_table(spark, "bronze.players")
+players_bronze = read_bronze(spark, "players")
 players_ref = players_bronze.select(
     null_text(j("account_id")).alias("account_id"),
     null_text(j("name")).alias("player_name"),
@@ -245,7 +245,7 @@ players_ref = players_bronze.select(
 write_delta(players_ref, "stg_players", "silver")
 print(f"stg_players rows={players_ref.count()}")
 
-leagues_bronze = read_table(spark, "bronze.leagues")
+leagues_bronze = read_bronze(spark, "leagues")
 leagues_ref = leagues_bronze.select(
     null_text(j("leagueid")).alias("leagueid"),
     null_text(j("name")).alias("league_name"),
@@ -256,7 +256,7 @@ leagues_ref = leagues_bronze.select(
 write_delta(leagues_ref, "stg_leagues", "silver")
 print(f"stg_leagues rows={leagues_ref.count()}")
 
-constants_bronze = read_table(spark, "bronze.constants")
+constants_bronze = read_bronze(spark, "constants")
 constants_ref = constants_bronze.select(
     F.col("resource"),
     F.col("payload").alias("resource_payload"),

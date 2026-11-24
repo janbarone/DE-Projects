@@ -1,12 +1,12 @@
 """M1c: dim_player from pro players, match participants, and player stats."""
-from common import DELTA_DIR, read_silver, spark_session, write_delta
+from common import read_gold, read_silver, spark_session, write_delta
 from pyspark.sql import functions as F
 from pyspark.sql.window import Window
 
 spark = spark_session("dota-m1c-player-dim")
 for name in ("stg_players", "stg_match_players"):
     read_silver(spark, name).createOrReplaceTempView(name)
-spark.read.format("delta").load(f"{DELTA_DIR}/gold/fact_match_players").createOrReplaceTempView("fact_match_players")
+read_gold(spark, "fact_match_players").createOrReplaceTempView("fact_match_players")
 
 pro_players = spark.table("stg_players").select(
     "account_id", "player_name", "rank_tier", "team_id", "avatar_medium",

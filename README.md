@@ -105,14 +105,15 @@ backups, tests, status, memory profiles, cleanup, Power BI, and Spark.
 - **Spark M1c** - PySpark bronze -> silver -> gold for the core model,
   Delta output, and parity against dbt (row counts, keys, and aggregates)
 - **Spark CI** - GitHub Actions runs the PySpark pipeline and dbt parity
+- **Cloud-ready Spark** - local/cloud config switch and an Auto Loader bronze
+  entry point for Databricks
 
 ## What is next
 
 - Final visual pass over the report in Power BI Desktop against `dota_demo`.
-- Finish M1: replace silver reads with bronze JSONB parsing and add the
-  remaining core gold tables.
-- Finish the Azure account and DP-203/Fabric Learn modules, then move to M2
-  Databricks in `docs/cloud_azure_plan.md`.
+- Start M2: create Azure storage, Key Vault, and Databricks workspace.
+- Upload `demo_data`, run Auto Loader bronze, then run the Spark silver/gold
+  jobs with `DOTA_ENV=cloud`.
 - Optional: keep the 29k live database as an archive, but do not rebuild it on
   this laptop; use `demo_data/` for the portfolio.
 
@@ -134,7 +135,8 @@ reloadable settings.
 - `demo_data/` - committed 1,500-match portfolio subset
 - [`scripts/`](scripts/) - pipeline runner, demo builder, memory profiles,
   cleanup, CLI
-- [`spark/`](spark/) - M0/M1 PySpark scaffold
+- [`spark/`](spark/) - local PySpark M1 jobs and Delta parity
+- [`databricks/`](databricks/) - cloud Auto Loader entry point
 - [`transform/`](transform/) - dbt project (silver + gold models)
 - [`orchestration/`](orchestration/) - Dagster + Airflow definitions
 - [`.pbip/`](.pbip/) - Power BI report + semantic model (PBIP/TMDL)

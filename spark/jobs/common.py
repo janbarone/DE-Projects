@@ -1,24 +1,12 @@
-"""Shared Spark/JDBC/Delta helpers for the local M1 jobs."""
-import os
-
+"""Shared Spark/JDBC/Delta helpers for the local and cloud jobs."""
+import config
 from pyspark.sql import DataFrame, SparkSession
 
-JDBC_URL = os.environ.get(
-    "DOTA_JDBC_URL", "jdbc:postgresql://host.docker.internal:5432/dota_demo"
-)
-JDBC_USER = os.environ.get("DOTA_JDBC_USER", "postgres")
-JDBC_PASSWORD = os.environ.get("DOTA_JDBC_PASSWORD", "postgres")
-DELTA_DIR = os.environ.get("DOTA_DELTA_DIR", "/opt/spark/delta")
-
-JDBC_PROPS = {
-    "user": JDBC_USER,
-    "password": JDBC_PASSWORD,
-    "driver": "org.postgresql.Driver",
-}
+DELTA_DIR = config.DELTA_DIR
 
 
 def spark_session(app_name: str) -> SparkSession:
-    return (
+    builder = (
         SparkSession.builder.appName(app_name)
         .config("spark.sql.extensions", "io.delta.sql.DeltaSparkSessionExtension")
         .config(
@@ -27,19 +15,47 @@ def spark_session(app_name: str) -> SparkSession:
         )
         .config("spark.sql.session.timeZone", "UTC")
         .config("spark.sql.shuffle.partitions", "4")
-        .getOrCreate()
     )
+    return builder.getOrCreate()
 
 
 def read_table(spark: SparkSession, table: str) -> DataFrame:
-    return spark.read.jdbc(url=JDBC_URL, table=table, properties=JDBC_PROPS)
+    """Read a local PostgreSQL table through JDBC."""
+    return spark.read.jdbc(
+        url=config.JDBC_URL,
+        table=table,
+        properties={
+            "user": config.JDBC_USER,
+            "password": config.JDBC_PASSWORD,
+            "driver": "org.postgresql.Driver",
+        },
+    )
+
+
+def read_bronze(spark: SparkSession, name: str) -> DataFrame:
+    """Read a bronze table from local Postgres or cloud Unity Catalog."""
+    if config.IS_CLOUD:
+        return spark.read.table(config.table("bronze", name))
+    return read_table(spark, f"bronze.{name}")
 
 
 def read_silver(spark: SparkSession, name: str) -> DataFrame:
-    return spark.read.format("delta").load(f"{DELTA_DIR}/silver/{name}")
+    if config.IS_CLOUD:
+        return spark.read.table(config.table("silver", name))
+    return spark.read.format("delta").load(config.delta_path("silver", name))
+
+
+def read_gold(spark: SparkSession, name: str) -> DataFrame:
+    if config.IS_CLOUD:
+        return spark.read.table(config.table("gold", name))
+    return spark.read.format("delta").load(config.delta_path("gold", name))
 
 
 def write_delta(df: DataFrame, name: str, layer: str = "gold") -> str:
-    path = f"{DELTA_DIR}/{layer}/{name}"
+    if config.IS_CLOUD:
+        target = config.table(layer, name)
+        df.write.format("delta").mode("overwrite").option("overwriteSchema", "true").saveAsTable(target)
+        return target
+    path = config.delta_path(layer, name)
     df.write.format("delta").mode("overwrite").option("overwriteSchema", "true").save(path)
     return path

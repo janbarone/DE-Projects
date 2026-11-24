@@ -1,12 +1,12 @@
 """M1c: build the remaining core facts from Spark Delta silver/gold."""
-from common import DELTA_DIR, read_silver, spark_session, write_delta
+from common import read_gold, read_silver, spark_session, write_delta
 from pyspark.sql import functions as F
 
 spark = spark_session("dota-m1c-facts")
 for name in ("stg_matches", "stg_picks_bans"):
     read_silver(spark, name).createOrReplaceTempView(name)
 for name in ("fact_matches", "fact_match_players", "dim_hero", "dim_team"):
-    spark.read.format("delta").load(f"{DELTA_DIR}/gold/{name}").createOrReplaceTempView(name)
+    read_gold(spark, name).createOrReplaceTempView(name)
 
 team_rows = spark.sql("""
 SELECT match_id, 'Radiant' AS side, radiant_team_id AS team_id,
