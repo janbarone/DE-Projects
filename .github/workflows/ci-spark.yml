@@ -67,6 +67,9 @@ jobs:
             --conf spark.jars.ivy=/tmp/.ivy2 \
             --packages "$PACKAGES" \
             spark/jobs/build_gold.py
+          spark-submit --master local[2] --driver-memory 1g             --conf spark.jars.ivy=/tmp/.ivy2             --packages "$PACKAGES"             spark/jobs/build_dims.py
+          spark-submit --master local[2] --driver-memory 1g             --conf spark.jars.ivy=/tmp/.ivy2             --packages "$PACKAGES"             spark/jobs/build_player_dim.py
+          spark-submit --master local[2] --driver-memory 1g             --conf spark.jars.ivy=/tmp/.ivy2             --packages "$PACKAGES"             spark/jobs/build_facts_extra.py
       - name: Compare Spark to dbt
         run: |
           PACKAGES="org.postgresql:postgresql:42.7.4,io.delta:delta-spark_2.12:3.0.0"
