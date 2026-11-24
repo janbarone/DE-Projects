@@ -105,8 +105,8 @@ backups, tests, status, memory profiles, cleanup, Power BI, and Spark.
 - **Spark M1c** - PySpark bronze -> silver -> gold for the core model,
   Delta output, and parity against dbt (row counts, keys, and aggregates)
 - **Spark CI** - GitHub Actions runs the PySpark pipeline and dbt parity
-- **Cloud-ready Spark** - local/cloud config switch and an Auto Loader bronze
-  entry point for Databricks
+- **Cloud-ready Spark** - local/cloud config switch, Auto Loader bronze, and a
+  cloud reference-data loader for Databricks
 
 ## What is next
 

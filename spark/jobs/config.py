@@ -11,9 +11,13 @@ IS_CLOUD = ENV == "cloud"
 CATALOG = os.environ.get("DOTA_CATALOG", "dota_catalog")
 
 DELTA_DIR = os.environ.get("DOTA_DELTA_DIR", "/opt/spark/delta")
+RAW_BASE = os.environ.get(
+    "DOTA_RAW_BASE",
+    "abfss://dota@stadotapipeline.dfs.core.windows.net/raw",
+)
 RAW_PATH = os.environ.get(
     "DOTA_RAW_PATH",
-    "abfss://dota@stadotapipeline.dfs.core.windows.net/raw/proMatches",
+    f"{RAW_BASE}/proMatches",
 )
 BRONZE_MATCHES_PATH = os.environ.get(
     "DOTA_BRONZE_MATCHES_PATH",

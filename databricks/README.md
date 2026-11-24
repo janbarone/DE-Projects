@@ -4,8 +4,8 @@ M2 uses the same PySpark logic as local M1, with two cloud-specific pieces:
 
 1. `bronze_autoloader.py` - reads raw match JSON from ADLS with Auto Loader and
    writes `dota_catalog.bronze.matches`.
-2. A reference-data loader for leagues, players, teams, hero stats, and
-   constants (next M2 step).
+2. `load_reference.py` - loads leagues, players, teams, hero stats, and
+   constants into the five bronze reference tables.
 
 ## Environment
 
@@ -24,11 +24,9 @@ Local defaults are in `spark/jobs/config.py`.
 
 1. Upload `demo_data` to ADLS `raw/`.
 2. Run `bronze_autoloader.py` once with `trigger(availableNow=True)`.
-3. Run the local silver/gold jobs with `DOTA_ENV=cloud` and Unity Catalog.
-4. Compare counts with local Spark/dbt.
-5. Add the reference-data loader before running `bronze_to_silver.py` in the
-   cloud, because it needs `bronze.constants`, `bronze.leagues`,
-   `bronze.players`, `bronze.teams`, and `bronze.hero_stats`.
+3. Run `load_reference.py --raw-base <ADLS raw path>`.
+4. Run the local silver/gold jobs with `DOTA_ENV=cloud` and Unity Catalog.
+5. Compare counts with local Spark/dbt.
 
 ## Cost guardrails
 

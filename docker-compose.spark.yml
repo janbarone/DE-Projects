@@ -7,8 +7,10 @@ services:
       DOTA_JDBC_PASSWORD: postgres
       DOTA_DELTA_DIR: /opt/spark/delta
     volumes:
-      - ./spark:/opt/spark/smoke:ro
+      - ./spark:/opt/spark/smoke
       - ./spark/delta:/opt/spark/delta
+      - ./demo_data:/opt/spark/demo_data:ro
+      - ./databricks:/opt/spark/smoke/databricks:ro
     extra_hosts:
       - "host.docker.internal:host-gateway"
     command: ["/bin/bash", "-lc", "sleep infinity"]

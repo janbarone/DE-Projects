@@ -8,7 +8,10 @@ from pathlib import Path
 
 from pyspark.sql import functions as F
 
-sys.path.append(str(Path(__file__).resolve().parents[1] / "spark" / "jobs"))
+_root = Path(__file__).resolve().parents[1]
+for _candidate in (_root / "spark" / "jobs", _root / "jobs"):
+    if _candidate.exists():
+        sys.path.append(str(_candidate))
 import config  # noqa: E402
 from common import spark_session  # noqa: E402
 
